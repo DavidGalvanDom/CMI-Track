@@ -50,7 +50,7 @@ namespace CMI.Track.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     string agentName = model.NombreUsuario;
-                    var result = UsuarioData.AutentificaUsuario(agentName, "ACT");
+                    var result = UsuarioData.AutentificaUsuario(agentName, 1);
 
                     if (result != null)
                     {

@@ -17,130 +17,7 @@ namespace CMI.Track.Web.Data
 {
     public class UsuarioData
     {
-        /// <summary>
-        /// Se cargan los usuario que esten el la lista de perfiles
-        /// </summary>
-        /// <param name="plstPerfiles">formato 'DIR','RDE' </param>
-        /// <returns></returns>
-        public static List<Models.ListaUsuario> CargaUsuarioPerfil(string plstPerfiles)
-        {
-            var listaUsuarios = new List<Models.ListaUsuario>();
-            object[] paramArray = new object[1];
-            try
-            {
-                paramArray[0] = plstPerfiles;
-
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarUsuariosPerfiles", paramArray))
-                {
-                    while (dataReader.Read())
-                    {
-                        listaUsuarios.Add(new Models.ListaUsuario()
-                        {
-                            id = Convert.ToInt32(dataReader["IdUsuario"]),
-                            Nombre = Convert.ToString(dataReader["Nombre"]),
-                            ApePaterno = Convert.ToString(dataReader["ApePaterno"]),
-                            ApeMaterno = Convert.ToString(dataReader["ApeMaterno"]),
-                            Perfil = Convert.ToString(dataReader["IdPerfil"]),
-                            NombreUsuario = Convert.ToString(dataReader["NombreUsuario"])
-                        });
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-
-            return listaUsuarios;
-        }
-
-
-        /// <summary>
-        /// Se insertan las plazas a el usuario seleccionado
-        /// </summary>
-        /// <param name="idUsuario"></param>
-        /// <param name="lstidPlaza"></param>
-        /// <returns></returns>
-        public static List<string> GuardarUsuarioPlazas(string idUsuario, List<string> lstidPlaza)
-        {
-            object[] paramArray = new object[2];
-            List<string> lstPlazas = new List<string>();
-            try
-            {
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
-                foreach (string idPlaza in lstidPlaza)
-                {
-
-                    paramArray[0] = idUsuario;
-                    paramArray[1] = idPlaza;
-
-                    try
-                    {
-                        var result = db.ExecuteNonQuery("usp_InsertarUsuarioPlaza", paramArray);
-
-                        if (result == -1)
-                        {
-                            lstPlazas.Add(idPlaza);
-                        }
-
-                    }
-                    catch (Exception) { }
-                }
-
-                return (lstPlazas);
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-        }
-
-
-        /// <summary>
-        /// Se borran las plazas a el usuario seleccionado
-        /// </summary>
-        /// <param name="idUsuario"></param>
-        /// <param name="lstidPlaza"></param>
-        /// <returns></returns>
-        public static List<string> RemueveUsuarioPlazas(string idUsuario, List<string> lstidPlaza)
-        {
-            object[] paramArray = new object[2];
-            List<string> lstPlazas = new List<string>();
-            try
-            {
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
-                foreach (string idPlaza in lstidPlaza)
-                {
-
-                    paramArray[0] = idUsuario;
-                    paramArray[1] = idPlaza;
-
-                    try
-                    {
-                        var result = db.ExecuteNonQuery("usp_RemueveUsuarioPlaza", paramArray);
-
-                        if (result == -1)
-                        {
-                            lstPlazas.Add(idPlaza);
-                        }
-
-                    }
-                    catch (Exception) { }
-                }
-
-                return (lstPlazas);
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-        }
-
-
+       
         /// <summary>
         /// Se carga el listado de usuarios
         /// </summary>
@@ -160,13 +37,15 @@ namespace CMI.Track.Web.Data
                     while (dataReader.Read())
                     {
                         listaUsuarios.Add(new Models.ListaUsuario()
-                        {
-                            id = Convert.ToInt32(dataReader["IdUsuario"]),
-                            Nombre = Convert.ToString(dataReader["Nombre"]),
-                            ApePaterno = Convert.ToString(dataReader["ApePaterno"]),
-                            ApeMaterno = Convert.ToString(dataReader["ApeMaterno"]),
-                            Estatus = Convert.ToString(dataReader["idEstatus"]),
-                            NombreUsuario = Convert.ToString(dataReader["NombreUsuario"])
+                        {                            
+                            id = Convert.ToInt32(dataReader["idUsuario"]),
+                            NombreCompleto = string.Format("{0} {1} {2}", Convert.ToString(dataReader["nombreUsuario"]),
+                                                                        Convert.ToString(dataReader["apePaternoUsuario"]),
+                                                                        Convert.ToString(dataReader["apeMaternoUsuario"])),
+                            NombreUsuario = Convert.ToString(dataReader["loginUsuario"]),
+                            Correo = Convert.ToString(dataReader["emailUsuario"]),
+                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),                       
+                            fechaCreacion= Convert.ToDateTime(dataReader["fechaCreacion"]).ToShortDateString()
                         });
                     }
                 }
@@ -199,14 +78,21 @@ namespace CMI.Track.Web.Data
                     {
                         var objUsuario = new Models.Usuario()
                         {
-                            id = Convert.ToInt32(dataReader["IdUsuario"]),
-                            Nombre = Convert.ToString(dataReader["Nombre"]),
-                            ApePaterno = Convert.ToString(dataReader["ApePaterno"]),
-                            ApeMaterno = Convert.ToString(dataReader["ApeMaterno"]),
-                            Estatus = Convert.ToString(dataReader["IdEstatus"]),                           
-                            Contrasena = Convert.ToString(dataReader["Contrasena"]),
-                            Correo = Convert.ToString(dataReader["Correo"]),
-                            NombreUsuario = Convert.ToString(dataReader["NombreUsuario"])
+                            id = Convert.ToInt32(dataReader["idUsuario"]),
+                            Nombre = Convert.ToString(dataReader["nombreUsuario"]),
+                            ApePaterno = Convert.ToString(dataReader["apePaternoUsuario"]),
+                            ApeMaterno = Convert.ToString(dataReader["apeMaternoUsuario"]),
+                            Contrasena = Convert.ToString(dataReader["passwordUsuario"]),
+                            NombreUsuario = Convert.ToString(dataReader["loginUsuario"]),
+                            Correo = Convert.ToString(dataReader["emailUsuario"]),
+                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),                            
+                            puestoUsuario = Convert.ToString(dataReader["puestoUsuario"]),
+                            areaUsuario = Convert.ToString(dataReader["areaUsuario"]),
+                            autorizaRequisiciones = Convert.ToInt32(dataReader["autorizaRequisiciones"]) == 1 ? true : false,
+                            idDepartamento = dataReader["idDepartamento"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idDepartamento"]),
+                            idProcesoDestino = dataReader["idProcesoDestino"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idProcesoDestino"]),
+                            idProcesoOrigen = dataReader["idProcesoOrigen"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idProcesoOrigen"]),
+                            fechaCreacion = dataReader["fechaCreacion"] == DBNull.Value ? "01/01/1900" : Convert.ToDateTime(dataReader["fechaCreacion"]).ToString("MM/dd/yyyy")
                         };
 
                         return objUsuario;
@@ -221,34 +107,31 @@ namespace CMI.Track.Web.Data
             return null;
 
         }
-
-
-
-
+                
         /// <summary>
         /// Verifica que el usuario tenga permisos para entrar al sistema
         /// </summary>
         /// <param name="idusuario">Nombre del usuario</param>
         /// <returns>contrasena</returns>
-        public static Models.Usuario AutentificaUsuario(string pnomusuario, string pstrEstatus)
+        public static Models.Usuario AutentificaUsuario(string pnomusuario, int idEstatus)
         {
             try
             {
                 Models.Usuario objUsuario = null;
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
-                using (IDataReader dataReader = db.ExecuteReader("usp_AutentificaUsuario", pnomusuario, pstrEstatus))
+                using (IDataReader dataReader = db.ExecuteReader("usp_AutentificaUsuario", pnomusuario, idEstatus))
                 {
                     while (dataReader.Read())
                     {
                         objUsuario = new Models.Usuario()
                         {
-                            id = Convert.ToInt32(dataReader["IdUsuario"]),
-                            Nombre = Convert.ToString(dataReader["Nombre"]),
-                            ApePaterno = Convert.ToString(dataReader["ApePaterno"]),
-                            ApeMaterno = Convert.ToString(dataReader["ApeMaterno"]),
-                            Contrasena = Convert.ToString(dataReader["Contrasena"]),
-                            NombreUsuario = Convert.ToString(dataReader["NombreUsuario"])
+                            id = Convert.ToInt32(dataReader["idUsuario"]),
+                            Nombre = Convert.ToString(dataReader["nombreUsuario"]),
+                            ApePaterno = Convert.ToString(dataReader["apePaternoUsuario"]),
+                            ApeMaterno = Convert.ToString(dataReader["apeMaternoUsuario"]),
+                            Contrasena = Convert.ToString(dataReader["passwordUsuario"]),
+                            NombreUsuario = Convert.ToString(dataReader["loginUsuario"])                           
                         };
                     }
                 }
@@ -269,15 +152,22 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.Usuario pobjModelo)
         {
-            object[] paramArray = new object[6];
+            object[] paramArray = new object[13];
             try
-            {             
-                paramArray[0] = pobjModelo.Correo.ToUpper();
-                paramArray[1] = pobjModelo.Nombre.ToUpper();
-                paramArray[2] = pobjModelo.ApePaterno.ToUpper();
-                paramArray[3] = pobjModelo.ApeMaterno.ToUpper();
-                paramArray[4] = pobjModelo.NombreUsuario.ToUpper();
-                paramArray[5] = pobjModelo.Contrasena;
+            {
+                paramArray[0] = pobjModelo.idEstatus;
+                paramArray[1] = pobjModelo.Correo.ToUpper();
+                paramArray[2] = pobjModelo.Nombre.ToUpper();
+                paramArray[3] = pobjModelo.ApePaterno.ToUpper();
+                paramArray[4] = pobjModelo.ApeMaterno.ToUpper();
+                paramArray[5] = pobjModelo.NombreUsuario.ToUpper();
+                paramArray[6] = pobjModelo.Contrasena;
+                paramArray[7] = pobjModelo.puestoUsuario.ToUpper();
+                paramArray[8] = pobjModelo.areaUsuario.ToUpper();
+                paramArray[9] = pobjModelo.idDepartamento;
+                paramArray[10] = pobjModelo.autorizaRequisiciones ? 1 : 0;
+                paramArray[11] = pobjModelo.idProcesoOrigen == 0 ? null : pobjModelo.idProcesoOrigen;
+                paramArray[12] = pobjModelo.idProcesoDestino == 0 ? null : pobjModelo.idProcesoDestino;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarUsuario", paramArray);
@@ -297,17 +187,24 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.Usuario pobjModelo)
         {
-            object[] paramArray = new object[8];
+            object[] paramArray = new object[14];
             try
             {
                 paramArray[0] = pobjModelo.id;
-                paramArray[1] = pobjModelo.Estatus;
+                paramArray[1] = pobjModelo.idEstatus;
                 paramArray[2] = pobjModelo.Correo.ToUpper();
                 paramArray[3] = pobjModelo.Nombre.ToUpper();
                 paramArray[4] = pobjModelo.ApePaterno.ToUpper();
                 paramArray[5] = pobjModelo.ApeMaterno.ToUpper();
                 paramArray[6] = pobjModelo.NombreUsuario.ToUpper();
                 paramArray[7] = pobjModelo.Contrasena;                
+                paramArray[8] = pobjModelo.puestoUsuario.ToUpper();                
+                paramArray[9] = pobjModelo.areaUsuario.ToUpper();         
+                paramArray[10] = pobjModelo.idDepartamento;         
+                paramArray[11] = pobjModelo.autorizaRequisiciones ? 1:0;
+                paramArray[12] = pobjModelo.idProcesoOrigen == 0 ? null : pobjModelo.idProcesoOrigen;
+                paramArray[13] = pobjModelo.idProcesoDestino == 0 ? null : pobjModelo.idProcesoDestino;         
+                             
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarUsuario", paramArray);

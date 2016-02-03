@@ -1,5 +1,5 @@
-﻿///Propósito: Modelo de Lista de usuarios
-///Fecha creación: 29/Enero/16
+﻿///Propósito: Modelo de Lista de Departamentos
+///Fecha creación: 02/Febrero/16
 ///Creador: David Galvan
 ///Fecha modifiacción: 
 ///Modificó:
@@ -13,28 +13,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CMI.Track.Web.Models
 {
-    public class ListaUsuario
+    public class ListaDepartamento
     {
         [Display(Name = "id", AutoGenerateField = false)]
         public int id { get; set; }
 
-        [Display(Name = "NombreUsuario")]
-        public string NombreUsuario { get; set; }
-
-
-        public string NombreCompleto { get; set; }
-
-        [Display(Name = "Perfil")]
-        public string Perfil { get; set; }
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
 
         [Display(Name = "Estatus")]
         public int idEstatus { get; set; }
 
-        [Display(Name = "Correo")]
-        public string Correo { get; set; }
-
-        [Display(Name = "Fecha")]
+         [Display(Name = "Fecha")]
         public string fechaCreacion { get; set; }
-             
     }
 }

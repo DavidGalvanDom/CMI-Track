@@ -20,7 +20,7 @@ namespace CMI.Track.Web.Models
 
         [Required(ErrorMessage = "*")]
         [StringLength(20)]
-        [Display(Name = "Nombre Usuario")]
+        [Display(Name = "Usuario")]
         public string NombreUsuario { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -30,12 +30,12 @@ namespace CMI.Track.Web.Models
 
         [Required(ErrorMessage = "*")]
         [StringLength(50)]
-        [Display(Name = "Apellido Paterno")]
+        [Display(Name = "Paterno")]
         public string ApePaterno { get; set; }
 
         [Required(ErrorMessage = "*")]
         [StringLength(50)]
-        [Display(Name = "Apellido Materno")]
+        [Display(Name = "Materno")]
         public string ApeMaterno { get; set; }
 
         [Required(ErrorMessage = "*")]
@@ -49,7 +49,33 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Estatus")]
         [Required(ErrorMessage = "*")]
-        public string Estatus { get; set; }
+        public int idEstatus { get; set; }
+
+        [Display(Name = "Puesto")]
+        [Required(ErrorMessage = "*")]
+        public string puestoUsuario { get; set; }
+
+        [Display(Name = "Area")]
+        [Required(ErrorMessage = "*")]
+        public string areaUsuario { get; set; }
+
+        [Display(Name = "Departamento")]
+        [Required(ErrorMessage = "*")]
+        public int idDepartamento { get; set; }
+
+        [Display(Name = "Autoriza")]
+        [Required(ErrorMessage = "*")]
+        public bool autorizaRequisiciones { get; set; }
+
+        [Display(Name = "Proceso Origen")]
+        public int? idProcesoOrigen { get; set; }
+
+        [Display(Name = "Proceso Destino")]
+        public int? idProcesoDestino { get; set; }
+
+         [Display(Name = "Fecha Creacion")]
+        public string fechaCreacion {get; set;}
+
         
     }
 }
