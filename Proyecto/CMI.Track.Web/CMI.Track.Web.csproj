@@ -121,6 +121,7 @@
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Departamento.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
     <Content Include="Scripts\lib\bbGrid.js" />
@@ -466,6 +467,7 @@
     <Content Include="Scripts\lib\sb-admin.js" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
+    <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Principal.js" />
     <Content Include="Web.config" />
@@ -492,6 +494,9 @@
     <Content Include="Scripts\lib\jquery\jquery.min.js.map">
       <DependentUpon>jquery.min.js</DependentUpon>
     </Content>
+    <Content Include="Views\Seguridad\Index.cshtml" />
+    <Content Include="Views\Seguridad\_Modulos.cshtml" />
+    <Content Include="Views\Departamento\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

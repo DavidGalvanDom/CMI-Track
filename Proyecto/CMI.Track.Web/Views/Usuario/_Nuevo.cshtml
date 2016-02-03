@@ -1,6 +1,6 @@
 ﻿@model CMI.Track.Web.Models.Usuario
 
-<div class="modal-dialog" role="document">
+<div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -9,75 +9,96 @@
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
             @using (Html.BeginForm("Nuevo", "Usuario", FormMethod.Post, new { id = "NuevoUsuarioForm", name = "NuevoUsuarioForm", @class = "form-horizontal" }))
-            {                        
+            {               
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NombreUsuario, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.NombreUsuario, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    @Html.LabelFor(model => model.Contrasena, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.Contrasena, new { @class = "form-control", type = "password", maxlength = 20 })
+                    </div>
+                </div>
                 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.NombreUsuario, new { @class = "col-sm-3 control-label" })
-                    <div class="col-sm-8">
-                        @Html.TextBoxFor(model => model.NombreUsuario, new { @class = "form-control", maxlength = 20 })                    
+                    @Html.LabelFor(model => model.Nombre, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", maxlength = 50 })
                     </div>
-                    <div class="col-sm-1">
-                        @Html.ValidationMessageFor(model => model.NombreUsuario, null, new { @class = "help-inline" })
+
+                    @Html.LabelFor(model => model.ApePaterno, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.ApePaterno, new { @class = "form-control", maxlength = 50 })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Nombre, new { @class = "col-sm-3 control-label" })
-                    <div class="col-sm-8">
-                        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", maxlength = 50 })
+                    @Html.LabelFor(model => model.ApeMaterno, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.ApeMaterno, new { @class = "form-control", maxlength = 50 })
                     </div>
-                    <div class="col-sm-1">
-                        @Html.ValidationMessageFor(model => model.Nombre, null, new { @class = "help-inline" })
+
+                    @Html.LabelFor(model => model.idEstatus, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(model => model.idEstatus,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                        "Value", "Text"), new { @class = "form-control", required = "required" })
                     </div>
                 </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApePaterno, new { @class = "col-sm-3 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.ApePaterno, new { @class = "form-control", maxlength = 50 })
-                </div>
-                <div class="col-sm-1">
-                    @Html.ValidationMessageFor(model => model.ApePaterno, null, new { @class = "help-inline" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApeMaterno, new { @class = "col-sm-3 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.ApeMaterno, new { @class = "form-control", maxlength = 50 })
-                </div>
-                <div class="col-sm-1">
-                    @Html.ValidationMessageFor(model => model.ApeMaterno, null, new { @class = "help-inline" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Contrasena, new { @class = "col-sm-3 control-label" })
-                <div class="col-sm-8">
-                    @Html.TextBoxFor(model => model.Contrasena, new { type="password", @class = "form-control", maxlength = 20 })
-                </div>
-                <div class="col-sm-1">
-                    @Html.ValidationMessageFor(model => model.Contrasena, null, new { @class = "help-inline" })
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Correo, new { @class = "col-sm-3 control-label" })
-                <div class="controls col-sm-8">
-                    <div class="input-group">
-                        <span class="input-group-addon">&#64;</span>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Correo, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
                         @Html.TextBoxFor(model => model.Correo, new { maxlength = 100, @class = "form-control" })
-                    </div>                   
-                </div>
-                <div class="col-sm-1">
-                    @Html.ValidationMessageFor(model => model.Correo, null, new { @class = "help-inline" })
-                </div>
-            </div>
+                    </div>
+                    @Html.LabelFor(model => model.autorizaRequisiciones, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.autorizaRequisiciones)
+                    </div>
 
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.puestoUsuario, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.puestoUsuario, new { @class = "form-control", maxlength = 50 })
+                    </div>
+                    @Html.LabelFor(model => model.areaUsuario, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.areaUsuario, new { @class = "form-control", maxlength = 50 })
+                    </div>
+                </div>
 
-            @Html.HiddenFor(model => model.Estatus);
-            @Html.HiddenFor(model => model.Contrasena);
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idDepartamento, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        <select id="idDepartamento" name="idDepartamento" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="control-label col-sm-2">Proceso Origen</label>
+                    <div class="col-sm-4">
+                        <select multiple class="form-control" id="idProcesoOrigen" name="idProcesoOrigen">
+                            <!-- <option>Corte</option>
+                                <option>Pantografo</option>
+                                <option>Ensamble</option>
+                                <option>Calidad ensamble</option>-->
+                        </select>
+                    </div>
+
+                    <label class="control-label col-sm-2">Proceso Destino</label>
+                    <div class="col-sm-4">
+                        <select multiple class="form-control" id="idProcesoDestino" name="idProcesoDestino"></select>
+                    </div>
+
+                </div>
+
+                @Html.HiddenFor(model => model.id)            
+                @Html.HiddenFor(model => model.fechaCreacion)
             }
         </div>
         <div class="modal-footer">

@@ -4,10 +4,12 @@
 
 var Usuario = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,   
     accBorrar: false,
+    accSeguridad: false,
     colUsuarios: {},
+    colDepartamentos: [],
+    colProcesos: [],
     gridUsuarios: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
@@ -33,12 +35,13 @@ var Usuario = {
         $(document).on('click', '.accrowClonar', function () {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
-    },
-    
-    onGuardar: function (e) {
 
-        if ($("form").valid()) {
-            
+        $(document).on('click', '.accrowSeguridad', function () {
+            that.Seguridad($(this).parent().parent().attr("data-modelId"));
+        });
+    },    
+    onGuardar: function (e) {
+        if ($("form").valid()) {            
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Usuario/Nuevo",
                 $("#NuevoUsuarioForm *").serialize(),
@@ -46,7 +49,7 @@ var Usuario = {
                     if (data.Success == true) {
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id));
                         CMI.DespliegaInformacion('El Usuario fue guardado con el Id: ' + data.id);
-                        $('#nuevo-usuario').modal('hide');
+                        $('#nuevo-usuario').modal('hide');                        
                         if (Usuario.colUsuarios.length === 1) {
                             Usuario.CargaGrid();
                         }
@@ -74,6 +77,21 @@ var Usuario = {
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
         }   
     },
+    Seguridad: function (idUsuairo){
+        CMI.CierraMensajes();
+        var url = contextPath + "Seguridad/Modulos/" + idUsuairo, // El url del controlador      
+            _usuario;
+        $.get(url, function (data) {
+            $('#seguridadUsuario').html(data);
+            $('#seguridadUsuario').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            Seguridad.Inicial(idUsuairo);            
+            _usuario = Usuario.colUsuarios.get(idUsuairo);            
+            $('#usuarioSelec').html('<small>Seguridad - </small>' + _usuario.attributes.NombreCompleto);
+        });
+    },
     Nuevo: function () {
         CMI.CierraMensajes();
         var url = contextPath + "Usuario/Nuevo"; // El url del controlador      
@@ -83,6 +101,8 @@ var Usuario = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
+            Usuario.CargarColeccionDepartamentos();
+            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -96,6 +116,8 @@ var Usuario = {
                 keyboard: true
             }, 'show');
 
+            Usuario.CargarColeccionDepartamentos();
+            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -117,31 +139,91 @@ var Usuario = {
         CMI.CierraMensajes();
         var url = contextPath + "Usuario/Clonar/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#actualiza-usuario').html(data);
-            $('#actualiza-usuario').modal({
+            $('#nuevo-usuario').html(data);
+            $('#nuevo-usuario').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
 
+            Usuario.CargarColeccionDepartamentos();
+            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
+        });
+    },
+    CargarColeccionDepartamentos: function () {
+        if (Usuario.colDepartamentos.length < 1) {
+            var url = contextPath + "Departamento/CargaDepartamentos/1"; // El url del controlador
+            $.getJSON(url, function (data) {
+                Usuario.colDepartamentos = data;
+                Usuario.CargaListaDepartamentos();
+            }).fail(function (e) {
+                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Departamentos");
+            });
+        } else {
+            Usuario.CargaListaDepartamentos();
+        }
+    },
+    CargaListaDepartamentos: function () {       
+        var select = $('#idDepartamento').empty();
+
+        select.append('<option> </option>');
+
+        $.each(Usuario.colDepartamentos, function (i, item) {
+            select.append('<option value="'
+                                 + item.id
+                                 + '">'
+                                 + item.Nombre
+                                 + '</option>');
+        });
+
+        $('#idDepartamento').val($('#departamento').val());
+    },
+    CargarColeccionProcesos: function () {
+        if (Usuario.colProcesos.length < 1) {
+            var url = contextPath + "Proceso/CargaProceso/1"; // 1 indica que solo activos
+            $.getJSON(url, function (data) {
+                Usuario.colProcesos = data;
+                Usuario.CargaListaProcesos();
+            }).fail(function (e) {
+                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los procesos");
+            });
+        } else {
+            Usuario.CargaListaProcesos();
+        }        
+    },
+    CargaListaProcesos : function () {
+        var optionItem = '<option> </option>',
+            selectDestino = $('#idProcesoDestino').empty(),
+            selectOrigen = $('#idProcesoOrigen').empty();
+
+        selectDestino.append(optionItem);
+        selectOrigen.append(optionItem);
+
+        $.each(Usuario.colDepartamentos, function (i, item) {
+            optionItem = '<option value="' + item.id + '">'
+                                     + item.Nombre + '</option>';
+            selectDestino.append(optionItem);
+            selectOrigen.append(optionItem);
         });
 
     },
     ValidaPermisos: function () {
-        Usuario.accNuevo = true;
+        Usuario.accEscritura = true;
         Usuario.accClonar = true;
-        Usuario.accEditar = true;
         Usuario.accBorrar = true;
+        Usuario.accSeguridad = true;
 
-        if (Usuario.accNuevo === true)
+        if (Usuario.accEscritura === true)
             $('.btnNuevo').show();
     },
     serializaUsuario: function (id) {
         return ({
-            'ApeMaterno': $('#ApeMaterno').val().toUpperCase(),
-            'ApePaterno': $('#ApePaterno').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
-            'Nombre': $('#Nombre').val().toUpperCase(),
+            'fechaCreacion': $('#fechaCreacion').val(),
+            'Correo': $('#Correo').val().toUpperCase(),
+            'idEstatus': $('#idEstatus').val(),
+            'NombreCompleto': $('#Nombre').val().toUpperCase() + ' ' +
+                      $('#ApePaterno').val().toUpperCase() + ' ' +
+                      $('#ApeMaterno').val().toUpperCase(),
             'NombreUsuario': $('#NombreUsuario').val().toUpperCase(),
             'id': id
         });
@@ -161,15 +243,16 @@ var Usuario = {
                     actionenable: true,
                     detalle: false,
                     clone: Usuario.accClonar,
-                    editar: Usuario.accEditar,
+                    editar: Usuario.accEscritura,
                     borrar: Usuario.accBorrar,
                     collection: Usuario.colUsuarios,
+                    seguridad: Usuario.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Usuario', name: 'NombreUsuario', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'Nombre', filter: true, filterType: 'input' },
-                               { title: 'Apellido Paterno', name: 'ApePaterno' },
-                               { title: 'Apellido Materno', name: 'ApeMaterno' },
-                               { title: 'Estatus', name: 'Estatus', filter: true }]
+                               { title: 'Nombre', name: 'NombreCompleto', filter: true, filterType: 'input' },                              
+                               { title: 'Correo', name: 'Correo', filter: true, filterType: 'input' },
+                               { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
+                               { title: 'Estatus', name: 'idEstatus', filter: true }]
                 });
             }
             else {

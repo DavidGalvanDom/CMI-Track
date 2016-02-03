@@ -44,7 +44,7 @@
 
     viewOptions = ['autofetch', 'buttons', 'colModel', 'container',
         'enableSearch', 'multiselect', 'actionenable', 'enableTotal', 'actionplus', 'rows', 'rowList', 'selectedRows',
-        'subgrid', 'subgridAccordion', 'onRowClick', 'onRowDblClick', 'onReady',
+        'subgrid', 'subgridAccordion', 'onRowClick', 'onRowDblClick', 'onReady','seguridad',
         'onBeforeRender', 'onRowExpanded', 'onRowCollapsed', 'events','editar','detalle','borrar','actionpicture','clone'];
 
     bbGrid.View = function (options) {
@@ -401,6 +401,7 @@
             if (this.rows === _.size(this.rowViews)) {
                 return false;
             }
+            
             this.rowViews[model.id] = new bbGrid.RowView({ model: model, view: this });    
             this.$grid.append(this.rowViews[model.id].render().el);
         },
@@ -563,8 +564,11 @@
                             <%} if (isDetalle === undefined || isDetalle === true) {%>\
                             <li><a href="#" class="accrowDetalle"><i class="fa fa-list-alt"></i>  Detalle</a></li>\
                             <li class="divider"></li>\
-                            <%} if (isClone === undefined || isClone === true) {%>\
+                            <%} if (isClone === true) {%>\
                                     <li><a href="#" class="accrowClonar"><i class="fa fa-copy"></i>  Clonar</a></li>\
+                                    <li class="divider"></li>\
+                            <%} if (isSeguridad === true) {%>\
+                                    <li><a href="#" class="accrowSeguridad"><i class="fa fa-lock"></i>  Seguridad</a></li>\
                                     <li class="divider"></li>\
                             <%} if (isBorrar === undefined || isBorrar === true) {%>\
                             <li><a href="#" class="accrowBorrar"><i class="fa fa-remove"></i>  Borrar</a></li>\
@@ -584,7 +588,11 @@
                 </td>\
             <%} _.each(values, function (row) {%>\
                 <td <% if (row.name === "bbGrid-actions-cell") {%>class="bbGrid-actions-cell"<%}%>>\
+                   <% if (row.checkboxgen === true) {%>\
+                        <input type="checkbox" <% if (row.value === 1) {%>checked="checked"<%}%>>\
+                    <% } else { %>\
                     <%=row.value%>\
+                    <%}%>\
                 </td>\
             <%})%>', null, templateSettings
         ),
@@ -660,6 +668,7 @@
                 isEditar: this.view.editar,
                 isClone: this.view.clone,
                 isDetalle: this.view.detalle,
+                isSeguridad: this.view.seguridad,
                 isBorrar: this.view.borrar,
                 isPicture: this.view.actionpicture,                
                 isActionPlus: this.view.actionplus,
@@ -673,6 +682,7 @@
                     if (col.actions) {
                         col.name = 'bbGrid-actions-cell';
                         col.value = col.actions(self.model.id, self.model.attributes, self.view);
+                        col.checkboxgen = col.checkboxgen;
                     } else {
                         col.value = self.model.attributes[col.name];
                     }
@@ -861,6 +871,7 @@
                 isActionPlus: this.view.actionplus,
                 isEditar: this.view.editar,
                 isDetalle: this.view.detalle,
+                isSeguridad: this.view.seguridad,
                 isBorrar: this.view.borrar,
                 isPicture: this.view.actionpicture,
                 isMultiselect: this.view.multiselect,
@@ -1082,6 +1093,7 @@
                 isActionPlus: this.view.actionplus,
                 isEditar: this.view.editar,
                 isDetalle: this.view.detalle,
+                isSeguridad: this.view.seguridad,
                 isBorrar: this.view.borrar,
                 isPicture: this.view.actionpicture,
                 isMultiselect: this.view.multiselect,
