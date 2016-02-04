@@ -152,7 +152,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.Usuario pobjModelo)
         {
-            object[] paramArray = new object[13];
+            object[] paramArray = new object[14];
             try
             {
                 paramArray[0] = pobjModelo.idEstatus;
@@ -168,6 +168,7 @@ namespace CMI.Track.Web.Data
                 paramArray[10] = pobjModelo.autorizaRequisiciones ? 1 : 0;
                 paramArray[11] = pobjModelo.idProcesoOrigen == 0 ? null : pobjModelo.idProcesoOrigen;
                 paramArray[12] = pobjModelo.idProcesoDestino == 0 ? null : pobjModelo.idProcesoDestino;
+                paramArray[13] = pobjModelo.usuarioCreacion ;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarUsuario", paramArray);
