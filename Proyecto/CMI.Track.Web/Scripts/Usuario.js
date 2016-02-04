@@ -41,7 +41,8 @@ var Usuario = {
         });
     },    
     onGuardar: function (e) {
-        if ($("form").valid()) {            
+        if ($("form").valid()) {
+            $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Usuario/Nuevo",
                 $("#NuevoUsuarioForm *").serialize(),
