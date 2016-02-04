@@ -1,16 +1,13 @@
 USE [CMITrack]
 GO
-
-/****** Object:  StoredProcedure [dbo].[usp_AutentificaUsuario]    Script Date: 01/30/2016 03:57:05 ******/
+/****** Object:  StoredProcedure [dbo].[usp_AutentificaUsuario]    Script Date: 02/03/2016 21:50:47 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-create PROCEDURE [dbo].[usp_AutentificaUsuario]
-	@IdUsuario varchar(50),
-	@Estatus char(3)	
+ALTER PROCEDURE [dbo].[usp_AutentificaUsuario]
+	@loginUsuario varchar(20),
+	@idEstatus int
 AS
 /*
 ******************************************
@@ -18,26 +15,29 @@ AS
 -- Fecha: 29/Enero/16
 -- Descripcion: Autentifica al usuario para entrar al sistema
 -- Parametros de salida:
--- Parametros de entrada: IdUsuario
+-- Parametros de entrada: @idUsuario, @idEstatus
 ******************************************
 */
 BEGIN
 	
 	SET NOCOUNT ON;
+	SELECT [idUsuario]
+      ,[nombreUsuario]
+      ,[apePaternoUsuario]
+      ,[apeMaternoUsuario]
+      ,[puestoUsuario]
+      ,[areaUsuario]
+      ,[idDepartamento]
+      ,[emailUsuario]
+      ,[loginUsuario]      
+      ,[passwordUsuario]
+      ,[autorizaRequisiciones]
+      ,[idProcesoOrigen]
+      ,[idProcesoDestino]
+      ,[fechaCreacion]
+  FROM [cmiUsuarios]
+  WHERE loginUsuario = @loginUsuario
+	and idEstatus = @idEstatus
 
-	SELECT IdUsuario,
-		   Nombre,
-		   ApePaterno, 
-		   ApeMaterno,
-		   Contrasena,
-		   FechaModificacion, 
-		   FechaCreacion, 		  
-		   NombreUsuario
-	FROM Usuario 	
-	WHERE NombreUsuario = @IdUsuario 
-	and IdEstatus = @Estatus
     
 END
-
-GO
-

@@ -1,15 +1,12 @@
 USE [CMITrack]
 GO
-
-/****** Object:  StoredProcedure [dbo].[usp_RemueveUsuario]    Script Date: 01/30/2016 03:57:46 ******/
+/****** Object:  StoredProcedure [dbo].[usp_RemueveUsuario]    Script Date: 02/03/2016 21:55:41 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-CREATE PROCEDURE [dbo].[usp_RemueveUsuario]
-	@IdUsuario int
+ALTER PROCEDURE [dbo].[usp_RemueveUsuario]
+	@idUsuario int
 AS
 /*
 ******************************************
@@ -17,17 +14,14 @@ AS
 -- Fecha: 29/ ENERO /2016
 -- Descripcion: Se deshabilita el usuario
 -- Parametros de salida:
--- Parametros de entrada: @IdUsuario
+-- Parametros de entrada: @idUsuario
 ******************************************
 */
 BEGIN
 	
 	SET NOCOUNT ON;
 	
-	DELETE Usuario 
-    WHERE IdUsuario = @IdUsuario 
+	DELETE cmiUsuarios 
+    WHERE idUsuario = @idUsuario 
 
 END
-
-GO
-

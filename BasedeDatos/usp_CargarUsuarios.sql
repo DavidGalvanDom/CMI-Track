@@ -1,17 +1,14 @@
 USE [CMITrack]
 GO
-
-/****** Object:  StoredProcedure [dbo].[usp_CargarUsuarios]    Script Date: 01/30/2016 03:57:18 ******/
+/****** Object:  StoredProcedure [dbo].[usp_CargarUsuarios]    Script Date: 02/03/2016 21:52:46 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
-
 ----------------------
-create PROCEDURE [dbo].[usp_CargarUsuarios]
-	@IdUsuario int	
+ALTER PROCEDURE [dbo].[usp_CargarUsuarios]
+	@idUsuario int	
 AS
 /*
 ******************************************
@@ -19,29 +16,31 @@ AS
 -- Fecha: 29/Enero/16
 -- Descripcion: Se cargan los usuario 
 -- Parametros de salida:
--- Parametros de entrada:  @IdUsuario
+-- Parametros de entrada:  @idUsuario
 ******************************************
 */
 BEGIN
 	
 	SET NOCOUNT ON;
-
-	SELECT [IdUsuario]		
-		  ,[Correo]
-		  ,[IdEstatus]
-		  ,[Nombre]
-		  ,[ApePaterno]
-		  ,[ApeMaterno]
-		  ,[NombreUsuario]
-		  ,[Contrasena]
-		  ,[FechaModificacion]
-		  ,[FechaCreacion]		 
-	  FROM  [Usuario]
-	  where IdUsuario = ISNULL(@IdUsuario,IdUsuario)
+	
+	SELECT [idUsuario]
+      ,[nombreUsuario]
+      ,[apePaternoUsuario]
+      ,[apeMaternoUsuario]
+      ,[puestoUsuario]
+      ,[areaUsuario]
+      ,[idDepartamento]
+      ,[emailUsuario]
+      ,[loginUsuario]      
+      ,[passwordUsuario]
+      ,[autorizaRequisiciones]
+      ,[idProcesoOrigen]
+      ,[idProcesoDestino]
+      ,[fechaCreacion]
+	  ,[idEstatus]      
+  FROM [cmiUsuarios]
+  WHERE idUsuario = ISNULL(@idUsuario,IdUsuario)
 	  
 		
 END
 ----------------------
-
-GO
-
