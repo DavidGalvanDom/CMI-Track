@@ -25,6 +25,13 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <img src="~/Content/images/CMI.TRACK.png" />
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
                 <div class="login-panel panel panel-default">
 
                     <!--[if lt IE 10]>
@@ -32,30 +39,31 @@
                                 <button type='button' class='close' data-dismiss='alert'>x</button>
                                 El explorador no soporta HTML 5. Puede que la aplicacion no funcione correctametne. Utilice un navegador mas reciente.</div>
                         <![endif]-->
-
+                    
                     <div class="panel-heading">
-                        <h3 class="panel-title">Credenciales de usuario</h3>
+                        <h3 class="panel-title">Usuario</h3>
                     </div>
+
                     <div class="panel-body">
                         @using (Html.BeginForm("Login", "Autentificacion", new { ReturnUrl = ViewBag.ReturnUrl },
                             FormMethod.Post, new { id = "frmLogin", @role = "form" }))
                         {
-                        <div class="form-group"> 
-                             @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", autofocus = "true", placeholder = "Nombre de usuario", maxlength = 20 })
-                        </div>
-                        <div class="form-group">                            
-                             @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control", placeholder = "Contraseña", maxlength = 15 })                           
-                        </div>
-                        <div>
-                            @if (ViewBag.error != string.Empty)
-                            {
-                            <div class="alert alert-warning alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <strong>Mensaje!</strong> @ViewBag.error
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.NombreUsuario, new { @class = "form-control", autofocus = "true", placeholder = "Nombre de usuario", maxlength = 20 })
                             </div>
-                            }
-                        </div>
-                        <button type="submit" class="btn  btn-lg btn-success btn-block">Aceptar</button>
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Contrasena, new { @class = "form-control", placeholder = "Contraseña", maxlength = 15 })
+                            </div>
+                            <div>
+                                @if (ViewBag.error != string.Empty)
+                                {
+                                    <div class="alert alert-warning alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Mensaje!</strong> @ViewBag.error
+                                    </div>
+                                }
+                            </div>
+                            <button type="submit" class="btn  btn-lg btn-success btn-block">Aceptar</button>
                         }
                     </div>
                 </div>
