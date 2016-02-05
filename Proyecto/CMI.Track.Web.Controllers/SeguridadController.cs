@@ -59,5 +59,27 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        /// <summary>
+        /// Se guarda la informacion de los permisos del sistema
+        /// </summary>
+        /// <param name="lstModulos"></param>
+        /// <param name="idUsuario"></param>
+        /// <param name="usuarioCreacion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GuardaSeguridad(List<ListaModulo> lstModulos, int idUsuario, int usuarioCreacion)
+        {
+            try
+            {
+                SeguridadData.GuardaSeguridad(lstModulos, idUsuario, usuarioCreacion);
+                
+                return Json(new { Success = true, Message = "Los permisos fueron actualizados" });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }

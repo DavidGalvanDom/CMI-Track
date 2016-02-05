@@ -88,7 +88,7 @@ var Usuario = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            Seguridad.Inicial(idUsuairo);            
+            Seguridad.Inicial(idUsuairo);
             _usuario = Usuario.colUsuarios.get(idUsuairo);            
             $('#usuarioSelec').html('<small>Seguridad - </small>' + _usuario.attributes.NombreCompleto);
         });

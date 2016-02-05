@@ -5,39 +5,52 @@
 var Seguridad = {
     colModulos: {},
     gridSeguridad: {},
-    Inicial: function (idUsuairo) {
+    idUsuario:0,
+    Inicial: function (pidUsuairo) {
+       debugger
         $.ajaxSetup({ cache: false });
         Seguridad.colModulos = {};
         Seguridad.gridSeguridad = {};
-        this.CargaGrid(idUsuairo);
-        this.Eventos();
+        Seguridad.idUsuario = pidUsuairo;
+        Seguridad.CargaGrid();
+        Seguridad.Eventos();
     },
     Eventos: function () {
-        var that = this;
-       
+        var that = this;       
         $(document).on("click", '.btn-GuardaSeguridad', that.onGuardar);
     },
-    onGuardar: function (e) {
-
-        if ($("form").valid()) {
-
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "Usuario/Nuevo",
-                $("#NuevoUsuarioForm *").serialize(),
-                function (data) {
-                    if (data.Success == true) {
-                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id));
-                        CMI.DespliegaInformacion('El Usuario fue guardado con el Id: ' + data.id);
-                        $('#nuevo-usuario').modal('hide');
-                        if (Usuario.colUsuarios.length === 1) {
-                            Usuario.CargaGrid();
-                        }
-                    }
-                    else {
-                        CMI.DespliegaErrorDialogo(data.Message);
-                    }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
-        }
+    onGuardar: function (e) {        
+        var modulos = [],
+            dataPost = {
+                lstModulos: modulos,
+                        idUsuario: Seguridad.idUsuario,
+                        usuarioCreacion : localStorage.idUser};
+        
+        //Se actuliza la coleccion con la informacion seleccionada
+        $("#frmSeguridad").find("input:checked").each(function (index, item) {
+            var arrModel = item.id.split("-");
+            var model = Seguridad.colModulos.get(arrModel[0]);
+            model.attributes[arrModel[1]] = 1;
+            Seguridad.colModulos.add(model, { merge: true });            
+        });
+        
+        //Se agrega la coleccion de items.
+        _.each(Seguridad.colModulos.models, function (object, index) {
+            modulos.push(object.attributes);
+        });
+        
+        //Se hace el post para guardar la informacion
+        $.post(contextPath + "Seguridad/GuardaSeguridad",
+            dataPost,
+            function (data) {
+                if (data.Success == true) {                   
+                    CMI.DespliegaInformacionDialogo(data.Message);
+                }
+                else {
+                    CMI.DespliegaErrorDialogo(data.Message);
+                }
+            }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+       
     },   
     serializaSeguridad: function (id) {
         return ({
@@ -49,8 +62,8 @@ var Seguridad = {
             'id': id
         });
     },
-    CargaGrid: function (idUsuario) {
-        var url = contextPath + "Seguridad/CargarModulos/" + idUsuario; // El url del controlador
+    CargaGrid: function () {
+        var url = contextPath + "Seguridad/CargarModulos/" + Seguridad.idUsuario; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Seguridad.colModulos = new Backbone.Collection(data);
@@ -62,10 +75,10 @@ var Seguridad = {
                     actionenable: false,
                     collection: Seguridad.colModulos,
                     colModel: [{ title: 'Modulo', name: 'nombreModulo', filter: true, filterType: 'input' },
-                               { title: 'Lectura', name: 'lecturaPermisos', width: '8%', checkboxgen: true },
-                               { title: 'Escritura', name: 'escrituraPermisos', width: '8%', checkboxgen: true },
-                               { title: 'Clonar', name: 'clonadoPermisos', width: '8%', checkboxgen: true },
-                               { title: 'Borrar', name: 'borradoPermisos', width: '8%', checkboxgen: true }]
+                               { title: 'Lectura', name: 'lecturaPermisos', width: '8%', checkboxgen: true, textalign:true },
+                               { title: 'Escritura', name: 'escrituraPermisos', width: '8%', checkboxgen: true, textalign: true },
+                               { title: 'Clonar', name: 'clonadoPermisos', width: '8%', checkboxgen: true, textalign: true },
+                               { title: 'Borrar', name: 'borradoPermisos', width: '8%', checkboxgen: true, textalign: true }]
                 });
             }
             else {

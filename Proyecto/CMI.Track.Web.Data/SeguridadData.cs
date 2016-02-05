@@ -17,6 +17,42 @@ namespace CMI.Track.Web.Data
     public class SeguridadData
     {
         /// <summary>
+        /// Se actulizan los permisos del usuario
+        /// </summary>
+        /// <param name="lstModulos"></param>
+        /// <param name="idUsuario"></param>
+        /// <param name="usuarioCreacion"></param>
+        public static void GuardaSeguridad(List<ListaModulo> lstModulos, int idUsuario,
+                                            int usuarioCreacion)
+        {
+            object[] paramArray = new object[8];
+            try
+            {
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                foreach (var modulo in lstModulos)
+                {
+                    paramArray[0] = idUsuario;
+                    paramArray[1] = modulo.id;
+                    paramArray[2] = modulo.lecturaPermisos;
+                    paramArray[3] = modulo.escrituraPermisos;
+                    paramArray[4] = modulo.borradoPermisos;
+                    paramArray[5] = modulo.clonadoPermisos;
+                    paramArray[6] = 1;
+                    paramArray[7] = usuarioCreacion;
+
+                     db.ExecuteNonQuery("usp_RegistraPermisos", paramArray);
+                }
+                
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+        }
+
+        /// <summary>
         /// Se carga el listado de usuarios
         /// </summary>
         /// <returns>Lista Usuarios</returns>

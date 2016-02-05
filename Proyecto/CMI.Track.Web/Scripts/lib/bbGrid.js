@@ -587,9 +587,9 @@
                     <i class="icon-plus<%if (isSelected) {%> icon-minus<%}%>">\
                 </td>\
             <%} _.each(values, function (row) {%>\
-                <td <% if (row.name === "bbGrid-actions-cell") {%>class="bbGrid-actions-cell"<%}%>>\
+                <td <% if (row.textalign === true) {%>style="text-align:center;"<%}%>  <% if (row.name === "bbGrid-actions-cell") {%>class="bbGrid-actions-cell"<%}%>>\
                    <% if (row.checkboxgen === true) {%>\
-                        <input type="checkbox" <% if (row.value === 1) {%>checked="checked"<%}%>>\
+                        <input id="<%=modelId + "-" + row.name%>" type="checkbox" <% if (row.value === 1) {%>checked="checked"<%}%>>\
                     <% } else { %>\
                     <%=row.value%>\
                     <%}%>\
@@ -664,7 +664,7 @@
             isChecked = ($.inArray(this.model.id, this.view.selectedRows) >= 0);
             isDisabled = this.model.get('cb_disabled') || false;
             html = this.template({
-                modelId: this.model.id,
+                modelId: this.model.id,                
                 isEditar: this.view.editar,
                 isClone: this.view.clone,
                 isDetalle: this.view.detalle,
@@ -681,8 +681,7 @@
                 values: _.map(cols, function (col) {
                     if (col.actions) {
                         col.name = 'bbGrid-actions-cell';
-                        col.value = col.actions(self.model.id, self.model.attributes, self.view);
-                        col.checkboxgen = col.checkboxgen;
+                        col.value = col.actions(self.model.id, self.model.attributes, self.view);                        
                     } else {
                         col.value = self.model.attributes[col.name];
                     }
