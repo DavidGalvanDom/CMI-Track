@@ -81,5 +81,24 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Se cargan los permisos del usuario 
+        /// </summary>
+        /// <param name="id">Usuario</param>
+        /// <returns></returns>
+        public JsonResult CargarPermisos(int id)
+        {
+            try
+            {
+               var lstGrupos =  SeguridadData.CargaUsuarioPermisos(id);
+
+               return (Json(lstGrupos));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using System.IO;
 
 using CMI.Track.Web.Models;
@@ -46,15 +47,18 @@ namespace CMI.Track.Web.Controllers
         }
 
         ///// <summary>
-        ///// Regresa la estructura del sidebar en base al perfil
+        ///// Regresa la estructura del sidebar en base al usuario
         ///// </summary>
-        ///// <param name="perf"></param>
+        ///// <param name="idUsuario"></param>
         ///// <returns></returns>
-        [OutputCache(CacheProfile = "Long")]
-        public PartialViewResult _sideBar(string perf)
+        [OutputCache(CacheProfile = "Long", Location = OutputCacheLocation.Client)]
+        public PartialViewResult _sideBar(int id)
         {
-            ViewBag.Perfil = perf;
-            return PartialView();
+            ViewBag.idUser = id;
+
+            var lstPermisos = SeguridadData.CargaUsuarioPermisos(id);
+
+            return PartialView(lstPermisos);
         }
     }
 }

@@ -34,7 +34,7 @@
                     <ul class="dropdown-menu dropdown-user">
                         <li>
                             <a href="#"><i class="fa fa-user fa-fw"></i> Informacion del Usuario</a>
-                        </li>                      
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="~/Autentificacion/LogOut"><i class="fa fa-sign-out fa-fw"></i> Salir </a>
@@ -46,8 +46,17 @@
             </ul>
             <!-- /.navbar-top-links -->
 
-            @Html.Partial("~/Views/Principal/_sideBar.cshtml")
-            <!-- /.navbar-static-side -->
+            <div id="divSideBar">
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <div class="CargandoInfo">
+                            Cargando menu...
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+
+                    <!-- /.navbar-static-side -->
         </nav>
 
         <div id="page-wrapper">

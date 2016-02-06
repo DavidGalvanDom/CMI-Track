@@ -14,21 +14,37 @@
         //Eventos generales
     },   
     CargaSideBar: function () {
-        if (localStorage.Perfil === '' || localStorage.Perfil === undefined) return;
-        var urlEventos = contextPath + "Principal/_sideBar?perf=" + localStorage.Perfil;
+        if (localStorage.idUser === '' || localStorage.idUser === undefined) return;
+        var urlEventos = contextPath + "Principal/_sideBar/" + localStorage.idUser;
         $.post(urlEventos, function (data) {
             if (data.substring(0, 5) === '<!DOC') return;
-
-            $('#divSideBar').html(data);
-            CMI.incluyeEventoHref();
-            try {
-                sideBar.seleccionaOpcion();
-            } catch (exp) { }
+            $('#divSideBar').html(data);           
+            $('#side-menu').metisMenu();
+            CMI.SeleccionaOpcionMenu();
         });
     },
     ReiniciaLocalStorage: function (pUsuario, pNombre) {
         localStorage.setItem("idUser", pUsuario);
         localStorage.setItem("UserName", pNombre);              
+    },
+    SeleccionaOpcionMenu: function (){
+        var url = window.location;        
+        var element = $('ul.nav a').filter(function () {
+            return this.href == url || url.href.indexOf(this.href) == 0;
+        }).addClass('active').parent().parent().addClass('in').parent();
+        if (element.is('li')) {
+            element.addClass('active');            
+        }        
+        return (element);
+    },
+    setPermisos: function (datos) {       
+        localStorage.modPermisos = datos;
+        var item = document.getElementById('Permisos');       
+        if (item != null) {
+            localStorage.modSerdad = item.innerText;
+        } else {
+            localStorage.modSerdad = '00';
+        }
     },
     ValidaFecha: function (pDate) {
         //yyyy-mm-dd
@@ -62,12 +78,12 @@
         setTimeout(CMI.CierraMensajes, 10000);
     },
     DespliegaErrorDialogo: function (error) {
-        $(".clientAlertDlg").html("<div class='alert alert-danger'>" +
+        $(".clientAlertDlg").html("<div id='divMessage' class='alert alert-danger'>" +
                                "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                  error + "</div>");
     },
     DespliegaInformacionDialogo: function (msg) {
-        $(".clientAlertDlg").html("<div class='alert alert-info'>" +
+        $(".clientAlertDlg").html("<div id='divMessage' class='alert alert-info'>" +
                                "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                  msg + "</div>");        
     }

@@ -15,7 +15,7 @@ var Usuario = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();       
+        this.ValidaPermisos();
     },
     Eventos: function () {
         var that = this;
@@ -206,16 +206,20 @@ var Usuario = {
             selectDestino.append(optionItem);
             selectOrigen.append(optionItem);
         });
-
     },
     ValidaPermisos: function () {
-        Usuario.accEscritura = true;
-        Usuario.accClonar = true;
-        Usuario.accBorrar = true;
-        Usuario.accSeguridad = true;
+        var permisos = localStorage.modPermisos,
+            item; 
+        Usuario.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        Usuario.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        Usuario.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (Usuario.accEscritura === true)
             $('.btnNuevo').show();
+       
+        if (localStorage.modSerdad != null) {
+            Usuario.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
+        }
     },
     serializaUsuario: function (id) {
         return ({
@@ -259,8 +263,7 @@ var Usuario = {
             else {
                 CMI.DespliegaInformacion("No se encontraron Usuarios registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
-            }
-
+            }           
             //getJSON fail
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion de los usuario");
@@ -271,4 +274,4 @@ var Usuario = {
 
 $(function () {
     Usuario.Inicial();
-});
+})

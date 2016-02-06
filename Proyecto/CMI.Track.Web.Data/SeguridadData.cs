@@ -53,6 +53,61 @@ namespace CMI.Track.Web.Data
         }
 
         /// <summary>
+        /// Se cargan los modulos a los que tiene acceso el usuario 
+        /// </summary>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        public static List<MenuGrupo> CargaUsuarioPermisos(int idUsuario)
+        {
+            var listaMenuGrupo = new List<Models.MenuGrupo>();
+            MenuGrupo grupo = null;
+
+            try
+            {
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarUsuarioPermisos", idUsuario))
+                {
+                    while (dataReader.Read())
+                    {
+                        grupo = listaMenuGrupo.Find(menuGrupo => menuGrupo.idMenuGrupo == Convert.ToInt32(dataReader["idMenuGrupo"]));
+
+                        if (grupo == null)
+                        {
+                            grupo = new MenuGrupo()
+                            {
+                                idMenuGrupo = Convert.ToInt32(dataReader["idMenuGrupo"]),
+                                nombreGrupo = Convert.ToString(dataReader["nombreMenuGrupo"]),
+                                iconGrupo = Convert.ToString(dataReader["iconGrupo"]),
+                            };
+                            grupo.lstPermisos = new List<Permisos>();
+                            listaMenuGrupo.Add(grupo);
+                        }
+                        
+                        grupo.lstPermisos.Add(new Models.Permisos()
+                            {
+                                idModulo = Convert.ToInt32(dataReader["idModulo"]),                            
+                                borradoPermisos = dataReader["borradoPermiso"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["borradoPermiso"]),
+                                lecturaPermisos = dataReader["lecturaPermiso"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["lecturaPermiso"]),
+                                clonadoPermisos = dataReader["clonadoPermiso"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["clonadoPermiso"]),
+                                escrituraPermisos = dataReader["escrituraPermiso"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["escrituraPermiso"]),
+                                urlModulo = Convert.ToString(dataReader["urlModulo"]),
+                                nombreModulo = Convert.ToString(dataReader["nombreModulo"])
+                            });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            
+            
+            return listaMenuGrupo;
+        }
+
+        /// <summary>
         /// Se carga el listado de usuarios
         /// </summary>
         /// <returns>Lista Usuarios</returns>

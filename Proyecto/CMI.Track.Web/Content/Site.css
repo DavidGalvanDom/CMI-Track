@@ -369,3 +369,8 @@ table.dataTable thead .sorting:after {
 .validation-summary-valid {
     display: none;
 }
+
+
+.CargandoInfo{
+    padding: 4px,4px,4px,4px;
+}

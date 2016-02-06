@@ -20,5 +20,6 @@ namespace CMI.Track.Web.Models
         
         [Display(Name = "Nombre")]
         public string nombreModulo { get; set; }
+        
     }
 }

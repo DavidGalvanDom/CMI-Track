@@ -6,26 +6,40 @@ var Seguridad = {
     colModulos: {},
     gridSeguridad: {},
     idUsuario:0,
-    Inicial: function (pidUsuairo) {
-       debugger
+    Inicial: function (pidUsuairo) {       
         $.ajaxSetup({ cache: false });
         Seguridad.colModulos = {};
         Seguridad.gridSeguridad = {};
         Seguridad.idUsuario = pidUsuairo;
         Seguridad.CargaGrid();
-        Seguridad.Eventos();
+        Seguridad.Eventos();        
     },
     Eventos: function () {
-        var that = this;       
+        var that = this;
+
+        if (localStorage.modSerdad != null) {
+           var accGuardar = localStorage.modSerdad.substr(1, 1) === '1' ? true : false;
+           if (accGuardar === true)
+               $('.btn-GuardaSeguridad').show();
+        }
+
         $(document).on("click", '.btn-GuardaSeguridad', that.onGuardar);
     },
     onGuardar: function (e) {        
         var modulos = [],
             dataPost = {
                 lstModulos: modulos,
-                        idUsuario: Seguridad.idUsuario,
-                        usuarioCreacion : localStorage.idUser};
+                idUsuario: Seguridad.idUsuario,
+                usuarioCreacion : localStorage.idUser};
         
+        //Se agrega la coleccion de items.
+        _.each(Seguridad.colModulos.models, function (object, index) {
+            object.attributes['lecturaPermisos'] = 0;
+            object.attributes['escrituraPermisos'] = 0;
+            object.attributes['clonadoPermisos'] = 0;
+            object.attributes['borradoPermisos'] = 0;
+        });
+
         //Se actuliza la coleccion con la informacion seleccionada
         $("#frmSeguridad").find("input:checked").each(function (index, item) {
             var arrModel = item.id.split("-");
@@ -43,13 +57,20 @@ var Seguridad = {
         $.post(contextPath + "Seguridad/GuardaSeguridad",
             dataPost,
             function (data) {
+                var div;
                 if (data.Success == true) {                   
-                    CMI.DespliegaInformacionDialogo(data.Message);
-                }
-                else {
+                    CMI.DespliegaInformacion(data.Message);
+                    $('#seguridadUsuario').modal('hide');
+                } else {
                     CMI.DespliegaErrorDialogo(data.Message);
+                    div = document.getElementById('divMessage');
+                    if (div !== null) div.scrollIntoView();
                 }
-            }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+            }).fail(function () {
+                CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                div = document.getElementById('divMessage');
+                if (div !== null) div.scrollIntoView();
+            });
        
     },   
     serializaSeguridad: function (id) {
@@ -74,11 +95,11 @@ var Seguridad = {
                     enableSearch: true,
                     actionenable: false,
                     collection: Seguridad.colModulos,
-                    colModel: [{ title: 'Modulo', name: 'nombreModulo', filter: true, filterType: 'input' },
-                               { title: 'Lectura', name: 'lecturaPermisos', width: '8%', checkboxgen: true, textalign:true },
-                               { title: 'Escritura', name: 'escrituraPermisos', width: '8%', checkboxgen: true, textalign: true },
-                               { title: 'Clonar', name: 'clonadoPermisos', width: '8%', checkboxgen: true, textalign: true },
-                               { title: 'Borrar', name: 'borradoPermisos', width: '8%', checkboxgen: true, textalign: true }]
+                    colModel: [{ title: 'Modulo', name: 'nombreModulo', width: '50%' },
+                               { title: 'Lectura', name: 'lecturaPermisos', width: '10%', checkboxgen: true, textalign:true },
+                               { title: 'Escritura', name: 'escrituraPermisos', width: '10%', checkboxgen: true, textalign: true },
+                               { title: 'Clonar', name: 'clonadoPermisos', width: '10%', checkboxgen: true, textalign: true },
+                               { title: 'Borrar', name: 'borradoPermisos', width: '10%', checkboxgen: true, textalign: true }]
                 });
             }
             else {
