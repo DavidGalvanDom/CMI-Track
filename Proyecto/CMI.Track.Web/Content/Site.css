@@ -371,6 +371,12 @@ table.dataTable thead .sorting:after {
 }
 
 
-.CargandoInfo{
-    padding: 4px,4px,4px,4px;
+.CargandoInfo {
+    display: flex;    
+}
+
+.mensageCargando {
+    height: 50px;
+    margin: 5px;
+    width: 50%;
 }

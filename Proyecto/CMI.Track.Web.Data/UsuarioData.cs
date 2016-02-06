@@ -60,7 +60,7 @@ namespace CMI.Track.Web.Data
 
 
         /// <summary>
-        /// Se carga el listado de usuarios
+        /// Se carga la informacion general del usuario
         /// </summary>
         /// <returns>Lista Usuarios</returns>
         public static Models.Usuario CargaUsuario(string idUsuario)

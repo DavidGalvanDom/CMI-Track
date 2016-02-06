@@ -46,5 +46,107 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        /// <summary>
+        /// Define un nuevo Departamento
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Nuevo()
+        {
+            var objDepartamento = new Models.Departamento() { idEstatus = 1, fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
+            ViewBag.Titulo = "Nuevo";
+            return PartialView("_Nuevo", objDepartamento);
+        }
+
+        /// <summary>
+        /// Se guarda el nuevo departamento
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Nuevo(Models.Departamento pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var idUsuario = DepartamentoData.Guardar(pobjModelo);
+                    return Json(new { Success = true, id = idUsuario, Message = "Se guardo correctamente el Departamento " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "La informacion del departamento esta incompleta" });
+        }
+
+        /// <summary>
+        /// Carga la vista para actualizar el departamento
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Actualiza(int id)
+        {
+            var objDepartamento = DepartamentoData.CargaDepartamento(id);            
+            return PartialView("_Actualiza", objDepartamento);
+        }
+
+        /// <summary>
+        /// Actualiza la inforamcion del Departamento
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Actualiza(Models.Departamento pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    DepartamentoData.Actualiza(pobjModelo);
+                    return Json(new { Success = true, id = pobjModelo.id, Message = "Se actualizo correctamente el Usuario " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "Información del Usuario esta incompleta" });
+        }
+
+        /// <summary>
+        /// Define un nuevo usuario
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Clonar(int id)
+        {
+            var objDepartamento = DepartamentoData.CargaDepartamento(id);
+            objDepartamento.id = 0;
+            objDepartamento.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            ViewBag.Titulo = "Clonar";
+
+            return PartialView("_Nuevo", objDepartamento);
+        }
+
+        /// <summary>
+        /// Borra el Departamento
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Borrar(string id)
+        {
+            try
+            {
+                DepartamentoData.Borrar(id);
+                return Json(new { Success = true, Message = "Se borro correctamente el Departamento " });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }

@@ -54,5 +54,117 @@ namespace CMI.Track.Web.Data
 
             return listaDepartamentos;
         }
+
+         /// <summary>
+         /// Se carga la informacion general del Departamento
+         /// </summary>
+         /// <returns>Departamento</returns>
+         public static Models.Departamento CargaDepartamento(int? idDepto)
+         {
+             object[] paramArray = new object[2];
+             try
+             {
+                 paramArray[0] = idDepto;
+                 paramArray[1] = null;
+
+                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                 using (IDataReader dataReader = db.ExecuteReader("usp_CargarDepartamentos", paramArray))
+                 {
+                     while (dataReader.Read())
+                     {
+                         var objDepartamento = new Models.Departamento()
+                         {
+                             id = Convert.ToInt32(dataReader["idDepartamento"]),
+                             Nombre = Convert.ToString(dataReader["nombreDepartamento"]),
+                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
+                             fechaCreacion = Convert.ToDateTime(dataReader["fechaCreacion"]).ToShortDateString()
+                         };
+
+                         return objDepartamento;
+                     }
+                 }
+             }
+             catch (Exception exp)
+             {
+                 throw new ApplicationException(exp.Message, exp);
+             }
+
+             return null;
+
+         }
+
+         /// <summary>
+         /// Se guarda la informacion de un nuevo Departamento
+         /// </summary>
+         /// <param name="pobjModelo">Datos nuevo Departamento</param>
+         /// <returns>value</returns>
+         public static string Guardar(Models.Departamento pobjModelo)
+         {
+             object[] paramArray = new object[3];
+             try
+             {
+                 paramArray[0] = pobjModelo.idEstatus;                 
+                 paramArray[1] = pobjModelo.Nombre.ToUpper();                
+                 paramArray[2] = pobjModelo.usuarioCreacion;
+
+                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                 var result = db.ExecuteScalar("usp_InsertarDepartamento", paramArray);
+
+                 return (result.ToString());
+             }
+             catch (Exception exp)
+             {
+                 throw new ApplicationException(exp.Message, exp);
+             }
+         }
+
+         /// <summary>
+         /// Se actuliza la informacion del Departamento
+         /// </summary>
+         /// <param name="pobjModelo">Datos del usurio</param>
+         /// <returns>value</returns>
+         public static string Actualiza(Models.Departamento pobjModelo)
+         {
+             object[] paramArray = new object[3];
+             try
+             {
+                 paramArray[0] = pobjModelo.id;
+                 paramArray[1] = pobjModelo.idEstatus;                 
+                 paramArray[2] = pobjModelo.Nombre.ToUpper();                
+
+                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                 var result = db.ExecuteNonQuery("usp_ActualizarDepartamento", paramArray);
+
+                 return (result.ToString());
+             }
+             catch (Exception exp)
+             {
+                 throw new ApplicationException(exp.Message, exp);
+             }
+         }
+
+         /// <summary>
+         /// Remueve de base de datos el Departamento 
+         /// </summary>
+         /// <param name="idDepartamento"></param>
+         /// <returns></returns>
+         public static string Borrar(string idDepartamento)
+         {
+             object[] paramArray = new object[1];
+             try
+             {
+                 paramArray[0] = idDepartamento;
+
+                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                 var result = db.ExecuteNonQuery("usp_RemueveDepartamento", paramArray);
+
+                 return (result.ToString());
+             }
+             catch (Exception exp)
+             {
+                 throw new ApplicationException(exp.Message, exp);
+             }
+         }
     }
 }

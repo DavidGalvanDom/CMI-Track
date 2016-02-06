@@ -498,6 +498,8 @@
     <Content Include="Views\Seguridad\Index.cshtml" />
     <Content Include="Views\Seguridad\_Modulos.cshtml" />
     <Content Include="Views\Departamento\Index.cshtml" />
+    <Content Include="Views\Departamento\_Actualiza.cshtml" />
+    <Content Include="Views\Departamento\_Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

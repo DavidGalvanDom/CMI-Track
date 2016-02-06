@@ -34,9 +34,8 @@ var Departamento = {
         });
     },
     onGuardar: function (e) {
-
         if ($("form").valid()) {
-
+            $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Departamento/Nuevo",
                 $("#NuevoDepartamentoForm *").serialize(),
@@ -44,7 +43,7 @@ var Departamento = {
                     if (data.Success == true) {
                         Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id));
                         CMI.DespliegaInformacion('El Departamento fue guardado con el Id: ' + data.id);
-                        $('#nuevo-Departamento').modal('hide');
+                        $('#nuevo-departamento').modal('hide');
                         if (Departamento.colDepartamentos.length === 1) {
                             Departamento.CargaGrid();
                         }
@@ -62,7 +61,7 @@ var Departamento = {
                 $("#ActualizaDepartamentoForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        $('#actualiza-Departamento').modal('hide');
+                        $('#actualiza-departamento').modal('hide');
                         Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id), { merge: true });
                         CMI.DespliegaInformacion('El Departamento fue Actualizado. Id:' + data.id);
                     }
@@ -71,26 +70,13 @@ var Departamento = {
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
         }
-    },
-    Seguridad: function (idUsuairo) {
-
-        CMI.CierraMensajes();
-        var url = contextPath + "Seguridad/Modulos/" + idUsuairo; // El url del controlador      
-        $.get(url, function (data) {
-            $('#seguridadDepartamento').html(data);
-            $('#seguridadDepartamento').modal({
-                backdrop: 'static',
-                keyboard: true
-            }, 'show');
-            Seguridad.Inicial(idUsuairo);
-        });
-    },
+    },    
     Nuevo: function () {
-        CMI.CierraMensajes();
+        CMI.CierraMensajes();       
         var url = contextPath + "Departamento/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-Departamento').html(data);
-            $('#nuevo-Departamento').modal({
+            $('#nuevo-departamento').html(data);
+            $('#nuevo-departamento').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
@@ -101,8 +87,9 @@ var Departamento = {
         CMI.CierraMensajes();
         var url = contextPath + "Departamento/Actualiza/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#actualiza-Departamento').html(data);
-            $('#actualiza-Departamento').modal({
+            console.log(data);
+            $('#actualiza-departamento').html(data);
+            $('#actualiza-departamento').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
@@ -128,8 +115,8 @@ var Departamento = {
         CMI.CierraMensajes();
         var url = contextPath + "Departamento/Clonar/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#actualiza-Departamento').html(data);
-            $('#actualiza-Departamento').modal({
+            $('#nuevo-departamento').html(data);
+            $('#nuevo-departamento').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
@@ -149,9 +136,9 @@ var Departamento = {
     },
     serializaDepartamento: function (id) {
         return ({
-            'Fecha': $('#ApePaterno').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
-            'Nombre': $('#Nombre').val().toUpperCase(),           
+            'fechaCreacion': $('#fechaCreacion').val(),
+            'idEstatus': $('#idEstatus').val(),
+            'Nombre': $('#Nombre').val().toUpperCase(),
             'id': id
         });
     },

@@ -96,7 +96,7 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Define un nuevo usuario
+        /// Carga la vista para actualizar el usuario
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
@@ -119,7 +119,7 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Define un nuevo usuario
+        /// Actualiza la informacion del  usuario
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
