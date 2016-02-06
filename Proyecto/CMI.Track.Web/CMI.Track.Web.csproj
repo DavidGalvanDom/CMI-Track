@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bbGrid.css" />
+    <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
