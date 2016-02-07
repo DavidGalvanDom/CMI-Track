@@ -372,11 +372,10 @@ table.dataTable thead .sorting:after {
 
 
 .CargandoInfo {
-    display: flex;    
+     flex : 1 ;    
 }
 
 .mensageCargando {
-    height: 50px;
-    margin: 5px;
-    width: 50%;
+    
+    padding: 10px 0 0 50px;
 }

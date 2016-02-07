@@ -105,7 +105,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {
                     DepartamentoData.Actualiza(pobjModelo);
-                    return Json(new { Success = true, id = pobjModelo.id, Message = "Se actualizo correctamente el Usuario " });
+                    return Json(new { Success = true, id = pobjModelo.id, Message = "Se actualizo correctamente la informacion del Departamento " });
                 }
                 catch (Exception exp)
                 {
@@ -113,7 +113,7 @@ namespace CMI.Track.Web.Controllers
                 }
             }
 
-            return Json(new { Success = false, Message = "Información del Usuario esta incompleta" });
+            return Json(new { Success = false, Message = "Información del Departamento esta incompleta" });
         }
 
         /// <summary>

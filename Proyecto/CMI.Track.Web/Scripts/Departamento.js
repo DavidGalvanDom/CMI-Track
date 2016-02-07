@@ -18,6 +18,7 @@ var Departamento = {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
+        
         $(document).on("click", '.btn-ActualizarDepartamento', that.onActualizar);
 
         //Eventos de los botones de Acciones del grid
@@ -87,7 +88,6 @@ var Departamento = {
         CMI.CierraMensajes();
         var url = contextPath + "Departamento/Actualiza/" + id; // El url del controlador
         $.get(url, function (data) {
-            console.log(data);
             $('#actualiza-departamento').html(data);
             $('#actualiza-departamento').modal({
                 backdrop: 'static',
@@ -143,6 +143,7 @@ var Departamento = {
         });
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "Departamento/CargaDepartamentos/-1"; // El url del controlador -1 todos los departamentos sin tomar encuenta el estatus
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -165,10 +166,11 @@ var Departamento = {
                                { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'idEstatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Departamentos registrados");
-                $('#bbGrid-clear')[0].innerHTML = "";
+                $('#bbGrid-clear')[0].innerHTML = "";                
             }
 
             //getJSON fail

@@ -70,21 +70,25 @@
                                 "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                   error + "</div>");
         setTimeout(CMI.CierraMensajes, 10000);
+        $('#cargandoInfo').hide();
     },
     DespliegaInformacion: function (msg) {
         $(".clientAlert").html("<div class='alert alert-info'>" +
                                 "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                   msg + "</div>");
         setTimeout(CMI.CierraMensajes, 10000);
+        $('#cargandoInfo').hide();
     },
     DespliegaErrorDialogo: function (error) {
         $(".clientAlertDlg").html("<div id='divMessage' class='alert alert-danger'>" +
                                "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                  error + "</div>");
+        $('#cargandoInfo').hide();
     },
     DespliegaInformacionDialogo: function (msg) {
         $(".clientAlertDlg").html("<div id='divMessage' class='alert alert-info'>" +
                                "<button type='button' class='close' data-dismiss='alert'>x</button>" +
-                                 msg + "</div>");        
+                                 msg + "</div>");
+        $('#cargandoInfo').hide();
     }
 };

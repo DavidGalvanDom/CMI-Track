@@ -236,6 +236,7 @@ var Usuario = {
     CargaGrid: function () {
         var url = contextPath + "Usuario/CargaUsuarios"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Usuario.colUsuarios = new Backbone.Collection(data);
             var bolFilter = Usuario.colUsuarios.length > 0 ? true : false;
@@ -259,6 +260,7 @@ var Usuario = {
                                { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'idEstatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Usuarios registrados");
