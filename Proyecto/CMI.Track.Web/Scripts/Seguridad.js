@@ -87,14 +87,15 @@ var Seguridad = {
         });
     },
     CargaGrid: function () {
+        $('#cargandoInfoSeg').show();
         var url = contextPath + "Seguridad/CargarModulos/" + Seguridad.idUsuario; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Seguridad.colModulos = new Backbone.Collection(data);
             var bolFilter = Seguridad.colModulos.length > 0 ? true : false;
             if (bolFilter) {
-               Seguridad.gridSeguridad = new bbGrid.View({
-                   container: $('#bbGrid-seguridad'),
+                Seguridad.gridSeguridad = new bbGrid.View({
+                    container: $('#bbGrid-seguridad'),
                     enableSearch: true,
                     actionenable: false,
                     collection: Seguridad.colModulos,
@@ -109,9 +110,10 @@ var Seguridad = {
                 CMI.DespliegaInformacionDialogo("No se encontraron Modulos en base de datos.");
                 $('#bbGrid-seguridad')[0].innerHTML = "";
             }
+            $('#cargandoInfoSeg').hide();
             //getJSON fail
         }).fail(function (e) {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Modulos");
-        });
+        }).always(function (e) { $('#cargandoInfoSeg').hide(); });
     }
 };

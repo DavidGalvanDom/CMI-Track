@@ -242,29 +242,26 @@ namespace CMI.Track.Web.Data
         }
 
         /// <summary>
-        /// Se valida si ya existe el nombre de usuario en base de datos.
+        /// Se valida si ya existe el login de usuario en base de datos.
         /// </summary>
-        /// <param name="nomUsuario"></param>
+        /// <param name="loginUsuario"></param>
+        /// <param name="idUsuario"></param>
         /// <returns></returns>
-        public static bool ValidaNomUsuario(string nomUsuario, int? idUsuario)
+        public static bool ValidaNomUsuario(string loginUsuario, int? idUsuario)
         {
             object[] paramArray = new object[2];
             try
             {
-                paramArray[0] = nomUsuario;
+                paramArray[0] = loginUsuario;
                 paramArray[1] = idUsuario == -1 ? null : idUsuario;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteScalar("usp_BuscaNomUsuario", paramArray);
+                var result = db.ExecuteScalar("usp_BuscaLoginUsuario", paramArray);
 
-                if (result != null)
-                {
-                    return (result.ToString() != "" ? true : false);
-                }
-                else
-                {
-                    return (false);
-                }
+                if (result != null)                
+                    return (result.ToString() != "" ? true : false);                
+                else                
+                    return (false);                
             }
             catch (Exception exp)
             {

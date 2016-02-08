@@ -138,11 +138,12 @@ var Departamento = {
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos;
-        Departamento.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-        Departamento.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        Departamento.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+        var modulo = Departamento;
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
         
-        if (Departamento.accEscritura === true)
+        if (modulo.accEscritura === true)
             $('.btnNuevo').show();    
     },
     serializaDepartamento: function (id) {

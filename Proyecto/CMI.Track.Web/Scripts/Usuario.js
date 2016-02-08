@@ -39,6 +39,8 @@ var Usuario = {
         $(document).on('click', '.accrowSeguridad', function () {
             that.Seguridad($(this).parent().parent().attr("data-modelId"));
         });
+
+        $(document).on('change', '#NombreUsuario', that.ValidaNomUsuario);
     },    
     onGuardar: function (e) {
         var btn = this;
@@ -162,6 +164,20 @@ var Usuario = {
             Usuario.CargarColeccionDepartamentos('#NuevoUsuarioForm');
             Usuario.CargarColeccionProcesos('#NuevoUsuarioForm');
         });
+    },
+    ValidaNomUsuario: function () {       
+            var that = $(this);
+            var idUsuario = $('#id').val() !== undefined ? $('#id').val() : -1;
+            var urlValida = contextPath + 'Usuario/ValidaLoginUsuario?loginUsuario=' + $(this).val() + '&idUsuario=' + idUsuario;
+            $.getJSON(urlValida, function (data) {
+                if (data.result === true) {
+                    CMI.DespliegaErrorDialogo('El nombre de usuario ya existe en base de datos.');
+                    that.val('');
+                }
+                else {
+                    if (data.Message !== undefined) { CMI.DespliegaErrorDialogo(data.Message); }
+                }
+            });
     },
     CargarColeccionDepartamentos: function (form) {
         if (Usuario.colDepartamentos.length < 1) {

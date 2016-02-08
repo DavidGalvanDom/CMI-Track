@@ -2,6 +2,14 @@
     background-color: #f8f8f8;
 }
 
+.page-header {
+    margin: 30px 0 20px;
+}
+
+.clientAlert{
+     margin: 10px 0 0;
+}
+
 #wrapper {
     width: 100%;
 }

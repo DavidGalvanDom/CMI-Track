@@ -152,5 +152,23 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Se valida si el nombre de usuairo ya existe
+        /// </summary>
+        /// <returns>JsonResult</returns>
+        [HttpGet]
+        public JsonResult ValidaLoginUsuario(string loginUsuario, int idUsuario)
+        {
+            try
+            {
+                var blnExiste = UsuarioData.ValidaNomUsuario(loginUsuario.ToUpper(), idUsuario);
+                return Json(new { result = blnExiste }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exp)
+            {
+                return Json(new { result = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
