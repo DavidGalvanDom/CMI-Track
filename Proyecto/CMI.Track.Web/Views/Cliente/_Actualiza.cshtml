@@ -1,0 +1,125 @@
+﻿@model CMI.Track.Web.Models.Cliente
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Actualizar Cliente</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"> </div>
+            @using (Html.BeginForm("Actualiza", "Cliente", FormMethod.Post, new { id = "ActualizaClienteForm", name = "ActualizaClienteForm", @class = "form-horizontal" }))
+            {
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Id</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static">@Html.DisplayFor(model => model.id)</p>                   
+                </div>
+                <div class="col-sm-1">
+                    @Html.HiddenFor(model => model.id)
+                </div>
+            </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NombreCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.NombreCliente, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.NombreCliente, null, new { @class = "help-inline" })
+                    </div>                 
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DireccionEntrega, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.DireccionEntrega, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.DireccionEntrega, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ColoniaCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.ColoniaCliente, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.ColoniaCliente, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CpCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.CpCliente, new { @class = "form-control", maxlength = 5 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.CpCliente, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactoCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.ContactoCliente, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.ContactoCliente, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CiudadCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.CiudadCliente, new { @class = "form-control", maxlength = 5 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.CiudadCliente, null, new { @class = "help-inline" })
+                    </div>
+
+                    @Html.LabelFor(model => model.EstadoCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.EstadoCliente, new { @class = "form-control", maxlength = 5 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.EstadoCliente, null, new { @class = "help-inline" })
+                    </div>
+
+                    @Html.LabelFor(model => model.PaisCliente, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.PaisCliente, new { @class = "form-control", maxlength = 5 })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.PaisCliente, null, new { @class = "help-inline" })
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Estatus, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.Estatus,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                           "Value", "Text"), new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.Estatus, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+
+            @Html.HiddenFor(model => model.Estatus);
+            @Html.HiddenFor(model => model.usuarioCreacion)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default " data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarCliente">Guardar</button>
+        </div>
+    </div>
+</div>

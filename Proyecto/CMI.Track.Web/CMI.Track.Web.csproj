@@ -123,6 +123,8 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
+    <Content Include="Scripts\Categoria.js" />
+    <Content Include="Scripts\Cliente.js" />
     <Content Include="Scripts\Departamento.js" />
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
@@ -472,7 +474,10 @@
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\TipoCalidad.js" />
+    <Content Include="Scripts\TipoConstruccion.js" />
     <Content Include="Scripts\TipoMaterial.js" />
+    <Content Include="Scripts\TipoMovtoMaterial.js" />
+    <Content Include="Scripts\TipoProceso.js" />
     <Content Include="Scripts\UnidadMedida.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Principal.js" />
@@ -520,6 +525,21 @@
     <Content Include="Views\UnidadMedida\Index.cshtml" />
     <Content Include="Views\UnidadMedida\_Actualiza.cshtml" />
     <Content Include="Views\UnidadMedida\_Nuevo.cshtml" />
+    <Content Include="Views\Categoria\Index.cshtml" />
+    <Content Include="Views\Categoria\_Actualiza.cshtml" />
+    <Content Include="Views\Categoria\_Nuevo.cshtml" />
+    <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Cliente\_Actualiza.cshtml" />
+    <Content Include="Views\Cliente\_Nuevo.cshtml" />
+    <Content Include="Views\TipoConstruccion\Index.cshtml" />
+    <Content Include="Views\TipoConstruccion\_Actualiza.cshtml" />
+    <Content Include="Views\TipoConstruccion\_Nuevo.cshtml" />
+    <Content Include="Views\TipoMovtoMaterial\Index.cshtml" />
+    <Content Include="Views\TipoMovtoMaterial\_Actualiza.cshtml" />
+    <Content Include="Views\TipoMovtoMaterial\_Nuevo.cshtml" />
+    <Content Include="Views\TipoProceso\Index.cshtml" />
+    <Content Include="Views\TipoProceso\_Actualiza.cshtml" />
+    <Content Include="Views\TipoProceso\_Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,37 @@
+﻿@model CMI.Track.Web.Models.TipoConstruccion
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo   Tipo de Construccion</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "TipoConstruccion", FormMethod.Post, new { id = "NuevoTipoConstruccionForm", name = "NuevoTipoConstruccionForm", @class = "form-horizontal" }))
+            {                        
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NombreTipoConstruccion, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.NombreTipoConstruccion, new { @class = "form-control", maxlength = 100 })                    
+                    </div>
+                    <div class="col-sm-1">
+                        @Html.ValidationMessageFor(model => model.NombreTipoConstruccion, null, new { @class = "help-inline" })
+                    </div>
+                </div>
+
+
+            @Html.HiddenFor(model => model.Estatus);
+            @Html.HiddenFor(model => model.usuarioCreacion)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-GuardaNuevo">Guardar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
+
+
+

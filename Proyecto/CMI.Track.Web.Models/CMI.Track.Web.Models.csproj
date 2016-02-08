@@ -42,6 +42,10 @@
   <ItemGroup>
     <Compile Include="Almacen\Almacen.cs" />
     <Compile Include="Almacen\ListaAlmacen.cs" />
+    <Compile Include="Categoria\Categoria.cs" />
+    <Compile Include="Categoria\ListaCategoria.cs" />
+    <Compile Include="Cliente\Cliente.cs" />
+    <Compile Include="Cliente\ListaCliente.cs" />
     <Compile Include="Departamento\Departamento.cs" />
     <Compile Include="Departamento\ListaDepartamento.cs" />
     <Compile Include="Grupo\Grupo.cs" />
@@ -53,8 +57,14 @@
     <Compile Include="Seguridad\Permisos.cs" />
     <Compile Include="TipoCalidad\ListaTipoCalidad.cs" />
     <Compile Include="TipoCalidad\TipoCalidad.cs" />
+    <Compile Include="TipoConstruccion\ListaTipoConstruccion.cs" />
+    <Compile Include="TipoConstruccion\TipoConstruccion.cs" />
     <Compile Include="TipoMaterial\ListaTipoMaterial.cs" />
     <Compile Include="TipoMaterial\TipoMaterial.cs" />
+    <Compile Include="TipoMovtoMaterial\ListaTipoMovtoMaterial.cs" />
+    <Compile Include="TipoMovtoMaterial\TipoMovtoMaterial.cs" />
+    <Compile Include="TipoProceso\ListaTipoProceso.cs" />
+    <Compile Include="TipoProceso\TipoProceso.cs" />
     <Compile Include="UnidadMedida\ListaUnidadMedida.cs" />
     <Compile Include="UnidadMedida\UnidadMedida.cs" />
     <Compile Include="Usuario\ListaUsuario.cs" />

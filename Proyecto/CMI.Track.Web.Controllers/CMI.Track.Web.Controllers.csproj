@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="AlmacenController.cs" />
     <Compile Include="AutentificacionController.cs" />
+    <Compile Include="CategoriaController.cs" />
+    <Compile Include="ClienteController.cs" />
     <Compile Include="DepartamentoController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="GrupoController.cs" />
@@ -54,7 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeguridadController.cs" />
     <Compile Include="TipoCalidadController.cs" />
+    <Compile Include="TipoConstruccionController.cs" />
     <Compile Include="TipoMaterialController.cs" />
+    <Compile Include="TipoMovtoMaterialController.cs" />
+    <Compile Include="TipoProcesoController.cs" />
     <Compile Include="UnidadMedidaController.cs" />
     <Compile Include="UsuarioController.cs" />
   </ItemGroup>
