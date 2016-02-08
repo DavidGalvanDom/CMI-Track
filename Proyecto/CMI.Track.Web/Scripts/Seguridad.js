@@ -25,13 +25,16 @@ var Seguridad = {
 
         $(document).on("click", '.btn-GuardaSeguridad', that.onGuardar);
     },
-    onGuardar: function (e) {        
+    onGuardar: function (e) {
         var modulos = [],
+            btn = this,
             dataPost = {
                 lstModulos: modulos,
                 idUsuario: Seguridad.idUsuario,
                 usuarioCreacion : localStorage.idUser};
-        
+
+        CMI.botonMensaje(true, btn, 'Guardar');
+
         //Se agrega la coleccion de items.
         _.each(Seguridad.colModulos.models, function (object, index) {
             object.attributes['lecturaPermisos'] = 0;
@@ -70,7 +73,7 @@ var Seguridad = {
                 CMI.DespliegaErrorDialogo("Error al guardar la informacion");
                 div = document.getElementById('divMessage');
                 if (div !== null) div.scrollIntoView();
-            });
+            }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
        
     },   
     serializaSeguridad: function (id) {

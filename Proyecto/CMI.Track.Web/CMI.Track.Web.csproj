@@ -122,7 +122,9 @@
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Almacen.js" />
     <Content Include="Scripts\Departamento.js" />
+    <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
     <Content Include="Scripts\lib\bbGrid.js" />
@@ -469,6 +471,9 @@
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\Seguridad.js" />
+    <Content Include="Scripts\TipoCalidad.js" />
+    <Content Include="Scripts\TipoMaterial.js" />
+    <Content Include="Scripts\UnidadMedida.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Principal.js" />
     <Content Include="Web.config" />
@@ -500,6 +505,21 @@
     <Content Include="Views\Departamento\Index.cshtml" />
     <Content Include="Views\Departamento\_Actualiza.cshtml" />
     <Content Include="Views\Departamento\_Nuevo.cshtml" />
+    <Content Include="Views\Almacen\Index.cshtml" />
+    <Content Include="Views\Almacen\_Actualiza.cshtml" />
+    <Content Include="Views\Almacen\_Nuevo.cshtml" />
+    <Content Include="Views\Grupo\Index.cshtml" />
+    <Content Include="Views\Grupo\_Actualiza.cshtml" />
+    <Content Include="Views\Grupo\_Nuevo.cshtml" />
+    <Content Include="Views\TipoCalidad\Index.cshtml" />
+    <Content Include="Views\TipoCalidad\_Actualiza.cshtml" />
+    <Content Include="Views\TipoCalidad\_Nuevo.cshtml" />
+    <Content Include="Views\TipoMaterial\Index.cshtml" />
+    <Content Include="Views\TipoMaterial\_Actualiza.cshtml" />
+    <Content Include="Views\TipoMaterial\_Nuevo.cshtml" />
+    <Content Include="Views\UnidadMedida\Index.cshtml" />
+    <Content Include="Views\UnidadMedida\_Actualiza.cshtml" />
+    <Content Include="Views\UnidadMedida\_Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -35,7 +35,9 @@ var Departamento = {
         });
     },
     onGuardar: function (e) {
-        if ($("form").valid()) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
+        if ($("form").valid()) {            
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Departamento/Nuevo",
@@ -52,10 +54,16 @@ var Departamento = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Departamento/Actualiza",
@@ -69,7 +77,10 @@ var Departamento = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
         }
     },    
     Nuevo: function () {

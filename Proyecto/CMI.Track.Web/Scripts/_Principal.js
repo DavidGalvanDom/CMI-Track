@@ -90,5 +90,14 @@
                                "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                  msg + "</div>");
         $('#cargandoInfo').hide();
+    },
+    botonMensaje: function (agregar, boton, nombre) {        
+        if (agregar === true) {
+            $(boton).attr("disabled", "disabled");
+            $(boton).html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> " + nombre);
+        } else {
+            $(boton).html(nombre);
+            $(boton).removeAttr("disabled");
+        }            
     }
 };

@@ -41,6 +41,8 @@ var Usuario = {
         });
     },    
     onGuardar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -58,10 +60,17 @@ var Usuario = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
-        }       
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
+        }
+               
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Usuario/Actualiza",
@@ -75,8 +84,11 @@ var Usuario = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
-        }   
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
+                }).always(function () {CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
+        }
     },
     Seguridad: function (idUsuairo){
         CMI.CierraMensajes();
@@ -102,9 +114,9 @@ var Usuario = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            Usuario.CargarColeccionDepartamentos();
-            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            Usuario.CargarColeccionDepartamentos('#NuevoUsuarioForm');
+            Usuario.CargarColeccionProcesos('#NuevoUsuarioForm');
         });
     },
     Editar: function (id) {
@@ -117,9 +129,9 @@ var Usuario = {
                 keyboard: true
             }, 'show');
 
-            Usuario.CargarColeccionDepartamentos();
-            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            Usuario.CargarColeccionDepartamentos('#ActualizaUsuarioForm');
+            Usuario.CargarColeccionProcesos('#ActualizaUsuarioForm');            
         });
     },
     Borrar: function (id) {
@@ -146,26 +158,26 @@ var Usuario = {
                 keyboard: true
             }, 'show');
 
-            Usuario.CargarColeccionDepartamentos();
-            Usuario.CargarColeccionProcesos();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            Usuario.CargarColeccionDepartamentos('#NuevoUsuarioForm');
+            Usuario.CargarColeccionProcesos('#NuevoUsuarioForm');
         });
     },
-    CargarColeccionDepartamentos: function () {
+    CargarColeccionDepartamentos: function (form) {
         if (Usuario.colDepartamentos.length < 1) {
             var url = contextPath + "Departamento/CargaDepartamentos/1"; // El url del controlador
             $.getJSON(url, function (data) {
                 Usuario.colDepartamentos = data;
-                Usuario.CargaListaDepartamentos();
+                Usuario.CargaListaDepartamentos(form);
             }).fail(function (e) {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Departamentos");
             });
         } else {
-            Usuario.CargaListaDepartamentos();
+            Usuario.CargaListaDepartamentos(form);
         }
     },
-    CargaListaDepartamentos: function () {       
-        var select = $('#idDepartamento').empty();
+    CargaListaDepartamentos: function (form) {       
+        var select = $(form + ' #idDepartamento').empty();
 
         select.append('<option> </option>');
 
@@ -177,25 +189,25 @@ var Usuario = {
                                  + '</option>');
         });
 
-        $('#idDepartamento').val($('#departamento').val());
+        $(form + ' #idDepartamento').val($(form + ' #departamento').val());
     },
-    CargarColeccionProcesos: function () {
+    CargarColeccionProcesos: function (form) {
         if (Usuario.colProcesos.length < 1) {
             var url = contextPath + "Proceso/CargaProceso/1"; // 1 indica que solo activos
             $.getJSON(url, function (data) {
                 Usuario.colProcesos = data;
-                Usuario.CargaListaProcesos();
+                Usuario.CargaListaProcesos(form);
             }).fail(function (e) {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los procesos");
             });
         } else {
-            Usuario.CargaListaProcesos();
+            Usuario.CargaListaProcesos(form);
         }        
     },
-    CargaListaProcesos : function () {
+    CargaListaProcesos: function (form) {
         var optionItem = '<option> </option>',
-            selectDestino = $('#idProcesoDestino').empty(),
-            selectOrigen = $('#idProcesoOrigen').empty();
+            selectDestino = $(form + ' #idProcesoDestino').empty(),
+            selectOrigen = $(form + ' #idProcesoOrigen').empty();
 
         selectDestino.append(optionItem);
         selectOrigen.append(optionItem);

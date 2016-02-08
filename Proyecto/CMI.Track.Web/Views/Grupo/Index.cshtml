@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Grupos";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Lista</small> Grupos
+            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+        </h1>        
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+         <div id="bbGrid-clear" class="col-lg-12">  </div>                   
+    </div>
+</div>
+
+<div class="modal fade" id="nuevo-Grupo"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoGrupoLabel">
+</div>
+
+<div class="modal fade" id="actualiza-Grupo"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoGrupoLabel">
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Grupo.js"></script>
+}
+

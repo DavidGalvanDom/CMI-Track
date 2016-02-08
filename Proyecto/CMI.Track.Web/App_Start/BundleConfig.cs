@@ -38,9 +38,7 @@ namespace CMI.Track.Web
                    "~/Scripts/lib/bower_components/bootstrap/dist/js/bootstrap.js",
                    "~/Scripts/lib/underscore/underscore.js",
                    "~/Scripts/lib/backbone/backbone.js",
-                   "~/Scripts/lib/bbGrid.js",
-                   //"~/Scripts/bootstrap-button.js",
-                   //"~/Scripts/bootstrap-inputmask.js",
+                   "~/Scripts/lib/bbGrid.js",                                          
                    "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.js",
                    "~/Scripts/lib/sb-admin.js",
                    "~/Scripts/lib/modernizr-2.6.2.js",
@@ -49,7 +47,7 @@ namespace CMI.Track.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Scripts/lib/bower_components/bootstrap/dist/css/bootstrap.css",
                        "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.min.css",
-                      "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",  
+                      "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",
                       "~/Content/bbGrid.css",
                       "~/Content/site.css"));
         }
