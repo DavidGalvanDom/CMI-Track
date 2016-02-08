@@ -17,15 +17,16 @@ INSERT INTO cmiModulos Values (6,getdate(), getdate(),1,'Tipo Proceso','TipoProc
 INSERT INTO cmiModulos Values (7,getdate(), getdate(),1,'Procesos','Procesos/Index',4)
 INSERT INTO cmiModulos Values (8,getdate(), getdate(),1,'Rutas de Fabricacion','RutasdeFabricacion/Index',5)
 INSERT INTO cmiModulos Values (9,getdate(), getdate(),1,'Tipo Material','TipoMaterial/Index',6)
-INSERT INTO cmiModulos Values (10,getdate(), getdate(),1,'Unidad de Medida','UnidaddeMedida/Index',7)
+INSERT INTO cmiModulos Values (10,getdate(), getdate(),1,'Unidad de Medida','UnidadMedida/Index',7)
 INSERT INTO cmiModulos Values (11,getdate(), getdate(),1,'Calidad','Calidad/Index',8)
 INSERT INTO cmiModulos Values (12,getdate(), getdate(),1,'Calidad-Proceso','CalidadProceso/Index',9)
-INSERT INTO cmiModulos Values (13,getdate(), getdate(),1,'Grupos Material','GruposMaterial/Index',10)
+INSERT INTO cmiModulos Values (13,getdate(), getdate(),1,'Grupos Material','Grupo/Index',10)
 INSERT INTO cmiModulos Values (14,getdate(), getdate(),1,'Almacen','Almacen/Index',11)
 INSERT INTO cmiModulos Values (15,getdate(), getdate(),1,'Materiales','Materiales/Index',12)
-INSERT INTO cmiModulos Values (16,getdate(), getdate(),1,'Tipos Movtos Mat','TiposMovtosMat/Index',13)
-INSERT INTO cmiModulos Values (17,getdate(), getdate(),1,'Clientes','Clientes/Index',14)
+INSERT INTO cmiModulos Values (16,getdate(), getdate(),1,'Tipos Movtos Mat','TipoMovtoMaterial/Index',13)
+INSERT INTO cmiModulos Values (17,getdate(), getdate(),1,'Clientes','Cliente/Index',14)
 INSERT INTO cmiModulos Values (18,getdate(), getdate(),1,'Origen Requisicion','OrigenRequisicion/Index',15)
+
 
 
 INSERT INTO cmiModuloMenuGrupo values (1,1)
