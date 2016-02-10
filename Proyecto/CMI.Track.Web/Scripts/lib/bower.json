@@ -21,14 +21,15 @@
     "index.html",
     "/js"
   ],
-  "main": [    
-  ],
+  "main": [],
   "dependencies": {
     "bootstrap": "~3.3.6",
     "font-awesome": "~4.2.0",
     "holderjs": "~2.4.1",
-    "metisMenu": "~1.1.3",       
+    "metisMenu": "~1.1.3",
     "bootstrap-social": "~4.8.0",
-    "flot.tooltip": "~0.8.4"   
+    "flot.tooltip": "~0.8.4",
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "moment": "~2.11.2"
   }
 }

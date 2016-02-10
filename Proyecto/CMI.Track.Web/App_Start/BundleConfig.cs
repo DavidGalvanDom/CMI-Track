@@ -42,12 +42,15 @@ namespace CMI.Track.Web
                    "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.js",
                    "~/Scripts/lib/sb-admin.js",
                    "~/Scripts/lib/modernizr-2.6.2.js",
+                   "~/Scripts/lib/bower_components/moment/min/moment.min.js",
+                   "~/Scripts/lib/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
                    "~/Scripts/_Principal.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Scripts/lib/bower_components/bootstrap/dist/css/bootstrap.css",
                        "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.min.css",
                       "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",
+                      "~/Scripts/lib/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
                       "~/Content/bbGrid.css",
                       "~/Content/site.css"));
         }

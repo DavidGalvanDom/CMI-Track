@@ -29,6 +29,12 @@
     }
 }
 
+@media (max-width:768px){
+    .accionMenu{
+        display:none;
+    }
+}
+
 .navbar-top-links {
     margin-right: 0;
 }

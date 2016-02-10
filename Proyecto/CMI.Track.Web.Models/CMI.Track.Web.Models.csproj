@@ -50,6 +50,7 @@
     <Compile Include="Departamento\ListaDepartamento.cs" />
     <Compile Include="Grupo\Grupo.cs" />
     <Compile Include="Grupo\ListaGrupo.cs" />
+    <Compile Include="Projecto\Projecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seguridad\ListaModulo.cs" />
     <Compile Include="Seguridad\MenuGrupo.cs" />

@@ -50,14 +50,12 @@ var Departamento = {
                         if (Departamento.colDepartamentos.length === 1) {
                             Departamento.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        }  else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },

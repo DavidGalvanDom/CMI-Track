@@ -12,7 +12,17 @@
     },
     eventos: function () {
         //Eventos generales
-    },   
+    },
+    menuPrincipal: function (){
+        if ($('#divSideBar').is(":visible") === true) {
+            $('#divSideBar').hide();
+            $('#page-wrapper').attr('style', 'margin: 0 0 0 0;')
+        } else {
+            $('#divSideBar').show();
+            $('#page-wrapper').attr('style', 'margin: 0 0 0 250px;')
+        }
+        
+    },
     CargaSideBar: function () {
         if (localStorage.idUser === '' || localStorage.idUser === undefined) return;
         var urlEventos = contextPath + "Principal/_sideBar/" + localStorage.idUser;
