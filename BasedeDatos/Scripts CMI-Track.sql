@@ -1,3 +1,33 @@
+INSERT INTO cmiEstatus Values (0,getdate(), 'Inactivo')
+INSERT INTO cmiEstatus Values (1,getdate(), 'Activo')
+GO
+
+INSERT INTO [cmiDepartamentos]([fechaCreacion],[fechaUltModificacion]
+            ,[idEstatus],[nombreDepartamento]  ,[usuarioCreacion])
+     VALUES(getdate()  ,getdate() ,1 ,'Admin'   ,null)
+GO
+INSERT INTO [cmiUsuarios]
+           ([fechaCreacion] ,[fechaUltModificacion]
+           ,[idEstatus] ,[nombreUsuario]
+           ,[puestoUsuario] ,[areaUsuario]
+           ,[idDepartamento] ,[emailUsuario]
+           ,[loginUsuario] ,[passwordUsuario]
+           ,[autorizaRequisiciones],[apePaternoUsuario]
+           ,[apeMaternoUsuario],[idProcesoOrigen]
+           ,[idProcesoDestino])
+     VALUES
+           (getdate()     ,getdate()
+           ,1,'DAVID'
+           ,'TEM' ,'AREA'
+           ,1 ,'DAVID@HOT.COM'
+           ,'DGALVAN'  ,'1'
+           ,1 ,'GALVAN'
+           ,'DOMIN'  ,NULL
+           ,NULL)
+GO
+
+select * from cmiMenuGrupo
+
 Insert into cmiMenuGrupo VALUES (1,'Usuarios','fa-users',getdate(),getdate(),1,1)
 Insert into cmiMenuGrupo VALUES (2,'General','fa-database',getdate(),getdate(),1,1)
 Insert into cmiMenuGrupo VALUES (3,'Ingenieria','fa-university',getdate(),getdate(),1,1)
@@ -31,6 +61,8 @@ INSERT INTO cmiModulos Values (18,getdate(), getdate(),1,'Origen Requisicion','O
 
 INSERT INTO cmiModulos Values (20,getdate(), getdate(),1,'Proyecto','Proyecto/Index',1)
 
+select * from cmiModuloMenuGrupo
+
 INSERT INTO cmiModuloMenuGrupo values (1,1)
 INSERT INTO cmiModuloMenuGrupo values (1,2)
 INSERT INTO cmiModuloMenuGrupo values (1,3)
@@ -50,34 +82,28 @@ INSERT INTO cmiModuloMenuGrupo values (2,16)
 INSERT INTO cmiModuloMenuGrupo values (2,17)
 INSERT INTO cmiModuloMenuGrupo values (2,18)
 INSERT INTO cmiModuloMenuGrupo values (3,20)
+go
 
-select * from cmiEstatus
+INSERT INTO [cmiPermisos] VALUES (1 ,1 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,2 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,3 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,4 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,5 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,6 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,7 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,8 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,9 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,11 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,12 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,13 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,14 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,15 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,16 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,17 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,18 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
+INSERT INTO [cmiPermisos] VALUES (1 ,20 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
 
-INSERT INTO cmiEstatus Values (0,getdate(), 'Inactivo')
-INSERT INTO cmiEstatus Values (1,getdate(), 'Activo')
-
-select * from usuario
-
-INSERT INTO [cmiDepartamentos]([idDepartamento],[fechaCreacion],[fechaUltModificacion]
-           ,[usuarioCreacion] ,[idEstatus],[nombreDepartamento]  ,[idUsuario])
-     VALUES(1 ,getdate()  ,getdate() ,null ,1 ,'Admin'   ,null)
-
-INSERT INTO [CMITrack].[dbo].[cmiUsuarios]
-           ([fechaCreacion] ,[fechaUltModificacion]
-           ,[idEstatus] ,[nombreUsuario]
-           ,[puestoUsuario] ,[areaUsuario]
-           ,[idDepartamento] ,[emailUsuario]
-           ,[loginUsuario] ,[passwordUsuario]
-           ,[autorizaRequisiciones],[apePaternoUsuario]
-           ,[apeMaternoUsuario],[idProcesoOrigen]
-           ,[idProcesoDestino])
-     VALUES
-           (getdate()     ,getdate()
-           ,1,'DAVID'
-           ,'TEM' ,'AREA'
-           ,1 ,'DAVID@HOT.COM'
-           ,'DGALVAN'  ,'1'
-           ,1 ,'GALVAN'
-           ,'DOMIN'  ,NULL
-           ,NULL)
 GO
+
+
+
