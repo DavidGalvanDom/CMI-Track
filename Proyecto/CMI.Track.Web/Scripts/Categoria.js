@@ -4,8 +4,7 @@
 
 var Categoria = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,
     accBorrar: false,
     colCategorias: {},
     gridCategorias: {},
@@ -36,7 +35,9 @@ var Categoria = {
     },
     
     onGuardar: function (e) {
+        var btn = this;
 
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -44,7 +45,7 @@ var Categoria = {
                 $("#NuevoCategoriaForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Categoria.colCategorias.add(Categoria.serializaCategoria(data.id));
+                        Categoria.colCategorias.add(Categoria.serializaCategoria(data.id, '#NuevoCategoriaForm'));
                         CMI.DespliegaInformacion('La categoria fue guardada con el Id: ' + data.id);
                         $('#nuevo-categoria').modal('hide');
                         if (Categoria.colCategorias.length === 1) {
@@ -54,10 +55,22 @@ var Categoria = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
         }       
     },
     onActualizar: function (e) {
+        var btn = this;
+
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Categoria/Actualiza",
@@ -65,13 +78,18 @@ var Categoria = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-categoria').modal('hide');
-                        Categoria.colCategorias.add(Categoria.serializaCategoria(data.id), { merge: true });
+                        Categoria.colCategorias.add(Categoria.serializaCategoria(data.id, '#ActualizaCategoriaForm'), { merge: true });
                         CMI.DespliegaInformacion('La categoria fue Actualizada. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
         }   
     },
     Nuevo: function () {
@@ -107,8 +125,7 @@ var Categoria = {
             if (data.Success == true) {
                 Categoria.colCategorias.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
-            }
-            else {
+            } else {
                 CMI.DespliegaError(data.Message);
             }
         }).fail(function () { CMI.DespliegaError("No se pudo borrar la categoria post Borrar"); });
@@ -128,22 +145,25 @@ var Categoria = {
 
     },
     ValidaPermisos: function () {
-        Categoria.accNuevo = true;
-        Categoria.accClonar = true;
-        Categoria.accEditar = true;
-        Categoria.accBorrar = true;
+        var permisos = localStorage.modPermisos;
+        var modulo = Categoria;
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-        if (Categoria.accNuevo === true)
+        if (modulo.accEscritura === true)
             $('.btnNuevo').show();
+
     },
-    serializaCategoria: function (id) {
+    serializaCategoria: function (id,form) {
         return ({
-            'NombreCategoria': $('#NombreCategoria').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreCategoria': $(form + ' #NombreCategoria').val().toUpperCase(),
+            'Estatus': $(form + ' #Estatus').val(),
             'id': id
         });
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "Categoria/CargaCategorias"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -158,15 +178,15 @@ var Categoria = {
                     actionenable: true,
                     detalle: false,
                     clone: Categoria.accClonar,
-                    editar: Categoria.accEditar,
+                    editar: Categoria.accEscritura,
                     borrar: Categoria.accBorrar,
                     collection: Categoria.colCategorias,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Categoria', name: 'NombreCategoria', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
-            }
-            else {
+                $('#cargandoInfo').hide();
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Categorias registradas");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
@@ -177,7 +197,6 @@ var Categoria = {
         });
     }
 };
-
 
 $(function () {
     Categoria.Inicial();

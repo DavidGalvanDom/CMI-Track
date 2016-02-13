@@ -12,35 +12,42 @@
             {
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.nombreProyecto, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.nombreProyecto, new { @class = "form-control", maxlength = 20 })
+                    @Html.LabelFor(model => model.codigoProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(model => model.codigoProyecto, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    @Html.LabelFor(model => model.fechaCreacion, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.fechaCreacion, new { @class = "form-control", maxlength = 10 })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.revisionProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(model => model.revisionProyecto, new { @class = "form-control", maxlength = 3 })
                     </div>
                     @Html.LabelFor(model => model.fechaRevision, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-2">
-                        @Html.TextBoxFor(model => model.fechaRevision, new { @class = "form-control", type = "password", maxlength = 20 })
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='dtpFechaInicio'>
+                            @Html.TextBoxFor(model => model.fechaRevision, new { @class = "form-control", maxlength = 10 })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.idCategoria, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-4">
-                        <select id="idCategoria" name="idCategoria" class="form-control" required="required"></select>                    
-                    </div>
-
-                    @Html.LabelFor(model => model.idEstatus, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-4">
-                        @Html.DropDownListFor(model => model.idEstatus,
-                                                                    new SelectList(new[]{
-                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
-                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
-                                                        "Value", "Text"), new { @class = "form-control", required = "required" })
-                    </div>
+                    @Html.LabelFor(model => model.nombreProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.nombreProyecto, new { @class = "form-control", maxlength = 20 })
+                    </div>                  
                 </div>
-
+                
                 <div class="form-group">
                     @Html.LabelFor(model => model.fechaInicio, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class='input-group date' id='dtpFechaInicio'>
                             @Html.TextBoxFor(model => model.fechaInicio, new { @class = "form-control", maxlength = 10 })
                             <span class="input-group-addon">
@@ -50,7 +57,7 @@
                     </div>
 
                     @Html.LabelFor(model => model.fechaFin, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class='input-group date' id='dtpFechaFin'>
                             @Html.TextBoxFor(model => model.fechaFin, new { @class = "form-control", maxlength = 10 })
                             <span class="input-group-addon">
@@ -58,6 +65,58 @@
                             </span>
                         </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idCategoria, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        <select id="idCategoria" name="idCategoria" class="form-control" required="required"></select>                    
+                    </div>
+
+                    @Html.LabelFor(model => model.estatusProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(model => model.estatusProyecto,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                        "Value", "Text"), new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idCliente, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(model => model.idCliente, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    <div class="col-sm-5">
+                        <input id="contacto" placeholder="Contacto" class="form-control" />
+                    </div>
+                    
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        
+                    </div>
+                    <div class="col-sm-5">
+                        <input id="direccion" placeholder="Direccion" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-5">
+                        <span class="btn btn-file">Upload<input type="file" /></span>
+                    </div>
+                    
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="4" maxlength=250 id="infoGeneral" name="infoGeneral"></textarea>                        
+                    </div>
+
                 </div>
 
                 @Html.HiddenFor(model => model.id)

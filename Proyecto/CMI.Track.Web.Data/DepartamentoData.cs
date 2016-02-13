@@ -42,6 +42,7 @@ namespace CMI.Track.Web.Data
                             id = Convert.ToInt32(dataReader["idDepartamento"]),
                             Nombre = Convert.ToString(dataReader["nombreDepartamento"]),
                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
+                            nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]).ToUpper(),
                             fechaCreacion = Convert.ToDateTime(dataReader["fechaCreacion"]).ToShortDateString()
                         });
                     }

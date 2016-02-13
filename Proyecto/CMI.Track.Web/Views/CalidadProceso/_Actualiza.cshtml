@@ -1,0 +1,54 @@
+﻿@model CMI.Track.Web.Models.CalidadProceso
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Actualizar Calidad - Proceso</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"> </div>
+            @using (Html.BeginForm("Actualiza", "CalidadProceso", FormMethod.Post, new { id = "ActualizaCalidadProcesoForm", name = "ActualizaCalidadProcesoForm", @class = "form-horizontal" }))
+            {
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idProceso, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        <select disabled id="idProceso" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idTipoCalidad, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        <select disabled id="idTipoCalidad" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.secuencia, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.secuencia, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                </div>
+
+                <div class="form-group">                   
+                    @Html.LabelFor(model => model.idEstatus, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.idEstatus,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                        "Value", "Text"), new { @class = "form-control", required = "required" })
+                    </div>                   
+                </div>
+                <input type="hidden" id="proceso" name="idProceso" value="@Model.idProceso" />
+                <input type="hidden" id="tipocalidad" name="idTipoCalidad" value="@Model.idTipoCalidad" />
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default " data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarCalidadProceso">Actualizar</button>
+        </div>
+    </div>
+</div>

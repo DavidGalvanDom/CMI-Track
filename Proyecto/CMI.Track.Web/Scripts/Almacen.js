@@ -33,9 +33,9 @@ var Almacen = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    
     onGuardar: function (e) {
-
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -43,7 +43,7 @@ var Almacen = {
                 $("#NuevoAlmacenForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id));
+                        Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id, '#NuevoAlmacenForm'));
                         CMI.DespliegaInformacion('El Almacen fue guardado con el Id: ' + data.id);
                         $('#nuevo-Almacen').modal('hide');
                         if (Almacen.colAlmacenes.length === 1) {
@@ -53,10 +53,16 @@ var Almacen = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
-        }       
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
+        }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Almacen/Actualiza",
@@ -64,14 +70,17 @@ var Almacen = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-Almacen').modal('hide');
-                        Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id), { merge: true });
+                        Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id, '#ActualizaAlmacenForm'), { merge: true });
                         CMI.DespliegaInformacion('El Almacen fue Actualizado. Id:' + data.id);
                     }
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
-        }   
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
+        }
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -127,23 +136,27 @@ var Almacen = {
 
     },
     ValidaPermisos: function () {
-        Almacen.accEscritura = true;
-        Almacen.accClonar = true;
-        Almacen.accBorrar = true;
+        var permisos = localStorage.modPermisos,
+            item;
+        Almacen.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        Almacen.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        Almacen.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (Almacen.accEscritura === true)
             $('.btnNuevo').show();
+
     },
-    serializaAlmacen: function (id) {
+    serializaAlmacen: function (id, form) {
         return ({
-            'nombreAlmacen': $('#nombreAlmacen').val().toUpperCase(),
-            'estatus': $('#estatus').val(),
+            'nombreAlmacen': $(form + ' #nombreAlmacen').val().toUpperCase(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
         var url = contextPath + "Almacen/CargaAlmacenes"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Almacen.colAlmacenes = new Backbone.Collection(data);
             var bolFilter = Almacen.colAlmacenes.length > 0 ? true : false;
@@ -163,6 +176,7 @@ var Almacen = {
                                { title: 'Almacen', name: 'nombreAlmacen', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Almacenes registrados");
@@ -175,7 +189,6 @@ var Almacen = {
         });
     }
 };
-
 
 $(function () {
     Almacen.Inicial();

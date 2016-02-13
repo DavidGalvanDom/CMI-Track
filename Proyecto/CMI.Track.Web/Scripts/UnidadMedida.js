@@ -33,9 +33,9 @@ var UnidadMedida = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-
     onGuardar: function (e) {
-
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -53,10 +53,16 @@ var UnidadMedida = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "UnidadMedida/Actualiza",
@@ -70,7 +76,10 @@ var UnidadMedida = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
         }
     },
     Nuevo: function () {
@@ -127,9 +136,11 @@ var UnidadMedida = {
 
     },
     ValidaPermisos: function () {
-        UnidadMedida.accEscritura = true;
-        UnidadMedida.accClonar = true;
-        UnidadMedida.accBorrar = true;
+        var permisos = localStorage.modPermisos,
+            item;
+        UnidadMedida.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        UnidadMedida.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        UnidadMedida.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (UnidadMedida.accEscritura === true)
             $('.btnNuevo').show();
@@ -138,13 +149,14 @@ var UnidadMedida = {
         return ({
             'nombreCortoUnidadMedida': $('#nombreCortoUnidadMedida').val().toUpperCase(),
             'nombreUnidadMedida': $('#nombreUnidadMedida').val().toUpperCase(),
-            'estatus': $('#estatus').val(),
+            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
         var url = contextPath + "UnidadMedida/CargaUnidadesMedida"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             UnidadMedida.colUnidadesMedida = new Backbone.Collection(data);
             var bolFilter = UnidadMedida.colUnidadesMedida.length > 0 ? true : false;
@@ -165,6 +177,7 @@ var UnidadMedida = {
                                { title: 'Nombre', name: 'nombreUnidadMedida', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Unidades de Medida registradas");

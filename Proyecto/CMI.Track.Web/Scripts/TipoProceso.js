@@ -4,8 +4,7 @@
 
 var TipoProceso = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,
     accBorrar: false,
     colTiposProceso: {},
     gridTiposProceso: {},
@@ -36,7 +35,9 @@ var TipoProceso = {
     },
     
     onGuardar: function (e) {
+        var btn = this;
 
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -54,10 +55,22 @@ var TipoProceso = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
         }       
     },
     onActualizar: function (e) {
+        var btn = this;
+
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "TipoProceso/Actualiza",
@@ -71,7 +84,15 @@ var TipoProceso = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
         }   
     },
     Nuevo: function () {
@@ -128,13 +149,23 @@ var TipoProceso = {
 
     },
     ValidaPermisos: function () {
-        TipoProceso.accNuevo = true;
-        TipoProceso.accClonar = true;
-        TipoProceso.accEditar = true;
-        TipoProceso.accBorrar = true;
 
-        if (TipoProceso.accNuevo === true)
+        var permisos = localStorage.modPermisos;
+
+        var modulo = TipoProceso;
+
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+
+
+
+        if (modulo.accEscritura === true)
+
             $('.btnNuevo').show();
+
     },
     serializaTipoProceso: function (id) {
         return ({
@@ -144,6 +175,7 @@ var TipoProceso = {
         });
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "TipoProceso/CargaTiposProceso"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -158,13 +190,14 @@ var TipoProceso = {
                     actionenable: true,
                     detalle: false,
                     clone: TipoProceso.accClonar,
-                    editar: TipoProceso.accEditar,
+                    editar: TipoProceso.accEscritura,
                     borrar: TipoProceso.accBorrar,
                     collection: TipoProceso.colTiposProceso,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Tipo Proceso', name: 'NombreTipoProceso', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Tipos de proceso registrados");

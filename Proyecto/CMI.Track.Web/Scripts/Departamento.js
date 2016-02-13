@@ -44,7 +44,7 @@ var Departamento = {
                 $("#NuevoDepartamentoForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id));
+                        Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id, '#NuevoDepartamentoForm'));
                         CMI.DespliegaInformacion('El Departamento fue guardado con el Id: ' + data.id);
                         $('#nuevo-departamento').modal('hide');
                         if (Departamento.colDepartamentos.length === 1) {
@@ -69,7 +69,7 @@ var Departamento = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-departamento').modal('hide');
-                        Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id), { merge: true });
+                        Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id, '#ActualizaDepartamentoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Departamento fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -144,11 +144,11 @@ var Departamento = {
         if (modulo.accEscritura === true)
             $('.btnNuevo').show();    
     },
-    serializaDepartamento: function (id) {
+    serializaDepartamento: function (id,form) {
         return ({
-            'fechaCreacion': $('#fechaCreacion').val(),
-            'idEstatus': $('#idEstatus').val(),
-            'Nombre': $('#Nombre').val().toUpperCase(),
+            'fechaCreacion': $(form + ' #fechaCreacion').val(),
+            'nombreEstatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
+            'Nombre': $(form + ' #Nombre').val().toUpperCase(),
             'id': id
         });
     },
@@ -173,8 +173,7 @@ var Departamento = {
                     collection: Departamento.colDepartamentos,                    
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },                               
                                { title: 'Nombre', name: 'Nombre', filter: true, filterType: 'input' },
-                               { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
-                               { title: 'Estatus', name: 'idEstatus', filter: true }]
+                               { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
             }

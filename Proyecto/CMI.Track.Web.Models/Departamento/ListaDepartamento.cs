@@ -24,6 +24,9 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Estatus")]
         public int idEstatus { get; set; }
 
+        [Display(Name = "Nombre Estatus")]
+        public string nombreEstatus { get; set; }
+
          [Display(Name = "Fecha")]
         public string fechaCreacion { get; set; }
     }

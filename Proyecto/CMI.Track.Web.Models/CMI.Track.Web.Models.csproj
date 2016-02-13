@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Almacen\Almacen.cs" />
     <Compile Include="Almacen\ListaAlmacen.cs" />
+    <Compile Include="CalidadProceso\CalidadProceso.cs" />
+    <Compile Include="CalidadProceso\ListaCalidadProceso.cs" />
     <Compile Include="Categoria\Categoria.cs" />
     <Compile Include="Categoria\ListaCategoria.cs" />
     <Compile Include="Cliente\Cliente.cs" />
@@ -50,8 +52,16 @@
     <Compile Include="Departamento\ListaDepartamento.cs" />
     <Compile Include="Grupo\Grupo.cs" />
     <Compile Include="Grupo\ListaGrupo.cs" />
+    <Compile Include="Material\ListaMaterial.cs" />
+    <Compile Include="Material\Material.cs" />
+    <Compile Include="OrigenRequisicion\ListaOrigenRequisicion.cs" />
+    <Compile Include="OrigenRequisicion\OrigenRequisicion.cs" />
+    <Compile Include="Proceso\ListaProceso.cs" />
+    <Compile Include="Proceso\Proceso.cs" />
     <Compile Include="Projecto\Projecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RutaFabricacion\ListaRutaFabricacion.cs" />
+    <Compile Include="RutaFabricacion\RutaFabricacion.cs" />
     <Compile Include="Seguridad\ListaModulo.cs" />
     <Compile Include="Seguridad\MenuGrupo.cs" />
     <Compile Include="Seguridad\Modulo.cs" />

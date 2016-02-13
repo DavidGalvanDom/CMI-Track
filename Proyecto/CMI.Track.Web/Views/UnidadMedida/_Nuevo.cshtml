@@ -25,8 +25,17 @@
                     </div>
                 </div>
 
-
-                @Html.HiddenFor(model => model.idEstatus);
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idEstatus, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.idEstatus,
+                                                                                            new SelectList(new[]{
+                                                                                                            new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                                            new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                                                    "Value", "Text"), new { @class = "form-control" })
+                    </div>
+                </div>
+                
                 @Html.HiddenFor(model => model.usuarioCreacion);
             }
         </div>

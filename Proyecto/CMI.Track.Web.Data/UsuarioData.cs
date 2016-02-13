@@ -44,7 +44,8 @@ namespace CMI.Track.Web.Data
                                                                         Convert.ToString(dataReader["apeMaternoUsuario"])),
                             NombreUsuario = Convert.ToString(dataReader["loginUsuario"]),
                             Correo = Convert.ToString(dataReader["emailUsuario"]),
-                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),                       
+                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),
+                            nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]).ToUpper(),     
                             fechaCreacion= Convert.ToDateTime(dataReader["fechaCreacion"]).ToShortDateString()
                         });
                     }
@@ -85,7 +86,7 @@ namespace CMI.Track.Web.Data
                             Contrasena = Convert.ToString(dataReader["passwordUsuario"]),
                             NombreUsuario = Convert.ToString(dataReader["loginUsuario"]),
                             Correo = Convert.ToString(dataReader["emailUsuario"]),
-                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),                            
+                            idEstatus = Convert.ToInt32(dataReader["IdEstatus"]),
                             puestoUsuario = Convert.ToString(dataReader["puestoUsuario"]),
                             areaUsuario = Convert.ToString(dataReader["areaUsuario"]),
                             autorizaRequisiciones = Convert.ToInt32(dataReader["autorizaRequisiciones"]) == 1 ? true : false,

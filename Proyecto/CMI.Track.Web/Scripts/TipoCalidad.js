@@ -33,9 +33,9 @@ var TipoCalidad = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    
     onGuardar: function (e) {
-
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -53,10 +53,16 @@ var TipoCalidad = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
-        }       
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
+        }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "TipoCalidad/Actualiza",
@@ -70,8 +76,11 @@ var TipoCalidad = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
-        }   
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
+        }
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -127,9 +136,11 @@ var TipoCalidad = {
 
     },
     ValidaPermisos: function () {
-        TipoCalidad.accEscritura = true;
-        TipoCalidad.accClonar = true;
-        TipoCalidad.accBorrar = true;
+        var permisos = localStorage.modPermisos,
+           item;
+        TipoCalidad.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        TipoCalidad.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        TipoCalidad.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (TipoCalidad.accEscritura === true)
             $('.btnNuevo').show();
@@ -137,13 +148,14 @@ var TipoCalidad = {
     serializaTipoCalidad: function (id) {
         return ({
             'nombreTipoCalidad': $('#nombreTipoCalidad').val().toUpperCase(),
-            'estatus': $('#estatus').val(),
+            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
         var url = contextPath + "TipoCalidad/CargaTiposCalidad"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             TipoCalidad.colTiposCalidad = new Backbone.Collection(data);
             var bolFilter = TipoCalidad.colTiposCalidad.length > 0 ? true : false;
@@ -163,6 +175,7 @@ var TipoCalidad = {
                                { title: 'Tipo Calidad', name: 'nombreTipoCalidad', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Tipos de Calidad registrados");
@@ -175,7 +188,6 @@ var TipoCalidad = {
         });
     }
 };
-
 
 $(function () {
     TipoCalidad.Inicial();

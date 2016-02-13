@@ -123,6 +123,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
+    <Content Include="Scripts\CalidadProceso.js" />
     <Content Include="Scripts\Categoria.js" />
     <Content Include="Scripts\Cliente.js" />
     <Content Include="Scripts\Departamento.js" />
@@ -810,7 +811,11 @@
     <Content Include="Scripts\lib\sb-admin.js" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
+    <Content Include="Scripts\Material.js" />
+    <Content Include="Scripts\OrigenRequisicion.js" />
+    <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
+    <Content Include="Scripts\RutaFabricacion.js" />
     <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\TipoCalidad.js" />
     <Content Include="Scripts\TipoConstruccion.js" />
@@ -881,6 +886,21 @@
     <Content Include="Views\TipoProceso\_Nuevo.cshtml" />
     <Content Include="Views\Proyecto\Index.cshtml" />
     <Content Include="Views\Proyecto\_Nuevo.cshtml" />
+    <Content Include="Views\Material\Index.cshtml" />
+    <Content Include="Views\Material\_Actualiza.cshtml" />
+    <Content Include="Views\Material\_Nuevo.cshtml" />
+    <Content Include="Views\OrigenRequisicion\Index.cshtml" />
+    <Content Include="Views\OrigenRequisicion\_Actualiza.cshtml" />
+    <Content Include="Views\OrigenRequisicion\_Nuevo.cshtml" />
+    <Content Include="Views\CalidadProceso\Index.cshtml" />
+    <Content Include="Views\CalidadProceso\_Actualiza.cshtml" />
+    <Content Include="Views\CalidadProceso\_Nuevo.cshtml" />
+    <Content Include="Views\Proceso\Index.cshtml" />
+    <Content Include="Views\Proceso\_Actualiza.cshtml" />
+    <Content Include="Views\Proceso\_Nuevo.cshtml" />
+    <Content Include="Views\RutaFabricacion\Index.cshtml" />
+    <Content Include="Views\RutaFabricacion\_Actualiza.cshtml" />
+    <Content Include="Views\RutaFabricacion\_Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

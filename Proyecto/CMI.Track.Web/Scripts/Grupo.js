@@ -33,9 +33,9 @@ var Grupo = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    
     onGuardar: function (e) {
-
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -53,10 +53,16 @@ var Grupo = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
-        }       
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
+        }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Grupo/Actualiza",
@@ -70,8 +76,11 @@ var Grupo = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
-        }   
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
+        }
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -127,9 +136,11 @@ var Grupo = {
 
     },
     ValidaPermisos: function () {
-        Grupo.accEscritura = true;
-        Grupo.accClonar = true;
-        Grupo.accBorrar = true;
+        var permisos = localStorage.modPermisos,
+            item;
+        Grupo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        Grupo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        Grupo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (Grupo.accEscritura === true)
             $('.btnNuevo').show();
@@ -137,13 +148,14 @@ var Grupo = {
     serializaGrupo: function (id) {
         return ({
             'nombreGrupo': $('#nombreGrupo').val().toUpperCase(),
-            'estatus': $('#estatus').val(),
+            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
         var url = contextPath + "Grupo/CargaGrupos"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Grupo.colGrupos = new Backbone.Collection(data);
             var bolFilter = Grupo.colGrupos.length > 0 ? true : false;
@@ -163,6 +175,7 @@ var Grupo = {
                                { title: 'Grupo', name: 'nombreGrupo', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Grupos registrados");

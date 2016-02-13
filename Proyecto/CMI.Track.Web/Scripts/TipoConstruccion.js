@@ -4,8 +4,7 @@
 
 var TipoConstruccion = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,
     accBorrar: false,
     colTiposConstruccion: {},
     gridTiposConstruccion: {},
@@ -36,7 +35,9 @@ var TipoConstruccion = {
     },
     
     onGuardar: function (e) {
+        var btn = this;
 
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -54,10 +55,22 @@ var TipoConstruccion = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        
         }       
     },
     onActualizar: function (e) {
+        var btn = this;
+
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "TipoConstruccion/Actualiza",
@@ -71,7 +84,16 @@ var TipoConstruccion = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        
         }   
     },
     Nuevo: function () {
@@ -128,13 +150,23 @@ var TipoConstruccion = {
 
     },
     ValidaPermisos: function () {
-        TipoConstruccion.accNuevo = true;
-        TipoConstruccion.accClonar = true;
-        TipoConstruccion.accEditar = true;
-        TipoConstruccion.accBorrar = true;
 
-        if (TipoConstruccion.accNuevo === true)
+        var permisos = localStorage.modPermisos;
+
+        var modulo = TipoConstruccion;
+
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+
+
+
+        if (modulo.accEscritura === true)
+
             $('.btnNuevo').show();
+
     },
     serializaTipoConstruccion: function (id) {
         return ({
@@ -142,8 +174,10 @@ var TipoConstruccion = {
             'Estatus': $('#Estatus').val(),
             'id': id
         });
+        
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "TipoConstruccion/CargaTiposConstruccion"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -158,13 +192,14 @@ var TipoConstruccion = {
                     actionenable: true,
                     detalle: false,
                     clone: TipoConstruccion.accClonar,
-                    editar: TipoConstruccion.accEditar,
+                    editar: TipoConstruccion.accEscritura,
                     borrar: TipoConstruccion.accBorrar,
                     collection: TipoConstruccion.colTiposConstruccion,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Tipo Construccion', name: 'NombreTipoConstruccion', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Tipos de construccion registrados");

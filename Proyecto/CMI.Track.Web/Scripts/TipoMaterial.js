@@ -33,9 +33,9 @@ var TipoMaterial = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-
     onGuardar: function (e) {
-
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -53,10 +53,16 @@ var TipoMaterial = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+        }
+        else {
+            CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
     onActualizar: function (e) {
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "TipoMaterial/Actualiza",
@@ -70,7 +76,10 @@ var TipoMaterial = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
         }
     },
     Nuevo: function () {
@@ -124,26 +133,29 @@ var TipoMaterial = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
-
     },
     ValidaPermisos: function () {
-        TipoMaterial.accEscritura = true;
-        TipoMaterial.accClonar = true;
-        TipoMaterial.accBorrar = true;
+        var permisos = localStorage.modPermisos,
+                    item;
+        TipoMaterial.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        TipoMaterial.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        TipoMaterial.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (TipoMaterial.accEscritura === true)
             $('.btnNuevo').show();
+
     },
     serializaTipoMaterial: function (id) {
         return ({
             'nombreTipoMaterial': $('#nombreTipoMaterial').val().toUpperCase(),
-            'estatus': $('#estatus').val(),
+            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
         var url = contextPath + "TipoMaterial/CargaTiposMaterial"; // El url del controlador
         $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             TipoMaterial.colTiposMaterial = new Backbone.Collection(data);
             var bolFilter = TipoMaterial.colTiposMaterial.length > 0 ? true : false;
@@ -163,6 +175,7 @@ var TipoMaterial = {
                                { title: 'Nombre', name: 'nombreTipoMaterial', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Tipos de Material registradas");
@@ -175,7 +188,6 @@ var TipoMaterial = {
         });
     }
 };
-
 
 $(function () {
     TipoMaterial.Inicial();

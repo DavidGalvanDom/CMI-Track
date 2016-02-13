@@ -30,6 +30,9 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Estatus")]
         public int idEstatus { get; set; }
 
+        [Display(Name = "nombreEstatus")]
+        public string nombreEstatus { get; set; }
+
         [Display(Name = "Correo")]
         public string Correo { get; set; }
 

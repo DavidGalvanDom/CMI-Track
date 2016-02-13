@@ -52,7 +52,7 @@ var Usuario = {
                 $("#NuevoUsuarioForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id));
+                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
                         CMI.DespliegaInformacion('El Usuario fue guardado con el Id: ' + data.id);
                         $('#nuevo-usuario').modal('hide');                        
                         if (Usuario.colUsuarios.length === 1) {
@@ -80,7 +80,7 @@ var Usuario = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-usuario').modal('hide');
-                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id), { merge: true });
+                        Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
                         CMI.DespliegaInformacion('El usuario fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -209,7 +209,7 @@ var Usuario = {
     },
     CargarColeccionProcesos: function (form) {
         if (Usuario.colProcesos.length < 1) {
-            var url = contextPath + "Proceso/CargaProceso/1"; // 1 indica que solo activos
+            var url = contextPath + "Proceso/CargaProcesosActivos"; // 1 indica que solo activos
             $.getJSON(url, function (data) {
                 Usuario.colProcesos = data;
                 Usuario.CargaListaProcesos(form);
@@ -221,19 +221,19 @@ var Usuario = {
         }        
     },
     CargaListaProcesos: function (form) {
-        var optionItem = '<option> </option>',
+        var optionItem = '',
             selectDestino = $(form + ' #idProcesoDestino').empty(),
-            selectOrigen = $(form + ' #idProcesoOrigen').empty();
-
-        selectDestino.append(optionItem);
-        selectOrigen.append(optionItem);
-
-        $.each(Usuario.colDepartamentos, function (i, item) {
+            selectOrigen = $(form + ' #idProcesoOrigen').empty();       
+        
+        $.each(Usuario.colProcesos, function (i, item) {
             optionItem = '<option value="' + item.id + '">'
-                                     + item.Nombre + '</option>';
+                                     + item.nombreProceso + '</option>';
             selectDestino.append(optionItem);
             selectOrigen.append(optionItem);
         });
+
+        $(form + ' #idProcesoOrigen').val($(form + ' #origen').val());
+        $(form + ' #idProcesoDestino').val($(form + ' #destino').val());
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
@@ -249,15 +249,15 @@ var Usuario = {
             Usuario.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
         }
     },
-    serializaUsuario: function (id) {
+    serializaUsuario: function (id, form) {
         return ({
-            'fechaCreacion': $('#fechaCreacion').val(),
-            'Correo': $('#Correo').val().toUpperCase(),
-            'idEstatus': $('#idEstatus').val(),
-            'NombreCompleto': $('#Nombre').val().toUpperCase() + ' ' +
-                      $('#ApePaterno').val().toUpperCase() + ' ' +
-                      $('#ApeMaterno').val().toUpperCase(),
-            'NombreUsuario': $('#NombreUsuario').val().toUpperCase(),
+            'fechaCreacion': $(form + ' #fechaCreacion').val(),
+            'Correo': $(form + ' #Correo').val().toUpperCase(),
+            'nombreEstatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
+            'NombreCompleto': $(form + ' #Nombre').val().toUpperCase() + ' ' +
+                      $(form + ' #ApePaterno').val().toUpperCase() + ' ' +
+                      $(form + ' #ApeMaterno').val().toUpperCase(),
+            'NombreUsuario': $(form + ' #NombreUsuario').val().toUpperCase(),
             'id': id
         });
     },
@@ -286,7 +286,7 @@ var Usuario = {
                                { title: 'Nombre', name: 'NombreCompleto', filter: true, filterType: 'input' },                              
                                { title: 'Correo', name: 'Correo', filter: true, filterType: 'input' },
                                { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
-                               { title: 'Estatus', name: 'idEstatus', filter: true }]
+                               { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
             }

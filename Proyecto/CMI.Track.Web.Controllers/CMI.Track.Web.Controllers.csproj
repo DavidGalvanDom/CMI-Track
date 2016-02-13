@@ -46,15 +46,20 @@
   <ItemGroup>
     <Compile Include="AlmacenController.cs" />
     <Compile Include="AutentificacionController.cs" />
+    <Compile Include="CalidadProcesoController.cs" />
     <Compile Include="CategoriaController.cs" />
     <Compile Include="ClienteController.cs" />
     <Compile Include="DepartamentoController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="GrupoController.cs" />
     <Compile Include="HomeController.cs" />
+    <Compile Include="MaterialController.cs" />
+    <Compile Include="OrigenRequisicionController.cs" />
     <Compile Include="PrincipalController.cs" />
+    <Compile Include="ProcesoController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoController.cs" />
+    <Compile Include="RutaFabricacionController.cs" />
     <Compile Include="SeguridadController.cs" />
     <Compile Include="TipoCalidadController.cs" />
     <Compile Include="TipoConstruccionController.cs" />

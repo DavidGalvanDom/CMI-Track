@@ -1,7 +1,4 @@
-﻿
-@{
-    ViewBag.Title = "Grupos";
-}
+﻿@{ ViewBag.Title = "Grupos"; }
 
 <div class="row">
     <div class="col-lg-12">
@@ -15,22 +12,15 @@
 
 <div class="row">
     <div class="col-lg-12">
-         <div id="bbGrid-clear" class="col-lg-12">  </div>                   
+         <div id="bbGrid-clear" class="col-lg-12">
+             <div id="cargandoInfo">Cargando informacion...</div>
+         </div>                   
     </div>
 </div>
 
-<div class="modal fade" id="nuevo-Grupo"
-     tabindex="-1" role="dialog"
-     aria-labelledby="nuevoGrupoLabel">
-</div>
+<div class="modal fade" id="nuevo-Grupo" tabindex="-1" role="dialog" aria-labelledby="nuevoGrupoLabel"></div>
 
-<div class="modal fade" id="actualiza-Grupo"
-     tabindex="-1" role="dialog"
-     aria-labelledby="nuevoGrupoLabel">
-</div>
+<div class="modal fade" id="actualiza-Grupo" tabindex="-1" role="dialog" aria-labelledby="nuevoGrupoLabel"></div>
 
-
-@section Scripts {
-    <script src="~/Scripts/Grupo.js"></script>
-}
+@section Scripts { <script src="~/Scripts/Grupo.js"></script> }
 

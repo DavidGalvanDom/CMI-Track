@@ -4,8 +4,7 @@
 
 var TipoMovtoMaterial = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,
     accBorrar: false,
     colTiposMovtoMaterial: {},
     gridTiposMovtoMaterial: {},
@@ -36,7 +35,9 @@ var TipoMovtoMaterial = {
     },
     
     onGuardar: function (e) {
+        var btn = this;
 
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -54,10 +55,22 @@ var TipoMovtoMaterial = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        
         }       
     },
     onActualizar: function (e) {
+        var btn = this;
+
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "TipoMovtoMaterial/Actualiza",
@@ -71,7 +84,16 @@ var TipoMovtoMaterial = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        
         }   
     },
     Nuevo: function () {
@@ -128,13 +150,23 @@ var TipoMovtoMaterial = {
 
     },
     ValidaPermisos: function () {
-        TipoMovtoMaterial.accNuevo = true;
-        TipoMovtoMaterial.accClonar = true;
-        TipoMovtoMaterial.accEditar = true;
-        TipoMovtoMaterial.accBorrar = true;
 
-        if (TipoMovtoMaterial.accNuevo === true)
+        var permisos = localStorage.modPermisos;
+
+        var modulo = TipoMovtoMaterial;
+
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+
+
+
+        if (modulo.accEscritura === true)
+
             $('.btnNuevo').show();
+
     },
     serializaTipoMovtoMaterial: function (id) {
         return ({
@@ -143,8 +175,10 @@ var TipoMovtoMaterial = {
             'Estatus': $('#Estatus').val(),
             'id': id
         });
+        
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "TipoMovtoMaterial/CargaTiposMovtoMaterial"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -159,7 +193,7 @@ var TipoMovtoMaterial = {
                     actionenable: true,
                     detalle: false,
                     clone: TipoMovtoMaterial.accClonar,
-                    editar: TipoMovtoMaterial.accEditar,
+                    editar: TipoMovtoMaterial.accEscritura,
                     borrar: TipoMovtoMaterial.accBorrar,
                     collection: TipoMovtoMaterial.colTiposMovtoMaterial,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
@@ -167,6 +201,7 @@ var TipoMovtoMaterial = {
                                { title: 'Tipo Movimiento', name: 'TipoMovimiento', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Tipos de Movimientos de Materiales registrados");

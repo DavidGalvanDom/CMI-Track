@@ -1,0 +1,98 @@
+﻿@model CMI.Track.Web.Models.Material
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo   Material</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Material", FormMethod.Post, new { id = "NuevoMaterialForm", name = "NuevoMaterialForm", @class = "form-horizontal" }))
+            {
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NombreMaterial, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.TextBoxFor(model => model.NombreMaterial, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AnchoMaterial, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.AnchoMaterial, new { @class = "form-control", maxlength = 5 })
+                    </div>
+
+                    @Html.LabelFor(model => model.AnchoUM, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        <select id="AnchoUM" name="AnchoUM" class="form-control" required="required"></select>
+                    </div>
+
+
+
+                    @Html.LabelFor(model => model.LargoMaterial, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.LargoMaterial, new { @class = "form-control", maxlength = 5 })
+                    </div>
+
+
+                    @Html.LabelFor(model => model.LargoUM, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        <select id="LargoUM" name="LargoUM" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PesoMaterial, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.PesoMaterial, new { @class = "form-control", maxlength = 5 })
+                    </div>
+
+
+
+                    @Html.LabelFor(model => model.PesoUM, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-2">
+                        <select id="PesoUM" name="PesoUM" class="form-control" required="required"></select>
+                    </div>
+                
+                    @Html.LabelFor(model => model.CalidadMaterial, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-5">
+                        @Html.TextBoxFor(model => model.CalidadMaterial, new { @class = "form-control", maxlength = 100 })
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TipoMaterial, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-5">
+                        <select id="TipoMaterial" name="TipoMaterial" class="form-control" required="required"></select>
+                    </div>
+      
+                    @Html.LabelFor(model => model.Grupo, new { @class = "col-sm-1 control-label" })
+                    <div class="col-sm-5">
+                        <select id="Grupo" name="Grupo" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Observaciones, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(model => model.Observaciones, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                </div>
+
+
+                @Html.HiddenFor(model => model.Estatus);
+                @Html.HiddenFor(model => model.usuarioCreacion)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-GuardaNuevo">Guardar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
+
+
+

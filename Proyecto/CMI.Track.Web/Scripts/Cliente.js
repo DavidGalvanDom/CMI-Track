@@ -4,8 +4,7 @@
 
 var Cliente = {
     accClonar: false,
-    accNuevo: false,
-    accEditar: false,
+    accEscritura: false,
     accBorrar: false,
     colClientes: {},
     gridClientes: {},
@@ -36,13 +35,16 @@ var Cliente = {
     },
     
     onGuardar: function (e) {
+        var btn = this;
 
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Cliente/Nuevo",
                 $("#NuevoClienteForm *").serialize(),
                 function (data) {
+                    
                     if (data.Success == true) {
                         Cliente.colClientes.add(Cliente.serializaCliente(data.id));
                         CMI.DespliegaInformacion('El cliente fue guardado con el Id: ' + data.id);
@@ -54,10 +56,22 @@ var Cliente = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); });
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        
         }       
     },
     onActualizar: function (e) {
+        var btn = this;
+
+        CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Cliente/Actualiza",
@@ -71,8 +85,17 @@ var Cliente = {
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
-                }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); });
-        }   
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+        } else {
+
+            CMI.botonMensaje(false, btn, 'Guardar');
+
+        
+        }  
+          
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -129,13 +152,23 @@ var Cliente = {
 
     },
     ValidaPermisos: function () {
-        Cliente.accNuevo = true;
-        Cliente.accClonar = true;
-        Cliente.accEditar = true;
-        Cliente.accBorrar = true;
 
-        if (Cliente.accNuevo === true)
+        var permisos = localStorage.modPermisos;
+
+        var modulo = Cliente;
+
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+
+
+
+        if (modulo.accEscritura === true)
+
             $('.btnNuevo').show();
+
     },
     serializaCliente: function (id) {
         return ({
@@ -150,8 +183,10 @@ var Cliente = {
             'Estatus': $('#Estatus').val(),
             'id': id
         });
+        
     },
     CargaGrid: function () {
+        $('#cargandoInfo').show();
         var url = contextPath + "Cliente/CargaClientes"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -166,7 +201,7 @@ var Cliente = {
                     actionenable: true,
                     detalle: false,
                     clone: Cliente.accClonar,
-                    editar: Cliente.accEditar,
+                    editar: Cliente.accEscritura,
                     borrar: Cliente.accBorrar,
                     collection: Cliente.colClientes,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
@@ -180,6 +215,7 @@ var Cliente = {
                                { title: 'Pais', name: 'PaisCliente', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
+                $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Clientes registrados");
