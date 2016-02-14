@@ -44,21 +44,19 @@ var RutaFabricacion = {
             $.post(contextPath + "RutaFabricacion/Nuevo",
                 $("#NuevoRutaFabricacionForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
-                        RutaFabricacion.colRutasFabricacion.add(RutaFabricacion.serializaRutaFabricacion(data.id));
+                    if (data.Success === true) {
+                        RutaFabricacion.colRutasFabricacion.add(RutaFabricacion.serializaRutaFabricacion(data.id, '#NuevoRutaFabricacionForm'));
                         CMI.DespliegaInformacion('La Ruta de Fabricacion fue guardads con el Id: ' + data.id);
                         $('#nuevo-RutaFabricacion').modal('hide');
                         if (RutaFabricacion.colRutasFabricacion.length === 1) {
                             RutaFabricacion.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
@@ -72,7 +70,7 @@ var RutaFabricacion = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-RutaFabricacion').modal('hide');
-                        RutaFabricacion.colRutasFabricacion.add(RutaFabricacion.serializaRutaFabricacion(data.id), { merge: true });
+                        RutaFabricacion.colRutasFabricacion.add(RutaFabricacion.serializaRutaFabricacion(data.id, '#ActualizaRutaFabricacionForm'), { merge: true });
                         CMI.DespliegaInformacion('La Ruta de Fabricacion fue Actualizada. Id:' + data.id);
                     }
                     else {
@@ -199,12 +197,12 @@ var RutaFabricacion = {
         if (RutaFabricacion.accEscritura === true)
             $('.btnNuevo').show();
     },
-    serializaRutaFabricacion: function (id) {
+    serializaRutaFabricacion: function (id,form) {
         return ({
-            'idCategoria': $('#idCategoria').val(),
-            'secuencia': $('#secuencia').val(),
-            'idProceso': $('#idProceso').val(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'idCategoria': $(form + ' #idCategoria').val(),
+            'secuencia': $(form + ' #secuencia').val(),
+            'idProceso': $(form + ' #idProceso').val(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
@@ -234,8 +232,7 @@ var RutaFabricacion = {
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Rutas de Fabricacion registradas");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }

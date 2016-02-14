@@ -43,17 +43,15 @@ var Cliente = {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Cliente/Nuevo",
                 $("#NuevoClienteForm *").serialize(),
-                function (data) {
-                    
+                function (data) {                    
                     if (data.Success == true) {
-                        Cliente.colClientes.add(Cliente.serializaCliente(data.id));
+                        Cliente.colClientes.add(Cliente.serializaCliente(data.id, '#NuevoClienteForm'));
                         CMI.DespliegaInformacion('El cliente fue guardado con el Id: ' + data.id);
                         $('#nuevo-cliente').modal('hide');
                         if (Cliente.colClientes.length === 1) {
                             Cliente.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -61,16 +59,11 @@ var Cliente = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }       
     },
     onActualizar: function (e) {
         var btn = this;
-
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -79,10 +72,9 @@ var Cliente = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-cliente').modal('hide');
-                        Cliente.colClientes.add(Cliente.serializaCliente(data.id), { merge: true });
+                        Cliente.colClientes.add(Cliente.serializaCliente(data.id, '#ActualizaClienteForm'), { merge: true });
                         CMI.DespliegaInformacion('El cliente fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -92,8 +84,6 @@ var Cliente = {
         } else {
 
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
         }  
           
     },
@@ -153,37 +143,30 @@ var Cliente = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = Cliente;
+        var permisos = localStorage.modPermisos,
+            modulo = Cliente;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-
-
         if (modulo.accEscritura === true)
-
             $('.btnNuevo').show();
 
     },
-    serializaCliente: function (id) {
+    serializaCliente: function (id, from) {
         return ({
-            'NombreCliente': $('#NombreCliente').val().toUpperCase(),
-            'DireccionEntrega': $('#DireccionEntrega').val().toUpperCase(),
-            'ColoniaCliente': $('#ColoniaCliente').val().toUpperCase(),
-            'CpCliente': $('#CpCliente').val(),
-            'ContactoCliente': $('#ContactoCliente').val().toUpperCase(),
-            'CiudadCliente': $('#CiudadCliente').val().toUpperCase(),
-            'EstadoCliente': $('#EstadoCliente').val().toUpperCase(),
-            'PaisCliente': $('#PaisCliente').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreCliente': $(from + ' #NombreCliente').val().toUpperCase(),
+            'DireccionEntrega': $(from + ' #DireccionEntrega').val().toUpperCase(),
+            'ColoniaCliente': $(from + ' #ColoniaCliente').val().toUpperCase(),
+            'CpCliente': $(from + ' #CpCliente').val(),
+            'ContactoCliente': $(from + ' #ContactoCliente').val().toUpperCase(),
+            'CiudadCliente': $(from + ' #CiudadCliente').val().toUpperCase(),
+            'EstadoCliente': $(from + ' #EstadoCliente').val().toUpperCase(),
+            'PaisCliente': $(from + ' #PaisCliente').val().toUpperCase(),
+            'Estatus': $(from + ' #Estatus').val(),
             'id': id
-        });
-        
+        });        
     },
     CargaGrid: function () {
         $('#cargandoInfo').show();
@@ -216,8 +199,7 @@ var Cliente = {
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Clientes registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
@@ -228,7 +210,6 @@ var Cliente = {
         });
     }
 };
-
 
 $(function () {
     Cliente.Inicial();

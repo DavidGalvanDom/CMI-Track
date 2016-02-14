@@ -91,7 +91,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {
                     CalidadProcesoData.Guardar(pobjModelo);
-                    return Json(new { Success = true, idProceso = pobjModelo.idProceso, idTipoCalidad = pobjModelo.idTipoCalidad, Message = "Se guardo correctamente la Relacion Calidad Proceso " });
+                    return Json(new { Success = true, id = pobjModelo.idProceso.ToString() + pobjModelo.idTipoCalidad.ToString(), Message = "Se guardo correctamente la Relacion Calidad Proceso " });
                 }
                 catch (Exception exp)
                 {
@@ -126,7 +126,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {
                     CalidadProcesoData.Actualiza(pobjModelo);
-                    return Json(new { Success = true, idProceso = pobjModelo.idProceso, idTipoCalidad = pobjModelo.idTipoCalidad, Message = "Se actualizo correctamente la Relacion Calidad Proceso" });
+                    return Json(new { Success = true, id = pobjModelo.idProceso.ToString() + pobjModelo.idTipoCalidad.ToString(), Message = "Se actualizo correctamente la Relacion Calidad Proceso" });
                 }
                 catch (Exception exp)
                 {

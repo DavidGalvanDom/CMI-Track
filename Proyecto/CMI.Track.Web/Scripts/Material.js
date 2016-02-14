@@ -53,14 +53,13 @@ var Material = {
                     var ser = $("#NuevoMaterialForm *").serialize();
                     alert(ser);
                     if (data.Success == true) {
-                        Material.colMateriales.add(Material.serializaMaterial(data.id));
+                        Material.colMateriales.add(Material.serializaMaterial(data.id, '#NuevoMaterialForm'));
                         CMI.DespliegaInformacion('El material fue guardado con el Id: ' + data.id);
                         $('#nuevo-material').modal('hide');
                         if (Material.colMateriales.length === 1) {
                             Material.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -68,11 +67,7 @@ var Material = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }       
     },
     onActualizar: function (e) {
@@ -86,10 +81,9 @@ var Material = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-material').modal('hide');
-                        Material.colMateriales.add(Material.serializaMaterial(data.id), { merge: true });
+                        Material.colMateriales.add(Material.serializaMaterial(data.id, '#ActualizaMaterialForm'), { merge: true });
                         CMI.DespliegaInformacion('Elmaterial fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -97,11 +91,7 @@ var Material = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
-            CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
+          CMI.botonMensaje(false, btn, 'Guardar');
         }   
     },
     Nuevo: function () {
@@ -153,8 +143,7 @@ var Material = {
             if (data.Success == true) {
                 Material.colMateriales.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
-            }
-            else {
+            } else {
                 CMI.DespliegaError(data.Message);
             }
         }).fail(function () { CMI.DespliegaError("No se pudo borrar el Material post Borrar"); });
@@ -320,40 +309,32 @@ var Material = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = Material;
+        var permisos = localStorage.modPermisos,
+            modulo = Material;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
-
-
-
-        if (modulo.accEscritura === true)
-
-            $('.btnNuevo').show();
-
-    },
-    serializaMaterial: function (id) {
-        return ({
-            'NombreMaterial': $('#NombreMaterial').val().toUpperCase(),
-            'AnchoMaterial': $('#AnchoMaterial').val(),
-            'AnchoUM': $('#AnchoUM').val(),
-            'LargoMaterial': $('#LargoMaterial').val(),
-            'LargoUM': $('#LargoUM').val(),
-            'PesoMaterial': $('#PesoMaterial').val(),
-            'PesoUM': $('#PesoUM').val(),
-            'CalidadMaterial': $('#CalidadMaterial').val().toUpperCase(),
-            'TipoMaterial': $('#TipoMaterial').val(),
-            'Grupo': $('#Grupo').val(),
-            'Observaciones': $('#Observaciones').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
-            'id': id
-        });
         
+        if (modulo.accEscritura === true)
+            $('.btnNuevo').show();
+    },
+    serializaMaterial: function (id, from) {
+        return ({
+            'NombreMaterial': $(from + ' #NombreMaterial').val().toUpperCase(),
+            'AnchoMaterial': $(from + ' #AnchoMaterial').val(),
+            'AnchoUM': $(from + ' #AnchoUM').val(),
+            'LargoMaterial': $(from + ' #LargoMaterial').val(),
+            'LargoUM': $(from + ' #LargoUM').val(),
+            'PesoMaterial': $(from + ' #PesoMaterial').val(),
+            'PesoUM': $(from + ' #PesoUM').val(),
+            'CalidadMaterial': $(from + ' #CalidadMaterial').val().toUpperCase(),
+            'TipoMaterial': $(from + ' #TipoMaterial').val(),
+            'Grupo': $(from + ' #Grupo').val(),
+            'Observaciones': $(from + ' #Observaciones').val().toUpperCase(),
+            'Estatus': $(from + ' #Estatus').val(),
+            'id': id
+        });        
     },
     CargaGrid: function () {
         $('#cargandoInfo').show();
@@ -389,8 +370,7 @@ var Material = {
                                { title: 'Estatus', name: 'Estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Materiales registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
@@ -401,7 +381,6 @@ var Material = {
         });
     }
 };
-
 
 $(function () {
     Material.Inicial();

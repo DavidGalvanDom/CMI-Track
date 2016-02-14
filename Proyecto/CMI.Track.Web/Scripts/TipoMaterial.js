@@ -43,7 +43,7 @@ var TipoMaterial = {
                 $("#NuevoTipoMaterialForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id));
+                        TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id, '#NuevoTipoMaterialForm'));
                         CMI.DespliegaInformacion('El Tipo de Material fue guardado con el Id: ' + data.id);
                         $('#nuevo-TipoMaterial').modal('hide');
                         if (TipoMaterial.colTiposMaterial.length === 1) {
@@ -70,7 +70,7 @@ var TipoMaterial = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-TipoMaterial').modal('hide');
-                        TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id), { merge: true });
+                        TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id, '#ActualizaTipoMaterialForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de Material fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -145,10 +145,10 @@ var TipoMaterial = {
             $('.btnNuevo').show();
 
     },
-    serializaTipoMaterial: function (id) {
+    serializaTipoMaterial: function (id, form) {
         return ({
-            'nombreTipoMaterial': $('#nombreTipoMaterial').val().toUpperCase(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreTipoMaterial': $(form + ' #nombreTipoMaterial').val().toUpperCase(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

@@ -105,8 +105,7 @@ var Seguridad = {
                                { title: 'Clonar', name: 'clonadoPermisos', width: '10%', checkboxgen: true, textalign: true },
                                { title: 'Borrar', name: 'borradoPermisos', width: '10%', checkboxgen: true, textalign: true }]
                 });
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacionDialogo("No se encontraron Modulos en base de datos.");
                 $('#bbGrid-seguridad')[0].innerHTML = "";
             }

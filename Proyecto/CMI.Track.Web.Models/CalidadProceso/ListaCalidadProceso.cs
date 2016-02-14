@@ -36,5 +36,7 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Estatus")]
         public string estatus { get; set; }
 
+        public int id { get; set; }
+
     }
 }

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
+using System.Configuration;
 
 using CMI.Track.Web.Models;
 using CMI.Track.Web.Data;
@@ -38,6 +39,43 @@ namespace CMI.Track.Web.Controllers
             var objProjecto = new Models.Projecto() {  fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objProjecto);
+        }
+
+        /// <summary>
+        /// Metodo para subir los archivos del proyecto
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SubirArchivo()
+        {
+            string nombreArchivo = "";
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchvos"].ToString();
+
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        nombreArchivo = Path.GetFileName(file);
+                        var path = Path.Combine(pathArchivo, nombreArchivo);
+                        using (var fileStream = System.IO.File.Create(path))
+                        {
+                            stream.CopyTo(fileStream);
+                        }
+                    }
+                }
+
+                return Json(new { Success = false, Archivo = nombreArchivo });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
         }
     }
 }

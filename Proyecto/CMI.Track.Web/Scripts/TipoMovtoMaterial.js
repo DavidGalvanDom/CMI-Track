@@ -36,7 +36,6 @@ var TipoMovtoMaterial = {
     
     onGuardar: function (e) {
         var btn = this;
-
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -45,7 +44,7 @@ var TipoMovtoMaterial = {
                 $("#NuevoTipoMovtoMaterialForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoMovtoMaterial.colTiposMovtoMaterial.add(TipoMovtoMaterial.serializaTipoMovtoMaterial(data.id));
+                        TipoMovtoMaterial.colTiposMovtoMaterial.add(TipoMovtoMaterial.serializaTipoMovtoMaterial(data.id, '#NuevoTipoMovtoMaterialForm'));
                         CMI.DespliegaInformacion('El Tipo de movimiento de material fue guardado con el Id: ' + data.id);
                         $('#nuevo-tipomovtomaterial').modal('hide');
                         if (TipoMovtoMaterial.colTiposMovtoMaterial.length === 1) {
@@ -60,11 +59,7 @@ var TipoMovtoMaterial = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }       
     },
     onActualizar: function (e) {
@@ -78,7 +73,7 @@ var TipoMovtoMaterial = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-tipomovtomaterial').modal('hide');
-                        TipoMovtoMaterial.colTiposMovtoMaterial.add(TipoMovtoMaterial.serializaTipoMovtoMaterial(data.id), { merge: true });
+                        TipoMovtoMaterial.colTiposMovtoMaterial.add(TipoMovtoMaterial.serializaTipoMovtoMaterial(data.id, '#ActualizaTipoMovtoMaterialForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de Movimiento de Material fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -89,11 +84,7 @@ var TipoMovtoMaterial = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }   
     },
     Nuevo: function () {
@@ -151,28 +142,22 @@ var TipoMovtoMaterial = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = TipoMovtoMaterial;
+        var permisos = localStorage.modPermisos,
+            modulo = TipoMovtoMaterial;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-
-
         if (modulo.accEscritura === true)
-
             $('.btnNuevo').show();
 
     },
-    serializaTipoMovtoMaterial: function (id) {
+    serializaTipoMovtoMaterial: function (id,form) {
         return ({
-            'NombreTipoMovtoMaterial': $('#NombreTipoMovtoMaterial').val().toUpperCase(),
-            'TipoMovimiento': $('#TipoMovimiento').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreTipoMovtoMaterial': $(form + ' #NombreTipoMovtoMaterial').val().toUpperCase(),
+            'TipoMovimiento': $(form + ' #TipoMovimiento').val().toUpperCase(),
+            'Estatus': $(form + ' #Estatus').val(),
             'id': id
         });
         

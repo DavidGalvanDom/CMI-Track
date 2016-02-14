@@ -45,7 +45,8 @@ namespace CMI.Track.Web.Data
                             idTipoCalidad = Convert.ToInt32(dataReader["idTipoCalidad"]),
                             nombreTipoCalidad = Convert.ToString(dataReader["nombreTipoCalidad"]),
                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
-                            estatus = Convert.ToString(dataReader["nombreEstatus"])
+                            estatus = Convert.ToString(dataReader["nombreEstatus"]),
+                            id = Convert.ToInt32(dataReader["idProceso"].ToString() + dataReader["idTipoCalidad"].ToString())
                         });
                     }
                 }

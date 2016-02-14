@@ -45,7 +45,7 @@ var OrigenReq = {
                 $("#NuevoOrigenRequisicionForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        OrigenReq.colOrigenesReq.add(OrigenReq.serializaOrigenRequisicion(data.id));
+                        OrigenReq.colOrigenesReq.add(OrigenReq.serializaOrigenRequisicion(data.id, '#NuevoOrigenRequisicionForm'));
                         CMI.DespliegaInformacion('El Origen Requisicion fue guardado con el Id: ' + data.id);
                         $('#nuevo-origenrequisicion').modal('hide');
                         if (OrigenReq.colOrigenesReq.length === 1) {
@@ -78,7 +78,7 @@ var OrigenReq = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-origenrequisicion').modal('hide');
-                        OrigenReq.colOrigenesReq.add(OrigenReq.serializaOrigenRequisicion(data.id), { merge: true });
+                        OrigenReq.colOrigenesReq.add(OrigenReq.serializaOrigenRequisicion(data.id, '#ActualizaOrigenRequisicionForm'), { merge: true });
                         CMI.DespliegaInformacion('El origen fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -151,27 +151,21 @@ var OrigenReq = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = OrigenReq;
+        var permisos = localStorage.modPermisos,
+            modulo = OrigenReq;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-
-
         if (modulo.accEscritura === true)
-
             $('.btnNuevo').show();
 
     },
-    serializaOrigenRequisicion: function (id) {
+    serializaOrigenRequisicion: function (id, form) {
         return ({
-            'NombreOrigenRequisicion': $('#NombreOrigenRequisicion').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreOrigenRequisicion': $(form + ' #NombreOrigenRequisicion').val().toUpperCase(),
+            'Estatus': $(form + ' #Estatus').val(),
             'id': id
         });
         

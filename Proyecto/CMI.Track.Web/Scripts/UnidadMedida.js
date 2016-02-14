@@ -43,7 +43,7 @@ var UnidadMedida = {
                 $("#NuevoUnidadMedidaForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id));
+                        UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id, '#NuevoUnidadMedidaForm'));
                         CMI.DespliegaInformacion('La Unidad de Medida fue guardada con el Id: ' + data.id);
                         $('#nuevo-UnidadMedida').modal('hide');
                         if (UnidadMedida.colUnidadesMedida.length === 1) {
@@ -70,7 +70,7 @@ var UnidadMedida = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-UnidadMedida').modal('hide');
-                        UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id), { merge: true });
+                        UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id,'#ActualizaUnidadMedidaForm'), { merge: true });
                         CMI.DespliegaInformacion('La Unidad de Medida fue Actualizada. Id:' + data.id);
                     }
                     else {
@@ -136,8 +136,8 @@ var UnidadMedida = {
 
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
+            
         UnidadMedida.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         UnidadMedida.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         UnidadMedida.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -145,11 +145,11 @@ var UnidadMedida = {
         if (UnidadMedida.accEscritura === true)
             $('.btnNuevo').show();
     },
-    serializaUnidadMedida: function (id) {
+    serializaUnidadMedida: function (id,form) {
         return ({
-            'nombreCortoUnidadMedida': $('#nombreCortoUnidadMedida').val().toUpperCase(),
-            'nombreUnidadMedida': $('#nombreUnidadMedida').val().toUpperCase(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreCortoUnidadMedida': $(form + ' #nombreCortoUnidadMedida').val().toUpperCase(),
+            'nombreUnidadMedida': $(form + ' #nombreUnidadMedida').val().toUpperCase(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

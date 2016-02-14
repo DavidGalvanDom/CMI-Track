@@ -99,24 +99,29 @@
                     <div class="col-sm-5">
                         <input id="direccion" placeholder="Direccion" class="form-control" />
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-sm-2">
-
-                    </div>
-                    <div class="col-sm-5">
-                        <span class="btn btn-file">Upload<input type="file" /></span>
-                    </div>
-                    
-                </div>
+                </div>               
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
                         <textarea class="form-control" rows="4" maxlength=250 id="infoGeneral" name="infoGeneral"></textarea>                        
                     </div>
+                </div>
 
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <label class="col-sm-2 control-label">Plano (Archivo):</label>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                    Seleccionar&hellip; <input type="file" id="fPlano" name="fPlano">
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                    </div>
                 </div>
 
                 @Html.HiddenFor(model => model.id)

@@ -49,14 +49,12 @@ var Almacen = {
                         if (Almacen.colAlmacenes.length === 1) {
                             Almacen.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
@@ -72,8 +70,7 @@ var Almacen = {
                         $('#actualiza-Almacen').modal('hide');
                         Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id, '#ActualizaAlmacenForm'), { merge: true });
                         CMI.DespliegaInformacion('El Almacen fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
@@ -115,8 +112,7 @@ var Almacen = {
             if (data.Success == true) {
                 Almacen.colAlmacenes.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
-            }
-            else {
+            } else {
                 CMI.DespliegaError(data.Message);
             }
         }).fail(function () { CMI.DespliegaError("No se pudo borrar el Almacen post Borrar"); });
@@ -136,8 +132,7 @@ var Almacen = {
 
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
         Almacen.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         Almacen.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         Almacen.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -177,8 +172,7 @@ var Almacen = {
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Almacenes registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }

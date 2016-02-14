@@ -44,20 +44,18 @@ var Proceso = {
                 $("#NuevoProcesoForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Proceso.colProcesos.add(Proceso.serializaProceso(data.id));
+                        Proceso.colProcesos.add(Proceso.serializaProceso(data.id, '#NuevoProcesoForm'));
                         CMI.DespliegaInformacion('El Proceso fue guardado con el Id: ' + data.id);
                         $('#nuevo-Proceso').modal('hide');
                         if (Proceso.colProcesos.length === 1) {
                             Proceso.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
@@ -71,10 +69,9 @@ var Proceso = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-Proceso').modal('hide');
-                        Proceso.colProcesos.add(Proceso.serializaProceso(data.id), { merge: true });
+                        Proceso.colProcesos.add(Proceso.serializaProceso(data.id, '#ActualizaProcesoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Proceso fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
@@ -171,11 +168,11 @@ var Proceso = {
         if (Proceso.accEscritura === true)
             $('.btnNuevo').show();
     },
-    serializaProceso: function (id) {
+    serializaProceso: function (id,form) {
         return ({
-            'nombreProceso': $('#nombreProceso').val().toUpperCase(),
-            'idTipoProceso': $('#idTipoProceso').val(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreProceso': $(form + ' #nombreProceso').val().toUpperCase(),
+            'idTipoProceso': $(form + ' #idTipoProceso').val(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
@@ -204,8 +201,7 @@ var Proceso = {
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Procesos registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }

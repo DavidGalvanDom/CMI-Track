@@ -51,8 +51,7 @@ var Categoria = {
                         if (Categoria.colCategorias.length === 1) {
                             Categoria.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -61,10 +60,7 @@ var Categoria = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
         }       
     },
     onActualizar: function (e) {
@@ -86,9 +82,7 @@ var Categoria = {
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
         }   
     },
@@ -145,8 +139,8 @@ var Categoria = {
 
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos;
-        var modulo = Categoria;
+        var permisos = localStorage.modPermisos,
+            modulo = Categoria;
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;

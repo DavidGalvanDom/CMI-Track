@@ -43,7 +43,7 @@ var Grupo = {
                 $("#NuevoGrupoForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Grupo.colGrupos.add(Grupo.serializaGrupo(data.id));
+                        Grupo.colGrupos.add(Grupo.serializaGrupo(data.id, '#NuevoGrupoForm'));
                         CMI.DespliegaInformacion('El Grupo fue guardado con el Id: ' + data.id);
                         $('#nuevo-Grupo').modal('hide');
                         if (Grupo.colGrupos.length === 1) {
@@ -70,7 +70,7 @@ var Grupo = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-Grupo').modal('hide');
-                        Grupo.colGrupos.add(Grupo.serializaGrupo(data.id), { merge: true });
+                        Grupo.colGrupos.add(Grupo.serializaGrupo(data.id, '#ActualizaGrupoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Grupo fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -136,8 +136,7 @@ var Grupo = {
 
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
         Grupo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         Grupo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         Grupo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -145,10 +144,10 @@ var Grupo = {
         if (Grupo.accEscritura === true)
             $('.btnNuevo').show();
     },
-    serializaGrupo: function (id) {
+    serializaGrupo: function (id,form) {
         return ({
-            'nombreGrupo': $('#nombreGrupo').val().toUpperCase(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreGrupo': $(form + ' #nombreGrupo').val().toUpperCase(),
+            'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

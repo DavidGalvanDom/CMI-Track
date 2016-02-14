@@ -43,7 +43,7 @@ var TipoCalidad = {
                 $("#NuevoTipoCalidadForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoCalidad.colTiposCalidad.add(TipoCalidad.serializaTipoCalidad(data.id));
+                        TipoCalidad.colTiposCalidad.add(TipoCalidad.serializaTipoCalidad(data.id, '#NuevoTipoCalidadForm'));
                         CMI.DespliegaInformacion('El Tipo de Calidad fue guardado con el Id: ' + data.id);
                         $('#nuevo-TipoCalidad').modal('hide');
                         if (TipoCalidad.colTiposCalidad.length === 1) {
@@ -70,7 +70,7 @@ var TipoCalidad = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-TipoCalidad').modal('hide');
-                        TipoCalidad.colTiposCalidad.add(TipoCalidad.serializaTipoCalidad(data.id), { merge: true });
+                        TipoCalidad.colTiposCalidad.add(TipoCalidad.serializaTipoCalidad(data.id, '#ActualizaTipoCalidadForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de Calidad fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -145,10 +145,10 @@ var TipoCalidad = {
         if (TipoCalidad.accEscritura === true)
             $('.btnNuevo').show();
     },
-    serializaTipoCalidad: function (id) {
+    serializaTipoCalidad: function (id,from) {
         return ({
-            'nombreTipoCalidad': $('#nombreTipoCalidad').val().toUpperCase(),
-            'estatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreTipoCalidad': $(from + ' #nombreTipoCalidad').val().toUpperCase(),
+            'estatus': $(from + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

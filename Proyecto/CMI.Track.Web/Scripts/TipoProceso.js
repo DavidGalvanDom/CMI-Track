@@ -45,7 +45,7 @@ var TipoProceso = {
                 $("#NuevoTipoProcesoForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoProceso.colTiposProceso.add(TipoProceso.serializaTipoProceso(data.id));
+                        TipoProceso.colTiposProceso.add(TipoProceso.serializaTipoProceso(data.id, '#NuevoTipoProcesoForm'));
                         CMI.DespliegaInformacion('El Tipo de proceso fue guardado con el Id: ' + data.id);
                         $('#nuevo-tipoproceso').modal('hide');
                         if (TipoProceso.colTiposProceso.length === 1) {
@@ -78,7 +78,7 @@ var TipoProceso = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-tipoproceso').modal('hide');
-                        TipoProceso.colTiposProceso.add(TipoProceso.serializaTipoProceso(data.id), { merge: true });
+                        TipoProceso.colTiposProceso.add(TipoProceso.serializaTipoProceso(data.id, '#ActualizaTipoProcesoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de proceso fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -150,27 +150,21 @@ var TipoProceso = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = TipoProceso;
+        var permisos = localStorage.modPermisos,
+            modulo = TipoProceso;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-
-
         if (modulo.accEscritura === true)
-
             $('.btnNuevo').show();
 
     },
-    serializaTipoProceso: function (id) {
+    serializaTipoProceso: function (id, form) {
         return ({
-            'NombreTipoProceso': $('#NombreTipoProceso').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreTipoProceso': $(form + ' #NombreTipoProceso').val().toUpperCase(),
+            'Estatus': $(form + ' #Estatus').val(),
             'id': id
         });
     },

@@ -36,7 +36,6 @@ var TipoConstruccion = {
     
     onGuardar: function (e) {
         var btn = this;
-
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -45,14 +44,13 @@ var TipoConstruccion = {
                 $("#NuevoTipoConstruccionForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id));
+                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id,'#NuevoTipoConstruccionForm'));
                         CMI.DespliegaInformacion('El Tipo de construccion fue guardado con el Id: ' + data.id);
                         $('#nuevo-tipoconstruccion').modal('hide');
                         if (TipoConstruccion.colTiposConstruccion.length === 1) {
                             TipoConstruccion.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -60,16 +58,11 @@ var TipoConstruccion = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }       
     },
     onActualizar: function (e) {
         var btn = this;
-
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -78,10 +71,9 @@ var TipoConstruccion = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-tipoconstruccion').modal('hide');
-                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id), { merge: true });
+                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id, '#ActualizaTipoConstruccionForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de construccion fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
@@ -89,11 +81,7 @@ var TipoConstruccion = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
             CMI.botonMensaje(false, btn, 'Guardar');
-
-        
-        
         }   
     },
     Nuevo: function () {
@@ -151,27 +139,21 @@ var TipoConstruccion = {
     },
     ValidaPermisos: function () {
 
-        var permisos = localStorage.modPermisos;
-
-        var modulo = TipoConstruccion;
+        var permisos = localStorage.modPermisos,
+            modulo = TipoConstruccion;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-
-
         if (modulo.accEscritura === true)
-
             $('.btnNuevo').show();
 
     },
-    serializaTipoConstruccion: function (id) {
+    serializaTipoConstruccion: function (id,form) {
         return ({
-            'NombreTipoConstruccion': $('#NombreTipoConstruccion').val().toUpperCase(),
-            'Estatus': $('#Estatus').val(),
+            'NombreTipoConstruccion': $(from + ' #NombreTipoConstruccion').val().toUpperCase(),
+            'Estatus': $(from + ' #Estatus').val(),
             'id': id
         });
         

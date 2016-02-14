@@ -55,7 +55,7 @@ var Departamento = {
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }  else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
@@ -71,8 +71,7 @@ var Departamento = {
                         $('#actualiza-departamento').modal('hide');
                         Departamento.colDepartamentos.add(Departamento.serializaDepartamento(data.id, '#ActualizaDepartamentoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Departamento fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
@@ -114,8 +113,7 @@ var Departamento = {
             if (data.Success == true) {
                 Departamento.colDepartamentos.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
-            }
-            else {
+            } else {
                 CMI.DespliegaError(data.Message);
             }
         }).fail(function () { CMI.DespliegaError("No se pudo borrar el Departamento post Borrar"); });
@@ -176,8 +174,7 @@ var Departamento = {
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Departamentos registrados");
                 $('#bbGrid-clear')[0].innerHTML = "";                
             }

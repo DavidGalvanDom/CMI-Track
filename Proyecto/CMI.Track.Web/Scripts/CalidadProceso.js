@@ -51,14 +51,12 @@ var CalidadProceso = {
                         if (CalidadProceso.colCalidadesProceso.length === 1) {
                             CalidadProceso.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
@@ -75,8 +73,7 @@ var CalidadProceso = {
                         $('#actualiza-CalidadProceso').modal('hide');
                         CalidadProceso.colCalidadesProceso.add(CalidadProceso.serializaCalidadProceso(data.id, '#ActualizaCalidadProcesoForm'), { merge: true });
                         CMI.DespliegaInformacion('La Relacion Calidad Proceso fue Actualizada con exito ');
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
@@ -191,8 +188,7 @@ var CalidadProceso = {
         $(form + ' #idProceso').val($(form + ' #proceso').val());
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
         CalidadProceso.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         CalidadProceso.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         CalidadProceso.accClonar = false; //No se puede clonar un registro de estos
@@ -234,8 +230,7 @@ var CalidadProceso = {
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Relaciones Calidad Proceso registradas");
                 $('#bbGrid-clear')[0].innerHTML = "";
             }

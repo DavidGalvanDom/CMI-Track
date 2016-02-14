@@ -22,9 +22,9 @@ var Proyecto = {
     Eventos: function () {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);
-        $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
+        $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
         $(document).on("click", '.btn-ActualizarProyecto', that.onActualizar);
-
+        
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
@@ -38,10 +38,9 @@ var Proyecto = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
        
+        Proyecto.EventoNombreArchivo();
     },
-    onGuardar: function (e) {
-        var btn = this;
-        CMI.botonMensaje(true, btn, 'Guardar');
+    onGuardar: function (btn) {
         if ($("form").valid()) {
             $('#ProyectoCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
@@ -65,8 +64,7 @@ var Proyecto = {
         }
         else {
             CMI.botonMensaje(false, btn, 'Guardar');
-        }
-
+        }        
     },
     onActualizar: function (e) {
         var btn = this;
@@ -91,7 +89,41 @@ var Proyecto = {
             CMI.botonMensaje(false, btn, 'Actualizar');
         }
     },
-   
+    onSubirArchivo: function () { 
+        var files = document.getElementById('fPlano').files;
+        var btn = this;
+        CMI.botonMensaje(true, btn, 'Guardar');        
+        if (files.length > 0) {
+            if (window.FormData !== undefined) {
+                var data = new FormData();
+                for (var count = 0; count < files.length; count++) {
+                    data.append(files[count].name, files[count]);
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Proyecto/SubirArchivo',
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (result) {
+                        Proyecto.onGuardar(btn);
+                    },
+                    error: function (xhr, status, p3, p4) {
+                        var err = "Error " + " " + status + " " + p3 + " " + p4;
+                        if (xhr.responseText && xhr.responseText[0] == "{") {
+                            err = JSON.parse(xhr.responseText).Message;
+                        }
+                        CMI.DespliegaErrorDialogo(err);
+                        CMI.botonMensaje(false, btn, 'Guardar');
+                    }
+                });
+            } else {
+                CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
+                CMI.botonMensaje(false, btn, 'Guardar');
+            }
+        }
+    },
     Nuevo: function () {
         CMI.CierraMensajes();
         var url = contextPath + "Proyecto/Nuevo"; // El url del controlador      
@@ -284,7 +316,29 @@ var Proyecto = {
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion de los Proyecto");
         });
-    }
+    },
+    EventoNombreArchivo: function () {
+
+        $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+    }       
 };
 
 
