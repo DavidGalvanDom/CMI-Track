@@ -7,9 +7,9 @@ var Proyecto = {
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
+    activeForm: '',
     colProyectos: {},
-    colDepartamentos: [],
-    colProcesos: [],
+    colCategorias: [],
     gridProyectos: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
@@ -21,7 +21,7 @@ var Proyecto = {
     },
     Eventos: function () {
         var that = this;
-        $('.btnNuevo').click(that.Nuevo);
+        $('.btnNuevo').click(that.Nuevo);                
         $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
         $(document).on("click", '.btn-ActualizarProyecto', that.onActualizar);
         
@@ -37,8 +37,7 @@ var Proyecto = {
         $(document).on('click', '.accrowClonar', function () {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
-       
-        Proyecto.EventoNombreArchivo();
+              
     },
     onGuardar: function (btn) {
         if ($("form").valid()) {
@@ -54,15 +53,13 @@ var Proyecto = {
                         if (Proyecto.colProyectos.length === 1) {
                             Proyecto.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }        
     },
@@ -90,39 +87,78 @@ var Proyecto = {
         }
     },
     onSubirArchivo: function () { 
-        var files = document.getElementById('fPlano').files;
-        var btn = this;
-        CMI.botonMensaje(true, btn, 'Guardar');        
-        if (files.length > 0) {
-            if (window.FormData !== undefined) {
-                var data = new FormData();
-                for (var count = 0; count < files.length; count++) {
-                    data.append(files[count].name, files[count]);
-                }
+        var files = document.getElementById('fPlano').files,
+            btn = this,
+            form = Proyecto.activeForm;
 
-                $.ajax({
-                    type: "POST",
-                    url: '/Proyecto/SubirArchivo',
-                    contentType: false,
-                    processData: false,
-                    data: data,
-                    success: function (result) {
-                        Proyecto.onGuardar(btn);
-                    },
-                    error: function (xhr, status, p3, p4) {
-                        var err = "Error " + " " + status + " " + p3 + " " + p4;
-                        if (xhr.responseText && xhr.responseText[0] == "{") {
-                            err = JSON.parse(xhr.responseText).Message;
-                        }
-                        CMI.DespliegaErrorDialogo(err);
-                        CMI.botonMensaje(false, btn, 'Guardar');
+        //Agrega la clase de mandatorio cuando no ha seleccionado un cliente.
+        if ($(form + ' #idCliente').val() === "0") {
+            $(form + ' #nombreCliente').addClass('input-validation-error');
+        }
+
+        if ($("form").valid()) { 
+            CMI.botonMensaje(true, btn, 'Guardar');
+            if (files.length > 0) {
+                if (window.FormData !== undefined) {
+                    var data = new FormData();
+                    for (var count = 0; count < files.length; count++) {
+                        data.append(files[count].name, files[count]);
                     }
-                });
-            } else {
-                CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
-                CMI.botonMensaje(false, btn, 'Guardar');
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/Proyecto/SubirArchivo',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+                            Proyecto.onGuardar(btn);
+                        },
+                        error: function (xhr, status, p3, p4) {
+                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                                err = JSON.parse(xhr.responseText).Message;
+                            }
+                            CMI.DespliegaErrorDialogo(err);
+                            CMI.botonMensaje(false, btn, 'Guardar');
+                        }
+                    });
+                } else {
+                    CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
+                    CMI.botonMensaje(false, btn, 'Guardar');
+                }
             }
         }
+    },
+    onBuscarCliente: function () {
+        var btn = this;
+        $(btn).attr("disabled", "disabled");
+        CMI.CierraMensajes();
+        var url = contextPath + "Cliente/BuscarCliente"; // El url del controlador      
+        $.get(url, function (data) {
+            $('#buscar-Cliente').html(data);
+            $('#buscar-Cliente').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');            
+            ClienteBuscar.Inicial();
+            ClienteBuscar.parent = Proyecto;
+            $(btn).removeAttr("disabled");            
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar clietnes");
+        }).always(function () { $(btn).removeAttr("disabled"); });
+
+    },
+    AsignaCliente: function (idCliente, nombreClietne,
+                             direccionEntrega, contactoCliente) {
+        var that = Proyecto;        
+        $(that.activeForm + ' #idCliente').val(idCliente);
+        $(that.activeForm + ' #contacto').text(contactoCliente);
+        $(that.activeForm + ' #direccion').text(direccionEntrega);
+        $(that.activeForm + ' #nombreCliente').text(nombreClietne);
+        $(that.activeForm + ' #nombreCliente').removeClass('input-validation-error');
+        ///Se cierra la ventana de Clientes
+        $('#buscar-Cliente').modal('hide');
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -134,9 +170,12 @@ var Proyecto = {
                 keyboard: true
             }, 'show');
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Proyecto.IniciaDateControls('#NuevoProyectoForm');
-            Proyecto.CargarColeccionDepartamentos('#NuevoProyectoForm');
-            Proyecto.CargarColeccionProcesos('#NuevoProyectoForm');
+
+            $('#btnBuscarCliente').click(Proyecto.onBuscarCliente);
+            Proyecto.activeForm = '#NuevoProyectoForm';
+            Proyecto.EventoNombreArchivo();
+            Proyecto.IniciaDateControls();
+            Proyecto.CargarColeccionCategorias();            
         });
     },
     Editar: function (id) {
@@ -150,8 +189,9 @@ var Proyecto = {
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Proyecto.CargarColeccionDepartamentos('#ActualizaProyectoForm');
-            Proyecto.CargarColeccionProcesos('#ActualizaProyectoForm');
+            Proyecto.activeForm = '#ActualizaProyectoForm';
+            Proyecto.EventoNombreArchivo();
+            Proyecto.CargarColeccionCategorias();
         });
     },
     Borrar: function (id) {
@@ -179,39 +219,42 @@ var Proyecto = {
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Proyecto.CargarColeccionCategorias('#NuevoProyectoForm');
-            Proyecto.CargarColeccionClientes('#NuevoProyectoForm');
+            Proyecto.activeForm = '#NuevoProyectoForm';
+            Proyecto.CargarColeccionCategorias();
+            Proyecto.CargarColeccionClientes();
         });
     },   
-    CargarColeccionCategorias: function (form) {
-        if (Proyecto.colDepartamentos.length < 1) {
-            var url = contextPath + "Departamento/CargaDepartamentos/1"; // El url del controlador
+    CargarColeccionCategorias: function () {
+        var form = Proyecto.activeForm;
+        if (Proyecto.colCategorias.length < 1) {
+            var url = contextPath + "Categoria/CargaCategoriasActivas"; // El url del controlador
             $.getJSON(url, function (data) {
-                Proyecto.colDepartamentos = data;
-                Proyecto.CargaListaDepartamentos(form);
+                Proyecto.colCategorias = data;
+                Proyecto.CargaListaCategorias(form);
             }).fail(function (e) {
-                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Departamentos");
+                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las Categorias");
             });
         } else {
-            Proyecto.CargaListaDepartamentos(form);
+            Proyecto.CargaListaCategorias(form);
         }
     },
-    CargaListaDepartamentos: function (form) {
-        var select = $(form + ' #idDepartamento').empty();
+    CargaListaCategorias: function (form) {
+        var select = $(form + ' #idCategoria').empty();
 
         select.append('<option> </option>');
 
-        $.each(Proyecto.colDepartamentos, function (i, item) {
+        $.each(Proyecto.colCategorias, function (i, item) {
             select.append('<option value="'
                                  + item.id
                                  + '">'
-                                 + item.Nombre
+                                 + item.NombreCategoria
                                  + '</option>');
         });
 
-        $(form + ' #idDepartamento').val($(form + ' #departamento').val());
+        $(form + ' #idCategoria').val($(form + ' #categoria').val());
     },
-    CargarColeccionClientes: function (form) {
+    CargarColeccionClientes: function () {
+        var form = Proyecto.activeForm;
         if (Proyecto.colProcesos.length < 1) {
             var url = contextPath + "Proceso/CargaProceso/1"; // 1 indica que solo activos
             $.getJSON(url, function (data) {
@@ -242,17 +285,14 @@ var Proyecto = {
     ValidaPermisos: function () {
 
         var permisos = localStorage.modPermisos,
-            item;
-        Proyecto.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-        Proyecto.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        Proyecto.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+            modulo = Proyecto;
 
-        if (Proyecto.accEscritura === true)
-            $('.btnNuevo').show();
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-        if (localStorage.modSerdad != null) {
-            Proyecto.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
-        }
+        if (modulo.accEscritura === true)
+            $('.btnNuevo').show();        
     },
     serializaProyecto: function (id) {
         return ({
@@ -266,7 +306,8 @@ var Proyecto = {
             'id': id
         });
     },
-    IniciaDateControls: function(form){
+    IniciaDateControls: function () {
+        var form = Proyecto.activeForm;
         $(form + ' #dtpFechaInicio').datetimepicker({ format: 'DD/MM/YYYY' });
         $(form + ' #dtpFechaFin').datetimepicker({
             useCurrent: false,
@@ -318,18 +359,17 @@ var Proyecto = {
         });
     },
     EventoNombreArchivo: function () {
-
-        $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-
+        var form = Proyecto.activeForm;
+        //Se inicializan los eventos para el formulario
+        $(form + ' .btn-file :file').on('fileselect', function (event, numFiles, label) {
             var input = $(this).parents('.input-group').find(':text'),
                 log = numFiles > 1 ? numFiles + ' files selected' : label;
 
             if (input.length) {
                 input.val(log);
             } else {
-                if (log) alert(log);
+                if (log) console.log(log);
             }
-
         });
 
         $(document).on('change', '.btn-file :file', function () {
@@ -340,7 +380,6 @@ var Proyecto = {
         });
     }       
 };
-
 
 $(function () {
     Proyecto.Inicial();
