@@ -47,6 +47,27 @@ namespace CMI.Track.Web.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Carga la coleccion de los departamentos Activos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaDepartamentosActivos()
+        {
+            try
+            {
+                var lstDepartamentos = DepartamentoData.CargaDepartamentos(1);
+
+                return (Json(lstDepartamentos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         /// <summary>
         /// Define un nuevo Departamento
         /// </summary>

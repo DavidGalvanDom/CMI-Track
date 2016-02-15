@@ -237,16 +237,16 @@ var Usuario = {
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
-            item; 
-        Usuario.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
-        Usuario.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        Usuario.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+            modulo = Usuario;
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
-        if (Usuario.accEscritura === true)
+        if (modulo.accEscritura === true)
             $('.btnNuevo').show();
        
         if (localStorage.modSerdad != null) {
-            Usuario.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
+            modulo.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
         }
     },
     serializaUsuario: function (id, form) {

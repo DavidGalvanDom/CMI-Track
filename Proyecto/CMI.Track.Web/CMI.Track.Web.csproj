@@ -126,6 +126,7 @@
     <Content Include="Scripts\CalidadProceso.js" />
     <Content Include="Scripts\Categoria.js" />
     <Content Include="Scripts\Cliente.js" />
+    <Content Include="Scripts\ClienteBuscar.js" />
     <Content Include="Scripts\Departamento.js" />
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
@@ -901,6 +902,7 @@
     <Content Include="Views\RutaFabricacion\Index.cshtml" />
     <Content Include="Views\RutaFabricacion\_Actualiza.cshtml" />
     <Content Include="Views\RutaFabricacion\_Nuevo.cshtml" />
+    <Content Include="Views\Cliente\_buscarCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

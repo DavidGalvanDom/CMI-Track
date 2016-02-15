@@ -170,5 +170,16 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+
+        /// <summary>
+        /// Despliega ventana emergente con el grid de clietnes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BuscarCliente()
+        {
+            return PartialView("_buscarCliente");
+        }
     }
 }
