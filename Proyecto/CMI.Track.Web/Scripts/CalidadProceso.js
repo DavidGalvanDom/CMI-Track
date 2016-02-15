@@ -63,7 +63,6 @@ var CalidadProceso = {
     onActualizar: function (e) {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
-        alert($("#ActualizaCalidadProcesoForm *").serialize());
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "CalidadProceso/Actualiza",
@@ -96,8 +95,14 @@ var CalidadProceso = {
             CalidadProceso.CargarColeccionProcesos('#NuevoCalidadProcesoForm');
         });
     },
-    Editar: function (idProceso, idTipoCalidad) {
+    Editar: function (idRow) {
+        var idProceso, idTipoCalidad, row;
         CMI.CierraMensajes();
+        //Se toma de la colleccion el renglon seleccionado
+        row = CalidadProceso.colCalidadesProceso.get(idRow);
+        //Se toman los valores de la coleccion
+        idTipoCalidad = row.attributes.idTipoCalidad;
+        idProceso = row.attributes.idProceso;
         var url = contextPath + "CalidadProceso/Actualiza"; // El url del controlador
         $.get(url, { idProceso: idProceso, idTipoCalidad: idTipoCalidad }, function (data) {
             $('#actualiza-CalidadProceso').html(data);
@@ -110,34 +115,24 @@ var CalidadProceso = {
             CalidadProceso.CargarColeccionProcesos('#ActualizaCalidadProcesoForm');
         });
     },
-    Borrar: function (idProceso, idTipoCalidad) {
+    Borrar: function (idRow) {
+        var idProceso, idTipoCalidad, row;
         CMI.CierraMensajes();
+        //Se toma de la colleccion el renglon seleccionado
+        row = CalidadProceso.colCalidadesProceso.get(idRow);
+        //Se toman los valores de la coleccion
+        idTipoCalidad = row.attributes.idTipoCalidad;
+        idProceso = row.attributes.idProceso;
         if (confirm('¿Esta seguro que desea borrar el registro?') === false) return;
         var url = contextPath + "CalidadProceso/Borrar"; // El url del controlador
         $.post(url, { idProceso: idProceso, idTipoCalidad: idTipoCalidad }, function (data) {
             if (data.Success == true) {
-                CalidadProceso.colCalidadesProceso.remove(idProceso, idTipoCalidad);
-                CMI.DespliegaInformacion(data.Message + "  idProceso:" + idProceso + "  idTipoCalidad:" + idTipoCalidad);
-            }
-            else {
+                CalidadProceso.colCalidadesProceso.remove(idRow);
+                CMI.DespliegaInformacion(data.Message + "  Proceso:" + idProceso + "  TipoCalidad:" + idTipoCalidad);
+            } else {
                 CMI.DespliegaError(data.Message);
             }
         }).fail(function () { CMI.DespliegaError("No se pudo borrar la Relacion Calidad Proceso post Borrar"); });
-    },
-    Clonar : function (idProceso, idTipoCalidad){
-        CMI.CierraMensajes();
-        var url = contextPath + "CalidadProceso/Clonar"; // El url del controlador
-        $.get(url, { idProceso: idProceso, idTipoCalidad: idTipoCalidad }, function (data) {
-            $('#actualiza-CalidadProceso').html(data);
-            $('#actualiza-CalidadProceso').modal({
-                backdrop: 'static',
-                keyboard: true
-            }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            CalidadProceso.CargarColeccionTiposCalidad('#ActualizaCalidadProcesoForm');
-            CalidadProceso.CargarColeccionProcesos('#ActualizaCalidadProcesoForm');
-        });
-
     },
     CargarColeccionTiposCalidad: function (form) {
         if (CalidadProceso.colTiposCalidad.length < 1) {
@@ -201,6 +196,8 @@ var CalidadProceso = {
             'idTipoCalidad': $(form + ' #idTipoCalidad').val(),
             'secuencia': $(form + ' #secuencia').val(),
             'idProceso': $(form + ' #idProceso').val(),
+            'nombreTipoCalidad': $(form + ' #idTipoCalidad option:selected').text(),
+            'nombreProceso': $(form + ' #idProceso option:selected').text(),
             'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
