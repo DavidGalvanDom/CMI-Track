@@ -57,6 +57,7 @@
     <Compile Include="OrigenRequisicionData.cs" />
     <Compile Include="ProcesoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProyectoData.cs" />
     <Compile Include="RutaFabricacionData.cs" />
     <Compile Include="SeguridadData.cs" />
     <Compile Include="TipoCalidadData.cs" />

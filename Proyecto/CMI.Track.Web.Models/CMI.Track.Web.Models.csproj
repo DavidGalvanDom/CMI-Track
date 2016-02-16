@@ -58,7 +58,8 @@
     <Compile Include="OrigenRequisicion\OrigenRequisicion.cs" />
     <Compile Include="Proceso\ListaProceso.cs" />
     <Compile Include="Proceso\Proceso.cs" />
-    <Compile Include="Projecto\Projecto.cs" />
+    <Compile Include="Proyecto\ListaProyectos.cs" />
+    <Compile Include="Proyecto\Proyecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RutaFabricacion\ListaRutaFabricacion.cs" />
     <Compile Include="RutaFabricacion\RutaFabricacion.cs" />

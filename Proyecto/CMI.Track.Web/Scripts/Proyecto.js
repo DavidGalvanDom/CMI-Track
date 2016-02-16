@@ -41,7 +41,7 @@ var Proyecto = {
     },
     onGuardar: function (btn) {
         if ($("form").valid()) {
-            $('#ProyectoCreacion').val(localStorage.idUser);
+            $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Proyecto/Nuevo",
                 $("#NuevoProyectoForm *").serialize(),
@@ -112,7 +112,15 @@ var Proyecto = {
                         processData: false,
                         data: data,
                         success: function (result) {
-                            Proyecto.onGuardar(btn);
+                            
+                            if (result.Success === true) {
+                                $(Proyecto.activeForm + ' #archivoPlanoProyecto').val(result.Archivo);
+                                Proyecto.onGuardar(btn);
+                            } else {
+                                $(Proyecto.activeForm + ' #archivoPlanoProyecto').val('');
+                                CMI.DespliegaErrorDialogo(result.Message);
+                                CMI.botonMensaje(false, btn, 'Guardar');
+                            }
                         },
                         error: function (xhr, status, p3, p4) {
                             var err = "Error " + " " + status + " " + p3 + " " + p4;
@@ -295,23 +303,24 @@ var Proyecto = {
             $('.btnNuevo').show();        
     },
     serializaProyecto: function (id) {
+        var form = Proyecto.activeForm;
         return ({
-            'fechaCreacion': $('#fechaCreacion').val(),
-            'Correo': $('#Correo').val().toUpperCase(),
-            'idEstatus': $('#idEstatus').val(),
-            'NombreCompleto': $('#Nombre').val().toUpperCase() + ' ' +
-                      $('#ApePaterno').val().toUpperCase() + ' ' +
-                      $('#ApeMaterno').val().toUpperCase(),
-            'NombreProyecto': $('#NombreProyecto').val().toUpperCase(),
-            'id': id
+            'idProyecto': id,
+            'NombreProyecto': $(form + ' #nombreProyecto').val().toUpperCase(),
+            'Revision': $(form + ' #revisionProyecto').val().toUpperCase(),
+            'CodigoProyecto': $(form + ' #codigoProyecto').val().toUpperCase(),
+            'FechaInicio': $(form + ' #fechaInicio').val(),
+            'FechaFin': $(form + ' #fechaFin').val(),
+            'nombreEstatus': $('#estatusProyecto option:selected').text().toUpperCase(),
+            'id': id + $('#revisionProyecto').val().toUpperCase()
         });
     },
     IniciaDateControls: function () {
         var form = Proyecto.activeForm;
-        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'DD/MM/YYYY' });
+        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'MM/DD/YYYY' });
         $(form + ' #dtpFechaFin').datetimepicker({
             useCurrent: false,
-            format: 'DD/MM/YYYY'
+            format: 'MM/DD/YYYY'
         });
         $(form + ' #dtpFechaInicio').on("dp.change", function (e) {
             $('#dtpFechaFin').data("DateTimePicker").minDate(e.date);
@@ -340,12 +349,13 @@ var Proyecto = {
                     borrar: Proyecto.accBorrar,
                     collection: Proyecto.colProyectos,
                     seguridad: Proyecto.accSeguridad,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                    colModel: [{ title: 'Id', name: 'idProyecto', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Proyecto', name: 'NombreProyecto', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'NombreCompleto', filter: true, filterType: 'input' },
-                               { title: 'Correo', name: 'Correo', filter: true, filterType: 'input' },
-                               { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
-                               { title: 'Estatus', name: 'idEstatus', filter: true }]
+                               { title: 'Revision', name: 'Revision', filter: true, filterType: 'input' },
+                               { title: 'Codigo', name: 'CodigoProyecto', filter: true, filterType: 'input' },
+                               { title: 'Fecha Inicio', name: 'FechaInicio', filter: true, filterType: 'input' },
+                               { title: 'Fecha Fin', name: 'FechaFin', filter: true, filterType: 'input' },
+                               { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
             }

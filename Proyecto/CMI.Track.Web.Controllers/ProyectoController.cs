@@ -30,13 +30,32 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
+        /// Carga la coleccion de Proyectos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaProyectos()
+        {
+            try
+            {
+                var lstProyectos = ProyectoData.CargaProyectos();
+
+                return (Json(lstProyectos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
         /// Define un nuevo usuario
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objProjecto = new Models.Projecto() {  fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
+            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objProjecto);
         }
@@ -49,7 +68,7 @@ namespace CMI.Track.Web.Controllers
         public JsonResult SubirArchivo()
         {
             string nombreArchivo = "";
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchvos"].ToString();
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
 
             try
             {
@@ -70,12 +89,49 @@ namespace CMI.Track.Web.Controllers
                     }
                 }
 
-                return Json(new { Success = false, Archivo = nombreArchivo });
+                return Json(new { Success = true, Archivo = nombreArchivo });
             }
             catch (Exception exp)
             {
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Define un nuevo Proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Nuevo(Models.Proyecto pobjModelo)
+        {
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString();
+            string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+            
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (pobjModelo.archivoPlanoProyecto.Trim() != "")
+                        if (!System.IO.File.Exists(pathArchivoTem + pobjModelo.archivoPlanoProyecto)) {
+                            return Json(new { Success = false, Message = "No se encontro el archivo en el servidor " });
+                        }
+
+                    if (System.IO.File.Exists(pathArchivo + pobjModelo.archivoPlanoProyecto))                    
+                        System.IO.File.Delete(pathArchivo + pobjModelo.archivoPlanoProyecto);
+                    
+
+                    System.IO.File.Move(pathArchivoTem + pobjModelo.archivoPlanoProyecto, pathArchivo + pobjModelo.archivoPlanoProyecto);
+                    var idProyecto = ProyectoData.Guardar(pobjModelo);
+                    return Json(new { Success = true, id = idProyecto, Message = "Se guardo correctamente el Proyecto " });                    
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "La informacion del proyecto esta incompleta" });
+        }
+
     }
 }

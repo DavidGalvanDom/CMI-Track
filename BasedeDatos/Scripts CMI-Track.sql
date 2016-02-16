@@ -26,6 +26,8 @@ INSERT INTO [cmiUsuarios]
            ,NULL)
 GO
 
+insert into cmiVarControl values('TBL','PRO','0',1,GETDATE())
+
 select * from cmiMenuGrupo
 
 Insert into cmiMenuGrupo VALUES (1,'Usuarios','fa-users',getdate(),getdate(),1,1)

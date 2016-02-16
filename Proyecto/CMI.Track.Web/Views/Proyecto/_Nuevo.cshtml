@@ -1,4 +1,4 @@
-﻿@model CMI.Track.Web.Models.Projecto
+﻿@model CMI.Track.Web.Models.Proyecto
 
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -129,7 +129,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="4" maxlength=250 id="infoGeneral" name="infoGeneral" required></textarea>                        
+                        <textarea class="form-control" rows="4" maxlength=250 id="infoGeneral" name="infoGeneral" onkeypress="return ( this.value.length < 250 );" required></textarea>                        
                     </div>
                 </div>
 
@@ -151,6 +151,7 @@
                 @Html.HiddenFor(model => model.idCliente)
                 @Html.HiddenFor(model => model.fechaCreacion)
                 @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.archivoPlanoProyecto)
                 <input type="hidden" id="categoria" name="categoria" value="" />
             }
         </div>
