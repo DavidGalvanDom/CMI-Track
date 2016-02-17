@@ -101,7 +101,9 @@
                     <label class="col-sm-2 control-label" for="nombreCliente">Cliente</label>                   
                     <div class="col-sm-5">
                         <div class="input-group">
-                            <p id="nombreCliente" name="nombreCliente" class="form-control"  placeholder="Nombre cliente" ></p>
+                            <p id="nombreCliente" name="nombreCliente" class="form-control" placeholder="Nombre cliente">
+                                @Model.nombreCliente
+                            </p>
                             <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="button" id="btnBuscarCliente" name="btnBuscarCliente"><span class="fa fa-search"></span></button>                                
                             </span>
@@ -119,17 +121,23 @@
                         
                     </div>
                     <div class="col-sm-5">
-                        <span id="contacto" placeholder="Contacto" class="form-control"  />
+                        <span id="contacto" placeholder="Contacto" class="form-control">@Model.contactoCliente</span>
                     </div>
                     <div class="col-sm-5">
-                        <span id="direccion" placeholder="Direccion" class="form-control" />
+                        <span id="direccion" placeholder="Direccion" class="form-control">@Model.direccionCliente</span>
                     </div>
                 </div>               
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
-                        <textarea class="form-control" rows="4" maxlength=250 id="infoGeneral" name="infoGeneral" onkeypress="return ( this.value.length < 250 );" required></textarea>                        
+                        @Html.TextAreaFor(model => model.infoGeneral, new
+                    {
+                        @class = "form-control",
+                        maxlength = 250,
+                        onkeypress = "return ( this.value.length < 250 );",
+                        rows = "4"
+                    })
                     </div>
                 </div>
 
@@ -148,11 +156,10 @@
                 </div>
 
                 @Html.HiddenFor(model => model.id)
-                @Html.HiddenFor(model => model.idCliente)
-                @Html.HiddenFor(model => model.fechaCreacion)
+                @Html.HiddenFor(model => model.idCliente)           
                 @Html.HiddenFor(model => model.usuarioCreacion)
                 @Html.HiddenFor(model => model.archivoPlanoProyecto)
-                <input type="hidden" id="categoria" name="categoria" value="" />
+                <input type="hidden" id="categoria" name="categoria" value="@Model.idCategoria" />
             }
         </div>
         <div class="modal-footer">
@@ -161,7 +168,3 @@
         </div>
     </div><!-- /.modal-content -->
 </div>
-
-
-
-

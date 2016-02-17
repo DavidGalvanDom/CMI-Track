@@ -1,0 +1,168 @@
+﻿@model CMI.Track.Web.Models.Proyecto
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Actualizar  Proyecto</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Actualiza", "Proyecto", FormMethod.Post, new { id = "ActualizaProyectoForm", name = "ActualizaProyectoForm", @class = "form-horizontal" }))
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.nombreProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.nombreProyecto, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    <label class="col-sm-1 control-label">Id</label>
+                    <div class="col-sm-2">
+                        <p class="form-control">@Html.DisplayFor(model => model.id)</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.fechaInicio, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='dtpFechaInicio'>
+                            @Html.TextBoxFor(model => model.fechaInicio, new { @class = "form-control", maxlength = 10 })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+
+                    @Html.LabelFor(model => model.fechaFin, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class='input-group date' id='dtpFechaFin'>
+                            @Html.TextBoxFor(model => model.fechaFin, new { @class = "form-control", maxlength = 10 })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.codigoProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.codigoProyecto, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                    @Html.LabelFor(model => model.fechaCreacion, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class='input-group date'>
+                            @Html.TextBoxFor(model => model.fechaCreacion, new { @class = "form-control", maxlength = 10 })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.revisionProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.revisionProyecto, new { @class = "form-control", maxlength = 3, @readonly = "readonly" })
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                    @Html.LabelFor(model => model.fechaRevision, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class="input-group date" id="dtpFechaInicio">
+                            @Html.TextBoxFor(model => model.fechaRevision, new { @class = "form-control", maxlength = 10, @readonly = "readonly" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idCategoria, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-5">
+                        <select id="idCategoria" name="idCategoria" class="form-control" required="required"></select>
+                    </div>
+
+                    @Html.LabelFor(model => model.estatusProyecto, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.estatusProyecto,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                        "Value", "Text"), new { @class = "form-control", required = "required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="nombreCliente">Cliente</label>
+                    <div class="col-sm-5">
+                        <div class="input-group">
+                            <p id="nombreCliente" name="nombreCliente" class="form-control" placeholder="Nombre cliente">
+                                @Model.nombreCliente
+                            </p>
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button" id="btnBuscarCliente" name="btnBuscarCliente"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-1">
+                        <span class="fa fa-user fa-3x"></span>
+                    </div>
+                    <div class="col-sm-2"></div>
+
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-2">
+                    </div>
+                    <div class="col-sm-5">
+                        <span id="contacto" placeholder="Contacto" class="form-control">@Model.contactoCliente</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <span id="direccion" placeholder="Direccion" class="form-control">@Model.direccionCliente</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(model => model.infoGeneral, new { @class = "form-control", maxlength = 250,
+                                        onkeypress="return ( this.value.length < 250 );", rows="4" })
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Plano</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                    Archivo&hellip; <input type="file" id="fPlanoAct" name="fPlanoAct">
+                                </span>
+                            </span>
+                            <input type="text" class="form-control" readonly value="@Model.nombreArchivo">
+                        </div>
+                    </div>
+                </div>
+
+                @Html.HiddenFor(model => model.id)
+                @Html.HiddenFor(model => model.idCliente)
+                @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.archivoPlanoProyecto)
+                <input type="hidden" id="categoria" name="categoria" value="@Model.idCategoria" />
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarProyecto">Actualizar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

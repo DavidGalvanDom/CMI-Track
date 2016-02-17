@@ -81,6 +81,10 @@ namespace CMI.Track.Web.Controllers
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
                         nombreArchivo = Path.GetFileName(file);
+                        if (nombreArchivo.Length > 67)
+                            nombreArchivo = nombreArchivo.Substring(nombreArchivo.Length - 67, 67);
+
+                        nombreArchivo = string.Format("{0}-{1}", Guid.NewGuid().ToString("N"), nombreArchivo);
                         var path = Path.Combine(pathArchivo, nombreArchivo);
                         using (var fileStream = System.IO.File.Create(path))
                         {
@@ -111,16 +115,19 @@ namespace CMI.Track.Web.Controllers
             {
                 try
                 {
-                    if (pobjModelo.archivoPlanoProyecto.Trim() != "")
-                        if (!System.IO.File.Exists(pathArchivoTem + pobjModelo.archivoPlanoProyecto)) {
+                    if (pobjModelo.archivoPlanoProyecto != null)
+                    {
+                        if (!System.IO.File.Exists(pathArchivoTem + pobjModelo.archivoPlanoProyecto))
+                        {
                             return Json(new { Success = false, Message = "No se encontro el archivo en el servidor " });
                         }
 
-                    if (System.IO.File.Exists(pathArchivo + pobjModelo.archivoPlanoProyecto))                    
-                        System.IO.File.Delete(pathArchivo + pobjModelo.archivoPlanoProyecto);
-                    
+                        if (System.IO.File.Exists(pathArchivo + pobjModelo.archivoPlanoProyecto))
+                            System.IO.File.Delete(pathArchivo + pobjModelo.archivoPlanoProyecto);
 
-                    System.IO.File.Move(pathArchivoTem + pobjModelo.archivoPlanoProyecto, pathArchivo + pobjModelo.archivoPlanoProyecto);
+                        System.IO.File.Move(pathArchivoTem + pobjModelo.archivoPlanoProyecto, pathArchivo + pobjModelo.archivoPlanoProyecto);
+                    }
+
                     var idProyecto = ProyectoData.Guardar(pobjModelo);
                     return Json(new { Success = true, id = idProyecto, Message = "Se guardo correctamente el Proyecto " });                    
                 }
@@ -133,5 +140,82 @@ namespace CMI.Track.Web.Controllers
             return Json(new { Success = false, Message = "La informacion del proyecto esta incompleta" });
         }
 
+        /// <summary>
+        /// Carga el formulario para actulizar el proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Actualiza(int idProyecto, string revision)
+        {
+            var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
+            return PartialView("_Actualiza", objProyecto);            
+        }
+
+        /// <summary>
+        /// Actualiza la informacion del proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public ActionResult Actualiza(Models.Proyecto pobjModelo)
+        {
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString();
+            string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (pobjModelo.archivoPlanoProyecto != null)
+                    {
+                        if (System.IO.File.Exists(pathArchivoTem + pobjModelo.archivoPlanoProyecto))
+                        {
+                            if (System.IO.File.Exists(pathArchivo + pobjModelo.archivoPlanoProyecto))
+                                System.IO.File.Delete(pathArchivo + pobjModelo.archivoPlanoProyecto);
+
+                            System.IO.File.Move(pathArchivoTem + pobjModelo.archivoPlanoProyecto, pathArchivo + pobjModelo.archivoPlanoProyecto);                            
+                        }
+                    }
+
+                     ProyectoData.Actualiza(pobjModelo);
+                     return Json(new { Success = true, id = pobjModelo.id.ToString() , Message = "Se actualizo la informacion correctamente del Proyecto " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "La informacion del proyecto esta incompleta" });          
+        }
+
+        /// <summary>
+        /// Carga el formulario para actulizar el proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Clonar(int idProyecto, string revision)
+        {
+            var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
+            return PartialView("_Nuevo", objProyecto);
+        }
+
+
+        /// <summary>
+        /// Borra el Usuario
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Borrar(int idProyecto, string revision)
+        {
+            try
+            {
+                ProyectoData.Borrar(idProyecto, revision);
+                return Json(new { Success = true, Message = "Se borro correctamente el Proyecto." });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }

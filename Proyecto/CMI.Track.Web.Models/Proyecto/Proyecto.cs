@@ -46,6 +46,8 @@ namespace CMI.Track.Web.Models
         
         [Display(Name = "Archivo plano")]
         public string archivoPlanoProyecto { get; set; }
+               
+        public string nombreArchivo { get; set; }
 
         [Required(ErrorMessage = "*")]
         [StringLength(250)]
@@ -73,5 +75,12 @@ namespace CMI.Track.Web.Models
         public int idEstatus { get; set; }
 
         public int usuarioCreacion { get; set; }
+               
+        public string contactoCliente { get; set; }
+
+        public string direccionCliente { get; set; }
+
+        public string nombreCliente { get; set; }
+
     }
 }

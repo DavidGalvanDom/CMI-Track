@@ -903,6 +903,7 @@
     <Content Include="Views\RutaFabricacion\_Actualiza.cshtml" />
     <Content Include="Views\RutaFabricacion\_Nuevo.cshtml" />
     <Content Include="Views\Cliente\_buscarCliente.cshtml" />
+    <Content Include="Views\Proyecto\_Actualiza.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

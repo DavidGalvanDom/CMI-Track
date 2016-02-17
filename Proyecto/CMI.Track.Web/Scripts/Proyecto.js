@@ -14,16 +14,14 @@ var Proyecto = {
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
-        this.Eventos();
-        this.ValidaPermisos();
-
-        $('.btnNuevo').show();
+        this.Eventos();       
+        this.ValidaPermisos();  
     },
     Eventos: function () {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);                
         $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
-        $(document).on("click", '.btn-ActualizarProyecto', that.onActualizar);
+        $(document).on("click", '.btn-ActualizarProyecto', that.onSubirArchivo);
         
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
@@ -36,8 +34,7 @@ var Proyecto = {
 
         $(document).on('click', '.accrowClonar', function () {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
-        });
-              
+        });              
     },
     onGuardar: function (btn) {
         if ($("form").valid()) {
@@ -63,8 +60,8 @@ var Proyecto = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }        
     },
-    onActualizar: function (e) {
-        var btn = this;
+    onActualizar: function (btn) {
+        
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -87,9 +84,10 @@ var Proyecto = {
         }
     },
     onSubirArchivo: function () { 
-        var files = document.getElementById('fPlano').files,
+        var filesName = Proyecto.activeForm === '#NuevoProyectoForm' ? 'fPlano' : 'fPlanoAct',
             btn = this,
-            form = Proyecto.activeForm;
+            form = Proyecto.activeForm,
+            files;
 
         //Agrega la clase de mandatorio cuando no ha seleccionado un cliente.
         if ($(form + ' #idCliente').val() === "0") {
@@ -98,13 +96,13 @@ var Proyecto = {
 
         if ($("form").valid()) { 
             CMI.botonMensaje(true, btn, 'Guardar');
+            files = document.getElementById(filesName).files;
             if (files.length > 0) {
                 if (window.FormData !== undefined) {
                     var data = new FormData();
                     for (var count = 0; count < files.length; count++) {
                         data.append(files[count].name, files[count]);
                     }
-
                     $.ajax({
                         type: "POST",
                         url: '/Proyecto/SubirArchivo',
@@ -115,7 +113,13 @@ var Proyecto = {
                             
                             if (result.Success === true) {
                                 $(Proyecto.activeForm + ' #archivoPlanoProyecto').val(result.Archivo);
-                                Proyecto.onGuardar(btn);
+
+                                if (Proyecto.activeForm !== '#NuevoProyectoForm') {
+                                    Proyecto.onActualizar(btn);
+                                } else {
+                                    Proyecto.onGuardar(btn);
+                                }
+                                   
                             } else {
                                 $(Proyecto.activeForm + ' #archivoPlanoProyecto').val('');
                                 CMI.DespliegaErrorDialogo(result.Message);
@@ -134,6 +138,13 @@ var Proyecto = {
                 } else {
                     CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
                     CMI.botonMensaje(false, btn, 'Guardar');
+                }
+            } else {               
+                if (Proyecto.activeForm !== '#NuevoProyectoForm') {
+                    Proyecto.onActualizar(btn);
+                } else {
+                    $(Proyecto.activeForm + ' #archivoPlanoProyecto').val('');
+                    Proyecto.onGuardar(btn);
                 }
             }
         }
@@ -177,18 +188,18 @@ var Proyecto = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos
-
-            $('#btnBuscarCliente').click(Proyecto.onBuscarCliente);
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
             Proyecto.activeForm = '#NuevoProyectoForm';
+            $(Proyecto.activeForm + ' #btnBuscarCliente').click(Proyecto.onBuscarCliente);
             Proyecto.EventoNombreArchivo();
             Proyecto.IniciaDateControls();
-            Proyecto.CargarColeccionCategorias();            
+            Proyecto.CargarColeccionCategorias();
         });
     },
     Editar: function (id) {
         CMI.CierraMensajes();
-        var url = contextPath + "Proyecto/Actualiza/" + id; // El url del controlador
+        var proyecto = Proyecto.colProyectos.get(id);
+        var url = contextPath + "Proyecto/Actualiza?idProyecto=" + proyecto.attributes.idProyecto + '&revision=' + proyecto.attributes.Revision; // El url del controlador
         $.get(url, function (data) {
             $('#actualiza-Proyecto').html(data);
             $('#actualiza-Proyecto').modal({
@@ -198,18 +209,24 @@ var Proyecto = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Proyecto.activeForm = '#ActualizaProyectoForm';
+            $(Proyecto.activeForm + ' #btnBuscarCliente').click(Proyecto.onBuscarCliente);
             Proyecto.EventoNombreArchivo();
+            Proyecto.IniciaDateControls();
             Proyecto.CargarColeccionCategorias();
         });
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
-        if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
+        var proyecto = Proyecto.colProyectos.get(id);
+        if (confirm('¿Esta seguro que desea borrar el proyecto (' + proyecto.attributes.NombreProyecto + ') ?') === false) return;
         var url = contextPath + "Proyecto/Borrar"; // El url del controlador
-        $.post(url, { id: id }, function (data) {
+        $.post(url, {
+            idProyecto: proyecto.attributes.idProyecto,
+            revision: proyecto.attributes.Revision
+        }, function (data) {
             if (data.Success == true) {
                 Proyecto.colProyectos.remove(id);
-                CMI.DespliegaInformacion(data.Message + "  id:" + id);
+                CMI.DespliegaInformacion(data.Message + "  " + proyecto.attributes.NombreProyecto);
             }
             else {
                 CMI.DespliegaError(data.Message);
@@ -218,7 +235,8 @@ var Proyecto = {
     },
     Clonar: function (id) {
         CMI.CierraMensajes();
-        var url = contextPath + "Proyecto/Clonar/" + id; // El url del controlador
+        var proyecto = Proyecto.colProyectos.get(id);
+        var url = contextPath + "Proyecto/Clonar?idProyecto=" + proyecto.attributes.idProyecto + '&revision=' + proyecto.attributes.Revision; // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-Proyecto').html(data);
             $('#nuevo-Proyecto').modal({
@@ -228,8 +246,10 @@ var Proyecto = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Proyecto.activeForm = '#NuevoProyectoForm';
-            Proyecto.CargarColeccionCategorias();
-            Proyecto.CargarColeccionClientes();
+            $(Proyecto.activeForm + ' #btnBuscarCliente').click(Proyecto.onBuscarCliente);
+            Proyecto.EventoNombreArchivo();
+            Proyecto.IniciaDateControls();
+            Proyecto.CargarColeccionCategorias();                        
         });
     },   
     CargarColeccionCategorias: function () {
@@ -260,35 +280,6 @@ var Proyecto = {
         });
 
         $(form + ' #idCategoria').val($(form + ' #categoria').val());
-    },
-    CargarColeccionClientes: function () {
-        var form = Proyecto.activeForm;
-        if (Proyecto.colProcesos.length < 1) {
-            var url = contextPath + "Proceso/CargaProceso/1"; // 1 indica que solo activos
-            $.getJSON(url, function (data) {
-                Proyecto.colProcesos = data;
-                Proyecto.CargaListaProcesos(form);
-            }).fail(function (e) {
-                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los procesos");
-            });
-        } else {
-            Proyecto.CargaListaProcesos(form);
-        }
-    },
-    CargaListaProcesos: function (form) {
-        var optionItem = '<option> </option>',
-            selectDestino = $(form + ' #idProcesoDestino').empty(),
-            selectOrigen = $(form + ' #idProcesoOrigen').empty();
-
-        selectDestino.append(optionItem);
-        selectOrigen.append(optionItem);
-
-        $.each(Proyecto.colDepartamentos, function (i, item) {
-            optionItem = '<option value="' + item.id + '">'
-                                     + item.Nombre + '</option>';
-            selectDestino.append(optionItem);
-            selectOrigen.append(optionItem);
-        });
     },
     ValidaPermisos: function () {
 
