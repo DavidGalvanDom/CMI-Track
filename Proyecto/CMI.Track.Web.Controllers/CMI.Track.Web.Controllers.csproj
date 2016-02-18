@@ -51,6 +51,7 @@
     <Compile Include="CategoriaController.cs" />
     <Compile Include="ClienteController.cs" />
     <Compile Include="DepartamentoController.cs" />
+    <Compile Include="EtapaController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="GrupoController.cs" />
     <Compile Include="HomeController.cs" />

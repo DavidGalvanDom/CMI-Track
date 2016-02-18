@@ -94,8 +94,8 @@
                     <div class="col-sm-3">
                         @Html.DropDownListFor(model => model.estatusProyecto,
                                                                     new SelectList(new[]{
-                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
-                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                                                  new SelectListItem{ Text="ABIERTO", Value="10"},
+                                                                                  new SelectListItem{ Text="CERRADO", Value="11"}},
                                                         "Value", "Text"), new { @class = "form-control", required = "required" })
                     </div>
                 </div>

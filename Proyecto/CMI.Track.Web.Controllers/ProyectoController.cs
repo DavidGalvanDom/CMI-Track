@@ -38,7 +38,26 @@ namespace CMI.Track.Web.Controllers
         {
             try
             {
-                var lstProyectos = ProyectoData.CargaProyectos();
+                var lstProyectos = ProyectoData.CargaProyectos(null);
+
+                return (Json(lstProyectos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Se cargan solo los proyectos que esten activos.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaProyectosActivos()
+        {
+            try
+            {
+                var lstProyectos = ProyectoData.CargaProyectos(10); //10 abierto
 
                 return (Json(lstProyectos, JsonRequestBehavior.AllowGet));
             }
@@ -216,6 +235,16 @@ namespace CMI.Track.Web.Controllers
             {
                 return Json(new { Success = false, Message = exp.Message });
             }
+        }
+
+        /// <summary>
+        /// Despliega ventana emergente con el grid de proyectos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BuscarProyecto()
+        {
+            return PartialView("_buscarProyecto");
         }
     }
 }

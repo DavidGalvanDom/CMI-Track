@@ -27,12 +27,13 @@ namespace CMI.Track.Web.Data
         public static Proyecto CargaProyecto (int idProyecto, string revision)
         {
             Proyecto proyecto = new Proyecto();
-            object[] paramArray = new object[2];
+            object[] paramArray = new object[3];
 
             try
             {
                 paramArray[0] = idProyecto;
                 paramArray[1] = revision;
+                paramArray[2] = null;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -80,14 +81,15 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de Proyectos
         /// </summary>
         /// <returns>Lista Usuarios</returns>
-        public static List<Models.ListaProyectos> CargaProyectos()
+        public static List<Models.ListaProyectos> CargaProyectos(int? idEstatus)
         {
             var lstProyectos = new List<Models.ListaProyectos>();
-            object[] paramArray = new object[2];
+            object[] paramArray = new object[3];
             try
             {
                 paramArray[0] = null;
                 paramArray[1] = null;
+                paramArray[2] = idEstatus;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 

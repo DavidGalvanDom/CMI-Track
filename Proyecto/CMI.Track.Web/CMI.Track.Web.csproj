@@ -128,6 +128,7 @@
     <Content Include="Scripts\Cliente.js" />
     <Content Include="Scripts\ClienteBuscar.js" />
     <Content Include="Scripts\Departamento.js" />
+    <Content Include="Scripts\Etapa.js" />
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
@@ -816,6 +817,7 @@
     <Content Include="Scripts\OrigenRequisicion.js" />
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
+    <Content Include="Scripts\ProyectoBuscar.js" />
     <Content Include="Scripts\RutaFabricacion.js" />
     <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\TipoCalidad.js" />
@@ -904,6 +906,8 @@
     <Content Include="Views\RutaFabricacion\_Nuevo.cshtml" />
     <Content Include="Views\Cliente\_buscarCliente.cshtml" />
     <Content Include="Views\Proyecto\_Actualiza.cshtml" />
+    <Content Include="Views\Etapa\Index.cshtml" />
+    <Content Include="Views\Proyecto\_buscarProyecto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

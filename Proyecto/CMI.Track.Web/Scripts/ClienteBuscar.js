@@ -4,16 +4,10 @@
 
 var ClienteBuscar = {    
     colClientes: {},
-    gridClientes: {},
     parent : {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
-        this.CargaGrid();
-        this.Eventos();        
-    },
-    Eventos: function () {
-        var that = this;        
-        $(document).on("click", '.btn-clienteSeleccionado', that.onSeleccionar);
+        this.CargaGrid();           
     },
     onSeleccionar: function (idRow) {
         var rowSelected = ClienteBuscar.colClientes.get(idRow);
