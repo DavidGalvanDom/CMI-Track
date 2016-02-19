@@ -16,26 +16,44 @@
     <div class="form-group">
         <div class="col-sm-4">
             <div class="input-group">
-                <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto"> </p>
+                <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
                 </span>
             </div>
-            <input type="hidden" id="idProyecto" name="idProyecto"  />
+            <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="Revision" name="Revision"  class="form-control"></span>
+            <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Revision</span>
         </div>
         <div class="col-sm-2">
-            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control"></span>
+            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaInicio" placeholder="FechaInicio" class="form-control"></span>
+            <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaFin" placeholder="FechaFin" class="form-control"></span>
+            <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
         </div>
     </div>    
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-Etapas" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-Etapa"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoEtapaLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Etapa"
+     tabindex="-1" role="dialog"
+     aria-labelledby="actulizaEtapaLabel">
 </div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-Proyecto"

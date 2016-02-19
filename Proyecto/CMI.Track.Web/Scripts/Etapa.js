@@ -10,8 +10,7 @@ var Etapa = {
     activeForm: '',   
     gridEtapas: {},
     Inicial: function () {
-        $.ajaxSetup({ cache: false });
-        //this.CargaGrid();
+        $.ajaxSetup({ cache: false });        
         this.Eventos();
         this.ValidaPermisos();
     },
@@ -40,9 +39,12 @@ var Etapa = {
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
+            $('#NuevaEtapaForm #idProyecto').val($('#idProyectoSelect').val());
+            $('#NuevaEtapaForm #revisionProyecto').val($('#RevisionPro').text());
+                        
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Etapa/Nuevo",
-                $("#NuevoEtapaForm *").serialize(),
+                $("#NuevaEtapaForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
                         Etapa.colEtapas.add(Etapa.serializaEtapa(data.id));
@@ -105,8 +107,8 @@ var Etapa = {
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
                              FechaInicio, FechaFin) {        
-        $('#idProyecto').val(idProyecto);
-        $('#Revision').text(Revision);
+        $('#idProyectoSelect').val(idProyecto);
+        $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
         $('#CodigoProyecto').text(CodigoProyecto);
         $('#FechaInicio').text(FechaInicio);
@@ -114,6 +116,13 @@ var Etapa = {
         $('#nombreProyecto').removeClass('input-validation-error');
         ///Se cierra la ventana de Proyectos
         $('#buscar-Proyecto').modal('hide');
+
+        //Se carga el grid de Etapas asignadas al proyecto
+        Etapa.CargaGrid();
+
+        ///Muestra el boton de nueva Etapa
+        if (Etapa.accEscritura === true)
+            $('.btnNuevo').show();
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -125,10 +134,8 @@ var Etapa = {
                 keyboard: true
             }, 'show');
             CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            Etapa.activeForm = '#NuevoEtapaForm';
-            $(Etapa.activeForm + ' #btnBuscarCliente').click(Etapa.onBuscarCliente);            
-            Etapa.IniciaDateControls();
-            Etapa.CargarColeccionCategorias();
+            Etapa.activeForm = '#NuevaEtapaForm';
+            Etapa.IniciaDateControls();            
         });
     },
     Editar: function (id) {
@@ -144,9 +151,7 @@ var Etapa = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Etapa.activeForm = '#ActualizaEtapaForm';
-            $(Etapa.activeForm + ' #btnBuscarCliente').click(Etapa.onBuscarCliente);
             Etapa.IniciaDateControls();
-            Etapa.CargarColeccionCategorias();
         });
     },
     Borrar: function (id) {
@@ -180,38 +185,44 @@ var Etapa = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Etapa.activeForm = '#NuevoEtapaForm';
-            $(Etapa.activeForm + ' #btnBuscarCliente').click(Etapa.onBuscarCliente);
             Etapa.IniciaDateControls();
-            Etapa.CargarColeccionCategorias();
+        });
+    },
+    IniciaDateControls: function () {
+        var form = Etapa.activeForm;
+        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'MM/DD/YYYY' });
+        $(form + ' #dtpFechaFin').datetimepicker({
+            useCurrent: false,
+            format: 'MM/DD/YYYY'
+        });
+        $(form + ' #dtpFechaInicio').on("dp.change", function (e) {
+            $('#dtpFechaFin').data("DateTimePicker").minDate(e.date);
+        });
+        $(form + ' #dtpFechaFin').on("dp.change", function (e) {
+            $('#dtpFechaInicio').data("DateTimePicker").maxDate(e.date);
         });
     },
     ValidaPermisos: function () {
-
         var permisos = localStorage.modPermisos,
             modulo = Etapa;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
-
-        if (modulo.accEscritura === true)
-            $('.btnNuevo').show();
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;       
     },
     serializaEtapa: function (id) {
         var form = Etapa.activeForm;
         return ({
-            'idEtapa': id,
             'NombreEtapa': $(form + ' #nombreEtapa').val().toUpperCase(),
-            'Revision': $(form + ' #revisionEtapa').val().toUpperCase(),
-            'CodigoEtapa': $(form + ' #codigoEtapa').val().toUpperCase(),
+            'Revision': $(form + ' #revisionEtapa').text(),
             'FechaInicio': $(form + ' #fechaInicio').val(),
             'FechaFin': $(form + ' #fechaFin').val(),
             'nombreEstatus': $('#estatusEtapa option:selected').text().toUpperCase(),
-            'id': id + $('#revisionEtapa').val().toUpperCase()
+            'id': id 
         });
     },
-    CargaGrid: function () {
-        var url = contextPath + "Etapa/CargaEtapas"; // El url del controlador
+    CargaGrid: function () {      
+        var url = contextPath + "Etapa/CargaEtapas?idProyecto=" + $('#idProyectoSelect').val() + "&revision=" + $('#RevisionPro').text(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -219,7 +230,7 @@ var Etapa = {
             var bolFilter = Etapa.colEtapas.length > 0 ? true : false;
             if (bolFilter) {
                 gridEtapas = new bbGrid.View({
-                    container: $('#bbGrid-clear'),
+                    container: $('#bbGrid-Etapas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: true,
@@ -231,9 +242,7 @@ var Etapa = {
                     collection: Etapa.colEtapas,
                     seguridad: Etapa.accSeguridad,
                     colModel: [{ title: 'Id', name: 'idEtapa', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre Etapa', name: 'NombreEtapa', filter: true, filterType: 'input' },
-                               { title: 'Revision', name: 'Revision', filter: true, filterType: 'input' },
-                               { title: 'Codigo', name: 'CodigoEtapa', filter: true, filterType: 'input' },
+                               { title: 'Nombre Etapa', name: 'NombreEtapa', filter: true, filterType: 'input' },                             
                                { title: 'Fecha Inicio', name: 'FechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'FechaFin', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
@@ -241,15 +250,14 @@ var Etapa = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Etapas registradas");
-                $('#bbGrid-clear')[0].innerHTML = "";
+                CMI.DespliegaInformacion("No se encontraron Etapas registradas para el proyecto seleccionado.");
+                $('#bbGrid-Etapas')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion de las Etapas");
         });
-    }
-   
+    }   
 };
 
 $(function () {

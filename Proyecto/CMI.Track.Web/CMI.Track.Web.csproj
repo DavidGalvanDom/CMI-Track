@@ -129,6 +129,7 @@
     <Content Include="Scripts\ClienteBuscar.js" />
     <Content Include="Scripts\Departamento.js" />
     <Content Include="Scripts\Etapa.js" />
+    <Content Include="Scripts\EtapasBuscar.js" />
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
@@ -908,6 +909,9 @@
     <Content Include="Views\Proyecto\_Actualiza.cshtml" />
     <Content Include="Views\Etapa\Index.cshtml" />
     <Content Include="Views\Proyecto\_buscarProyecto.cshtml" />
+    <Content Include="Views\Etapa\_Actualiza.cshtml" />
+    <Content Include="Views\Etapa\_Nuevo.cshtml" />
+    <Content Include="Views\Etapa\_buscarEtapa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
