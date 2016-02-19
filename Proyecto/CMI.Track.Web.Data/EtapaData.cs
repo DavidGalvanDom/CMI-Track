@@ -45,10 +45,10 @@ namespace CMI.Track.Web.Data
                         lstEtapas.Add(new Models.ListaEtapas()
                         {
                             id = Convert.ToInt32(dataReader["idEtapa"]),
-                            nombreEtapa = Convert.ToString(dataReader["nombreProyecto"]),                            
+                            nombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),                            
                             nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]),
-                            fechaFin = Convert.ToString(dataReader["fechaFinProyecto"]),
-                            fechaInicio = Convert.ToString(dataReader["fechaInicioProyecto"])
+                            fechaFin = Convert.ToString(dataReader["fechaFinEtapa"]),
+                            fechaInicio = Convert.ToString(dataReader["fechaInicioEtapa"])
                         });
                     }
                 }

@@ -1,7 +1,6 @@
 ﻿//js de catalogo de Etapas.
 //David Galvan
 //17/Febrero/2016
-
 var Etapa = {
     accClonar: false,
     accEscritura: false,
@@ -241,10 +240,10 @@ var Etapa = {
                     borrar: Etapa.accBorrar,
                     collection: Etapa.colEtapas,
                     seguridad: Etapa.accSeguridad,
-                    colModel: [{ title: 'Id', name: 'idEtapa', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre Etapa', name: 'NombreEtapa', filter: true, filterType: 'input' },                             
-                               { title: 'Fecha Inicio', name: 'FechaInicio', filter: true, filterType: 'input' },
-                               { title: 'Fecha Fin', name: 'FechaFin', filter: true, filterType: 'input' },
+                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
+                               { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
+                               { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
