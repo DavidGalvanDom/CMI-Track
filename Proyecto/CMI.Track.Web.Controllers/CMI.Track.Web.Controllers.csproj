@@ -57,6 +57,7 @@
     <Compile Include="HomeController.cs" />
     <Compile Include="MaterialController.cs" />
     <Compile Include="OrigenRequisicionController.cs" />
+    <Compile Include="PlanosMontajeController.cs" />
     <Compile Include="PrincipalController.cs" />
     <Compile Include="ProcesoController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

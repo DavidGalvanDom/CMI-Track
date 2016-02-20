@@ -24,8 +24,9 @@ namespace CMI.Track.Web.Data
         /// <param name="idProyecto"></param>
         /// <param name="revision"></param>
         /// <param name="idEstatus"></param>
-        /// <returns>Lista Usuarios</returns>
-        public static List<Models.ListaEtapas> CargaEtapas(int idProyecto, string revision ,int? idEstatus)
+        /// <returns>Lista de Etapas</returns>
+        public static List<Models.ListaEtapas> CargaEtapas(int idProyecto, string revision,
+                                                            int? idEstatus)
         {
             var lstEtapas = new List<Models.ListaEtapas>();
             object[] paramArray = new object[4];
@@ -57,8 +58,52 @@ namespace CMI.Track.Web.Data
             {
                 throw new ApplicationException(exp.Message, exp);
             }
-
             return lstEtapas;
+        }
+
+        /// <summary>
+        /// Se carga el listado de Etapas
+        /// </summary>
+        /// <param name="idProyecto"></param>        
+        /// <returns>Etapa</returns>
+        public static Models.Etapa CargaEtapa(int idEtapa)
+        {
+            Etapa objEtapa = new Models.Etapa();
+            object[] paramArray = new object[4];
+            try
+            {
+                paramArray[0] = null;
+                paramArray[1] = null;
+                paramArray[2] = idEtapa;
+                paramArray[3] = null;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarEtapas", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        objEtapa = new Models.Etapa()
+                        {
+                            id = Convert.ToInt32(dataReader["idEtapa"]),
+                            nombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),                            
+                            fechaFin = Convert.ToString(dataReader["fechaFinEtapa"]),
+                            fechaInicio = Convert.ToString(dataReader["fechaInicioEtapa"]),
+                            infoGeneral = Convert.ToString(dataReader["infGeneralEtapa"]),
+                            idProyecto = Convert.ToInt32(dataReader["idProyecto"]),
+                            revisionProyecto = Convert.ToString(dataReader["revisionProyecto"]),
+                            fechaCreacion = Convert.ToString(dataReader["fechaCreacion"]),
+                            estatusEtapa = Convert.ToInt32(dataReader["estatusEtapa"])
+                        };                        
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return objEtapa;
         }
 
         /// <summary>
@@ -90,5 +135,57 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
         }
+        
+        /// <summary>
+        /// Se Actualiza la informacion de una Etapa
+        /// </summary>
+        /// <param name="pobjModelo">Datos de la Etapa</param>
+        /// <returns>value</returns>
+        public static string Actualizar(Models.Etapa pobjModelo)
+        {
+            object[] paramArray = new object[6];
+            try
+            {
+                paramArray[0] = pobjModelo.estatusEtapa;
+                paramArray[1] = pobjModelo.nombreEtapa.ToUpper();
+                paramArray[2] = pobjModelo.fechaInicio.ToUpper();
+                paramArray[3] = pobjModelo.fechaFin.ToUpper();                
+                paramArray[4] = pobjModelo.infoGeneral.ToUpper();
+                paramArray[5] = pobjModelo.id;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                var result = db.ExecuteNonQuery("usp_ActualizarEtapa", paramArray);
+
+                return (result.ToString());
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+        }
+
+        /// <summary>
+        /// Se borra de la base de datos el proyecto
+        /// </summary>
+        /// <param name="idEtapa"></param>
+        /// <returns></returns>
+        public static string Borrar(int idEtapa)
+        {
+            object[] paramArray = new object[1];
+            try
+            {
+                paramArray[0] = idEtapa;
+                
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                var result = db.ExecuteNonQuery("usp_RemueveEtapa", paramArray);
+
+                return (result.ToString());
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+        }
+
     }
 }

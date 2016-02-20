@@ -1,12 +1,13 @@
-﻿@{
-    ViewBag.Title = "Etapas";
+﻿
+@{
+    ViewBag.Title = "Planos de Montaje";
 }
 
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <small>Lista</small> Etapas
-            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nueva</button>
+            <small>Lista</small> Planos de Montaje
+            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
         </h1>
     </div>
     <!-- /.col-lg-12 -->
@@ -44,20 +45,20 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div id="bbGrid-Etapas" class="col-lg-12">
+        <div id="bbGrid-PlanosMontaje" class="col-lg-12">
             <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
         </div>
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="nuevo-Etapa"
+<div class="modal fade bs-example-modal-lg" id="nuevo-PlanosMontaje"
      tabindex="-1" role="dialog"
-     aria-labelledby="nuevoEtapaLabel">
+     aria-labelledby="nuevoPlanosMontajeLabel">
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="actualiza-Etapa"
+<div class="modal fade bs-example-modal-lg" id="actualiza-PlanosMontaje"
      tabindex="-1" role="dialog"
-     aria-labelledby="actulizaEtapaLabel">
+     aria-labelledby="actulizaPlanosMontajeLabel">
 </div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-Proyecto"
@@ -67,5 +68,9 @@
 
 
 @section Scripts {
-    <script src="~/Scripts/Etapa.js"></script>
+    <script src="~/Scripts/PlanosMontaje.js"></script>
 }
+
+
+
+

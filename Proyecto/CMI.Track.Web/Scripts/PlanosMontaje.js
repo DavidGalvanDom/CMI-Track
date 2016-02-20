@@ -1,15 +1,15 @@
-﻿//js de catalogo de Etapas.
+﻿//js de catalogo de Planos de Montaje.
 //David Galvan
 //17/Febrero/2016
 
-var Etapa = {
+var PlanosMontaje = {
     accClonar: false,
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
-    activeForm: '',   
-    gridEtapas: {},
-    colEtapas : {},
+    activeForm: '',
+    gridPlanosMontajes: {},
+    colPlanosMontajes: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -20,7 +20,7 @@ var Etapa = {
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
-        $(document).on("click", '.btn-ActualizarEtapa', that.onActualizar);
+        $(document).on("click", '.btn-ActualizarPlanosMontaje', that.onActualizar);
 
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
@@ -40,19 +40,19 @@ var Etapa = {
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
-            $('#NuevaEtapaForm #idProyecto').val($('#idProyectoSelect').val());
-            $('#NuevaEtapaForm #revisionProyecto').val($('#RevisionPro').text());
-                        
+            $('#NuevaPlanosMontajeForm #idProyecto').val($('#idProyectoSelect').val());
+            $('#NuevaPlanosMontajeForm #revisionProyecto').val($('#RevisionPro').text());
+
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "Etapa/Nuevo",
-                $("#NuevaEtapaForm *").serialize(),
+            $.post(contextPath + "PlanosMontaje/Nuevo",
+                $("#NuevaPlanosMontajeForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        Etapa.colEtapas.add(Etapa.serializaEtapa(data.id));
-                        CMI.DespliegaInformacion('El Etapa fue guardado con el Id: ' + data.id);
-                        $('#nuevo-Etapa').modal('hide');
-                        if (Etapa.colEtapas.length === 1) {
-                            Etapa.CargaGrid();
+                        PlanosMontaje.colPlanosMontajes.add(PlanosMontaje.serializaPlanosMontaje(data.id));
+                        CMI.DespliegaInformacion('El PlanosMontaje fue guardado con el Id: ' + data.id);
+                        $('#nuevo-PlanosMontaje').modal('hide');
+                        if (PlanosMontaje.colPlanosMontajes.length === 1) {
+                            PlanosMontaje.CargaGrid();
                         }
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
@@ -69,13 +69,13 @@ var Etapa = {
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "Etapa/Actualiza",
-                $("#ActualizaEtapaForm *").serialize(),
+            $.post(contextPath + "PlanosMontaje/Actualiza",
+                $("#ActualizaPlanosMontajeForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        $('#actualiza-Etapa').modal('hide');
-                        Etapa.colEtapas.add(Etapa.serializaEtapa(data.id), { merge: true });
-                        CMI.DespliegaInformacion('El Etapa fue Actualizado. Id:' + data.id);
+                        $('#actualiza-PlanosMontaje').modal('hide');
+                        PlanosMontaje.colPlanosMontajes.add(PlanosMontaje.serializaPlanosMontaje(data.id), { merge: true });
+                        CMI.DespliegaInformacion('El PlanosMontaje fue Actualizado. Id:' + data.id);
                     }
                     else {
                         CMI.DespliegaErrorDialogo(data.Message);
@@ -86,7 +86,7 @@ var Etapa = {
         } else {
             CMI.botonMensaje(false, btn, 'Actualizar');
         }
-    },   
+    },
     onBuscarProyecto: function () {
         var btn = this;
         $(btn).attr("disabled", "disabled");
@@ -99,7 +99,7 @@ var Etapa = {
                 keyboard: true
             }, 'show');
             ProyectoBuscar.Inicial();
-            ProyectoBuscar.parent = Etapa;
+            ProyectoBuscar.parent = PlanosMontaje;
             $(btn).removeAttr("disabled");
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
@@ -107,7 +107,7 @@ var Etapa = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {        
+                             FechaInicio, FechaFin) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -116,77 +116,77 @@ var Etapa = {
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
         $('#buscar-Proyecto').modal('hide');
-       
-        //Se carga el grid de Etapas asignadas al proyecto
-        $('#bbGrid-Etapas')[0].innerHTML = "";
-        Etapa.CargaGrid();
 
-        ///Muestra el boton de nueva Etapa
-        if (Etapa.accEscritura === true)
+        //Se carga el grid de PlanosMontajes asignadas al proyecto
+        $('#bbGrid-PlanosMontajes')[0].innerHTML = "";
+        PlanosMontaje.CargaGrid();
+
+        ///Muestra el boton de nueva PlanosMontaje
+        if (PlanosMontaje.accEscritura === true)
             $('.btnNuevo').show();
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Etapa/Nuevo"; // El url del controlador      
+        var url = contextPath + "PlanosMontaje/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-Etapa').html(data);
-            $('#nuevo-Etapa').modal({
+            $('#nuevo-PlanosMontaje').html(data);
+            $('#nuevo-PlanosMontaje').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
             CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            Etapa.activeForm = '#NuevaEtapaForm';
-            Etapa.IniciaDateControls();            
+            PlanosMontaje.activeForm = '#NuevaPlanosMontajeForm';
+            PlanosMontaje.IniciaDateControls();
         });
     },
     Editar: function (id) {
         CMI.CierraMensajes();
-        var url = contextPath + "Etapa/Actualiza/" + id; // El url del controlador
+        var url = contextPath + "PlanosMontaje/Actualiza/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#actualiza-Etapa').html(data);
-            $('#actualiza-Etapa').modal({
+            $('#actualiza-PlanosMontaje').html(data);
+            $('#actualiza-PlanosMontaje').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Etapa.activeForm = '#ActualizaEtapaForm';
-            Etapa.IniciaDateControls();
+            PlanosMontaje.activeForm = '#ActualizaPlanosMontajeForm';
+            PlanosMontaje.IniciaDateControls();
         });
     },
     Borrar: function (id) {
-        CMI.CierraMensajes();        
-        if (confirm('¿Esta seguro que desea borrar la Etapa (' + id + ') ?') === false) return;
-        var url = contextPath + "Etapa/Borrar"; // El url del controlador
+        CMI.CierraMensajes();
+        if (confirm('¿Esta seguro que desea borrar la PlanosMontaje (' + id + ') ?') === false) return;
+        var url = contextPath + "PlanosMontaje/Borrar"; // El url del controlador
         $.post(url, {
             id: id
         }, function (data) {
             if (data.Success == true) {
-                Etapa.colEtapas.remove(id);
+                PlanosMontaje.colPlanosMontajes.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + id);
             }
             else {
                 CMI.DespliegaError(data.Message);
             }
-        }).fail(function () { CMI.DespliegaError("No se pudo borrar la Etapa."); });
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar la PlanosMontaje."); });
     },
     Clonar: function (id) {
         CMI.CierraMensajes();
-        var url = contextPath + "Etapa/Clonar/" + id; // El url del controlador
+        var url = contextPath + "PlanosMontaje/Clonar/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#nuevo-Etapa').html(data);
-            $('#nuevo-Etapa').modal({
+            $('#nuevo-PlanosMontaje').html(data);
+            $('#nuevo-PlanosMontaje').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Etapa.activeForm = '#NuevaEtapaForm';
-            Etapa.IniciaDateControls();
+            PlanosMontaje.activeForm = '#NuevaPlanosMontajeForm';
+            PlanosMontaje.IniciaDateControls();
         });
     },
     IniciaDateControls: function () {
-        var form = Etapa.activeForm;
+        var form = PlanosMontaje.activeForm;
         $(form + ' #dtpFechaInicio').datetimepicker({ format: 'MM/DD/YYYY' });
         $(form + ' #dtpFechaFin').datetimepicker({
             useCurrent: false,
@@ -201,44 +201,44 @@ var Etapa = {
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
-            modulo = Etapa;
+            modulo = PlanosMontaje;
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;       
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
-    serializaEtapa: function (id) {
-        var form = Etapa.activeForm;
+    serializaPlanosMontaje: function (id) {
+        var form = PlanosMontaje.activeForm;
         return ({
-            'nombreEtapa': $(form + ' #nombreEtapa').val().toUpperCase(),
+            'nombrePlanosMontaje': $(form + ' #nombrePlanosMontaje').val().toUpperCase(),
             'fechaInicio': $(form + ' #fechaInicio').val(),
             'fechaFin': $(form + ' #fechaFin').val(),
-            'nombreEstatus': $('#estatusEtapa option:selected').text().toUpperCase(),
-            'id': id 
+            'nombreEstatus': $('#estatusPlanosMontaje option:selected').text().toUpperCase(),
+            'id': id
         });
     },
-    CargaGrid: function () {      
-        var url = contextPath + "Etapa/CargaEtapas?idProyecto=" + $('#idProyectoSelect').val() + "&revision=" + $('#RevisionPro').text(); // El url del controlador
+    CargaGrid: function () {
+        var url = contextPath + "PlanosMontaje/CargaPlanosMontajes?idProyecto=" + $('#idProyectoSelect').val() + "&revision=" + $('#RevisionPro').text(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            Etapa.colEtapas = new Backbone.Collection(data);
-            var bolFilter = Etapa.colEtapas.length > 0 ? true : false;
+            PlanosMontaje.colPlanosMontajes = new Backbone.Collection(data);
+            var bolFilter = PlanosMontaje.colPlanosMontajes.length > 0 ? true : false;
             if (bolFilter) {
-                gridEtapas = new bbGrid.View({
-                    container: $('#bbGrid-Etapas'),
+                gridPlanosMontajes = new bbGrid.View({
+                    container: $('#bbGrid-PlanosMontajes'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
                     actionenable: true,
                     detalle: false,
-                    clone: Etapa.accClonar,
-                    editar: Etapa.accEscritura,
-                    borrar: Etapa.accBorrar,
-                    collection: Etapa.colEtapas,
-                    seguridad: Etapa.accSeguridad,
+                    clone: PlanosMontaje.accClonar,
+                    editar: PlanosMontaje.accEscritura,
+                    borrar: PlanosMontaje.accBorrar,
+                    collection: PlanosMontaje.colPlanosMontajes,
+                    seguridad: PlanosMontaje.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
+                               { title: 'Nombre PlanosMontaje', name: 'nombrePlanosMontaje', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
@@ -246,16 +246,16 @@ var Etapa = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Etapas registradas para el proyecto seleccionado.");
-                $('#bbGrid-Etapas')[0].innerHTML = "";
+                CMI.DespliegaInformacion("No se encontraron PlanosMontajes registradas para el proyecto seleccionado.");
+                $('#bbGrid-PlanosMontajes')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {
-            CMI.DespliegaError("No se pudo cargar la informacion de las Etapas");
+            CMI.DespliegaError("No se pudo cargar la informacion de las PlanosMontajes");
         });
-    }   
+    }
 };
 
 $(function () {
-    Etapa.Inicial();
+    PlanosMontaje.Inicial();
 })

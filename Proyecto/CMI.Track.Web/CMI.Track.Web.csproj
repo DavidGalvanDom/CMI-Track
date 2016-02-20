@@ -816,6 +816,7 @@
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
+    <Content Include="Scripts\PlanosMontaje.js" />
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
@@ -912,6 +913,7 @@
     <Content Include="Views\Etapa\_Actualiza.cshtml" />
     <Content Include="Views\Etapa\_Nuevo.cshtml" />
     <Content Include="Views\Etapa\_buscarEtapa.cshtml" />
+    <Content Include="Views\PlanosMontaje\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

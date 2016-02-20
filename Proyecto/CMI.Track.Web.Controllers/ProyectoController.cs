@@ -215,12 +215,16 @@ namespace CMI.Track.Web.Controllers
         public ActionResult Clonar(int idProyecto, string revision)
         {
             var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
+            objProyecto.id = 0;
+            objProyecto.revisionProyecto = "";            
+            objProyecto.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objProyecto);
         }
 
 
         /// <summary>
-        /// Borra el Usuario
+        /// Borra el Proyecto
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
