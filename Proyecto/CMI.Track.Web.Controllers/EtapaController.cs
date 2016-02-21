@@ -59,7 +59,7 @@ namespace CMI.Track.Web.Controllers
         {
             try
             {
-                var lstEtapas = EtapaData.CargaEtapas(idProyecto, revision, 11);
+                var lstEtapas = EtapaData.CargaEtapas(idProyecto, revision, 10);
 
                 return (Json(lstEtapas, JsonRequestBehavior.AllowGet));
             }
@@ -172,6 +172,16 @@ namespace CMI.Track.Web.Controllers
             {
                 return Json(new { Success = false, Message = exp.Message });
             }
+        }
+
+        /// <summary>
+        /// Despliega ventana emergente con el grid de proyectos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BuscarEtapa()
+        {
+            return PartialView("_buscarEtapa");
         }
     }
 }

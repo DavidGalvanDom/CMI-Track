@@ -1,15 +1,14 @@
 ﻿//js de catalogo de Planos de Montaje.
 //David Galvan
 //17/Febrero/2016
-
 var PlanosMontaje = {
     accClonar: false,
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
-    gridPlanosMontajes: {},
-    colPlanosMontajes: {},
+    gridPlanosMontaje: {},
+    colPlanosMontaje: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -18,9 +17,12 @@ var PlanosMontaje = {
     Eventos: function () {
         var that = this;
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
+        $("#btnBuscarEtapa").click(that.onBuscarEtapa);
+        
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
         $(document).on("click", '.btn-ActualizarPlanosMontaje', that.onActualizar);
+        $('#etapaRow').hide();
 
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
@@ -48,10 +50,10 @@ var PlanosMontaje = {
                 $("#NuevaPlanosMontajeForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        PlanosMontaje.colPlanosMontajes.add(PlanosMontaje.serializaPlanosMontaje(data.id));
+                        PlanosMontaje.colPlanosMontaje.add(PlanosMontaje.serializaPlanosMontaje(data.id));
                         CMI.DespliegaInformacion('El PlanosMontaje fue guardado con el Id: ' + data.id);
                         $('#nuevo-PlanosMontaje').modal('hide');
-                        if (PlanosMontaje.colPlanosMontajes.length === 1) {
+                        if (PlanosMontaje.colPlanosMontaje.length === 1) {
                             PlanosMontaje.CargaGrid();
                         }
                     } else {
@@ -74,7 +76,7 @@ var PlanosMontaje = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-PlanosMontaje').modal('hide');
-                        PlanosMontaje.colPlanosMontajes.add(PlanosMontaje.serializaPlanosMontaje(data.id), { merge: true });
+                        PlanosMontaje.colPlanosMontaje.add(PlanosMontaje.serializaPlanosMontaje(data.id), { merge: true });
                         CMI.DespliegaInformacion('El PlanosMontaje fue Actualizado. Id:' + data.id);
                     }
                     else {
@@ -93,13 +95,33 @@ var PlanosMontaje = {
         CMI.CierraMensajes();
         var url = contextPath + "Proyecto/BuscarProyecto"; // El url del controlador      
         $.get(url, function (data) {
-            $('#buscar-Proyecto').html(data);
-            $('#buscar-Proyecto').modal({
+            $('#buscar-General').html(data);
+            $('#buscar-General').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
             ProyectoBuscar.Inicial();
             ProyectoBuscar.parent = PlanosMontaje;
+            $(btn).removeAttr("disabled");
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
+        }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    onBuscarEtapa: function (){
+        var btn = this;
+        $(btn).attr("disabled", "disabled");
+        CMI.CierraMensajes();
+        var url = contextPath + "Etapa/BuscarEtapa"; // El url del controlador      
+        $.get(url, function (data) {
+            $('#buscar-General').html(data);
+            $('#buscar-General').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            EtapaBuscar.idProyecto = $('#idProyectoSelect').val();
+            EtapaBuscar.revisionProyecto = $('#RevisionPro').text();
+            EtapaBuscar.parent = PlanosMontaje;
+            EtapaBuscar.Inicial();            
             $(btn).removeAttr("disabled");
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
@@ -115,10 +137,29 @@ var PlanosMontaje = {
         $('#FechaInicio').text(FechaInicio);
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
-        $('#buscar-Proyecto').modal('hide');
+        $('#buscar-General').modal('hide');
 
-        //Se carga el grid de PlanosMontajes asignadas al proyecto
-        $('#bbGrid-PlanosMontajes')[0].innerHTML = "";
+        //Se inicializa la informacion seleccionada a vacio
+        $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
+        $('#idEtapaSelect').val(0);
+        $('#nombreEtapa').text('');
+        $('#FechaInicioEtapa').text('');
+        $('#FechaFinEtapa').text('');
+        $('.btnNuevo').hide();
+
+        $('#etapaRow').show();       
+    },
+    AsignaEtapa: function (idEtapa, NombreEtapa,
+                           FechaInicio, FechaFin) {
+
+        $('#idEtapaSelect').val(idEtapa);       
+        $('#nombreEtapa').text(NombreEtapa);
+        $('#FechaInicioEtapa').text(FechaInicio);
+        $('#FechaFinEtapa').text(FechaFin);
+        $('#buscar-General').modal('hide');
+
+        //Se carga el grid de PlanosMontaje asignadas a la etapa
+        $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         PlanosMontaje.CargaGrid();
 
         ///Muestra el boton de nueva PlanosMontaje
@@ -162,7 +203,7 @@ var PlanosMontaje = {
             id: id
         }, function (data) {
             if (data.Success == true) {
-                PlanosMontaje.colPlanosMontajes.remove(id);
+                PlanosMontaje.colPlanosMontaje.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + id);
             }
             else {
@@ -218,15 +259,15 @@ var PlanosMontaje = {
         });
     },
     CargaGrid: function () {
-        var url = contextPath + "PlanosMontaje/CargaPlanosMontajes?idProyecto=" + $('#idProyectoSelect').val() + "&revision=" + $('#RevisionPro').text(); // El url del controlador
+        var url = contextPath + "PlanosMontaje/CargaPlanosMontaje?idEtapa=" + $('#idEtapaSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            PlanosMontaje.colPlanosMontajes = new Backbone.Collection(data);
-            var bolFilter = PlanosMontaje.colPlanosMontajes.length > 0 ? true : false;
+            PlanosMontaje.colPlanosMontaje = new Backbone.Collection(data);
+            var bolFilter = PlanosMontaje.colPlanosMontaje.length > 0 ? true : false;
             if (bolFilter) {
-                gridPlanosMontajes = new bbGrid.View({
-                    container: $('#bbGrid-PlanosMontajes'),
+                gridPlanosMontaje = new bbGrid.View({
+                    container: $('#bbGrid-PlanosMontaje'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
@@ -235,7 +276,7 @@ var PlanosMontaje = {
                     clone: PlanosMontaje.accClonar,
                     editar: PlanosMontaje.accEscritura,
                     borrar: PlanosMontaje.accBorrar,
-                    collection: PlanosMontaje.colPlanosMontajes,
+                    collection: PlanosMontaje.colPlanosMontaje,
                     seguridad: PlanosMontaje.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre PlanosMontaje', name: 'nombrePlanosMontaje', filter: true, filterType: 'input' },
@@ -246,12 +287,12 @@ var PlanosMontaje = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron PlanosMontajes registradas para el proyecto seleccionado.");
-                $('#bbGrid-PlanosMontajes')[0].innerHTML = "";
+                CMI.DespliegaInformacion("No se encontraron Planos de Montaje registradas para la Etapa seleccionada.");
+                $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {
-            CMI.DespliegaError("No se pudo cargar la informacion de las PlanosMontajes");
+            CMI.DespliegaError("No se pudo cargar la informacion de las PlanosMontaje");
         });
     }
 };

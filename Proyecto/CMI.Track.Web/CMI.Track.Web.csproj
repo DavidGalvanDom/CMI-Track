@@ -914,6 +914,9 @@
     <Content Include="Views\Etapa\_Nuevo.cshtml" />
     <Content Include="Views\Etapa\_buscarEtapa.cshtml" />
     <Content Include="Views\PlanosMontaje\Index.cshtml" />
+    <Content Include="Views\PlanosMontaje\_Nuevo.cshtml" />
+    <Content Include="Views\PlanosMontaje\_Actualiza.cshtml" />
+    <Content Include="Views\PlanosMontaje\_buscarPlanosMontaje.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,10 +12,10 @@ var EtapaBuscar = {
     },
     onSeleccionar: function (idRow) {
         var rowSelected = EtapaBuscar.colEtapas.get(idRow);
-        EtapaBuscar.parent.AsignaEtapa(rowSelected.attributes.idEtapa,
-                                            rowSelected.attributes.NombreEtapa,
-                                            rowSelected.attributes.FechaInicio,
-                                            rowSelected.attributes.FechaFin);
+        EtapaBuscar.parent.AsignaEtapa(rowSelected.attributes.id,
+                                            rowSelected.attributes.nombreEtapa,
+                                            rowSelected.attributes.fechaInicio,
+                                            rowSelected.attributes.fechaFin);
     },
     CargaGrid: function () {
         $('#cargandoInfoBP').show();
@@ -33,10 +33,10 @@ var EtapaBuscar = {
                     actionenable: false,
                     detalle: false,
                     collection: EtapaBuscar.colEtapas,
-                    colModel: [{ title: 'Id', name: 'idEtapa', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre Etapa', name: 'NombreEtapa', filter: true, filterType: 'input' },
-                               { title: 'Fecha Inicio', name: 'FechaInicio', filter: true, filterType: 'input' },
-                               { title: 'Fecha Fin', name: 'FechaFin', filter: true, filterType: 'input' }],
+                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
+                               { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
+                               { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
                         EtapaBuscar.onSeleccionar(this.selectedRows[0]);
                     }

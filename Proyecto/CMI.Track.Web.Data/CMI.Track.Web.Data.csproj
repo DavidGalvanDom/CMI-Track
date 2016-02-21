@@ -56,6 +56,7 @@
     <Compile Include="GrupoData.cs" />
     <Compile Include="MaterialData.cs" />
     <Compile Include="OrigenRequisicionData.cs" />
+    <Compile Include="PlanosMontajeData.cs" />
     <Compile Include="ProcesoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoData.cs" />

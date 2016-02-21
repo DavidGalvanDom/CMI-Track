@@ -58,6 +58,8 @@
     <Compile Include="Material\Material.cs" />
     <Compile Include="OrigenRequisicion\ListaOrigenRequisicion.cs" />
     <Compile Include="OrigenRequisicion\OrigenRequisicion.cs" />
+    <Compile Include="PlanosMontaje\ListaPlanosMontaje.cs" />
+    <Compile Include="PlanosMontaje\PlanosMontaje.cs" />
     <Compile Include="Proceso\ListaProceso.cs" />
     <Compile Include="Proceso\Proceso.cs" />
     <Compile Include="Proyecto\ListaProyectos.cs" />
