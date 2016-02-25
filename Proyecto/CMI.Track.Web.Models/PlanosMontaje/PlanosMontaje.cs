@@ -63,6 +63,8 @@ namespace CMI.Track.Web.Models
         [Required(ErrorMessage = "*")]        
         [Display(Name = "Usuario Creacion")]
         public int usuarioCreacion { get; set; }
+
+        public string nombreArchivo { get; set; }
        
     }
 }

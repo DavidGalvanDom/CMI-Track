@@ -44,6 +44,7 @@ namespace CMI.Track.Web
                    "~/Scripts/lib/modernizr-2.6.2.js",
                    "~/Scripts/lib/bower_components/moment/min/moment.min.js",
                    "~/Scripts/lib/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js",
+                   "~/Scripts/lib/select2-3.5.4/select2.min.js",
                    "~/Scripts/_Principal.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
@@ -52,6 +53,8 @@ namespace CMI.Track.Web
                       "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",
                       "~/Scripts/lib/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
                       "~/Content/bbGrid.css",
+                      "~/Scripts/lib/select2-3.5.4/select2.css",
+                      "~/Scripts/lib/select2-3.5.4/select2-bootstrap.css",
                       "~/Content/site.css"));
         }
     }

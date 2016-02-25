@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "PlanosMontaje", FormMethod.Post, new { id = "NuevaPlanosMontajeForm", name = "NuevaPlanosMontajeForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Nuevo", "PlanosMontaje", FormMethod.Post, new { id = "NuevoPlanosMontajeForm", name = "NuevoPlanosMontajeForm", @class = "form-horizontal" }))
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.nombrePlanoMontaje, new { @class = "col-sm-2 control-label" })
@@ -95,9 +95,9 @@
                     </div>
                 </div>
 
-                @Html.HiddenFor(model => model.id)
-                @Html.HiddenFor(model => model.idEtapa)
+                @Html.HiddenFor(model => model.id)                
                 @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.idEtapa)
                 @Html.HiddenFor(model => model.archivoPlanoMontaje)
             }
         </div>

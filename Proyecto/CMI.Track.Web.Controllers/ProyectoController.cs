@@ -127,7 +127,7 @@ namespace CMI.Track.Web.Controllers
         [HttpPost]
         public JsonResult Nuevo(Models.Proyecto pobjModelo)
         {
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString();
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\";
             string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
             
             if (ModelState.IsValid)
@@ -177,7 +177,7 @@ namespace CMI.Track.Web.Controllers
         [HttpPost]
         public ActionResult Actualiza(Models.Proyecto pobjModelo)
         {
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString();
+            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\";
             string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
 
             if (ModelState.IsValid)
@@ -216,7 +216,9 @@ namespace CMI.Track.Web.Controllers
         {
             var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
             objProyecto.id = 0;
-            objProyecto.revisionProyecto = "";            
+            objProyecto.revisionProyecto = "";
+            objProyecto.nombreArchivo = "";
+            objProyecto.archivoPlanoProyecto = "";
             objProyecto.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
             ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objProyecto);

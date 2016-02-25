@@ -157,7 +157,7 @@ namespace CMI.Track.Web.Data
         /// <summary>
         /// Se actualiza la informacion del proyecto
         /// </summary>
-        /// <param name="pobjModelo">Datos nuevo usurio</param>
+        /// <param name="pobjModelo">Datos nuevo Proyecto</param>
         /// <returns>value</returns>
         public static string Actualiza(Models.Proyecto pobjModelo)
         {

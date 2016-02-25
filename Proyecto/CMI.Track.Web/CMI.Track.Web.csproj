@@ -812,11 +812,22 @@
     <Content Include="Scripts\lib\respond.js" />
     <Content Include="Scripts\lib\respond.min.js" />
     <Content Include="Scripts\lib\sb-admin.js" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2-bootstrap.css" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2-spinner.gif" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2.css" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2.js" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2.min.js" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2.png" />
+    <Content Include="Scripts\lib\select2-3.5.4\select2x2.png" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
+    <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
+    <Content Include="Scripts\PlanosDespiece.js" />
+    <Content Include="Scripts\PlanosDespieceBuscar.js" />
     <Content Include="Scripts\PlanosMontaje.js" />
+    <Content Include="Scripts\PlanosMontajeBuscar.js" />
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
@@ -917,6 +928,13 @@
     <Content Include="Views\PlanosMontaje\_Nuevo.cshtml" />
     <Content Include="Views\PlanosMontaje\_Actualiza.cshtml" />
     <Content Include="Views\PlanosMontaje\_buscarPlanosMontaje.cshtml" />
+    <Content Include="Views\PlanosDespiece\Index.cshtml" />
+    <Content Include="Views\PlanosDespiece\_buscarPlanosDespiece.cshtml" />
+    <Content Include="Views\PlanosDespiece\_Nuevo.cshtml" />
+    <Content Include="Views\PlanosDespiece\_Actualiza.cshtml" />
+    <Content Include="Views\Marcas\Index.cshtml" />
+    <Content Include="Views\Marcas\_Actualiza.cshtml" />
+    <Content Include="Views\Marcas\_Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

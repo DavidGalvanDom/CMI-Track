@@ -72,38 +72,40 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.idDepartamento, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-10">
-                        <select id="idDepartamento" name="idDepartamento" class="form-control" required="required"></select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <label class="control-label col-sm-2">Proceso Origen</label>
-                    <div class="col-sm-4">
-                        <select multiple class="form-control" id="idProcesoOrigen" name="idProcesoOrigen">
-                            <!-- <option>Corte</option>
-                                <option>Pantografo</option>
-                                <option>Ensamble</option>
-                                <option>Calidad ensamble</option>-->
-                        </select>
-                    </div>
-
-                    <label class="control-label col-sm-2">Proceso Destino</label>
-                    <div class="col-sm-4">
-                        <select multiple class="form-control" id="idProcesoDestino" name="idProcesoDestino"></select>
-                    </div>
-
-                </div>
-
-                @Html.HiddenFor(model => model.id)            
-                @Html.HiddenFor(model => model.fechaCreacion)
-                @Html.HiddenFor(model => model.usuarioCreacion)
-                <input type="hidden" id="departamento" name="departamento" value="" />
-
-            }
+    <div class="form-group">
+        @Html.LabelFor(model => model.idDepartamento, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-10">
+            <select class="form-control select2" id="idDepartamento" name="idDepartamento" required="required"></select>
         </div>
+
+    </div>
+
+        <div class="row">
+            <label class="control-label col-sm-2">Proceso Origen</label>
+            <div class="col-sm-4">
+                <select multiple class="form-control" id="idProcesoOrigen" name="idProcesoOrigen">
+                    <!-- <option>Corte</option>
+                        <option>Pantografo</option>
+                        <option>Ensamble</option>
+                        <option>Calidad ensamble</option>-->
+                </select>
+            </div>
+
+            <label class="control-label col-sm-2">Proceso Destino</label>
+            <div class="col-sm-4">
+                <select multiple class="form-control" id="idProcesoDestino" name="idProcesoDestino"></select>
+            </div>
+
+        </div>
+
+
+        @Html.HiddenFor(model => model.id)
+        @Html.HiddenFor(model => model.fechaCreacion)
+        @Html.HiddenFor(model => model.usuarioCreacion)
+        <input type="hidden" id="departamento" name="departamento" value="" />
+
+        }
+    </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary btn-GuardaNuevo">Guardar</button>

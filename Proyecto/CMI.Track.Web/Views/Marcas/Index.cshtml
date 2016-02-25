@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "Marcas";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Lista</small> Marcas
+            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
+        </div>
+        <div class="col-sm-2">
+            <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Revision</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="etapaRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="nombreEtapa" name="nombreEtapa" class="form-control" title="Nombre Etapa"> Nombre Etapa </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarEtapa" name="btnBuscarEtapa"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idEtapaSelect" name="idEtapaSelect" />
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaInicioEtapa"  class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaFinEtapa"  class="form-control" title="Fecha Fin">Fecha Fin</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="planosMontajeRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="nombrePlanosMontaje" name="nombrePlanosMontaje" class="form-control"  title="Nombre Planos de Montaje"> Nombre Planos de Montaje </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarPlanosMontaje" name="btnBuscarPlanosMontaje"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idPlanoMontajeSelect" name="idPlanoMontajeSelect" />
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaInicioPlanoMontaje" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaFinPlanosMontaje" class="form-control" title="Fecha Fin">Fecha Fin</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-Marcas" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-Marcas"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoMarcasLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-Marcas"
+     tabindex="-1" role="dialog"
+     aria-labelledby="actulizaMarcasLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-General"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarGeneral">
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/Marcas.js"></script>
+}
+
+

@@ -364,7 +364,7 @@ table.dataTable thead .sorting:after {
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
-    color: #f00;
+    color: #a94442;
 }
 
 .field-validation-valid {
@@ -372,12 +372,12 @@ table.dataTable thead .sorting:after {
 }
 
 .input-validation-error {
-    border: 1px solid #f00;    
+    border: 1px solid #a94442;    
 }
 
 .validation-summary-errors {
     font-weight: bold;
-    color: #f00;
+    color: #a94442;
 }
 
 .validation-summary-valid {

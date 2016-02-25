@@ -44,6 +44,15 @@ var Usuario = {
     },    
     onGuardar: function (e) {
         var btn = this;
+               
+        if($('#NuevoUsuarioForm #idDepartamento').val() === ''){
+            $('#NuevoUsuarioForm .select2-container').addClass('has-error');
+            $("form").valid();
+            return;
+        } else {
+            $('#NuevoUsuarioForm .select2-container').removeClass('has-error');
+        }
+       
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -58,20 +67,26 @@ var Usuario = {
                         if (Usuario.colUsuarios.length === 1) {
                             Usuario.CargaGrid();
                         }
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al guardar la informacion"); 
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-        }
-        else {
+        } else {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
-               
     },
     onActualizar: function (e) {
         var btn = this;
+
+        if ($('#ActualizaUsuarioForm #idDepartamento').val() === '') {
+            $('#ActualizaUsuarioForm .select2-container').addClass('has-error');
+            $("form").valid();
+            return;
+        } else {
+            $('#ActualizaUsuarioForm .select2-container').removeClass('has-error');
+        }
+
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -82,8 +97,7 @@ var Usuario = {
                         $('#actualiza-usuario').modal('hide');
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
                         CMI.DespliegaInformacion('El usuario fue Actualizado. Id:' + data.id);
-                    }
-                    else {
+                    } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () { CMI.DespliegaErrorDialogo("Error al actualizar la informacion"); 
@@ -194,9 +208,9 @@ var Usuario = {
     },
     CargaListaDepartamentos: function (form) {       
         var select = $(form + ' #idDepartamento').empty();
-
+        // constructs the suggestion engine               
         select.append('<option> </option>');
-
+        
         $.each(Usuario.colDepartamentos, function (i, item) {
             select.append('<option value="'
                                  + item.id
@@ -206,6 +220,8 @@ var Usuario = {
         });
 
         $(form + ' #idDepartamento').val($(form + ' #departamento').val());
+        //Inicializa el combo para que pueda hacer busquedas
+        $(form + " .select2").select2({  allowClear: true, placeholder: 'Departamento' });
     },
     CargarColeccionProcesos: function (form) {
         if (Usuario.colProcesos.length < 1) {

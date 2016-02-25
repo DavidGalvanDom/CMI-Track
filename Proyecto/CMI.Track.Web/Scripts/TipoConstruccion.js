@@ -152,8 +152,8 @@ var TipoConstruccion = {
     },
     serializaTipoConstruccion: function (id,form) {
         return ({
-            'NombreTipoConstruccion': $(from + ' #NombreTipoConstruccion').val().toUpperCase(),
-            'Estatus': $(from + ' #Estatus').val(),
+            'NombreTipoConstruccion': $(form + ' #NombreTipoConstruccion').val().toUpperCase(),
+            'Estatus': $(form + ' #Estatus').val(),
             'id': id
         });
         

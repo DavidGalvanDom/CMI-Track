@@ -20,8 +20,8 @@ var PlanosMontaje = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         
         $('.btnNuevo').click(that.Nuevo);
-        $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
-        $(document).on("click", '.btn-ActualizarPlanosMontaje', that.onActualizar);
+        $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
+        $(document).on("click", '.btn-ActualizarPlanosMontaje', that.onSubirArchivo);
         $('#etapaRow').hide();
 
         //Eventos de los botones de Acciones del grid
@@ -42,12 +42,10 @@ var PlanosMontaje = {
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
-            $('#NuevaPlanosMontajeForm #idProyecto').val($('#idProyectoSelect').val());
-            $('#NuevaPlanosMontajeForm #revisionProyecto').val($('#RevisionPro').text());
-
+            $('#NuevoPlanosMontajeForm #idEtapa').val($('#idEtapaSelect').val());
             //Se hace el post para guardar la informacion
             $.post(contextPath + "PlanosMontaje/Nuevo",
-                $("#NuevaPlanosMontajeForm *").serialize(),
+                $("#NuevoPlanosMontajeForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
                         PlanosMontaje.colPlanosMontaje.add(PlanosMontaje.serializaPlanosMontaje(data.id));
@@ -58,6 +56,7 @@ var PlanosMontaje = {
                         }
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
+                        CMI.botonMensaje(false, btn, 'Guardar');
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
@@ -67,7 +66,7 @@ var PlanosMontaje = {
         }
     },
     onActualizar: function (btn) {
-        var btn = this;
+        var btn = this; 
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -127,6 +126,67 @@ var PlanosMontaje = {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
+    onSubirArchivo: function () {
+        var filesName = PlanosMontaje.activeForm === '#NuevoPlanosMontajeForm' ? 'fPlano' : 'fPlanoAct',
+            btn = this,
+            form = PlanosMontaje.activeForm,
+            files;
+
+        if ($("form").valid()) {
+            CMI.botonMensaje(true, btn, 'Guardar');
+            files = document.getElementById(filesName).files;
+            if (files.length > 0) {
+                if (window.FormData !== undefined) {
+                    var data = new FormData();
+                    for (var count = 0; count < files.length; count++) {
+                        data.append(files[count].name, files[count]);
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: '/PlanosMontaje/SubirArchivo',
+                        contentType: false,
+                        processData: false,
+                        data: data,
+                        success: function (result) {
+
+                            if (result.Success === true) {
+                                $(PlanosMontaje.activeForm + ' #archivoPlanoMontaje').val(result.Archivo);
+
+                                if (PlanosMontaje.activeForm !== '#NuevoPlanosMontajeForm') {
+                                    PlanosMontaje.onActualizar(btn);
+                                } else {
+                                    PlanosMontaje.onGuardar(btn);
+                                }
+
+                            } else {
+                                $(PlanosMontaje.activeForm + ' #archivoPlanoMontaje').val('');
+                                CMI.DespliegaErrorDialogo(result.Message);
+                                CMI.botonMensaje(false, btn, 'Guardar');
+                            }
+                        },
+                        error: function (xhr, status, p3, p4) {
+                            var err = "Error " + " " + status + " " + p3 + " " + p4;
+                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                                err = JSON.parse(xhr.responseText).Message;
+                            }
+                            CMI.DespliegaErrorDialogo(err);
+                            CMI.botonMensaje(false, btn, 'Guardar');
+                        }
+                    });
+                } else {
+                    CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
+                    CMI.botonMensaje(false, btn, 'Guardar');
+                }
+            } else {
+                if (PlanosMontaje.activeForm !== '#NuevoPlanosMontajeForm') {
+                    PlanosMontaje.onActualizar(btn);
+                } else {
+                    $(PlanosMontaje.activeForm + ' #archivoPlanoMontaje').val('');
+                    PlanosMontaje.onGuardar(btn);
+                }
+            }
+        }
+    },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
                              FechaInicio, FechaFin) {
@@ -142,9 +202,9 @@ var PlanosMontaje = {
         //Se inicializa la informacion seleccionada a vacio
         $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
-        $('#nombreEtapa').text('');
-        $('#FechaInicioEtapa').text('');
-        $('#FechaFinEtapa').text('');
+        $('#nombreEtapa').text('Nombre Etapa');
+        $('#FechaInicioEtapa').text('Fecha Inicio');
+        $('#FechaFinEtapa').text('Fecha Fin');
         $('.btnNuevo').hide();
 
         $('#etapaRow').show();       
@@ -176,7 +236,8 @@ var PlanosMontaje = {
                 keyboard: true
             }, 'show');
             CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            PlanosMontaje.activeForm = '#NuevaPlanosMontajeForm';
+            PlanosMontaje.activeForm = '#NuevoPlanosMontajeForm';
+            PlanosMontaje.EventoNombreArchivo();
             PlanosMontaje.IniciaDateControls();
         });
     },
@@ -192,12 +253,13 @@ var PlanosMontaje = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             PlanosMontaje.activeForm = '#ActualizaPlanosMontajeForm';
+            PlanosMontaje.EventoNombreArchivo();
             PlanosMontaje.IniciaDateControls();
         });
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
-        if (confirm('¿Esta seguro que desea borrar la PlanosMontaje (' + id + ') ?') === false) return;
+        if (confirm('¿Esta seguro que desea borrar el Plano de Montaje (' + id + ') ?') === false) return;
         var url = contextPath + "PlanosMontaje/Borrar"; // El url del controlador
         $.post(url, {
             id: id
@@ -209,7 +271,7 @@ var PlanosMontaje = {
             else {
                 CMI.DespliegaError(data.Message);
             }
-        }).fail(function () { CMI.DespliegaError("No se pudo borrar la PlanosMontaje."); });
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar el Plano Montaje."); });
     },
     Clonar: function (id) {
         CMI.CierraMensajes();
@@ -222,7 +284,8 @@ var PlanosMontaje = {
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            PlanosMontaje.activeForm = '#NuevaPlanosMontajeForm';
+            PlanosMontaje.activeForm = '#NuevoPlanosMontajeForm';
+            PlanosMontaje.EventoNombreArchivo();
             PlanosMontaje.IniciaDateControls();
         });
     },
@@ -251,10 +314,10 @@ var PlanosMontaje = {
     serializaPlanosMontaje: function (id) {
         var form = PlanosMontaje.activeForm;
         return ({
-            'nombrePlanosMontaje': $(form + ' #nombrePlanosMontaje').val().toUpperCase(),
+            'nombrePlanoMontaje': $(form + ' #nombrePlanoMontaje').val().toUpperCase(),
             'fechaInicio': $(form + ' #fechaInicio').val(),
             'fechaFin': $(form + ' #fechaFin').val(),
-            'nombreEstatus': $('#estatusPlanosMontaje option:selected').text().toUpperCase(),
+            'nombreEstatus': $('#idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
     },
@@ -279,7 +342,7 @@ var PlanosMontaje = {
                     collection: PlanosMontaje.colPlanosMontaje,
                     seguridad: PlanosMontaje.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre PlanosMontaje', name: 'nombrePlanosMontaje', filter: true, filterType: 'input' },
+                               { title: 'Nombre PlanosMontaje', name: 'nombrePlanoMontaje', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
@@ -293,6 +356,27 @@ var PlanosMontaje = {
             //getJSON fail
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion de las PlanosMontaje");
+        });
+    },
+    EventoNombreArchivo: function () {
+        var form = PlanosMontaje.activeForm;
+        //Se inicializan los eventos para el formulario
+        $(form + ' .btn-file :file').on('fileselect', function (event, numFiles, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) console.log(log);
+            }
+        });
+
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                numFiles = input.get(0).files ? input.get(0).files.length : 1,
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
         });
     }
 };
