@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Marcas";
+    ViewBag.Title = "SubMarcas";
 }
 
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <small>Lista</small> Marcas
+            <small>Lista</small> SubMarcas
             <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
         </h1>
     </div>
@@ -28,14 +28,14 @@
             <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>            
+            <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
         </div>
         <div class="col-sm-1">
             <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Rev</span>
         </div>
         <div class="col-sm-2">
             <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
-        </div>       
+        </div>
     </div>
 </div>
 <div class="row">
@@ -110,7 +110,7 @@
         </div>
         <div class="col-sm-2">
             <span id="NombreTipoConstruccion" class="form-control" title="Tipo Construccion">Tipo Construccion</span>
-        </div>   
+        </div>
     </div>
 </div>
 <div class="row">
@@ -120,20 +120,20 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div id="bbGrid-Marcas" class="col-lg-12">
+        <div id="bbGrid-subMarcas" class="col-lg-12">
             <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
         </div>
     </div>
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="nuevo-Marcas"
+<div class="modal fade bs-example-modal-lg" id="nuevo-subMarcas"
      tabindex="-1" role="dialog"
-     aria-labelledby="nuevoMarcasLabel">
+     aria-labelledby="nuevosubMarcasLabel">
 </div>
 
-<div class="modal fade bs-example-modal-lg" id="actualiza-Marcas"
+<div class="modal fade bs-example-modal-lg" id="actualiza-subMarcas"
      tabindex="-1" role="dialog"
-     aria-labelledby="actulizaMarcasLabel">
+     aria-labelledby="actulizasubMarcasLabel">
 </div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
@@ -143,7 +143,6 @@
 
 
 @section Scripts {
-    <script src="~/Scripts/Marcas.js"></script>
+    <script src="~/Scripts/SubMarcas.js"></script>
 }
-
 

@@ -24,7 +24,10 @@ namespace CMI.Track.Web.Models
               
        [Display(Name = "Codigo")]
        public string codigoPlanoDespiece { get; set; }
-       
+
+       [Display(Name = "Tipo Contruccion")]
+       public string nombreTipoContruccion { get; set; }
+
        [Display(Name = "Estatus")]
        public string nombreEstatus { get; set; }
 

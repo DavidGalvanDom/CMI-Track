@@ -44,6 +44,7 @@ namespace CMI.Track.Web.Data
                             id = Convert.ToInt32(dataReader["idPlanoDespiece"]),
                             nombrePlanoDespiece = Convert.ToString(dataReader["nombrePlanoDespiece"]),
                             codigoPlanoDespiece = Convert.ToString(dataReader["codigoPlanoDespiece"]),
+                            nombreTipoContruccion = Convert.ToString(dataReader["nombreTipoConstruccion"]),
                             nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]),                            
                             archivoPlanoDespiece = Convert.ToString(dataReader["archivoPlanoDespiece"])
                         });

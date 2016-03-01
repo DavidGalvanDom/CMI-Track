@@ -376,6 +376,7 @@ var PlanosDespiece = {
             'nombrePlanoDespiece': $(form + ' #nombrePlanoDespiece').val().toUpperCase(),
             'codigoPlanoDespiece': $(form + ' #codigoPlanoDespiece').val().toUpperCase(),
             'nombreEstatus': $('#idEstatus option:selected').text().toUpperCase(),
+            'nombreTipoContruccion': $('#idTipoConstruccion option:selected').text().toUpperCase(),
             'id': id
         });
     },
@@ -401,7 +402,8 @@ var PlanosDespiece = {
                     seguridad: PlanosDespiece.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Planos Despiece', name: 'nombrePlanoDespiece', filter: true, filterType: 'input' },
-                               { title: 'Codigo', name: 'codigoPlanoDespiece', filter: true, filterType: 'input' },                            
+                               { title: 'Codigo', name: 'codigoPlanoDespiece', filter: true, filterType: 'input' },
+                               { title: 'Tipo Construccion', name: 'nombreTipoContruccion', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();

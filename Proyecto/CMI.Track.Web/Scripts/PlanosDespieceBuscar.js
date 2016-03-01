@@ -13,7 +13,8 @@ var PlanosDespieceBuscar = {
         var rowSelected = PlanosDespieceBuscar.colPlanosDespiece.get(idRow);
         PlanosDespieceBuscar.parent.AsignaPlanosDespiece(rowSelected.attributes.id,
                                             rowSelected.attributes.nombrePlanoDespiece,
-                                            rowSelected.attributes.codigoPlanoDespiece);
+                                            rowSelected.attributes.codigoPlanoDespiece,
+                                            rowSelected.attributes.nombreTipoContruccion);
     },
     CargaGrid: function () {
         $('#cargandoInfoPD').show();        
@@ -33,7 +34,8 @@ var PlanosDespieceBuscar = {
                     collection: PlanosDespieceBuscar.colPlanosDespiece,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Planos Despiece', name: 'nombrePlanoDespiece', filter: true, filterType: 'input' },
-                               { title: 'Codigo', name: 'codigoPlanoDespiece', filter: true, filterType: 'input' }], 
+                               { title: 'Codigo', name: 'codigoPlanoDespiece', filter: true, filterType: 'input' },
+                               { title: 'Tipo Construccion', name: 'nombreTipoContruccion', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
                         PlanosDespieceBuscar.onSeleccionar(this.selectedRows[0]);
                     }

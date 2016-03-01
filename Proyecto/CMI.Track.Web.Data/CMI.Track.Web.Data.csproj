@@ -54,6 +54,7 @@
     <Compile Include="DepartamentoData.cs" />
     <Compile Include="EtapaData.cs" />
     <Compile Include="GrupoData.cs" />
+    <Compile Include="MarcasData.cs" />
     <Compile Include="MaterialData.cs" />
     <Compile Include="OrigenRequisicionData.cs" />
     <Compile Include="PlanosDespieceData.cs" />

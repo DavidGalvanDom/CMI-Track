@@ -821,6 +821,7 @@
     <Content Include="Scripts\lib\select2-3.5.4\select2x2.png" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
+    <Content Include="Scripts\MarcasBuscar.js" />
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
@@ -833,6 +834,7 @@
     <Content Include="Scripts\ProyectoBuscar.js" />
     <Content Include="Scripts\RutaFabricacion.js" />
     <Content Include="Scripts\Seguridad.js" />
+    <Content Include="Scripts\SubMarcas.js" />
     <Content Include="Scripts\TipoCalidad.js" />
     <Content Include="Scripts\TipoConstruccion.js" />
     <Content Include="Scripts\TipoMaterial.js" />
@@ -935,6 +937,11 @@
     <Content Include="Views\Marcas\Index.cshtml" />
     <Content Include="Views\Marcas\_Actualiza.cshtml" />
     <Content Include="Views\Marcas\_Nuevo.cshtml" />
+    <Content Include="Views\Marcas\_buscarMarcas.cshtml" />
+    <Content Include="Views\SubMarcas\Index.cshtml" />
+    <Content Include="Views\SubMarcas\_Nuevo.cshtml" />
+    <Content Include="Views\SubMarcas\_Actualiza.cshtml" />
+    <Content Include="Views\SubMarcas\_buscarSubMarcas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -66,6 +66,7 @@
     <Compile Include="ProyectoController.cs" />
     <Compile Include="RutaFabricacionController.cs" />
     <Compile Include="SeguridadController.cs" />
+    <Compile Include="SubMarcasController.cs" />
     <Compile Include="TipoCalidadController.cs" />
     <Compile Include="TipoConstruccionController.cs" />
     <Compile Include="TipoMaterialController.cs" />
