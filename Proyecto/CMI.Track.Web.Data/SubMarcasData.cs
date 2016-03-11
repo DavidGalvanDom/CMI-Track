@@ -160,7 +160,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.SubMarcas pobjModelo)
         {
-            object[] paramArray = new object[14];
+            object[] paramArray = new object[15];
             try
             {
                 paramArray[0] = pobjModelo.idEstatus;

@@ -24,7 +24,7 @@ var SubMarcas = {
         $('.btnNuevo').click(that.Nuevo);
 
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
-        $(document).on("click", '.btn-ActualizarMarca', that.onActualizar);
+        $(document).on("click", '.btn-ActualizarSubMarca', that.onActualizar);
 
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
@@ -55,7 +55,7 @@ var SubMarcas = {
                         SubMarcas.colSubMarcas.add(SubMarcas.serializaSubMarcas(data.id));
                         CMI.DespliegaInformacion('La SubMarcas fue guardado con el Id: ' + data.id);
                         $('#nuevo-subMarcas').modal('hide');
-                        if (SubMarcas.colMarcas.length === 1) {
+                        if (SubMarcas.colSubMarcas.length === 1) {
                             SubMarcas.CargaGrid();
                         }
                     } else {
@@ -80,7 +80,7 @@ var SubMarcas = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-subMarcas').modal('hide');
-                        SubMarcas.colMarcas.add(SubMarcas.serializaMarcas(data.id), { merge: true });
+                        SubMarcas.colSubMarcas.add(SubMarcas.serializaSubMarcas(data.id), { merge: true });
                         CMI.DespliegaInformacion('La SubMarcas fue Actualizada. Id:' + data.id);
                     }
                     else {
@@ -348,7 +348,7 @@ var SubMarcas = {
             id: id
         }, function (data) {
             if (data.Success == true) {
-                SubMarcas.colMarcas.remove(id);
+                SubMarcas.colSubMarcas.remove(id);
                 CMI.DespliegaInformacion(data.Message);
             }
             else {
