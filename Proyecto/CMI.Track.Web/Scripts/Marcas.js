@@ -288,7 +288,7 @@ var Marcas = {
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
-        if (confirm('¿Esta seguro que desea borrar el Plano Despiece (' + id + ') ?') === false) return;
+        if (confirm('¿Esta seguro que desea borrar la Marca (' + id + ') ?') === false) return;
         var url = contextPath + "Marcas/Borrar"; // El url del controlador
         $.post(url, {
             id: id
@@ -300,7 +300,7 @@ var Marcas = {
             else {
                 CMI.DespliegaError(data.Message);
             }
-        }).fail(function () { CMI.DespliegaError("No se pudo borrar el Plano Montaje."); });
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar la Marca."); });
     },
     Clonar: function (id) {
         CMI.CierraMensajes();

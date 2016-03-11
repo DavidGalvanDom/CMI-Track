@@ -120,6 +120,8 @@
     <Content Include="Content\bbGrid.css" />
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
@@ -501,6 +503,15 @@
     <Content Include="Scripts\lib\bower_components\moment\CHANGELOG.md" />
     <Content Include="Scripts\lib\bower_components\moment\LICENSE" />
     <Content Include="Scripts\lib\bower_components\moment\README.md" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="Properties\PublishProfiles\CMITrack.pubxml" />
     <None Include="Scripts\lib\jquery.validate\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\lib\bower_components\moment\locale\af.js" />
     <Content Include="Scripts\lib\bower_components\moment\locale\ar-ma.js" />
@@ -843,7 +854,9 @@
     <Content Include="Scripts\UnidadMedida.js" />
     <Content Include="Scripts\Usuario.js" />
     <Content Include="Scripts\_Principal.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

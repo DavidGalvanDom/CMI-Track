@@ -14,7 +14,7 @@ var MarcasBuscar = {
         MarcasBuscar.parent.AsignaMarca(rowSelected.attributes.id,
                                         rowSelected.attributes.nombreMarca,
                                         rowSelected.attributes.codigoMarca,
-                                        rowSelected.attributes.piezas);
+                                        rowSelected.attributes.Piezas);
     },
     CargaGrid: function () {
         $('#cargandoInfoMA').show();
@@ -35,9 +35,9 @@ var MarcasBuscar = {
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre', name: 'nombreMarca', filter: true, filterType: 'input' },
                                { title: 'Codigo', name: 'codigoMarca', filter: true, filterType: 'input' },
-                               { title: 'Piezas', name: 'piezas', filter: true, filterType: 'input' }],
+                               { title: 'Piezas', name: 'Piezas', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
-                        PlanosDespieceBuscar.onSeleccionar(this.selectedRows[0]);
+                        MarcasBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });
                 $('#cargandoInfoMA').hide();

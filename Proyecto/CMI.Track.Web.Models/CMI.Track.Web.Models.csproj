@@ -75,6 +75,8 @@
     <Compile Include="Seguridad\MenuGrupo.cs" />
     <Compile Include="Seguridad\Modulo.cs" />
     <Compile Include="Seguridad\Permisos.cs" />
+    <Compile Include="SubMarcas\ListaSubMarcas.cs" />
+    <Compile Include="SubMarcas\SubMarcas.cs" />
     <Compile Include="TipoCalidad\ListaTipoCalidad.cs" />
     <Compile Include="TipoCalidad\TipoCalidad.cs" />
     <Compile Include="TipoConstruccion\ListaTipoConstruccion.cs" />

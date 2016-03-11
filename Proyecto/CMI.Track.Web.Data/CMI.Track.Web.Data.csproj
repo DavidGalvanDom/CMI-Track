@@ -64,6 +64,7 @@
     <Compile Include="ProyectoData.cs" />
     <Compile Include="RutaFabricacionData.cs" />
     <Compile Include="SeguridadData.cs" />
+    <Compile Include="SubMarcasData.cs" />
     <Compile Include="TipoCalidadData.cs" />
     <Compile Include="TipoConstruccionData.cs" />
     <Compile Include="TipoMaterialData.cs" />

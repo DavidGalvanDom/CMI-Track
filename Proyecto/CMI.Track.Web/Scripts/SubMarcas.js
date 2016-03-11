@@ -20,6 +20,7 @@ var SubMarcas = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $('#btnBuscarPlanosMontaje').click(that.onBuscarPlanosMontaje);
         $('#btnBuscarPlanosDespiece').click(that.onBuscarPlanosDespiece);
+        $('#btnBuscarMarcas').click(that.onBuscarMarcas);
         $('.btnNuevo').click(that.Nuevo);
 
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
@@ -43,16 +44,17 @@ var SubMarcas = {
             btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
-            $('#usuarioCreacion').val(localStorage.idUser);
-            $(form + ' #idPlanoDespiece').val($('#idPlanoDespieceSelect').val());
+            $('#usuarioCreacion').val(localStorage.idUser);            
+            $(form + ' #idMarca').val($('#idMarcaSelect').val());
+            $(form + ' #idOrdenProduccion').val($('#idEtapaSelect').val());
             //Se hace el post para guardar la informacion
             $.post(contextPath + "SubMarcas/Nuevo",
-                $("#NuevaMarcaForm *").serialize(),
+                $("#NuevaSubMarcaForm *").serialize(),
                 function (data) {
                     if (data.Success === true) {
                         SubMarcas.colSubMarcas.add(SubMarcas.serializaSubMarcas(data.id));
                         CMI.DespliegaInformacion('La SubMarcas fue guardado con el Id: ' + data.id);
-                        $('#nuevo-SubMarcas').modal('hide');
+                        $('#nuevo-subMarcas').modal('hide');
                         if (SubMarcas.colMarcas.length === 1) {
                             SubMarcas.CargaGrid();
                         }
@@ -74,10 +76,10 @@ var SubMarcas = {
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "SubMarcas/Actualiza",
-                $("#ActualizaMarcaForm *").serialize(),
+                $("#ActualizaSubMarcaForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        $('#actualiza-SubMarcas').modal('hide');
+                        $('#actualiza-subMarcas').modal('hide');
                         SubMarcas.colMarcas.add(SubMarcas.serializaMarcas(data.id), { merge: true });
                         CMI.DespliegaInformacion('La SubMarcas fue Actualizada. Id:' + data.id);
                     }
@@ -167,6 +169,25 @@ var SubMarcas = {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar Planos Despiece");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
+    onBuscarMarcas: function (){
+        var btn = this;
+        $(btn).attr("disabled", "disabled");
+        CMI.CierraMensajes();
+        var url = contextPath + "Marcas/BuscarMarcas"; // El url del controlador      
+        $.get(url, function (data) {
+            $('#buscar-General').html(data);
+            $('#buscar-General').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+            MarcasBuscar.idPlanoDespiece = $('#idPlanoDespieceSelect').val();
+            MarcasBuscar.parent = SubMarcas;
+            MarcasBuscar.Inicial();
+            $(btn).removeAttr("disabled");
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar Marcas");
+        }).always(function () { $(btn).removeAttr("disabled"); });
+    },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
                              FechaInicio, FechaFin) {
@@ -180,7 +201,7 @@ var SubMarcas = {
         $('#buscar-General').modal('hide');
 
         //Se inicializa la informacion seleccionada a vacio
-        $('#bbGrid-SubMarcas')[0].innerHTML = "";
+        $('#bbGrid-subMarcas')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
         $('#nombreEtapa').text('Nombre Etapa');
         $('#FechaInicioEtapa').text('Fecha Inicio');
@@ -193,6 +214,10 @@ var SubMarcas = {
         $('#nombrePlanosDespiece').text('Plano Despiece');
         $('#CodigoPlanoDespiece').text('Codigo');
         $('#NombreTipoConstruccion').text('Tipo Construccion');
+        $('#idMarcaSelect').val('');
+        $('#nombreMarcas').text('Nombre Marca');
+        $('#codigoMarcas').text('Codigo');
+        $('#piezasMarca').text('Piezas');
 
         $('.btnNuevo').hide();
         $('#planosMontajeRow').hide();
@@ -208,7 +233,7 @@ var SubMarcas = {
         $('#FechaFinEtapa').text(FechaFin);
         $('#buscar-General').modal('hide');
         //Se carga el grid de SubMarcas asignadas a la etapa
-        $('#bbGrid-SubMarcas')[0].innerHTML = "";
+        $('#bbGrid-subMarcas')[0].innerHTML = "";
 
         $('.btnNuevo').hide();
         $('#planosDespieceRow').hide();
@@ -222,6 +247,11 @@ var SubMarcas = {
         $('#nombrePlanosDespiece').text('Plano Despiece');
         $('#CodigoPlanoDespiece').text('Codigo');
         $('#NombreTipoConstruccion').text('Tipo Construccion');
+
+        $('#idMarcaSelect').val('');
+        $('#nombreMarcas').text('Nombre Marca');
+        $('#codigoMarcas').text('Codigo');
+        $('#piezasMarca').text('Piezas');
 
         $('#planosMontajeRow').show();
 
@@ -239,6 +269,11 @@ var SubMarcas = {
         $('#CodigoPlanoDespiece').text('Codigo');
         $('#NombreTipoConstruccion').text('Tipo Construccion');
 
+        $('#idMarcaSelect').val('');
+        $('#nombreMarcas').text('Nombre Marca');
+        $('#codigoMarcas').text('Codigo');
+        $('#piezasMarca').text('Piezas');
+
         $('#planosDespieceRow').show();
 
     },
@@ -251,8 +286,27 @@ var SubMarcas = {
         $('#NombreTipoConstruccion').text(nombreTipoConstruccion);
         $('#buscar-General').modal('hide');
 
+        $('#idMarcaSelect').val('');
+        $('#nombreMarcas').text('Nombre Marca');
+        $('#codigoMarcas').text('Codigo');
+        $('#piezasMarca').text('Piezas');
+
         //Se carga el grid de SubMarcas asignadas a la etapa
-        $('#bbGrid-SubMarcas')[0].innerHTML = "";
+        $('#bbGrid-subMarcas')[0].innerHTML = "";
+        
+        $('#marcasRow').show();
+    },
+    AsignaMarca: function(id, nombreMarca,
+                          codigoMarca, piezas){
+
+        $('#idMarcaSelect').val(id);
+        $('#nombreMarcas').text(nombreMarca);
+        $('#codigoMarcas').text(codigoMarca);
+        $('#piezasMarca').text(piezas);
+        $('#buscar-General').modal('hide');
+
+        //Se carga el grid de SubMarcas asignadas a la etapa
+        $('#bbGrid-subMarcas')[0].innerHTML = "";
         SubMarcas.CargaGrid();
 
         ///Muestra el boton de nueva SubMarcas
@@ -263,32 +317,32 @@ var SubMarcas = {
         CMI.CierraMensajes();
         var url = contextPath + "SubMarcas/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-SubMarcas').html(data);
-            $('#nuevo-SubMarcas').modal({
+            $('#nuevo-subMarcas').html(data);
+            $('#nuevo-subMarcas').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
             CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            SubMarcas.activeForm = '#NuevaMarcaForm';
+            SubMarcas.activeForm = '#NuevaSubMarcaForm';
         });
     },
     Editar: function (id) {
         CMI.CierraMensajes();
         var url = contextPath + "SubMarcas/Actualiza/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#actualiza-SubMarcas').html(data);
-            $('#actualiza-SubMarcas').modal({
+            $('#actualiza-subMarcas').html(data);
+            $('#actualiza-subMarcas').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            SubMarcas.activeForm = '#ActualizaMarcaForm';
+            SubMarcas.activeForm = '#ActualizaSubMarcaForm';
         });
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
-        if (confirm('¿Esta seguro que desea borrar el Plano Despiece (' + id + ') ?') === false) return;
+        if (confirm('¿Esta seguro que desea borrar la SubMarca (' + id + ') ?') === false) return;
         var url = contextPath + "SubMarcas/Borrar"; // El url del controlador
         $.post(url, {
             id: id
@@ -300,20 +354,20 @@ var SubMarcas = {
             else {
                 CMI.DespliegaError(data.Message);
             }
-        }).fail(function () { CMI.DespliegaError("No se pudo borrar el Plano Montaje."); });
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar la subMarca."); });
     },
     Clonar: function (id) {
         CMI.CierraMensajes();
         var url = contextPath + "SubMarcas/Clonar/" + id; // El url del controlador
         $.get(url, function (data) {
-            $('#nuevo-SubMarcas').html(data);
-            $('#nuevo-SubMarcas').modal({
+            $('#nuevo-subMarcas').html(data);
+            $('#nuevo-subMarcas').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            SubMarcas.activeForm = '#NuevaMarcaForm';
+            SubMarcas.activeForm = '#NuevaSubMarcaForm';
         });
     },
     ValidaPermisos: function () {
@@ -324,26 +378,33 @@ var SubMarcas = {
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
-    serializaMarcas: function (id) {
+    serializaSubMarcas: function (id) {
         var form = SubMarcas.activeForm;
         return ({
-            'nombreMarca': $(form + ' #nombreMarca').val().toUpperCase(),
-            'codigoMarca': $(form + ' #codigoMarca').val().toUpperCase(),
+            'codigoSubMarca': $(form + ' #codigoSubMarca').val().toUpperCase(),
+            'perfilSubMarca': $(form + ' #perfilSubMarca').val().toUpperCase(),
+            'piezasSubMarcas': $(form + ' #piezasSubMarcas').val(),
+            'corteSubMarcas': $(form + ' #corteSubMarcas').val(),
+            'longitudSubMarcas': $(form + ' #longitudSubMarcas').val(),
+            'anchoSubMarcas': $(form + ' #anchoSubMarcas').val(),
+            'gradoSubMarcas': $(form + ' #gradoSubMarcas').val(),
+            'kgmSubMarcas': $(form + ' #kgmSubMarcas').val(),
+            'totalLASubMarcas': $(form + ' #totalLASubMarcas').val(),
+            'pesoSubMarcas': $(form + ' #pesoSubMarcas').val(),
             'nombreEstatus': $('#idEstatus option:selected').text().toUpperCase(),
-            'Piezas': $('#piezas').val().toUpperCase(),
             'id': id
         });
     },
     CargaGrid: function () {
-        var url = contextPath + "SubMarcas/CargaMarcas?idPlanoDespiece=" + $('#idPlanoDespieceSelect').val(); // El url del controlador
+        var url = contextPath + "SubMarcas/CargaSubMarcas?idMarca=" + $('#idMarcaSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            SubMarcas.colMarcas = new Backbone.Collection(data);
-            var bolFilter = SubMarcas.colMarcas.length > 0 ? true : false;
+            SubMarcas.colSubMarcas = new Backbone.Collection(data);
+            var bolFilter = SubMarcas.colSubMarcas.length > 0 ? true : false;
             if (bolFilter) {
                 gridMarcas = new bbGrid.View({
-                    container: $('#bbGrid-SubMarcas'),
+                    container: $('#bbGrid-subMarcas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
@@ -352,19 +413,26 @@ var SubMarcas = {
                     clone: SubMarcas.accClonar,
                     editar: SubMarcas.accEscritura,
                     borrar: SubMarcas.accBorrar,
-                    collection: SubMarcas.colMarcas,
+                    collection: SubMarcas.colSubMarcas,
                     seguridad: SubMarcas.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'nombreMarca', filter: true, filterType: 'input' },
-                               { title: 'Codigo', name: 'codigoMarca', filter: true, filterType: 'input' },
-                               { title: 'Piezas', name: 'Piezas', filter: true, filterType: 'input' },
+                               { title: 'Codigo', name: 'codigoSubMarca', filter: true, filterType: 'input' },
+                               { title: 'Perfil', name: 'perfilSubMarca', filter: true, filterType: 'input' },
+                               { title: 'Piezas', name: 'piezasSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'Corte', name: 'corteSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'Longitud', name: 'longitudSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'Ancho', name: 'anchoSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'Grado', name: 'gradoSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'KGM', name: 'kgmSubMarcas', filter: true, filterType: 'input' },
+                               { title: 'TotalLA', name: 'totalLASubMarcas', filter: true, filterType: 'input' },
+                               { title: 'Peso', name: 'pesoSubMarcas', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Planos de Montaje registradas para la Etapa seleccionada.");
-                $('#bbGrid-SubMarcas')[0].innerHTML = "";
+                $('#bbGrid-subMarcas')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {
