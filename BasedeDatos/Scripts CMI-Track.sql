@@ -67,6 +67,7 @@ INSERT INTO cmiModulos Values (22,getdate(), getdate(),1,'Planos de Montaje','Pl
 INSERT INTO cmiModulos Values (23,getdate(), getdate(),1,'Planos Despiece','PlanosDespiece/Index',4)
 INSERT INTO cmiModulos Values (24,getdate(), getdate(),1,'Marcas','Marcas/Index',5)
 INSERT INTO cmiModulos Values (25,getdate(), getdate(),1,'SubMarcas','SubMarcas/Index',6)
+INSERT INTO cmiModulos Values (26,getdate(), getdate(),1,'Lista General','ListaGeneral/Index',7)
 
 select * from cmiModuloMenuGrupo
 
@@ -94,6 +95,7 @@ INSERT INTO cmiModuloMenuGrupo values (3,22)
 INSERT INTO cmiModuloMenuGrupo values (3,23)
 INSERT INTO cmiModuloMenuGrupo values (3,24)
 INSERT INTO cmiModuloMenuGrupo values (3,25)
+INSERT INTO cmiModuloMenuGrupo values (3,26)
 go
 
 INSERT INTO [cmiPermisos] VALUES (1 ,1 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)

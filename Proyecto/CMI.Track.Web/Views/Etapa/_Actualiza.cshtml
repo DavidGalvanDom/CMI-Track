@@ -9,16 +9,23 @@
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
             @using (Html.BeginForm("Actualiza", "Etapa", FormMethod.Post, new { id = "ActualizaEtapaForm", name = "ActualizaEtapaForm", @class = "form-horizontal" }))
-            {                
+            {
                 <div class="form-group">
-                    @Html.LabelFor(model => model.nombreEtapa, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.nombreEtapa, new { @class = "form-control", maxlength = 20 })
-                    </div>
-                    <label class="col-sm-1 control-label">Id</label>
+                    <label class="col-sm-2 control-label">Id</label>
                     <div class="col-sm-2">
                         <p class="form-control">@Html.DisplayFor(model => model.id)</p>
                     </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.claveEtapa, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.claveEtapa, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                    @Html.LabelFor(model => model.nombreEtapa, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.nombreEtapa, new { @class = "form-control", maxlength = 20 })
+                    </div>                    
                 </div>
 
                 <div class="form-group">

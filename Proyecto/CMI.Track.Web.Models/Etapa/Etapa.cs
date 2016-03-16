@@ -20,8 +20,13 @@ namespace CMI.Track.Web.Models
 
         [Required(ErrorMessage = "*")]
         [StringLength(20)]
-        [Display(Name = "Etapa")]
+        [Display(Name = "Nombre")]
         public string nombreEtapa { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [StringLength(10)]
+        [Display(Name = "Clave")]
+        public string claveEtapa { get; set; }
 
         [Required(ErrorMessage = "*")]
         [StringLength(250)]

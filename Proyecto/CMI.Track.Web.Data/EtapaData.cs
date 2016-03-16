@@ -46,6 +46,7 @@ namespace CMI.Track.Web.Data
                         lstEtapas.Add(new Models.ListaEtapas()
                         {
                             id = Convert.ToInt32(dataReader["idEtapa"]),
+                            claveEtapa = Convert.ToString(dataReader["claveEtapa"]),   
                             nombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),                            
                             nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]),
                             fechaFin = Convert.ToString(dataReader["fechaFinEtapa"]),
@@ -86,7 +87,8 @@ namespace CMI.Track.Web.Data
                         objEtapa = new Models.Etapa()
                         {
                             id = Convert.ToInt32(dataReader["idEtapa"]),
-                            nombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),                            
+                            claveEtapa = Convert.ToString(dataReader["claveEtapa"]),   
+                            nombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),                           
                             fechaFin = Convert.ToString(dataReader["fechaFinEtapa"]),
                             fechaInicio = Convert.ToString(dataReader["fechaInicioEtapa"]),
                             infoGeneral = Convert.ToString(dataReader["infGeneralEtapa"]),
@@ -113,7 +115,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.Etapa pobjModelo)
         {
-            object[] paramArray = new object[8];
+            object[] paramArray = new object[9];
             try
             {
                 paramArray[0] = pobjModelo.estatusEtapa;
@@ -123,7 +125,8 @@ namespace CMI.Track.Web.Data
                 paramArray[4] = pobjModelo.idProyecto;
                 paramArray[5] = pobjModelo.revisionProyecto.ToUpper();                
                 paramArray[6] = pobjModelo.infoGeneral.ToUpper();
-                paramArray[7] = pobjModelo.usuarioCreacion;
+                paramArray[7] = pobjModelo.claveEtapa.ToUpper();
+                paramArray[8] = pobjModelo.usuarioCreacion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarEtapa", paramArray);
@@ -143,7 +146,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualizar(Models.Etapa pobjModelo)
         {
-            object[] paramArray = new object[6];
+            object[] paramArray = new object[7];
             try
             {
                 paramArray[0] = pobjModelo.estatusEtapa;
@@ -151,7 +154,8 @@ namespace CMI.Track.Web.Data
                 paramArray[2] = pobjModelo.fechaInicio.ToUpper();
                 paramArray[3] = pobjModelo.fechaFin.ToUpper();                
                 paramArray[4] = pobjModelo.infoGeneral.ToUpper();
-                paramArray[5] = pobjModelo.id;
+                paramArray[5] = pobjModelo.claveEtapa.ToUpper();
+                paramArray[6] = pobjModelo.id;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarEtapa", paramArray);

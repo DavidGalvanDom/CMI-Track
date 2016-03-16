@@ -210,6 +210,7 @@ var Etapa = {
     serializaEtapa: function (id) {
         var form = Etapa.activeForm;
         return ({
+            'claveEtapa': $(form + ' #claveEtapa').val().toUpperCase(),
             'nombreEtapa': $(form + ' #nombreEtapa').val().toUpperCase(),
             'fechaInicio': $(form + ' #fechaInicio').val(),
             'fechaFin': $(form + ' #fechaFin').val(),
@@ -237,8 +238,8 @@ var Etapa = {
                     borrar: Etapa.accBorrar,
                     collection: Etapa.colEtapas,
                     seguridad: Etapa.accSeguridad,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
+                    colModel: [{ title: 'Clave', name: 'claveEtapa', filter: true, filterType: 'input' },
+                               { title: 'Nombre', name: 'nombreEtapa', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]

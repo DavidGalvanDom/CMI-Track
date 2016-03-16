@@ -1,14 +1,17 @@
 ﻿
 @{
-    ViewBag.Title = "Planos de Montaje";
+    ViewBag.Title = "Lista General de Partes";
 }
 
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <small>Lista</small> Planos de Montaje
-            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+            <small>Lista</small> General de Partes
+            <label class="pull-right" style="font-size:small;">
+                Bajar plantilla de Excel <a href="~/Content/template/Lista General Materiales.xlsx" target="_blank">Click Aquí</a>
+            </label>
         </h1>
+       
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -69,23 +72,49 @@
         <br />
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-12">
-        <div id="bbGrid-PlanosMontaje" class="col-lg-12">
-            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+<form method="post" class="form-horizontal" id="frmListaPartes" name="frmListaPartes" style="display:none;">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Lista General de Partes</label>
+        <div class="col-sm-7">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <span class="btn btn-primary btn-file">
+                        Archivo&hellip; <input type="file" id="flistaPartes" name="flistaPartes">
+                    </span>
+                </span>
+                <input type="text" class="form-control" id="lblFileName" name="lblFileName" readonly>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <button id="cmdSubir" name="cmdSubir" class="btn btn-primary subirArchivo">Subir Archivo</button>
         </div>
     </div>
-</div>
+    <input type="hidden" id="archivoListaGen" name="archivoListaGen">
 
-<div class="modal fade bs-example-modal-lg" id="nuevo-PlanosMontaje"
-     tabindex="-1" role="dialog"
-     aria-labelledby="nuevoPlanosMontajeLabel">
-</div>
+    <div class="row subirArchivo">
+        <div class="col-sm-12">
+            <ul class="list-group">
+                <li class="list-group-item disabled">                    
+                    Pasos para procesar archivo
+                </li>
+                <li class="list-group-item">
+                    <span class="label label-success pull-right">Ok</span>
+                    Subir archivo
+                </li>
+                <li class="list-group-item">                    
+                    Validar archivo
+                    <span class="label label-info pull-right">--</span>
+                </li>
+                <li class="list-group-item">                    
+                    Guardar informacion
+                    <span class="label label-info pull-right">--</span>
+                </li>
+            </ul>          
+        </div>
+    </div>    
+</form>
 
-<div class="modal fade bs-example-modal-lg" id="actualiza-PlanosMontaje"
-     tabindex="-1" role="dialog"
-     aria-labelledby="actulizaPlanosMontajeLabel">
-</div>
+
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
      tabindex="-1" role="dialog"
@@ -94,5 +123,5 @@
 
 
 @section Scripts {
-    <script src="~/Scripts/PlanosMontaje.js"></script>
+    <script src="~/Scripts/ListaGeneral.js"></script>
 }

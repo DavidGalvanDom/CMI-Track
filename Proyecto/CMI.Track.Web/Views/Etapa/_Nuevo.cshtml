@@ -11,8 +11,12 @@
             @using (Html.BeginForm("Nuevo", "Etapa", FormMethod.Post, new { id = "NuevaEtapaForm", name = "NuevaEtapaForm", @class = "form-horizontal" }))
             {
                 <div class="form-group">
+                    @Html.LabelFor(model => model.claveEtapa, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.claveEtapa, new { @class = "form-control", maxlength = 20 })
+                    </div>
                     @Html.LabelFor(model => model.nombreEtapa, new { @class = "col-sm-2 control-label" })
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         @Html.TextBoxFor(model => model.nombreEtapa, new { @class = "form-control", maxlength = 20 })
                     </div>
                 </div>

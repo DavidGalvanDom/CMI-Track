@@ -832,6 +832,7 @@
     <Content Include="Scripts\lib\select2-3.5.4\select2x2.png" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
+    <Content Include="Scripts\ListaGeneral.js" />
     <Content Include="Scripts\MarcasBuscar.js" />
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
@@ -955,9 +956,11 @@
     <Content Include="Views\SubMarcas\_Nuevo.cshtml" />
     <Content Include="Views\SubMarcas\_Actualiza.cshtml" />
     <Content Include="Views\SubMarcas\_buscarSubMarcas.cshtml" />
+    <Content Include="Views\ListaGeneral\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\template\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -18,7 +18,7 @@ var ProyectoBuscar = {
                                             rowSelected.attributes.FechaFin);
     },
     CargaGrid: function () {
-        $('#cargandoInfoBP').show();
+        $('#cargandoInfoPM').show();
         var url = contextPath + "Proyecto/CargaProyectosActivos"; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaErrorDialogo(data.Message); return; }
@@ -43,7 +43,7 @@ var ProyectoBuscar = {
                         ProyectoBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });
-                $('#cargandoInfoBP').hide();
+                $('#cargandoInfoPM').hide();
             } else {
                 CMI.DespliegaInformacionDialogo("No se encontraron Proyecto registrados");
                 $('#bbGrid-buscaProyecto')[0].innerHTML = "";

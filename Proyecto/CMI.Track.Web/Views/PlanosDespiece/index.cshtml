@@ -12,8 +12,10 @@
     <!-- /.col-lg-12 -->
 </div>
 
+
 <div class="row">
     <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Proyecto</label></div>
         <div class="col-sm-4">
             <div class="input-group">
                 <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
@@ -24,16 +26,16 @@
             <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Revision</span>
-        </div>
-        <div class="col-sm-2">
-            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
-        </div>
-        <div class="col-sm-2">
             <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
         </div>
         <div class="col-sm-2">
             <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+        </div>
+        <div class="col-sm-1">
+            <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Rev</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
         </div>
     </div>
 </div>
@@ -44,9 +46,10 @@
 </div>
 <div class="row" id="etapaRow" style="display:none;">
     <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Etapa</label></div>
         <div class="col-sm-4">
             <div class="input-group">
-                <p id="nombreEtapa" name="nombreEtapa" class="form-control" placeholder="Nombre Etapa" title="Nombre Etapa"> Nombre Etapa </p>
+                <p id="nombreEtapa" name="nombreEtapa" class="form-control" title="Nombre Etapa"> Nombre Etapa </p>
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button" id="btnBuscarEtapa" name="btnBuscarEtapa"><span class="fa fa-search"></span></button>
                 </span>
@@ -54,10 +57,10 @@
             <input type="hidden" id="idEtapaSelect" name="idEtapaSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="FechaInicioEtapa" placeholder="FechaInicioEtapa" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            <span id="FechaInicioEtapa" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaFinEtapa" placeholder="FechaFinEtapa" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            <span id="FechaFinEtapa" class="form-control" title="Fecha Fin">Fecha Fin</span>
         </div>
     </div>
 </div>
@@ -67,10 +70,11 @@
     </div>
 </div>
 <div class="row" id="planosMontajeRow" style="display:none;">
+    <div class="col-sm-1"> <label class="control-label">Montaje</label></div>
     <div class="form-group">
         <div class="col-sm-4">
             <div class="input-group">
-                <p id="nombrePlanosMontaje" name="nombrePlanosMontaje" class="form-control" placeholder="Nombre Planos Montaje" title="Nombre Planos de Montaje"> Nombre Planos de Montaje </p>
+                <p id="nombrePlanosMontaje" name="nombrePlanosMontaje" class="form-control" title="Nombre Planos de Montaje"> Nombre Planos de Montaje </p>
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button" id="btnBuscarPlanosMontaje" name="btnBuscarPlanosMontaje"><span class="fa fa-search"></span></button>
                 </span>
@@ -78,10 +82,10 @@
             <input type="hidden" id="idPlanoMontajeSelect" name="idPlanoMontajeSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="FechaInicioPlanoMontaje" placeholder="Fecha Inicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            <span id="FechaInicioPlanoMontaje" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaFinPlanosMontaje" placeholder="Fecha Fin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            <span id="FechaFinPlanosMontaje" class="form-control" title="Fecha Fin">Fecha Fin</span>
         </div>
     </div>
 </div>

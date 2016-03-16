@@ -20,7 +20,10 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Etapa")]
         public string nombreEtapa { get; set; }
-       
+
+        [Display(Name = "Clave")]
+        public string claveEtapa { get; set; }
+
         [Display(Name = "Fecha Inicio")]
         public string fechaInicio { get; set; }
        

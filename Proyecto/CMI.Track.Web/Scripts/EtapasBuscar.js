@@ -33,7 +33,7 @@ var EtapaBuscar = {
                     actionenable: false,
                     detalle: false,
                     collection: EtapaBuscar.colEtapas,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                    colModel: [{ title: 'Clave', name: 'claveEtapa', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' }],
