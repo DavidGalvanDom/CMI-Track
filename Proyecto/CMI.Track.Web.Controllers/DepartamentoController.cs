@@ -75,7 +75,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objDepartamento = new Models.Departamento() { idEstatus = 1, fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
+            var objDepartamento = new Models.Departamento() { idEstatus = 1, fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objDepartamento);
         }
@@ -146,7 +146,7 @@ namespace CMI.Track.Web.Controllers
         {
             var objDepartamento = DepartamentoData.CargaDepartamento(id);
             objDepartamento.id = 0;
-            objDepartamento.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            objDepartamento.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
 
             return PartialView("_Nuevo", objDepartamento);

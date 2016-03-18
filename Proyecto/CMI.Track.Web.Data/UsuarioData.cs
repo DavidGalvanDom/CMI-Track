@@ -93,7 +93,7 @@ namespace CMI.Track.Web.Data
                             idDepartamento = dataReader["idDepartamento"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idDepartamento"]),
                             idProcesoDestino = dataReader["idProcesoDestino"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idProcesoDestino"]),
                             idProcesoOrigen = dataReader["idProcesoOrigen"] == DBNull.Value ? 0 : Convert.ToInt32(dataReader["idProcesoOrigen"]),
-                            fechaCreacion = dataReader["fechaCreacion"] == DBNull.Value ? "01/01/1900" : Convert.ToDateTime(dataReader["fechaCreacion"]).ToString("MM/dd/yyyy")
+                            fechaCreacion = dataReader["fechaCreacion"] == DBNull.Value ? "01/01/1900" : Convert.ToDateTime(dataReader["fechaCreacion"]).ToString("dd/MM/yyyy")
                         };
 
                         return objUsuario;

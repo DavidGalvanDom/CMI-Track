@@ -55,7 +55,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objUsuario = new Models.Usuario() { idEstatus = 1, Contrasena = "",fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };            
+            var objUsuario = new Models.Usuario() { idEstatus = 1, Contrasena = "",fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy") };            
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objUsuario);
         }
@@ -128,7 +128,7 @@ namespace CMI.Track.Web.Controllers
             var objUsuario = UsuarioData.CargaUsuario(id);
             objUsuario.id = 0;
             objUsuario.Contrasena = "";
-            objUsuario.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            objUsuario.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
 
             return PartialView("_Nuevo", objUsuario);

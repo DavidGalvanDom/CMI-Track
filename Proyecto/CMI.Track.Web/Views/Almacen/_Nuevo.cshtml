@@ -7,14 +7,12 @@
             <h4 class="modal-title">@ViewBag.Titulo   Almacen</h4>
         </div>
         <div class="modal-body">
-            <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "Almacen", FormMethod.Post, new { id = "NuevoAlmacenForm", name = "NuevoAlmacenForm", @class = "form-horizontal" }))
-            {                        
-                
+            <div class="clientAlertDlg"></div>           
+            <form class="form-horizontal" id="NuevoAlmacenForm" name="NuevoAlmacenForm" onsubmit="return false">
                 <div class="form-group">
                     @Html.LabelFor(model => model.nombreAlmacen, new { @class = "col-sm-3 control-label" })
                     <div class="col-sm-8">
-                        @Html.TextBoxFor(model => model.nombreAlmacen, new { @class = "form-control", maxlength = 50 })                    
+                        @Html.TextBoxFor(model => model.nombreAlmacen, new { @class = "form-control", maxlength = 50 })
                     </div>
                 </div>
 
@@ -30,7 +28,7 @@
                 </div>
 
                 @Html.HiddenFor(model => model.usuarioCreacion);
-            }
+            </form>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

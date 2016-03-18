@@ -76,7 +76,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objEtapa = new Models.Etapa() { fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
+            var objEtapa = new Models.Etapa() { fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objEtapa);
         }
@@ -150,7 +150,7 @@ namespace CMI.Track.Web.Controllers
         {
             var objEtapa = EtapaData.CargaEtapa(id);
             objEtapa.id = 0;
-            objEtapa.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            objEtapa.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objEtapa);
         }

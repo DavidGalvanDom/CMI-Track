@@ -8,12 +8,12 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "PlanosMontaje", FormMethod.Post, new { id = "NuevoPlanosMontajeForm", name = "NuevoPlanosMontajeForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Nuevo", "PlanosMontaje", FormMethod.Post, new { id = "NuevoPlanosMontajeForm", name = "NuevoPlanosMontajeForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.nombrePlanoMontaje, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-5">
-                        @Html.TextBoxFor(model => model.nombrePlanoMontaje, new { @class = "form-control", maxlength = 20 })
+                        @Html.TextBoxFor(model => model.nombrePlanoMontaje, new { @class = "form-control", maxlength = 50 })
                     </div> 
                     @Html.LabelFor(model => model.codigoPlanoMontaje, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-3">

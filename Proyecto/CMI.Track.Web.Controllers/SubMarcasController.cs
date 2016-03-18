@@ -76,7 +76,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objSubMarcas = new Models.SubMarcas() { fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy"), idEstatus = 1 };
+            var objSubMarcas = new Models.SubMarcas() { fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy"), idEstatus = 1 };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objSubMarcas);
         }
@@ -148,7 +148,7 @@ namespace CMI.Track.Web.Controllers
         {
             var objSubMarca = SubMarcasData.CargaSubMarca(id);
             objSubMarca.id = 0;
-            objSubMarca.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            objSubMarca.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objSubMarca);
         }

@@ -24,7 +24,7 @@ namespace CMI.Track.Web.Models
         public int idEtapa { get; set; }
 
         [Required(ErrorMessage = "*")]
-        [StringLength(20)]
+        [StringLength(50)]
         [Display(Name = "Nombre")]
         public string nombrePlanoMontaje { get; set; }
 
@@ -50,8 +50,7 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Creacion")]
         public string fechaCreacion { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [StringLength(100)]
+                
         [Display(Name = "Archivo")]
         public string archivoPlanoMontaje { get; set; }
 

@@ -88,7 +88,7 @@ var Proyecto = {
             btn = this,
             form = Proyecto.activeForm,
             files;
-
+        
         //Agrega la clase de mandatorio cuando no ha seleccionado un cliente.
         if ($(form + ' #idCliente').val() === "0") {
             $(form + ' #nombreCliente').addClass('input-validation-error');
@@ -308,10 +308,10 @@ var Proyecto = {
     },
     IniciaDateControls: function () {
         var form = Proyecto.activeForm;
-        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'MM/DD/YYYY' });
+        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'DD/MM/YYYY' });
         $(form + ' #dtpFechaFin').datetimepicker({
             useCurrent: false,
-            format: 'MM/DD/YYYY'
+            format: 'DD/MM/YYYY'
         });
         $(form + ' #dtpFechaInicio').on("dp.change", function (e) {
             $('#dtpFechaFin').data("DateTimePicker").minDate(e.date);

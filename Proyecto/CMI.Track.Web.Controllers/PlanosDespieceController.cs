@@ -77,7 +77,7 @@ namespace CMI.Track.Web.Controllers
        [HttpGet]
        public ActionResult Nuevo()
        {
-           var objPlanosDespiece = new Models.PlanosDespiece() { fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy"), idEstatus = 1 };
+           var objPlanosDespiece = new Models.PlanosDespiece() { fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy"), idEstatus = 1 };
            ViewBag.Titulo = "Nuevo";
            return PartialView("_Nuevo", objPlanosDespiece);
        }
@@ -224,7 +224,7 @@ namespace CMI.Track.Web.Controllers
            objPlanoDespiece.id = 0;
            objPlanoDespiece.archivoPlanoDespiece = "";
            objPlanoDespiece.nombreArchivo = "";
-           objPlanoDespiece.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+           objPlanoDespiece.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
            ViewBag.Titulo = "Clonar";
            return PartialView("_Nuevo", objPlanoDespiece);
        }

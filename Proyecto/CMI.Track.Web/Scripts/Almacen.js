@@ -35,6 +35,7 @@ var Almacen = {
     },
     onGuardar: function (e) {
         var btn = this;
+       
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -80,7 +81,7 @@ var Almacen = {
         }
     },
     Nuevo: function () {
-        CMI.CierraMensajes();
+        CMI.CierraMensajes();        
         var url = contextPath + "Almacen/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
             $('#nuevo-Almacen').html(data);

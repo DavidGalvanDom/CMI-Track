@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy") };
+            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objProjecto);
         }
@@ -219,7 +219,7 @@ namespace CMI.Track.Web.Controllers
             objProyecto.revisionProyecto = "";
             objProyecto.nombreArchivo = "";
             objProyecto.archivoPlanoProyecto = "";
-            objProyecto.fechaCreacion = DateTime.Now.ToString("MM/dd/yyyy");
+            objProyecto.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objProyecto);
         }

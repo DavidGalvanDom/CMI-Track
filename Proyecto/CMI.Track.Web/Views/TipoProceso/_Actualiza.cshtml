@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"> </div>
-            @using (Html.BeginForm("Actualiza", "TipoProceso", FormMethod.Post, new { id = "ActualizaTipoProcesoForm", name = "ActualizaTipoProcesoForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Actualiza", "TipoProceso", FormMethod.Post, new { id = "ActualizaTipoProcesoForm", name = "ActualizaTipoProcesoForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
 
             <div class="form-group">

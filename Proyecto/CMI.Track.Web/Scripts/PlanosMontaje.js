@@ -37,8 +37,7 @@ var PlanosMontaje = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (btn) {
-        var btn = this;
+    onGuardar: function (btn) {       
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -65,8 +64,7 @@ var PlanosMontaje = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (btn) {
-        var btn = this; 
+    onActualizar: function (btn) {        
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -291,10 +289,10 @@ var PlanosMontaje = {
     },
     IniciaDateControls: function () {
         var form = PlanosMontaje.activeForm;
-        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'MM/DD/YYYY' });
+        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'DD/MM/YYYY' });
         $(form + ' #dtpFechaFin').datetimepicker({
             useCurrent: false,
-            format: 'MM/DD/YYYY'
+            format: 'DD/MM/YYYY'
         });
         $(form + ' #dtpFechaInicio').on("dp.change", function (e) {
             $('#dtpFechaFin').data("DateTimePicker").minDate(e.date);

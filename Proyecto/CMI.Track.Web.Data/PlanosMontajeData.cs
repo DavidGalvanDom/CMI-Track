@@ -124,7 +124,7 @@ namespace CMI.Track.Web.Data
                 paramArray[3] = pobjModelo.fechaFin.ToUpper();
                 paramArray[4] = pobjModelo.codigoPlanoMontaje.ToUpper();
                 paramArray[5] = pobjModelo.infGeneralPlanoMontaje.ToUpper();
-                paramArray[6] = pobjModelo.archivoPlanoMontaje.ToUpper();
+                paramArray[6] = pobjModelo.archivoPlanoMontaje == null ? "" : pobjModelo.archivoPlanoMontaje.ToUpper();
                 paramArray[7] = pobjModelo.idEtapa;
                 paramArray[8] = pobjModelo.usuarioCreacion;
 
@@ -155,7 +155,7 @@ namespace CMI.Track.Web.Data
                 paramArray[3] = pobjModelo.fechaFin.ToUpper();
                 paramArray[4] = pobjModelo.codigoPlanoMontaje.ToUpper();
                 paramArray[5] = pobjModelo.infGeneralPlanoMontaje.ToUpper();
-                paramArray[6] = pobjModelo.archivoPlanoMontaje.ToUpper();
+                paramArray[6] = pobjModelo.archivoPlanoMontaje == null ? "" : pobjModelo.archivoPlanoMontaje.ToUpper();
                 paramArray[7] = pobjModelo.idEtapa;
                 paramArray[8] = pobjModelo.id;
 

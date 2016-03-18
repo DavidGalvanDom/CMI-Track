@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Actualiza", "PlanosDespiece", FormMethod.Post, new { id = "ActualizaPlanosDespieceForm", name = "ActualizaPlanosDespieceForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Actualiza", "PlanosDespiece", FormMethod.Post, new { id = "ActualizaPlanosDespieceForm", name = "ActualizaPlanosDespieceForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Id</label>
@@ -19,7 +19,7 @@
                     @Html.LabelFor(model => model.fechaCreacion, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-3">
                         <div class='input-group date'>
-                            @Html.TextBoxFor(model => model.fechaCreacion, new { @class = "form-control", maxlength = 10 })
+                            @Html.TextBoxFor(model => model.fechaCreacion, new { @class = "form-control", maxlength = 10, @disabled = "disabled" })
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>

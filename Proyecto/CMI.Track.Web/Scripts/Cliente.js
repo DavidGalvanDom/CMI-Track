@@ -36,7 +36,7 @@ var Cliente = {
     
     onGuardar: function (e) {
         var btn = this;
-
+        
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);

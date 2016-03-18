@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "CalidadProceso", FormMethod.Post, new { id = "NuevoCalidadProcesoForm", name = "NuevoCalidadProcesoForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Nuevo", "CalidadProceso", FormMethod.Post, new { id = "NuevoCalidadProcesoForm", name = "NuevoCalidadProcesoForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
                 <div class="form-group">
                     @Html.LabelFor(model => model.idProceso, new { @class = "col-sm-2 control-label" })
