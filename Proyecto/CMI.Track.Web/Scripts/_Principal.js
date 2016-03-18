@@ -51,7 +51,7 @@
         localStorage.modPermisos = datos;
         var item = document.getElementById('Permisos');       
         if (item != null) {
-            localStorage.modSerdad = item.innerText;
+            localStorage.modSerdad = item.textContent;
         } else {
             localStorage.modSerdad = '00';
         }

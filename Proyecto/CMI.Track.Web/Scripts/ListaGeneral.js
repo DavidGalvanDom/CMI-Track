@@ -66,7 +66,7 @@ var ListaGeneral = {
             files;
 
         if ($("form").valid()) {
-            CMI.botonMensaje(true, btn, 'Guardar');
+            CMI.botonMensaje(true, btn, 'Subir Archivo');
             files = document.getElementById(filesName).files;
             if (files.length > 0) {
                 if (window.FormData !== undefined) {
@@ -82,13 +82,16 @@ var ListaGeneral = {
                         data: data,
                         success: function (result) {
                             if (result.Success === true) {
-                                console.log(result.Archivo);
-                                $(ListaGeneral.activeForm + ' #archivoListaGen').val(result.Archivo);                                
+                                $(ListaGeneral.activeForm + ' #archivoListaGen').val(result.Archivo);
+                                $('#lblSubirArchivo').text('Ok').removeClass('label-info').addClass('label-success');
+                                $('#lblValidarArchivo').text('--').removeClass('label-success').addClass('label-info');
+                                $('#lblGuardaInfo').text('--').removeClass('label-success').addClass('label-info');
+
                                 ListaGeneral.onValidarArchivo(btn);                                
                             } else {
                                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                                 CMI.DespliegaError(result.Message);
-                                CMI.botonMensaje(false, btn, 'Guardar');
+                                CMI.botonMensaje(false, btn, 'Subir Archivo');
                             }
                         },
                         error: function (xhr, status, p3, p4) {
@@ -97,12 +100,12 @@ var ListaGeneral = {
                                 err = JSON.parse(xhr.responseText).Message;
                             }
                             CMI.DespliegaError(err);
-                            CMI.botonMensaje(false, btn, 'Guardar');
+                            CMI.botonMensaje(false, btn, 'Subir Archivo');
                         }
                     });
                 } else {
                     CMI.DespliegaError("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
-                    CMI.botonMensaje(false, btn, 'Guardar');
+                    CMI.botonMensaje(false, btn, 'Subir Archivo');
                 }
             }
         }
@@ -110,20 +113,23 @@ var ListaGeneral = {
     onValidarArchivo: function (btn) {        
         CMI.CierraMensajes();
         var url = contextPath + "ListaGeneral/ValidarInformacion", // El url del controlador
-            data = 'archivoListaGen=' + $(ListaGeneral.activeForm + ' #archivoListaGen').val();
-        console.log(data);
+            data = 'idProyecto=' + $('#idProyectoSelect').val() +
+                   '&idEtapa=' + $('#idEtapaSelect').val() +
+                   '&archivoListaGen=' + $(ListaGeneral.activeForm + ' #archivoListaGen').val();
         $.post(url,data, function (result) {
             if (result.Success === true) {
+                $('#lblValidarArchivo').text('Ok (' + result.numRegistros + ')').removeClass('label-info').addClass('label-success');
                 ListaGeneral.onSubirInformacion(btn);
-            } else {
+            } else {                
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
-                CMI.botonMensaje(false, btn, 'Guardar');
+                ListaGeneral.ExportarExcel(result.excel);
+                CMI.botonMensaje(false, btn, 'Subir Archivo');
             }
         }).fail(function () {
             CMI.DespliegaError("Error al momenot de Validar el Archivo");
         }).always(function () {
-            CMI.botonMensaje(false, btn, 'Guardar');
+            CMI.botonMensaje(false, btn, 'Subir Archivo');
         });
     },
     onSubirInformacion: function (btn) {
@@ -131,9 +137,11 @@ var ListaGeneral = {
         var url = contextPath + "ListaGeneral/SubirInformacion"; // El url del controlador      
         $.post(url, function (result) {
             if (result.Success === true) {
+                CMI.DespliegaInformacion('El proceso termino de guardar la lista general de partes.');
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
-                CMI.DespliegaInformacion('La informacion del archivo fue registrada.');
+                $('#lblGuardaInfo').text('Ok').removeClass('label-info').addClass('label-success');
                 CMI.botonMensaje(false, btn, 'Subir Archivo');
+                $('.subirArchivo').hide();
             } else {
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
@@ -213,11 +221,36 @@ var ListaGeneral = {
             }
 
             $('#lblFileName').val(label);
+            $('#lblSubirArchivo').text('--').removeClass('label-success').addClass('label-info');
+            $('#lblValidarArchivo').text('--').removeClass('label-success').addClass('label-info');
+            $('#lblGuardaInfo').text('--').removeClass('label-success').addClass('label-info');
             $('.subirArchivo').show();
         });
+    },
+    ExportarExcel: function (csvInfo) {
+
+        //Generate a file name
+        var fileName = "Lista_Partes_Err";
+       
+        //inicializa el formato del archivo csv or xls
+        var uri = 'data:text/csv;charset=utf-8,' + escape(csvInfo);
+
+        //Se genera un tag temporal <a /> 
+        var link = document.createElement("a");
+        link.href = uri;
+
+        //se oculta el link
+        link.style = "visibility:hidden";
+        link.download = fileName + ".csv";
+
+        //Dispara el evento para mostrar el archivo con los datos
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 };
 
 $(function () {
     ListaGeneral.Inicial();
 })
+

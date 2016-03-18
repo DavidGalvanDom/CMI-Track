@@ -19,6 +19,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 using CMI.Track.Web.Models;
 using CMI.Track.Web.Data;
+using System.Text.RegularExpressions;
 
 namespace CMI.Track.Web.Controllers
 {
@@ -45,43 +46,47 @@ namespace CMI.Track.Web.Controllers
        /// <param name="archivoListaGen"></param>
        /// <returns></returns>
        [HttpPost]
-       public JsonResult ValidarInformacion(string archivoListaGen)
+       public JsonResult ValidarInformacion(int idProyecto, int idEtapa, string archivoListaGen)
        {
             string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\";
             string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
-            int numeroRenglones = 0;
-            int count = 0;
-            string tablaErrores = "";
+            string xmlclaveDespiece = "";
+            string cadenaCvc = "";
+            bool error = false;
 
            try
            {
-               DataTable result = GetDataTableFromSpreadsheet(System.IO.File.OpenRead(pathArchivoTem + archivoListaGen), false);
+               //Se carga la informacion en data table y se valida 
+                    // 1. No permite campos vacios
+                    // 2. Los tipos de datos que sean numericos
+               DataTable result = GetDataTableFromSpreadsheet(System.IO.File.OpenRead(pathArchivoTem + archivoListaGen), 
+                                                               false,
+                                                               out cadenaCvc,
+                                                               out error);
 
-               //Valida el numero de columnas del archivo.
-               if(result.Columns.Count != 18)
-                  return Json(new { Success = false, Message = "El número de columnas del archivo deben ser 18. El archivo que quiere procesar tiene " + result.Columns.Count });
+               // En caso de algun error se regresa el formato del archivo en csv para ser desplegado en el xls 
+               if (error)               
+                   return Json(new { Success = false, Message = "Los datos del archivo no son validos.", excel = cadenaCvc });
 
-               numeroRenglones = result.Rows.Count;
 
-               // Todos los datos son requeridos
-               foreach (DataRow rowData in result.Rows)
+               var planosTipo = from row in result.AsEnumerable()
+                             group row by new { plano = row[1], tipo = row[2] } into grp
+                             select new
+                             {
+                                 Plano = grp.Key.plano,
+                                 Tipo = grp.Key.tipo
+                             };
+
+               foreach (var plano in planosTipo)               
+                  xmlclaveDespiece += string.Format("<id>{0}</id>", plano.Plano);
+
+               //Se valida la existencia de los planos que existan en base de datos.
+               var lstPlanosDespiece = PlanosDespieceData.CargaExistenciaPlanoDespiece(xmlclaveDespiece, idEtapa);
+
+              /* foreach (var plano in lstPlanosDespiece)
                {
-                   count++;
-                   //Se valida columna por columna
-                   foreach (DataColumn colum in result.Columns)
-                   {
-                       if (rowData[colum].ToString() == string.Empty)
-                       {
-                           tablaErrores += string.Format("Renglon {0} - {1} : {2}",count, colum.ColumnName, " No hay datos");
-                       }
-                   }          
-               }
 
-
-               // Tipo de datos
-               // Que exista el Plano Despiece por tipo de construccion
-               // Que exista la Etapa
-               //
+               }*/
                
                //Insertar
                // Agrupar informacion
@@ -91,7 +96,7 @@ namespace CMI.Track.Web.Controllers
                // Generacion de querys
 
 
-               return Json(new { Success = true});
+               return Json(new { Success = true, numRegistros = result.Rows.Count });
            }
            catch (Exception exp)
            {
@@ -160,16 +165,19 @@ namespace CMI.Track.Web.Controllers
        }
 
        /// <summary>
-       /// 
+       /// Carga el excel en un data Table
        /// </summary>
        /// <param name="MyExcelStream"></param>
        /// <param name="ReadOnly"></param>
        /// <returns></returns>
-       public static DataTable GetDataTableFromSpreadsheet(Stream MyExcelStream, bool ReadOnly)
+       public static DataTable GetDataTableFromSpreadsheet(Stream MyExcelStream, bool ReadOnly, 
+                                                            out string cadenaCvc, out bool error)
        {
-           DataTable dt = new DataTable();
+           DataTable dataTable = new DataTable();
            using (SpreadsheetDocument sDoc = SpreadsheetDocument.Open(MyExcelStream, ReadOnly))
-           {
+           {               
+               string desError = "";
+               string valor = "";
                WorkbookPart workbookPart = sDoc.WorkbookPart;
                IEnumerable<Sheet> sheets = sDoc.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>();
                string relationshipId = sheets.First().Id.Value;
@@ -177,32 +185,91 @@ namespace CMI.Track.Web.Controllers
                Worksheet workSheet = worksheetPart.Worksheet;
                SheetData sheetData = workSheet.GetFirstChild<SheetData>();
                IEnumerable<Row> rows = sheetData.Descendants<Row>();
+               error = false;
+               cadenaCvc = "";
 
+               int numeroColumnas = rows.ElementAt(0).Count();
+
+               if (numeroColumnas != 18)
+                   throw new ApplicationException("El número de columnas del archivo deben ser 18. El archivo que quiere procesar tiene:" + numeroColumnas);               
+
+               //Creacion de columnas para el datatable
                foreach (Cell cell in rows.ElementAt(0))
                {
-                   dt.Columns.Add(GetCellValue(sDoc, cell));
+                   var columName = GetCellValue(sDoc, cell);
+                   cadenaCvc += columName + ",";
+                   dataTable.Columns.Add(columName);
                }
 
-               foreach (Row row in rows) //this will also include your header row...
+               cadenaCvc += "Error";
+               cadenaCvc += Environment.NewLine;
+               
+               foreach (Row row in rows) 
                {
-                   DataRow tempRow = dt.NewRow();
-
-                   for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
+                   if (row.RowIndex != 1)
                    {
-                       tempRow[i] = GetCellValue(sDoc, row.Descendants<Cell>().ElementAt(i));
-                   }
+                       DataRow tempRow = dataTable.NewRow();
 
-                   dt.Rows.Add(tempRow);
+                       for (int count = 0; count < row.Descendants<Cell>().Count(); count++)
+                       {
+                           tempRow[count] = GetCellValue(sDoc, row.Descendants<Cell>().ElementAt(count));
+                           valor = tempRow[count].ToString();
+                           cadenaCvc += string.Format("{0},",valor);
+
+                           //Todas las columnas deben tener datos
+                           if (valor == string.Empty)
+                               desError += string.Format("{0} : No puede ir vacio.", dataTable.Columns[count].ColumnName);
+
+                           //Se valida el tipo de dato
+                           switch(count)
+                           {
+                               case 3: //Piezas Marca
+                               case 8:
+                               case 9:
+                               case 10:
+                               case 11:                               
+                               case 13:
+                               case 14:
+                               case 15:
+                               case 16:
+                               case 17:
+                                   if (!valor.IsNumeric())               
+                                       desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
+                                   break;
+                               case 6:
+                                   if (!(valor == "C" || valor == "P"))               //Clase
+                                       desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
+                                   break;
+
+                           }
+                           
+                           error = desError != string.Empty ? true : error;
+                       }
+
+                       dataTable.Rows.Add(tempRow);
+
+                       cadenaCvc += desError + Environment.NewLine;
+                       desError = string.Empty;
+                   }
                }
            }
-           dt.Rows.RemoveAt(0);
-           return dt;
+
+           return dataTable;
        }
 
+       /// <summary>
+       /// Regresa el valor de la celda del archivo
+       /// </summary>
+       /// <param name="document"></param>
+       /// <param name="cell"></param>
+       /// <returns></returns>
        public static string GetCellValue(SpreadsheetDocument document, Cell cell)
        {
            SharedStringTablePart stringTablePart = document.WorkbookPart.SharedStringTablePart;
-           string value = cell.CellValue.InnerXml;
+           string value = "";
+
+           if (cell.CellValue != null)
+               value = cell.CellValue.InnerXml;
 
            if (cell.DataType != null && cell.DataType.Value == CellValues.SharedString)
            {
@@ -213,31 +280,15 @@ namespace CMI.Track.Web.Controllers
                return value;
            }
        }
-
-       public static string ConvertDataTableToHTMLTable(DataTable dt)
-       {
-           string ret = "";
-           ret = "<table id=" + (char)34 + "tblExcel" + (char)34 + ">";
-           ret += "<tr>";
-           foreach (DataColumn col in dt.Columns)
-           {
-               ret += "<td class=" + (char)34 + "tdColumnHeader" + (char)34 + ">" + col.ColumnName + "</td>";
-           }
-           ret += "</tr>";
-           foreach (DataRow row in dt.Rows)
-           {
-               ret += "<tr>";
-               for (int i = 0; i < dt.Columns.Count; i++)
-               {
-                   ret += "<td class=" + (char)34 + "tdCellData" + (char)34 + ">" + row[i].ToString() + "</td>";
-               }
-               ret += "</tr>";
-           }
-           ret += "</table>";
-           return ret;
-       }
       
-
-
     }
+
+   public static class StringExtensions
+   {
+       public static bool IsNumeric(this string input)
+       {
+           float output;
+           return float.TryParse(input, out output);           
+       }
+   }
 }

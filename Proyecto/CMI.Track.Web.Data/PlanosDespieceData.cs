@@ -188,5 +188,43 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
         }
+
+        /// <summary>
+        /// Se cargan los planos depiece para validar su existencia en base de datos para el modulo de lista general de partes
+        /// </summary>
+        /// <param name="xmlClavePlanoDesp"> cadena para cargar los planos despiece existenete</param>     
+        /// <param name="idEtapa"> idEtapa seleccionada</param>
+        /// <returns>Lista de Planos Despiece</returns>
+        public static List<Models.ListaPlanosDespiece> CargaExistenciaPlanoDespiece(string xmlClavePlanoDesp, int idEtapa)
+        {
+            var lstPlanosDespiece = new List<Models.ListaPlanosDespiece>();
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = xmlClavePlanoDesp;
+                paramArray[1] = idEtapa;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarExistenciaPlaDes", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstPlanosDespiece.Add(new Models.ListaPlanosDespiece()
+                        {
+                            id = Convert.ToInt32(dataReader["idPlanoDespiece"]),
+                            nombreTipoContruccion = Convert.ToString(dataReader["nombreTipoConstruccion"]),
+                            codigoPlanoDespiece = Convert.ToString(dataReader["codigoPlanoDespiece"])
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+            return lstPlanosDespiece;
+        }
+
     }
 }
