@@ -125,6 +125,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
+    <Content Include="Scripts\AutorizaReqManualCompra.js" />
     <Content Include="Scripts\CalidadProceso.js" />
     <Content Include="Scripts\Categoria.js" />
     <Content Include="Scripts\Cliente.js" />
@@ -837,6 +838,7 @@
     <Content Include="Scripts\MarcasBuscar.js" />
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
+    <Content Include="Scripts\MaterialesBuscar.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
     <Content Include="Scripts\PlanosDespiece.js" />
     <Content Include="Scripts\PlanosDespieceBuscar.js" />
@@ -845,6 +847,10 @@
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
+    <Content Include="Scripts\ReqGralMaterial.js" />
+    <Content Include="Scripts\ReqManualCompra.js" />
+    <Content Include="Scripts\RequerimientosBuscar.js" />
+    <Content Include="Scripts\RequisicionesBuscar.js" />
     <Content Include="Scripts\RutaFabricacion.js" />
     <Content Include="Scripts\Seguridad.js" />
     <Content Include="Scripts\SubMarcas.js" />
@@ -958,6 +964,15 @@
     <Content Include="Views\SubMarcas\_Actualiza.cshtml" />
     <Content Include="Views\SubMarcas\_buscarSubMarcas.cshtml" />
     <Content Include="Views\ListaGeneral\Index.cshtml" />
+    <Content Include="Views\ReqGralMaterial\Index.cshtml" />
+    <Content Include="Views\ReqGralMaterial\_buscarRequeMaterial.cshtml" />
+    <Content Include="Views\ReqGralMaterial\_rptGeneralXLS.cshtml" />
+    <Content Include="Views\ReqManualCompra\Autorizar.cshtml" />
+    <Content Include="Views\ReqManualCompra\Index.cshtml" />
+    <Content Include="Views\ReqManualCompra\_Actualiza.cshtml" />
+    <Content Include="Views\ReqManualCompra\_buscarRequisicion.cshtml" />
+    <Content Include="Views\ReqManualCompra\_Nuevo.cshtml" />
+    <Content Include="Views\Material\_buscaMaterial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

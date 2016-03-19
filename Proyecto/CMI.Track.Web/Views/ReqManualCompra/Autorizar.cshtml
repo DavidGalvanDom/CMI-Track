@@ -1,0 +1,211 @@
+﻿@model CMI.Track.Web.Models.ReqManualCompra
+@{
+    ViewBag.Title = "Requisición Manual de Compra";
+}
+ @using (Html.BeginForm("Autorizar", "ReqManualCompra", FormMethod.Post, new { id = "AutorizarForm", name = "AutorizarForm", @class = "form-horizontal" }))
+            {
+              
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Autorizar</small> Requisición Manual de Compra
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+    <div id="alerta" class="alert alert-success" style="display:none;"></div>
+<div id="myCollapsible" class="collapse in">
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-4">
+                <span id="NombreProyecto" style="display:none;">Nombre Proyecto</span>
+                <div class="input-group">
+                    <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="revisionPro" style="display:none;">Revisión</span>
+                <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Revisión</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="codigoProyecto" style="display:none;">Codigo Proyecto</span>
+                <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="fechaInicio" style="display:none;">Fecha Inicio</span>
+                <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="fechaFin" style="display:none;">Fecha Fin</span>
+                <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="etapaRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-4">
+                <span id="NombreEt" style="display:none;">Nombre Etapa</span>
+                <div class="input-group">
+                    <p id="nombreEtapa" name="nombreEtapa" class="form-control" placeholder="Nombre Etapa" title="Nombre Etapa"> Nombre Etapa </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarEtapa" name="btnBuscarEtapa"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idEtapaSelect" name="idEtapaSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaInicioEt" style="display:none;">Fecha Inicio</span>
+                <span id="FechaInicioEtapa" placeholder="Fecha Inicio Etapa" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaFinEt" style="display:none;">Fecha Fin</span>
+                <span id="FechaFinEtapa" placeholder="Fecha Fin Etapa" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="requerimientoRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-4">
+                <span id="FolioRequerimiento" style="display:none;">Folio Requerimiento</span>
+                <div class="input-group">
+                    <p id="folioRequerimiento" name="folioRequerimiento" class="form-control" placeholder="Folio Requerimiento" title="Folio Requermiento"> Folio Requermiento </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarReq" name="btnBuscarReq"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idRequerimientoSelect" name="idRequerimientoSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaSolicitud" style="display:none;">Fecha Solicitud</span>
+                <span id="fechaSolicitud" placeholder="Fecha Solicitud" class="form-control" title="Fecha Fin">Fecha Solicitud</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="requisicionRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-4">
+                <span id="IDRequisicion" style="display:none;">Requisicion</span>
+                <div class="input-group">
+                    <p id="idRequisicion" name="idRequisicion" class="form-control" placeholder="Requisicion" title="Requisicion"> Requisicion </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarRequisicion" name="btnBuscarRequisicion"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="OrigenRequi" style="display:none;">Origen</span>
+                <span id="OrigenReq" placeholder="OrigenReq" class="form-control" title="OrigenReq">Origen</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="EstatusReq" style="display:none;">Estatus</span>
+                <span id="Estatus" placeholder="Estatus" class="form-control" title="Estatus">Estatus</span>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <br />
+                </div>
+            </div>
+            <div class="col-sm-12">
+                    <span id="CausaRequi" style="display:none;">Causa</span>
+                    @Html.TextAreaFor(model => model.Causa, new
+                                {
+                                    @class = "form-control",
+                                    maxlength = 250,
+                                    onkeypress = "return ( this.value.length < 250 );",
+                                    rows = "4"
+                                })
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon " aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div id="bbGrid-ReqManualCompras" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br />
+            </div>
+        </div>
+       
+        <div class="col-lg-12" id="Autorizar" style="display:none;" align="center">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    <!--<input name="Autoriza" id="Autoriza" autocomplete="off"> Autorizar-->
+                    <button class="btn btn-success" id="btnAutoriza" type="button">Autorizar</button>
+                </label>
+                <label class="btn btn-primary">
+                   <!-- <input type="button" name="Rechaza" id="Rechaza" autocomplete="off"> Rechazar-->
+                    <button class="btn btn-danger" id="btnRechaza" type="button">Rechazar</button>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-General"
+        tabindex="-1" role="dialog"
+        aria-labelledby="buscarGeneral">
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-ReqManualCompra"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoReqManualCompraLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-Material"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarMaterial">
+</div>
+
+@Html.HiddenFor(model => model.usuarioCreacion)
+ }
+@section Scripts {
+    <script src="~/Scripts/AutorizaReqManualCompra.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+    </script>
+}
+
+
+
+

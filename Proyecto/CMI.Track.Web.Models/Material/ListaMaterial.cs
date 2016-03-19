@@ -25,28 +25,28 @@ namespace CMI.Track.Web.Models
         public int AnchoMaterial { get; set; }
 
         [Display(Name = "UM")]
-        public int AnchoUM { get; set; }
+        public string AnchoUM { get; set; }
 
         [Display(Name = "Largo")]
         public int LargoMaterial { get; set; }
 
         [Display(Name = "UM")]
-        public int LargoUM { get; set; }
+        public string LargoUM { get; set; }
 
         [Display(Name = "Peso")]
         public int PesoMaterial { get; set; }
 
         [Display(Name = "UM")]
-        public int PesoUM { get; set; }
+        public string PesoUM { get; set; }
 
         [Display(Name = "Calidad")]
         public string CalidadMaterial { get; set; }
 
         [Display(Name = "Tipo")]
-        public int TipoMaterial { get; set; }
+        public string TipoMaterial { get; set; }
 
         [Display(Name = "Grupo")]
-        public int Grupo { get; set; }
+        public string Grupo { get; set; }
 
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }

@@ -169,5 +169,15 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Despliega ventana emergente con el grid de Matriales
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BuscarMaterial()
+        {
+            return PartialView("_buscaMaterial");
+        }
     }
 }

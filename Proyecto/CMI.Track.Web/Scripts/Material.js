@@ -50,8 +50,7 @@ var Material = {
             $.post(contextPath + "Material/Nuevo",
                 $("#NuevoMaterialForm *").serialize(),
                 function (data) {
-                    var ser = $("#NuevoMaterialForm *").serialize();
-                    alert(ser);
+                    var ser = $("#NuevoMaterialForm *").serialize();             
                     if (data.Success == true) {
                         Material.colMateriales.add(Material.serializaMaterial(data.id, '#NuevoMaterialForm'));
                         CMI.DespliegaInformacion('El material fue guardado con el Id: ' + data.id);
@@ -111,8 +110,7 @@ var Material = {
             Material.CargarColeccionUnidadMedidaPeso('#NuevoMaterialForm');
             Material.CargarColeccionTipoMaterial('#NuevoMaterialForm');
             Material.CargarColeccionGrupo('#NuevoMaterialForm');
-           // Material.CargarColeccionTipoMaterial();
-           // Material.CargarColeccionGrupo();
+
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -162,8 +160,7 @@ var Material = {
             Material.CargarColeccionUnidadMedidaPeso('#NuevoMaterialForm');
             Material.CargarColeccionTipoMaterial('#NuevoMaterialForm');
             Material.CargarColeccionGrupo('#NuevoMaterialForm');
-           // Material.CargarColeccionTipoMaterial();
-          //  Material.CargarColeccionGrupo();
+
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -323,14 +320,14 @@ var Material = {
         return ({
             'NombreMaterial': $(from + ' #NombreMaterial').val().toUpperCase(),
             'AnchoMaterial': $(from + ' #AnchoMaterial').val(),
-            'AnchoUM': $(from + ' #AnchoUM').val(),
+            'AnchoUM': $('#AnchoUM option:selected').text().toUpperCase(),
             'LargoMaterial': $(from + ' #LargoMaterial').val(),
-            'LargoUM': $(from + ' #LargoUM').val(),
+            'LargoUM': $('#LargoUM option:selected').text().toUpperCase(),
             'PesoMaterial': $(from + ' #PesoMaterial').val(),
-            'PesoUM': $(from + ' #PesoUM').val(),
+            'PesoUM': $('#PesoUM option:selected').text().toUpperCase(),
             'CalidadMaterial': $(from + ' #CalidadMaterial').val().toUpperCase(),
-            'TipoMaterial': $(from + ' #TipoMaterial').val(),
-            'Grupo': $(from + ' #Grupo').val(),
+            'TipoMaterial': $('#TipoMaterial option:selected').text().toUpperCase(),
+            'Grupo': $('#Grupo option:selected').text().toUpperCase(),
             'Observaciones': $(from + ' #Observaciones').val().toUpperCase(),
             'Estatus': $(from + ' #Estatus').val(),
             'id': id
