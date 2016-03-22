@@ -211,10 +211,11 @@ namespace CMI.Track.Web.Data
                     while (dataReader.Read())
                     {
                         lstPlanosDespiece.Add(new Models.ListaPlanosDespiece()
-                        {
-                            id = Convert.ToInt32(dataReader["idPlanoDespiece"]),
+                        {                            
                             nombreTipoContruccion = Convert.ToString(dataReader["nombreTipoConstruccion"]),
-                            codigoPlanoDespiece = Convert.ToString(dataReader["codigoPlanoDespiece"])
+                            codigoPlanoDespiece = Convert.ToString(dataReader["codigoPlanoDespiece"]),
+                            id = Convert.ToInt32(dataReader["idPlanoDespiece"]),
+                            idTipoConstruccion = Convert.ToInt32(dataReader["idTipoConstruccion"])
                         });
                     }
                 }

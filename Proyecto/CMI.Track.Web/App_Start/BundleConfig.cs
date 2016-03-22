@@ -24,14 +24,16 @@ namespace CMI.Track.Web
                 "~/Scripts/lib/jquery.validate/jquery.validate*",
                 "~/Scripts/lib/bower_components/bootstrap/dist/js/bootstrap.js",
                 "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.min.js",
-                "~/Scripts/lib/sb-admin-2.js"
+                "~/Scripts/lib/sb-admin-2.js",
+                "~/Scripts/lib/modernizr.custom.86080.js"
                 ));
 
               bundles.Add(new StyleBundle("~/Content/cssLogon").Include(
                       "~/Scripts/lib/bower_components/bootstrap/dist/css/bootstrap.css",
                       "~/Scripts/lib/bower_components/metisMenu/dist/metisMenu.min.css",
-                      "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",                     
-                      "~/Content/site.css"                      
+                      "~/Scripts/lib/bower_components/font-awesome/css/font-awesome.min.css",
+                      "~/Content/SiteLogon.css",
+                      "~/Content/Site.css"                      
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/general").Include(

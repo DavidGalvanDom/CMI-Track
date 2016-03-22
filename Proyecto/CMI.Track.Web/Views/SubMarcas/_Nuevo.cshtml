@@ -62,17 +62,21 @@
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.anchoSubMarcas, new { @class = "form-control", maxlength = 15 })
                     </div>
+                    @Html.LabelFor(model => model.alturaSubMarcas, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(model => model.alturaSubMarcas, new { @class = "form-control", maxlength = 15 })
+                    </div>
                     @Html.LabelFor(model => model.gradoSubMarcas, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.gradoSubMarcas, new { @class = "form-control", maxlength = 15 })
-                    </div>
+                    </div>                   
+                </div>
+                
+                <div class="form-group">
                     @Html.LabelFor(model => model.kgmSubMarcas, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.kgmSubMarcas, new { @class = "form-control", maxlength = 15 })
                     </div>
-                </div>
-
-                <div class="form-group">
                     @Html.LabelFor(model => model.totalLASubMarcas, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.totalLASubMarcas, new { @class = "form-control", maxlength = 15 })
@@ -81,6 +85,9 @@
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.totalSubMarcas, new { @class = "form-control", maxlength = 15 })
                     </div>
+                </div>
+
+                <div class="form-group">                   
                     @Html.LabelFor(model => model.pesoSubMarcas, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-2">
                         @Html.TextBoxFor(model => model.pesoSubMarcas, new { @class = "form-control", maxlength = 15 })

@@ -124,6 +124,7 @@ var ListaGeneral = {
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
                 ListaGeneral.ExportarExcel(result.excel);
+                $('.subirArchivo').hide();
                 CMI.botonMensaje(false, btn, 'Subir Archivo');
             }
         }).fail(function () {
@@ -134,8 +135,12 @@ var ListaGeneral = {
     },
     onSubirInformacion: function (btn) {
         CMI.CierraMensajes();
-        var url = contextPath + "ListaGeneral/SubirInformacion"; // El url del controlador      
-        $.post(url, function (result) {
+        var url = contextPath + "ListaGeneral/SubirInformacion", // El url del controlador
+             data = 'idProyecto=' + $('#idProyectoSelect').val() +
+                   '&idEtapa=' + $('#idEtapaSelect').val() +
+                   '&archivoListaGen=' + $(ListaGeneral.activeForm + ' #archivoListaGen').val() +
+                   '&idUsuario=' + localStorage.idUser ;
+        $.post(url,data, function (result) {
             if (result.Success === true) {
                 CMI.DespliegaInformacion('El proceso termino de guardar la lista general de partes.');
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');

@@ -35,5 +35,13 @@ namespace CMI.Track.Web.Models
        public string archivoPlanoDespiece { get; set; }
 
        public string nombreArchivo { get; set; }
+
+       public int idTipoConstruccion { get; set; }
+
+       public string Serialize()
+       {
+           return String.Format("{0}|{1}|{2}|{3}", id, codigoPlanoDespiece, idTipoConstruccion, nombreTipoContruccion);
+       }
+
     }
 }

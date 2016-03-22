@@ -54,6 +54,8 @@
     <Compile Include="Etapa\ListaEtapas.cs" />
     <Compile Include="Grupo\Grupo.cs" />
     <Compile Include="Grupo\ListaGrupo.cs" />
+    <Compile Include="ListaGeneral\LGMMarcas.cs" />
+    <Compile Include="ListaGeneral\LGMSubMarcas.cs" />
     <Compile Include="Marca\ListaMarcas.cs" />
     <Compile Include="Marca\Marca.cs" />
     <Compile Include="Material\ListaMaterial.cs" />

@@ -26,17 +26,7 @@ namespace CMI.Track.Web.Controllers
    public class ListaGeneralController: Controller
    {
        public ActionResult Index()
-       {
-          /* if (!ModelState.IsValid)
-           {
-               return View(model);
-           }
-
-           DataTable dt = GetDataTableFromSpreadsheet(model.MyExcelFile.InputStream, false);
-           string strContent = "<p>Thanks for uploading the file</p>" + ConvertDataTableToHTMLTable(dt);
-           model.MSExcelTable = strContent;
-           return View(model);
-           */
+       {          
            return View();
        }
 
@@ -68,33 +58,39 @@ namespace CMI.Track.Web.Controllers
                if (error)               
                    return Json(new { Success = false, Message = "Los datos del archivo no son validos.", excel = cadenaCvc });
 
-
-               var planosTipo = from row in result.AsEnumerable()
+               //Se agrupo solo por Plano y tipo de construccion para validar que existan en base de datos
+               var planosTipo = (from row in result.AsEnumerable()
                              group row by new { plano = row[1], tipo = row[2] } into grp
                              select new
                              {
-                                 Plano = grp.Key.plano,
-                                 Tipo = grp.Key.tipo
-                             };
+                                 codigoPlanoDespiece = grp.Key.plano,
+                                 nombreTipoContruccion = grp.Key.tipo
+
+                             }).ToList() ;
 
                foreach (var plano in planosTipo)               
-                  xmlclaveDespiece += string.Format("<id>{0}</id>", plano.Plano);
+                  xmlclaveDespiece += string.Format("<id>{0}</id>", plano.codigoPlanoDespiece);
 
                //Se valida la existencia de los planos que existan en base de datos.
                var lstPlanosDespiece = PlanosDespieceData.CargaExistenciaPlanoDespiece(xmlclaveDespiece, idEtapa);
 
-              /* foreach (var plano in lstPlanosDespiece)
+               // Se toman los planos que no se encontraron en base de datos
+               planosTipo.RemoveAll(x => lstPlanosDespiece.Exists(a => a.codigoPlanoDespiece.Trim() == x.codigoPlanoDespiece.ToString().Trim() && a.nombreTipoContruccion.Trim() == x.nombreTipoContruccion.ToString().Trim()));
+
+               if (planosTipo.Count > 0)
                {
+                   var cadenaCvcNoExiste = "PLANO_DESPIECE,TIPO_CONSTRUCCION,Error" + Environment.NewLine;
+                   foreach (var plano in planosTipo)
+                       cadenaCvcNoExiste += string.Format("{0},{1},No existe Catalogo Planos Dispiece para el proyecto y etapa seleccionada", plano.codigoPlanoDespiece, plano.nombreTipoContruccion) + Environment.NewLine;
 
-               }*/
+                   return Json(new { Success = false, Message = "Los Planos despiece no existen en base de datos.", excel = cadenaCvcNoExiste });
+               }
                
-               //Insertar
-               // Agrupar informacion
-               //    Agrupar por Etapa
-               //    Agrupar por Plano despiece y tipo construccion
-               //    Agrupar por Marca
-               // Generacion de querys
-
+               //La informacion del archivo es correcta y se guarda
+               System.IO.File.WriteAllText(pathArchivo + archivoListaGen + "data.txt", cadenaCvc);
+               
+               //Guardar los Planos Despiece
+               System.IO.File.WriteAllLines(pathArchivo + archivoListaGen + "pd.txt", (from plano in lstPlanosDespiece select plano.Serialize()));
 
                return Json(new { Success = true, numRegistros = result.Rows.Count });
            }
@@ -104,11 +100,113 @@ namespace CMI.Track.Web.Controllers
            }
        }
 
+       /// <summary>
+       /// Se toman los archivos temporales y se genera una 
+       /// lista que agrupa las Marcas en Submarcas para insertar en base datos
+       /// </summary>
+       /// <param name="idProyecto"></param>
+       /// <param name="idEtapa"></param>
+       /// <param name="archivoListaGen"></param>
+       /// <param name="idUsuario"></param>
+       /// <returns></returns>
        [HttpPost]
-       public JsonResult SubirInformacion()
+       public JsonResult SubirInformacion(int idProyecto, int idEtapa, 
+                                        string archivoListaGen, int idUsuario)
        {
+           string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\";
+           List<LGMMarcas> listMarcas = new List<LGMMarcas>();
+           List<Models.ListaPlanosDespiece> listPlanosDes = new List<ListaPlanosDespiece>();
+           string linea = "";
+           
            try
            {
+              //Se carga en una lista los planos despiece
+              System.IO.StreamReader planosDespiece = new System.IO.StreamReader(pathArchivo +  archivoListaGen + "pd.txt");
+               while((linea = planosDespiece.ReadLine()) != null)
+               {
+                   string[] arrRenglon = linea.Split('|');
+                   listPlanosDes.Add(new ListaPlanosDespiece()
+                   {                       
+                       id = Convert.ToInt32(arrRenglon[0]), 
+                       codigoPlanoDespiece= arrRenglon[1], 
+                       idTipoConstruccion= Convert.ToInt32(arrRenglon[2]),
+                       nombreTipoContruccion = arrRenglon[3]
+                   });
+               }
+               
+               linea = "";
+               System.IO.StreamReader archivo = new System.IO.StreamReader(pathArchivo + archivoListaGen + "data.txt");
+               linea = archivo.ReadLine();
+
+               while ((linea = archivo.ReadLine()) != null)
+               {                  
+                   string[] arrLinea = linea.Split(',');
+
+                  
+                       var marca = listMarcas.Where(m => m.codigoMarca.Trim() == arrLinea[4].ToString().Trim()).ToList();
+
+                       //En caso de que no exista la Marca
+                       if (marca.Count == 0)
+                       {
+                           var lstSubMarcas = new List<LGMSubMarcas>();
+                           lstSubMarcas.Add(new LGMSubMarcas()
+                           {
+                               codigoSubMarca = arrLinea[5].ToString(),
+                               claseSubMarca = arrLinea[6].ToString(),
+                               perfilSubMarca = arrLinea[7].ToString(),
+                               piezasSubMarcas = Convert.ToInt32(arrLinea[8]),
+                               corteSubMarcas = Convert.ToDouble(arrLinea[9]),
+                               longitudSubMarcas = Convert.ToDouble(arrLinea[10]),
+                               anchoSubMarcas = Convert.ToDouble(arrLinea[11]),
+                               gradoSubMarcas = arrLinea[12].ToString(),
+                               alturaSubMarcas = Convert.ToDouble(arrLinea[13]),
+                               kgmSubMarcas = Convert.ToDouble(arrLinea[14]),
+                               totalLASubMarcas = Convert.ToDouble(arrLinea[15]),
+                               totalSubMarcas = Convert.ToDouble(arrLinea[16]),
+                               pesoSubMarcas = Convert.ToDouble(arrLinea[17])
+                           });
+
+                           var objPlano = listPlanosDes.Where(plano => plano.codigoPlanoDespiece.Trim() == arrLinea[1].ToString().Trim() &&
+                                                                       plano.nombreTipoContruccion.Trim() == arrLinea[2].ToString().Trim()).ToList();
+
+                           if (objPlano.Count == 0)
+                               throw new ApplicationException(string.Format("No se encontro el Plano despiece {0} - {1}", arrLinea[1], arrLinea[2]));
+
+                           listMarcas.Add(new LGMMarcas()
+                           {
+                               codigoMarca = arrLinea[4].ToString(),
+                               piezas = Convert.ToInt32(arrLinea[3]),
+                               usuarioCreacion = Convert.ToInt32(idUsuario),
+                               idPlanoDespiece = objPlano[0].id,
+                               listaSubMarcas = lstSubMarcas
+                           });
+
+                       }
+                       else
+                       {
+                           marca[0].listaSubMarcas.Add(new LGMSubMarcas()
+                           {
+                               codigoSubMarca = arrLinea[5].ToString(),
+                               claseSubMarca = arrLinea[6].ToString(),
+                               perfilSubMarca = arrLinea[7].ToString(),
+                               piezasSubMarcas = Convert.ToInt32(arrLinea[8]),
+                               corteSubMarcas = Convert.ToDouble(arrLinea[9]),
+                               longitudSubMarcas = Convert.ToDouble(arrLinea[10]),
+                               anchoSubMarcas = Convert.ToDouble(arrLinea[11]),
+                               gradoSubMarcas = arrLinea[12].ToString(),
+                               alturaSubMarcas = Convert.ToDouble(arrLinea[13]),
+                               kgmSubMarcas = Convert.ToDouble(arrLinea[14]),
+                               totalLASubMarcas = Convert.ToDouble(arrLinea[15]),
+                               totalSubMarcas = Convert.ToDouble(arrLinea[16]),
+                               pesoSubMarcas = Convert.ToDouble(arrLinea[17]),                             
+                           });
+                       }                  
+               }
+
+               archivo.Close();
+
+               //Se guarda en base de datos la informacion del Archivo
+               ListaGeneralData.GuardarInformacion(idProyecto, idEtapa, listMarcas, idUsuario);             
 
                return Json(new { Success = true});
            }
@@ -238,9 +336,8 @@ namespace CMI.Track.Web.Controllers
                                    break;
                                case 6:
                                    if (!(valor == "C" || valor == "P"))               //Clase
-                                       desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
+                                       desError += string.Format("{0} : El valor debe ser C o P.", dataTable.Columns[count].ColumnName);
                                    break;
-
                            }
                            
                            error = desError != string.Empty ? true : error;

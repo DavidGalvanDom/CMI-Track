@@ -103,7 +103,8 @@ namespace CMI.Track.Web.Data
                             claseSubMarca = Convert.ToString(dataReader["claseSubMarca"]),
                             gradoSubMarcas = Convert.ToString(dataReader["gradoSubMarca"]),
                             perfilSubMarca = Convert.ToString(dataReader["perfilSubMarca"]),
-                            totalSubMarcas = Convert.ToDouble(dataReader["totalSubMarca"])
+                            totalSubMarcas = Convert.ToDouble(dataReader["totalSubMarca"]),
+                            alturaSubMarcas = Convert.ToDouble(dataReader["alturaSubMarca"]),
                         };
                     }
                 }
@@ -122,7 +123,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.SubMarcas pobjModelo)
         {
-            object[] paramArray = new object[16];
+            object[] paramArray = new object[17];
             try
             {
                 paramArray[0] = pobjModelo.idEstatus;
@@ -140,7 +141,8 @@ namespace CMI.Track.Web.Data
                 paramArray[12] = pobjModelo.idOrdenProduccion;
                 paramArray[13] = pobjModelo.claseSubMarca;
                 paramArray[14] = pobjModelo.totalSubMarcas;
-                paramArray[15] = pobjModelo.usuarioCreacion;
+                paramArray[15] = pobjModelo.alturaSubMarcas;
+                paramArray[16] = pobjModelo.usuarioCreacion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarSubMarca", paramArray);
@@ -160,7 +162,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.SubMarcas pobjModelo)
         {
-            object[] paramArray = new object[15];
+            object[] paramArray = new object[16];
             try
             {
                 paramArray[0] = pobjModelo.idEstatus;
@@ -177,7 +179,8 @@ namespace CMI.Track.Web.Data
                 paramArray[11] = pobjModelo.pesoSubMarcas;
                 paramArray[12] = pobjModelo.claseSubMarca;
                 paramArray[13] = pobjModelo.totalSubMarcas;
-                paramArray[14] = pobjModelo.id;
+                paramArray[14] = pobjModelo.alturaSubMarcas;
+                paramArray[15] = pobjModelo.id;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarSubMarca", paramArray);

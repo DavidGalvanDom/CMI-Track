@@ -118,8 +118,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bbGrid.css" />
+    <Content Include="Content\images\1.jpg" />
+    <Content Include="Content\images\2.jpg" />
+    <Content Include="Content\images\3.jpg" />
+    <Content Include="Content\images\4.jpg" />
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\SiteLogon.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -822,6 +827,7 @@
     <Content Include="Scripts\lib\knockout\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\lib\knockout\knockout-2.2.0.js" />
     <Content Include="Scripts\lib\modernizr-2.6.2.js" />
+    <Content Include="Scripts\lib\modernizr.custom.86080.js" />
     <Content Include="Scripts\lib\respond.js" />
     <Content Include="Scripts\lib\respond.min.js" />
     <Content Include="Scripts\lib\sb-admin.js" />

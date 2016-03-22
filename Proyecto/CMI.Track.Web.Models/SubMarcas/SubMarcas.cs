@@ -70,9 +70,13 @@ namespace CMI.Track.Web.Models
         public double pesoSubMarcas { get; set; }
 
         [Required(ErrorMessage = "*")]
+        [Display(Name = "Altura")]
+        public double alturaSubMarcas { get; set; }
+
+        [Required(ErrorMessage = "*")]
         [Display(Name = "idMarca")]
         public int idMarca { get; set; }
-
+        
         [Display(Name = "Creacion")]
         public string fechaCreacion { get; set; }
 
