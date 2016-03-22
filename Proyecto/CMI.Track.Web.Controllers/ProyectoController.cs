@@ -87,7 +87,7 @@ namespace CMI.Track.Web.Controllers
         public JsonResult SubirArchivo()
         {
             string nombreArchivo = "";
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+            string pathArchivo = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivosTem"].ToString());
 
             try
             {
@@ -127,8 +127,8 @@ namespace CMI.Track.Web.Controllers
         [HttpPost]
         public JsonResult Nuevo(Models.Proyecto pobjModelo)
         {
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\";
-            string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+            string pathArchivo = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\");
+            string pathArchivoTem = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivosTem"].ToString());
             
             if (ModelState.IsValid)
             {
@@ -177,8 +177,8 @@ namespace CMI.Track.Web.Controllers
         [HttpPost]
         public ActionResult Actualiza(Models.Proyecto pobjModelo)
         {
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\";
-            string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+            string pathArchivo = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivos"].ToString() + "Proyectos\\");
+            string pathArchivoTem = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivosTem"].ToString());
 
             if (ModelState.IsValid)
             {

@@ -134,3 +134,28 @@ GO
 
 
 
+INSERT INTO [dbo].[cmiRequerimientos]
+           ([idRequerimiento]
+           ,[fechaCreacion]
+           ,[fechaUltModificacion]
+           ,[idEstatus]
+           ,[folioRequerimiento]
+           ,[fechaSolicitud]
+           ,[idOrigenRequisicion]
+           ,[idDepartamento]
+           ,[usuarioSolicita]
+           ,[idEtapa]
+           ,[usuarioCreacion])
+     VALUES
+           (1
+           ,GETDATE()
+           ,GETDATE()
+           ,1
+           ,'FOL001'
+           ,GETDATE()
+           ,1
+           ,2
+           ,1
+           ,1
+           ,1)
+GO

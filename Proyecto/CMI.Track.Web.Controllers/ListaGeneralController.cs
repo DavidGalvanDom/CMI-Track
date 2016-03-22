@@ -38,8 +38,8 @@ namespace CMI.Track.Web.Controllers
        [HttpPost]
        public JsonResult ValidarInformacion(int idProyecto, int idEtapa, string archivoListaGen)
        {
-            string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\";
-            string pathArchivoTem = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
+            string pathArchivo = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\");
+            string pathArchivoTem = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivosTem"].ToString());
             string xmlclaveDespiece = "";
             string cadenaCvc = "";
             bool error = false;
@@ -113,7 +113,7 @@ namespace CMI.Track.Web.Controllers
        public JsonResult SubirInformacion(int idProyecto, int idEtapa, 
                                         string archivoListaGen, int idUsuario)
        {
-           string pathArchivo = ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\";
+           string pathArchivo = Server.MapPath("~/" + ConfigurationManager.AppSettings["PathArchivos"].ToString() + "ListaGeneral\\");
            List<LGMMarcas> listMarcas = new List<LGMMarcas>();
            List<Models.ListaPlanosDespiece> listPlanosDes = new List<ListaPlanosDespiece>();
            string linea = "";
@@ -224,8 +224,8 @@ namespace CMI.Track.Web.Controllers
        public JsonResult SubirArchivo()
        {
            string nombreArchivo = "";
-           string pathArchivo = ConfigurationManager.AppSettings["PathArchivosTem"].ToString();
-
+           string pathArchivo = Server.MapPath("~/" +  ConfigurationManager.AppSettings["PathArchivosTem"].ToString());
+            
            try
            {
                foreach (string file in Request.Files)

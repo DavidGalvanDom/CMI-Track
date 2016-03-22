@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -117,6 +121,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Archivos\CMITrack\ListaGeneral\a.txt" />
+    <Content Include="Archivos\CMITrack\PlanoDespiece\a.txt" />
+    <Content Include="Archivos\CMITrack\PlanoMontaje\a.txt" />
+    <Content Include="Archivos\CMITrack\Proyectos\a.txt" />
+    <Content Include="Archivos\CMITrack\Tem\a.txt" />
     <Content Include="Content\bbGrid.css" />
     <Content Include="Content\images\1.jpg" />
     <Content Include="Content\images\2.jpg" />
