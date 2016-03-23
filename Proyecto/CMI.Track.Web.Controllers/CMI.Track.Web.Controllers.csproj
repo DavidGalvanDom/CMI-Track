@@ -58,6 +58,7 @@
     <Compile Include="DepartamentoController.cs" />
     <Compile Include="EtapaController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
+    <Compile Include="GenerarDocumeController.cs" />
     <Compile Include="GrupoController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="ListaGeneralController.cs" />

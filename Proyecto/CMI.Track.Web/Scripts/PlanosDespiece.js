@@ -409,7 +409,7 @@ var PlanosDespiece = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Planos de Montaje registradas para la Etapa seleccionada.");
+                CMI.DespliegaInformacion("No se encontraron Planos Despiece registradas para el Plano Montaje seleccionado.");
                 $('#bbGrid-PlanosDespiece')[0].innerHTML = "";
             }
             //getJSON fail

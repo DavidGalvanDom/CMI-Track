@@ -133,6 +133,7 @@
     <Content Include="Content\images\4.jpg" />
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\menuOpcion.png" />
     <Content Include="Content\SiteLogon.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -147,6 +148,10 @@
     <Content Include="Scripts\Departamento.js" />
     <Content Include="Scripts\Etapa.js" />
     <Content Include="Scripts\EtapasBuscar.js" />
+    <Content Include="Scripts\GenerarDocumentos.js" />
+    <Content Include="Scripts\GenerarDocumentos.min.js">
+      <DependentUpon>GenerarDocumentos.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
@@ -528,6 +533,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\template\Lista General Materiales.xlsx" />
     <None Include="Properties\PublishProfiles\CMITrack.pubxml" />
+    <Content Include="Scripts\GenerarDocumentos.min.js.map">
+      <DependentUpon>GenerarDocumentos.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\lib\jquery.validate\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\lib\bower_components\moment\locale\af.js" />
     <Content Include="Scripts\lib\bower_components\moment\locale\ar-ma.js" />
@@ -988,6 +996,7 @@
     <Content Include="Views\ReqManualCompra\_buscarRequisicion.cshtml" />
     <Content Include="Views\ReqManualCompra\_Nuevo.cshtml" />
     <Content Include="Views\Material\_buscaMaterial.cshtml" />
+    <Content Include="Views\GenerarDocume\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

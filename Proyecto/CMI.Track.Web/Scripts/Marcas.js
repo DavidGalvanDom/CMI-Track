@@ -44,6 +44,17 @@ var Marcas = {
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
+            debugger
+            if (parseInt($(form + ' #piezas').val()) > 1295) {
+                CMI.DespliegaErrorDialogo("El valor de piezas no puede ser mayor a 1295.");
+                $(form + ' #piezas').focus();
+                CMI.botonMensaje(false, btn, 'Guardar');
+                $("form").valid();
+                return;
+            } else {
+                $(form + ' #piezas').removeClass('has-error');
+            }
+            
             $(form + ' #idPlanoDespiece').val($('#idPlanoDespieceSelect').val());
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Marcas/Nuevo",
@@ -72,6 +83,16 @@ var Marcas = {
             btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
+            $('#usuarioCreacion').val(localStorage.idUser);
+            if (parseInt($(form + ' #piezas').val()) > 1295) {
+                CMI.DespliegaErrorDialogo("El valor de piezas no puede ser mayor a 1295.");
+                $(form + ' #piezas').focus();
+                CMI.botonMensaje(false, btn, 'Actualizar');
+                $("form").valid();
+                return;
+            } else {
+                $(form + ' #piezas').removeClass('has-error');
+            }
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Marcas/Actualiza",
                 $("#ActualizaMarcaForm *").serialize(),
@@ -363,7 +384,7 @@ var Marcas = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Planos de Montaje registradas para la Etapa seleccionada.");
+                CMI.DespliegaInformacion("No se encontraron Marcas registradas para el Plano despiece seleccionado.");
                 $('#bbGrid-Marcas')[0].innerHTML = "";
             }
             //getJSON fail

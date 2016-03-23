@@ -322,6 +322,14 @@ namespace CMI.Track.Web.Controllers
                            switch(count)
                            {
                                case 3: //Piezas Marca
+                                   if (!valor.IsNumeric())               
+                                       desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
+                                   else
+                                   {
+                                       if(Convert.ToInt32(valor) > 1295)
+                                           desError += string.Format("{0} : El valor debe no debe ser mayor a 1295.", dataTable.Columns[count].ColumnName);
+                                   }
+                                   break;
                                case 8:
                                case 9:
                                case 10:

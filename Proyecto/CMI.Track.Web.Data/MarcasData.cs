@@ -135,7 +135,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.Marca pobjModelo)
         {
-            object[] paramArray = new object[7];
+            object[] paramArray = new object[8];
             try
             {
                 paramArray[0] = pobjModelo.idEstatus;
@@ -145,6 +145,7 @@ namespace CMI.Track.Web.Data
                 paramArray[4] = pobjModelo.piezas;                
                 paramArray[5] = pobjModelo.idPlanoDespiece;
                 paramArray[6] = pobjModelo.id;
+                paramArray[7] = pobjModelo.usuarioCreacion;
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarMarca", paramArray);

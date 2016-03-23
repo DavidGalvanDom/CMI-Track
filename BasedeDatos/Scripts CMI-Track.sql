@@ -68,6 +68,7 @@ INSERT INTO cmiModulos Values (23,getdate(), getdate(),1,'Planos Despiece','Plan
 INSERT INTO cmiModulos Values (24,getdate(), getdate(),1,'Marcas','Marcas/Index',5)
 INSERT INTO cmiModulos Values (25,getdate(), getdate(),1,'SubMarcas','SubMarcas/Index',6)
 INSERT INTO cmiModulos Values (26,getdate(), getdate(),1,'Lista General','ListaGeneral/Index',7)
+INSERT INTO cmiModulos Values (27,getdate(), getdate(),1,'General Documentos','GenerarDocume/Index',8)
 
 INSERT INTO cmiModulos Values (30,getdate(), getdate(),1,'Requerimiento','ReqGralMaterial/Index',1)
 INSERT INTO cmiModulos Values (31,getdate(), getdate(),1,'Requisicion Manual','ReqManualCompra/Index',2)
@@ -102,6 +103,7 @@ INSERT INTO cmiModuloMenuGrupo values (3,23)
 INSERT INTO cmiModuloMenuGrupo values (3,24)
 INSERT INTO cmiModuloMenuGrupo values (3,25)
 INSERT INTO cmiModuloMenuGrupo values (3,26)
+INSERT INTO cmiModuloMenuGrupo values (3,27)
 
 --Requisiciones
 INSERT INTO cmiModuloMenuGrupo values (4,30)

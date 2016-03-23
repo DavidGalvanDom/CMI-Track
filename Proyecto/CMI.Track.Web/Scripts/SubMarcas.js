@@ -431,7 +431,7 @@ var SubMarcas = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Planos de Montaje registradas para la Etapa seleccionada.");
+                CMI.DespliegaInformacion("No se encontraron SubMarcas registradas para la Marca seleccionada.");
                 $('#bbGrid-subMarcas')[0].innerHTML = "";
             }
             //getJSON fail
