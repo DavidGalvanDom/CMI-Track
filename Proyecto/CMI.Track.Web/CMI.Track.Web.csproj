@@ -135,6 +135,7 @@
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\menuOpcion.png" />
     <Content Include="Content\SiteLogon.css" />
+    <Content Include="Content\template\rpt_OrdenProduccion.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -862,6 +863,7 @@
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\MaterialesBuscar.js" />
+    <Content Include="Scripts\OrdenProduccion.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
     <Content Include="Scripts\PlanosDespiece.js" />
     <Content Include="Scripts\PlanosDespieceBuscar.js" />
@@ -997,6 +999,7 @@
     <Content Include="Views\ReqManualCompra\_Nuevo.cshtml" />
     <Content Include="Views\Material\_buscaMaterial.cshtml" />
     <Content Include="Views\GenerarDocume\Index.cshtml" />
+    <Content Include="Views\OrdenProduccion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

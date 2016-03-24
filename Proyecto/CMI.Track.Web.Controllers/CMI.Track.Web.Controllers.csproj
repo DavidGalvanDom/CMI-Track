@@ -64,6 +64,7 @@
     <Compile Include="ListaGeneralController.cs" />
     <Compile Include="MarcasController.cs" />
     <Compile Include="MaterialController.cs" />
+    <Compile Include="OrdenProduccionController.cs" />
     <Compile Include="OrigenRequisicionController.cs" />
     <Compile Include="PlanosDespieceController.cs" />
     <Compile Include="PlanosMontajeController.cs" />

@@ -60,6 +60,7 @@
     <Compile Include="Marca\Marca.cs" />
     <Compile Include="Material\ListaMaterial.cs" />
     <Compile Include="Material\Material.cs" />
+    <Compile Include="OrdenProduccion\ListaDetalleOrdenProduccion.cs" />
     <Compile Include="OrigenRequisicion\ListaOrigenRequisicion.cs" />
     <Compile Include="OrigenRequisicion\OrigenRequisicion.cs" />
     <Compile Include="PlanosDespiece\ListaPlanosDespiece.cs" />
