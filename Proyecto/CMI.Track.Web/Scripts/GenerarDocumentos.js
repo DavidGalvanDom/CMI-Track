@@ -12,7 +12,56 @@ var GenDocumentos = {
     Eventos: function () {
         var that = this;
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
-        $("#btnBuscarEtapa").click(that.onBuscarEtapa);        
+        $("#btnBuscarEtapa").click(that.onBuscarEtapa);
+
+        $("#rptLGPResumen").click(that.onLGPResumen);
+        $("#rptLGPDespiece").click(that.onLGPDespiece);
+        $("#rptOPCorte").click(that.onOPCorte);
+        $("#rptOPPantografo").click(that.onOPPantografo);
+        $("#rptRGMateriales").click(that.onRGMateriales);
+        
+    },
+    onRGMateriales: function () {
+        var idProyecto = $('#idProyectoSelect').val(),
+            idEtapa = $('#idEtapaSelect').val(),
+            btn = this,
+            data = '',
+            url = contextPath + "GenerarDocumentos/RGMateriales"; // El url del controlador   
+        data = 'idProyecto=' + idProyecto +
+               '&idEtapa=' + idEtapa;
+
+        $(btn).attr("disabled", "disabled");
+        $.post(url, data, function (result) {
+            console.log(result);
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo generar el Requerimiento General de Materiales.");
+        }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    onOPPantografo: function () {
+
+    },
+    onOPCorte: function(){
+
+    },
+    onLGPDespiece: function (){
+
+    },
+    onLGPResumen: function(){
+        var idProyecto = $('#idProyectoSelect').val(),
+            idEtapa = $('#idEtapaSelect').val(),
+            data = '',
+            btn = this,
+            url = contextPath + "GenerarDocumentos/LGPResumen"; // El url del controlador   
+
+        data = 'idProyecto=' + idProyecto +
+               '&idEtapa=' + idEtapa;
+
+        $(btn).attr("disabled", "disabled");
+        $.post(url, data, function (result) {
+            console.log(result);
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo generar el Resumen de la lista general de partes.");
+        }).always(function () { $(btn).removeAttr("disabled"); });
     },
     onBuscarProyecto: function () {
         var btn = this;
@@ -81,8 +130,8 @@ var GenDocumentos = {
         $('#FechaFinEtapa').text(FechaFin);
         $('#buscar-General').modal('hide');
 
-        ///Mestra la seleccion de Archivos
-        $('#frmListaPartes').show();
+        ///Mestra los botones de genera reportes
+        $('.acciones').show();
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,

@@ -1,11 +1,12 @@
-﻿var CMI = {    
+﻿/*global $, jQuery, CMI, Inicio*/
+var CMI = {
     inicial: function () {
         try {
             if (Inicio !== undefined) {
                 Inicio.CargarLocalStorage();
             }
         } catch (exp) {
-        };
+        }
        
         CMI.eventos();       
         CMI.CargaSideBar();
@@ -16,10 +17,10 @@
     menuPrincipal: function (){
         if ($('#divSideBar').is(":visible") === true) {
             $('#divSideBar').hide();
-            $('#page-wrapper').attr('style', 'margin: 0 0 0 0;')
+            $('#page-wrapper').attr('style', 'margin: 0 0 0 0;');
         } else {
             $('#divSideBar').show();
-            $('#page-wrapper').attr('style', 'margin: 0 0 0 250px;')
+            $('#page-wrapper').attr('style', 'margin: 0 0 0 250px;');
         }
         
     },
@@ -40,7 +41,7 @@
     SeleccionaOpcionMenu: function (){
         var url = window.location;        
         var element = $('ul.nav a').filter(function () {
-            return this.href == url || url.href.indexOf(this.href) == 0;
+            return this.href === url || url.href.indexOf(this.href) === 0;
         }).addClass('active').parent().parent().addClass('in').parent();
         if (element.is('li')) {
             element.addClass('active');            
@@ -50,7 +51,7 @@
     setPermisos: function (datos) {       
         localStorage.modPermisos = datos;
         var item = document.getElementById('Permisos');       
-        if (item != null) {
+        if (item !== null) {
             localStorage.modSerdad = item.textContent;
         } else {
             localStorage.modSerdad = '00';

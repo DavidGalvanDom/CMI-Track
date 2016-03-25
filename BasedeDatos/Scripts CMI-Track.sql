@@ -75,6 +75,7 @@ INSERT INTO cmiModulos Values (31,getdate(), getdate(),1,'Requisicion Manual','R
 INSERT INTO cmiModulos Values (32,getdate(), getdate(),1,'Autorizar Requisicion','ReqManualCompra/Autorizar',3)
 
 INSERT INTO cmiModulos Values (40,getdate(), getdate(),1,'Orden de Produccion','OrdenProduccion/Index',1)
+INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barra','ImpresionCodigoBarra/Index',2)
 
 select * from cmiModuloMenuGrupo
 
@@ -114,6 +115,7 @@ INSERT INTO cmiModuloMenuGrupo values (4,32)
 
 --Produccion
 INSERT INTO cmiModuloMenuGrupo values (5,40)
+INSERT INTO cmiModuloMenuGrupo values (5,41)
 
 select * from cmiModuloMenuGrupo
 go

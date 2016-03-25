@@ -133,7 +133,6 @@
     <Content Include="Content\images\4.jpg" />
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
-    <Content Include="Content\images\menuOpcion.png" />
     <Content Include="Content\SiteLogon.css" />
     <Content Include="Content\template\rpt_OrdenProduccion.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -154,6 +153,7 @@
       <DependentUpon>GenerarDocumentos.js</DependentUpon>
     </Content>
     <Content Include="Scripts\Grupo.js" />
+    <Content Include="Scripts\ImpresionCodigoBarra.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
     <Content Include="Scripts\lib\bbGrid.js" />
@@ -1000,6 +1000,7 @@
     <Content Include="Views\Material\_buscaMaterial.cshtml" />
     <Content Include="Views\GenerarDocume\Index.cshtml" />
     <Content Include="Views\OrdenProduccion\Index.cshtml" />
+    <Content Include="Views\ImpresionCodigoBarra\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

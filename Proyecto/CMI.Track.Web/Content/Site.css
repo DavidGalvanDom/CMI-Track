@@ -428,3 +428,44 @@ table.dataTable thead .sorting:after {
     cursor: inherit;
     display: block;
 }
+
+.box-shadow {
+    box-shadow: 0 1px 5px 0 #ddd;
+}
+
+.postroll-button:hover {
+    border: 1px solid #ccc;
+     cursor: pointer;
+}
+
+.flex .flex-item {
+    width: 400px;
+    padding: 20px;
+}
+.flex-item {
+    position: relative;
+}
+
+.postroll-button {
+     display: block;
+    width: 100%;
+    height: 100px;
+    line-height: 40px;
+    background: #fff;    
+    padding: 20px;
+    margin: 0 10px 20px 10px;
+    color: #494747;
+    text-align: center;
+    border: 1px solid transparent;
+    -webkit-transition: 200ms;
+    transition: 200ms;
+}
+
+div.header {
+    padding: 10px;    
+}
+
+.postroll-button  a
+  {
+    text-decoration:none !important;
+  }

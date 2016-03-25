@@ -61,6 +61,7 @@
     <Compile Include="GenerarDocumeController.cs" />
     <Compile Include="GrupoController.cs" />
     <Compile Include="HomeController.cs" />
+    <Compile Include="ImpresionCodigoBarraController.cs" />
     <Compile Include="ListaGeneralController.cs" />
     <Compile Include="MarcasController.cs" />
     <Compile Include="MaterialController.cs" />

@@ -27,5 +27,27 @@ namespace CMI.Track.Web.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Se generarn los requerimientos y regresa el reporte de 
+        /// requerimiento general de materiales.
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult RGMateriales(int idProyecto, int idEtapa)
+        {
+            try
+            {
+                //var lstEtapas = EtapaData.CargaEtapas(idProyecto, revision, null);
+
+                return (Json(new { Success = true, Excel = "data"}));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }

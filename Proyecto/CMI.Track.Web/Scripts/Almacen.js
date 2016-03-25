@@ -1,7 +1,7 @@
-﻿//js de catalogo de Almacen
+﻿/*global $, jQuery, CMI, Backbone, bbGrid*/
+//js de catalogo de Almacen
 //Juan Lopepe
 //01/Febrero/2016
-
 var Almacen = {
     accClonar: false,
     accEscritura: false,
@@ -33,7 +33,7 @@ var Almacen = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
        
         CMI.botonMensaje(true, btn, 'Guardar');
@@ -43,7 +43,7 @@ var Almacen = {
             $.post(contextPath + "Almacen/Nuevo",
                 $("#NuevoAlmacenForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id, '#NuevoAlmacenForm'));
                         CMI.DespliegaInformacion('El Almacen fue guardado con el Id: ' + data.id);
                         $('#nuevo-Almacen').modal('hide');
@@ -59,7 +59,7 @@ var Almacen = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -67,7 +67,7 @@ var Almacen = {
             $.post(contextPath + "Almacen/Actualiza",
                 $("#ActualizaAlmacenForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Almacen').modal('hide');
                         Almacen.colAlmacenes.add(Almacen.serializaAlmacen(data.id, '#ActualizaAlmacenForm'), { merge: true });
                         CMI.DespliegaInformacion('El Almacen fue Actualizado. Id:' + data.id);
@@ -110,7 +110,7 @@ var Almacen = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "Almacen/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Almacen.colAlmacenes.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             } else {
@@ -157,7 +157,7 @@ var Almacen = {
             Almacen.colAlmacenes = new Backbone.Collection(data);
             var bolFilter = Almacen.colAlmacenes.length > 0 ? true : false;
             if (bolFilter) {
-                gridAlmacenes = new bbGrid.View({
+                Almacen.gridAlmacenes = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -179,7 +179,7 @@ var Almacen = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los Almacenes");
         });
     }

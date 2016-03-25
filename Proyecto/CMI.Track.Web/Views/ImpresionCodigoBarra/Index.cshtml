@@ -1,11 +1,12 @@
-﻿@{
-    ViewBag.Title = "Generacion de Documentos";
+﻿
+@{
+    ViewBag.Title = "Codigos de Barra";
 }
 
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <small>Generacion</small> de Documentos
+            <small>Lista</small> Codigos de Barra
         </h1>
     </div>
     <!-- /.col-lg-12 -->
@@ -67,61 +68,50 @@
         <br />
     </div>
 </div>
-
-<div class="row acciones" style="display: none;">
-    <div class="col-xs-6 col-md-4">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptRGMateriales">   <span class="fa fa-archive"></span>   Requerimiento de Materiales</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-6 col-md-4">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptOPPantografo">   <span class="fa fa-codepen"></span>  Orden produccion Pantografo</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-6 col-md-4">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptOPCorte">   <span class="fa fa-scissors"></span>  Oreden produccion Corte</a>
+<div class="row" id="tipoRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Tipo Etiqueta</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <select class="form-control select2" id="tipo" name="tipo">
+                    <option value="T">TODOS</option>
+                    <option value="C">CORTE</option>
+                    <option value="M">MARCA</option>
+                </select>
+                
             </div>
         </div>
     </div>
 </div>
-<div class="row acciones" style="display: none;">
-    <div class="col-xs-6 col-md-4">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptLGPDespiece"> <span class="fa fa-list"></span>  LGP Despiece </a>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
     </div>
-    <div class="col-xs-6 col-md-4">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptLGPResumen"><span class="fa fa-th-list"></span>  LGP Resumen   </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-6 col-md-4" style="display:none;">
-        <div class="box-shadow postroll-button">
-            <div class="header">
-                <a href="#" id="rptTrasmital"> <span class="fa fa-cogs"></span>  Trasmital </a>
-            </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-CodigosBarra" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
         </div>
     </div>
 </div>
-
-
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="col-lg-12" id="Imprimir" style="display:none;">
+    <div class="col-lg-12 text-right">
+        <button class="btn btn-outline btn-primary" type="button" id="btnImprimir" name="btnImprimir">Imprimir</button>
+    </div>
+</div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
      tabindex="-1" role="dialog"
      aria-labelledby="buscarGeneral">
 </div>
 
+
 @section Scripts {
-    <script src="~/Scripts/GenerarDocumentos.js"></script>
+    <script src="~/Scripts/ImpresionCodigoBarra.js"></script>
 }
