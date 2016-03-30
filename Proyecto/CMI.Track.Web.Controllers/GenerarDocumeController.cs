@@ -34,15 +34,16 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <param name="idProyecto"></param>
         /// <param name="idEtapa"></param>
+        /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult RGMateriales(int idProyecto, int idEtapa)
+        public JsonResult RGMateriales(int idProyecto, int idEtapa, int idUsuario)
         {
             try
             {
-                //var lstEtapas = EtapaData.CargaEtapas(idProyecto, revision, null);
+                var reqGenMat = GenerarDocumeData.GenerarRequerimientos(idProyecto,idEtapa,idUsuario);
 
-                return (Json(new { Success = true, Excel = "data"}));
+                return (Json(new { Success = true, Excel = reqGenMat}));
             }
             catch (Exception exp)
             {

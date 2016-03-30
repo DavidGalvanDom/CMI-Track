@@ -76,6 +76,7 @@
     <Compile Include="Reporte\ListaReporte.cs" />
     <Compile Include="ReqManualCompra\ListaReqManualCompra.cs" />
     <Compile Include="ReqManualCompra\ReqManualCompra.cs" />
+    <Compile Include="RequerimientoGralMaterial\DetalleReqGenMat.cs" />
     <Compile Include="RequerimientoGralMaterial\ListaReqGralMaterial.cs" />
     <Compile Include="RequerimientoGralMaterial\ReqGralMaterial.cs" />
     <Compile Include="RutaFabricacion\ListaRutaFabricacion.cs" />

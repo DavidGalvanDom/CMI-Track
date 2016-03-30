@@ -134,6 +134,7 @@
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\SiteLogon.css" />
+    <Content Include="Content\template\rpt_GeneralMateriales.html" />
     <Content Include="Content\template\rpt_OrdenProduccion.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

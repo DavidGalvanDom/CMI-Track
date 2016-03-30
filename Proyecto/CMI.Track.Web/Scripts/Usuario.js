@@ -1,4 +1,5 @@
-﻿//js de catalogo de usuarios.
+﻿/*global $, CMI, Backbone, bbGrid*/
+//js de catalogo de usuarios.
 //David Galvan
 //29/Enero/2016
 

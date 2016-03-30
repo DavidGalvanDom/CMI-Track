@@ -1,4 +1,5 @@
-﻿//js Modulo de Generacion de documentos
+﻿/*global $, CMI, Backbone, bbGrid,ProyectoBuscar,EtapaBuscar*/
+//js Modulo de Generacion de documentos
 //David Galvan
 //22/Marzo/2016
 var GenDocumentos = {
@@ -26,13 +27,14 @@ var GenDocumentos = {
             idEtapa = $('#idEtapaSelect').val(),
             btn = this,
             data = '',
-            url = contextPath + "GenerarDocumentos/RGMateriales"; // El url del controlador   
+            url = contextPath + "GenerarDocume/RGMateriales"; // El url del controlador   
         data = 'idProyecto=' + idProyecto +
-               '&idEtapa=' + idEtapa;
+               '&idEtapa=' + idEtapa +
+              '&idUsuario=' + localStorage.idUser;
 
         $(btn).attr("disabled", "disabled");
         $.post(url, data, function (result) {
-            console.log(result);
+            GenDocumentos.GeneraExcelRGMateriales(result);
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo generar el Requerimiento General de Materiales.");
         }).always(function () { $(btn).removeAttr("disabled"); });
@@ -121,6 +123,7 @@ var GenDocumentos = {
         $('#frmListaPartes').hide();
 
         $('#etapaRow').show();
+        $('.acciones').hide();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
                            FechaInicio, FechaFin) {
@@ -141,29 +144,51 @@ var GenDocumentos = {
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
-    ExportarExcel: function (csvInfo) {
-        //Generate a file name
-        var fileName = "Lista_Partes_Err";
+    GeneraExcelRGMateriales: function (arrData){
+        var templateURL = contextPath + "Content/template/rpt_GeneralMateriales.html",             
+             tblData = '',
+             tabla_html = '';
+        
+        $.get(templateURL, function (rptTemplate) {
+           
+            for (contador = 0; contador < arrData.Excel.lstDetalle.length; contador++) {
+                var item = arrData.Excel.lstDetalle[contador];
 
-        //inicializa el formato del archivo csv or xls
-        var uri = 'data:text/csv;charset=utf-8,' + escape(csvInfo);
+                tblData += "<tr>";
+                tblData += "<td></td>";
+                tblData += "<td>" + item.piezasReqGenMat + "</td>";
+                tblData += "<td>PZA</td>"; 
+                tblData += "<td>" + item.perfilReqGenMat.replace(/ /g, '&nbsp;') + "</td>";
+                tblData += "<td>" + item.gradoReqGenMat.replace(/ /g, '&nbsp;') + "</td>";
+                tblData += "<td>" + item.anchoReqGenMat + "</td>";
+                tblData += "<td>" + item.longitudReqGenMat + "</td>";
+                tblData += "<td>" + ((parseFloat(item.anchoReqGenMat) * 0.3048) * (parseFloat(item.longitudReqGenMat) * 0.3048)) + "</td>";
+                tblData += "<td>" + item.kgmReqGenMat + "</td>";
+                tblData += "<td></td>";
+                tblData += "</tr>";
+            }
 
-        //Se genera un tag temporal <a /> 
-        var link = document.createElement("a");
-        link.href = uri;
-
-        //se oculta el link
-        link.style = "visibility:hidden";
-        link.download = fileName + ".csv";
-
-        //Dispara el evento para mostrar el archivo con los datos
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+            rptTemplate = rptTemplate.replace('&idProyecto&', arrData.Excel.idProyecto);
+            rptTemplate = rptTemplate.replace('&NomProyecto&', $('#nombreProyecto').text());
+            rptTemplate = rptTemplate.replace('&FechaDoc&', arrData.Excel.fechaSolicitud);
+            rptTemplate = rptTemplate.replace('&FolioReq&', arrData.Excel.folioRequerimiento);
+            rptTemplate = rptTemplate.replace('&NomEtapa&', arrData.Excel.nombreEtapa);            
+            rptTemplate = rptTemplate.replace('&Depto&', arrData.Excel.departamentoP);
+            rptTemplate = rptTemplate.replace('&claveEtapa&', arrData.Excel.claveEtapa);
+            rptTemplate = rptTemplate.replace('&solicitado&', arrData.Excel.solicitado);
+            
+            tabla_html = rptTemplate.replace('&renglones&', tblData);
+            console.log(tabla_html);
+            var tmpElemento = document.createElement('a');
+            var data_type = 'data:application/vnd.ms-excel';
+            tmpElemento.href = data_type + ', ' + tabla_html;
+            tmpElemento.download = 'ReporteGeneralMateriales.xls';
+            tmpElemento.click();
+        });       
     }
 };
 
 $(function () {
     GenDocumentos.Inicial();
-})
+});
 

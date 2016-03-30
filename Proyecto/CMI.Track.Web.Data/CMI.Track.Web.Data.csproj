@@ -53,6 +53,7 @@
     <Compile Include="ClienteData.cs" />
     <Compile Include="DepartamentoData.cs" />
     <Compile Include="EtapaData.cs" />
+    <Compile Include="GenerarDocumeData.cs" />
     <Compile Include="GrupoData.cs" />
     <Compile Include="ImpresionCodigoBarraData.cs" />
     <Compile Include="ListaGeneralData.cs" />

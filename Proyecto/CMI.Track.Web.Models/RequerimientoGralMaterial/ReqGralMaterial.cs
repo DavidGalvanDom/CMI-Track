@@ -50,20 +50,20 @@ namespace CMI.Track.Web.Models
         [Required(ErrorMessage = "*")]
         [Display(Name = "Solicitado por")]
         public string solicitado { get; set; }
-
-        [Required(ErrorMessage = "*")]
+      
         [Display(Name = "Etapa")]
         public int etapaProyecto { get; set; }
+                
+        [Display(Name = "Nombre Etapa")]
+        public string nombreEtapa { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [StringLength(10)]
-        [Display(Name = "Fecha inicial de etapa")]
-        public string fechaIniEtapa { get; set; }
+        [Display(Name = "Clave Etapa")]
+        public string claveEtapa { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [StringLength(10)]
-        [Display(Name = "Fecha final de etapa")]
-        public string fechaFinEtapa { get; set; }
-       
+        [Display(Name = "Folio")]
+        public string folioRequerimiento { get; set; }
+
+        public List<DetalleReqGenMat> lstDetalle { get; set; }
+        
     }
 }
