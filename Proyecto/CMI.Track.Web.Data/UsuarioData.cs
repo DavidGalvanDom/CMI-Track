@@ -301,5 +301,42 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
         }
+
+        /// <summary>
+        /// Se carga el Procesos para Avance de Produccion de un Usuario
+        /// </summary>
+        /// <returns>Proceso</returns>
+        /// /// <summary>
+        public static Models.Proceso CargarProcesoAvanceProduccion(int idProyecto, int idUsuario)
+        {
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = idProyecto;
+                paramArray[1] = idUsuario;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarProcesoAvanceProduccion", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        var objProceso = new Models.Proceso()
+                        {
+                            id = Convert.ToInt32(dataReader["idProceso"]),
+                            nombreProceso = Convert.ToString(dataReader["nombreProceso"]),
+                            idTipoProceso = Convert.ToInt32(dataReader["idTipoProceso"])
+                        };
+                        return objProceso;
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+            return null;
+        }
     }
+
 }

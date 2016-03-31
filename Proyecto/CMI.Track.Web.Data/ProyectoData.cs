@@ -47,7 +47,7 @@ namespace CMI.Track.Web.Data
                             nombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
                             revisionProyecto = Convert.ToString(dataReader["revisionProyecto"]),
                             codigoProyecto = Convert.ToString(dataReader["codigoProyecto"]),
-                            idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
+                            idEstatusRevision = Convert.ToInt32(dataReader["idEstatusRevision"]),
                             fechaFin = Convert.ToString(dataReader["fechaFinProyecto"]),
                             fechaInicio = Convert.ToString(dataReader["fechaInicioProyecto"]),
                             estatusProyecto = Convert.ToInt32(dataReader["estatusProyecto"]),
@@ -129,7 +129,7 @@ namespace CMI.Track.Web.Data
             object[] paramArray = new object[13];
             try
             {
-                paramArray[0] = pobjModelo.idEstatus;
+                paramArray[0] = pobjModelo.idEstatusRevision;
                 paramArray[1] = pobjModelo.nombreProyecto.ToUpper();
                 paramArray[2] = pobjModelo.fechaInicio.ToUpper();
                 paramArray[3] = pobjModelo.fechaFin.ToUpper();
@@ -161,23 +161,23 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.Proyecto pobjModelo)
         {
-            object[] paramArray = new object[14];
+            object[] paramArray = new object[13];
             try
             {
-                paramArray[0] = pobjModelo.idEstatus;
-                paramArray[1] = pobjModelo.nombreProyecto.ToUpper();
-                paramArray[2] = pobjModelo.fechaInicio.ToUpper();
-                paramArray[3] = pobjModelo.fechaFin.ToUpper();
-                paramArray[4] = pobjModelo.codigoProyecto.ToUpper();
-                paramArray[5] = pobjModelo.revisionProyecto.ToUpper();
-                paramArray[6] = pobjModelo.fechaRevision.ToUpper();
-                paramArray[7] = pobjModelo.idCategoria;
-                paramArray[8] = pobjModelo.estatusProyecto;
-                paramArray[9] = pobjModelo.idCliente;
-                paramArray[10] = pobjModelo.infoGeneral.ToUpper();
-                paramArray[11] = pobjModelo.archivoPlanoProyecto;
-                paramArray[12] = pobjModelo.usuarioCreacion;
-                paramArray[13] = pobjModelo.id;
+                
+                paramArray[0] = pobjModelo.nombreProyecto.ToUpper();
+                paramArray[1] = pobjModelo.fechaInicio.ToUpper();
+                paramArray[2] = pobjModelo.fechaFin.ToUpper();
+                paramArray[3] = pobjModelo.codigoProyecto.ToUpper();
+                paramArray[4] = pobjModelo.revisionProyecto.ToUpper();
+                paramArray[5] = pobjModelo.fechaRevision.ToUpper();
+                paramArray[6] = pobjModelo.idCategoria;
+                paramArray[7] = pobjModelo.estatusProyecto;
+                paramArray[8] = pobjModelo.idCliente;
+                paramArray[9] = pobjModelo.infoGeneral.ToUpper();
+                paramArray[10] = pobjModelo.archivoPlanoProyecto;
+                paramArray[11] = pobjModelo.usuarioCreacion;
+                paramArray[12] = pobjModelo.id;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarProyecto", paramArray);

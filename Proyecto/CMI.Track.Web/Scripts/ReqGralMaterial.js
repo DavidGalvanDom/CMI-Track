@@ -50,7 +50,7 @@ var Requerimiento = {
             tablaheader = data;
             for (j = 0; j < tablaheader.length; j++) {
                 header += "<tr>";
-                header += "<td colspan='3'><img src='http://localhost:13410//Content/images/CMI.TRACK.reportes.png' /></td>"
+                header += "<td colspan='3'><img src=" + routeUrlImages + "'//Content/images/CMI.TRACK.reportes.png' /></td>"
                 header += "<td > <table> <tr > <td colspan='2'> </td> </tr>";
                 header += "<tr> <td colspan='2' align='center'><strong>REQUERIMIENTO</strong></td> </tr> ";
                 header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + tablaheader[j]['idEtapa'] + "</strong></td> </tr><tr> <td colspan='2'> </td></tr> ";

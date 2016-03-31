@@ -27,9 +27,13 @@ namespace CMI.Track.Web.Models
         [Required(ErrorMessage = "*")]
         public int idEstatus { get; set; }
 
-        [Display(Name = "TipoProceso")]
+        [Display(Name = "Tipo de Proceso")]
         [Required(ErrorMessage = "*")]
         public int idTipoProceso { get; set; }
+
+        [Display(Name = "Elemento de Avance")]
+        [Required(ErrorMessage = "*")]
+        public string claseAvance { get; set; }
 
         public int usuarioCreacion { get; set; }
     }

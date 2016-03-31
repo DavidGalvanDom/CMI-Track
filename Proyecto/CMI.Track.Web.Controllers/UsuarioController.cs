@@ -170,5 +170,24 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { result = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        /// <summary>
+        /// Carga el Proceso para un Avance de Produccion
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargarProcesoAvanceProduccion(int idProyecto, int idUsuario)
+        {
+            try
+            {
+                var lstProcesos = UsuarioData.CargarProcesoAvanceProduccion(idProyecto, idUsuario);
+
+                return (Json(lstProcesos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

@@ -168,5 +168,24 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Carga el siguiente Proceso segun la ruta de Fabricacion
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargarSiguienteProcesoRutaFabricacion(int idProyecto, int idProceso)
+        {
+            try
+            {
+                var lstProcesos = RutaFabricacionData.CargarSiguienteProcesoRutaFabricacion(idProyecto, idProceso);
+
+                return (Json(lstProcesos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

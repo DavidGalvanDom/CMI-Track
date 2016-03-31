@@ -171,7 +171,8 @@ var Proceso = {
     serializaProceso: function (id,form) {
         return ({
             'nombreProceso': $(form + ' #nombreProceso').val().toUpperCase(),
-            'idTipoProceso': $(form + ' #idTipoProceso').val(),
+            'nombreTipoProceso': $(form + ' #idTipoProceso option:selected').text().toUpperCase(),
+            'claseAvance': $(form + ' #claseAvance option:selected').text().toUpperCase(),
             'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
@@ -197,7 +198,8 @@ var Proceso = {
                     collection: Proceso.colProcesos,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Proceso', name: 'nombreProceso', filter: true, filterType: 'input' },
-                               { title: 'TipoProceso', name: 'nombreTipoProceso', filter: true, filterType: 'input' },
+                               { title: 'Tipo Proceso', name: 'nombreTipoProceso', filter: true, filterType: 'input' },
+                               { title: 'Clase', name: 'claseAvance', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'estatus', filter: true }]
                 });
                 $('#cargandoInfo').hide();

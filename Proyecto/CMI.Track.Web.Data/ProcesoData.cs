@@ -43,7 +43,8 @@ namespace CMI.Track.Web.Data
                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
                             estatus = Convert.ToString(dataReader["nombreEstatus"]),
                             idTipoProceso = Convert.ToInt32(dataReader["idTipoProceso"]),
-                            nombreTipoProceso = Convert.ToString(dataReader["nombreTipoProceso"])
+                            nombreTipoProceso = Convert.ToString(dataReader["nombreTipoProceso"]),
+                            claseAvance = Convert.ToString(dataReader["claseAvance"])
                         });
                     }
                 }
@@ -79,7 +80,9 @@ namespace CMI.Track.Web.Data
                             id = Convert.ToInt32(dataReader["idProceso"]),
                             nombreProceso = Convert.ToString(dataReader["nombreProceso"]),
                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
-                            idTipoProceso = Convert.ToInt32(dataReader["idTipoProceso"])
+                            idTipoProceso = Convert.ToInt32(dataReader["idTipoProceso"]),
+                            usuarioCreacion = Convert.ToInt32(dataReader["usuarioCreacion"]),
+                            claseAvance = Convert.ToString(dataReader["claseAvance"])
                         };
                         return objProceso;
                     }
@@ -118,7 +121,8 @@ namespace CMI.Track.Web.Data
                             idEstatus = Convert.ToInt32(dataReader["idEstatus"]),
                             estatus = Convert.ToString(dataReader["nombreEstatus"]),
                             idTipoProceso = Convert.ToInt32(dataReader["idTipoProceso"]),
-                            nombreTipoProceso = Convert.ToString(dataReader["nombreTipoProceso"])
+                            nombreTipoProceso = Convert.ToString(dataReader["nombreTipoProceso"]),
+                            claseAvance = Convert.ToString(dataReader["claseAvance"])
                         });
                     }
                 }
@@ -138,12 +142,13 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.Proceso pobjModelo)
         {
-            object[] paramArray = new object[3];
+            object[] paramArray = new object[4];
             try
             {
                 paramArray[0] = pobjModelo.nombreProceso.ToUpper();
                 paramArray[1] = pobjModelo.idTipoProceso;
                 paramArray[2] = pobjModelo.usuarioCreacion;
+                paramArray[3] = pobjModelo.claseAvance;
                                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarProceso", paramArray);
@@ -163,13 +168,14 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.Proceso pobjModelo)
         {
-            object[] paramArray = new object[4];
+            object[] paramArray = new object[5];
             try
             {
                 paramArray[0] = pobjModelo.id;
                 paramArray[1] = pobjModelo.nombreProceso.ToUpper();
                 paramArray[2] = pobjModelo.idTipoProceso;
                 paramArray[3] = pobjModelo.idEstatus;
+                paramArray[4] = pobjModelo.claseAvance;
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarProceso", paramArray);

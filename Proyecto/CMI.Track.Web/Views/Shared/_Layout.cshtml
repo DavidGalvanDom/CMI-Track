@@ -34,7 +34,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> Informacion del Usuario</a>
+                            <a href="#" id="acercade"><i class="fa fa-user fa-fw"></i> Acerca de </a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -77,12 +77,13 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/general")
     <script type="text/javascript">
-        $(function () {
-            //Asigna el conteto de la aplicacion
-            contextPath = '@Url.Content("~")';
-            CMI.inicial();
-        });
-    </script>
+    $(function () {
+        //Asigna el conteto de la aplicacion
+        contextPath = '@Url.Content("~")';
+        routeUrlImages = '@Request.Url.Scheme://@Request.Url.Authority@Url.Content("~/Content/images")';
+        CMI.inicial();
+    });
+</script>
     @RenderSection("scripts", required: false)
 </body>
 

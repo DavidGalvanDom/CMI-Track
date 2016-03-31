@@ -32,5 +32,8 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "TipoProceso")]
         public string nombreTipoProceso { get; set; }
+
+        [Display(Name = "claseAvance")]
+        public string claseAvance { get; set; }
     }
 }

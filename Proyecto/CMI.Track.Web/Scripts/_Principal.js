@@ -13,6 +13,7 @@ var CMI = {
     },
     eventos: function () {
         //Eventos generales
+        $('#acercade').click(CMI.onAcercaDe);
     },
     menuPrincipal: function (){
         if ($('#divSideBar').is(":visible") === true) {
@@ -21,8 +22,10 @@ var CMI = {
         } else {
             $('#divSideBar').show();
             $('#page-wrapper').attr('style', 'margin: 0 0 0 250px;');
-        }
-        
+        }        
+    },
+    onAcercaDe: function (){
+        alert('Acerca de.');
     },
     CargaSideBar: function () {
         if (localStorage.idUser === '' || localStorage.idUser === undefined) return;

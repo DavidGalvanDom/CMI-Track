@@ -72,7 +72,7 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Creacion")]
         public string fechaCreacion { get; set; }
 
-        public int idEstatus { get; set; }
+        public int idEstatusRevision { get; set; }
 
         public int usuarioCreacion { get; set; }
                
