@@ -16,13 +16,12 @@ var GenDocumentos = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
 
         $("#rptLGPResumen").click(that.onLGPResumen);
-        $("#rptLGPDespiece").click(that.onLGPDespiece);
-        $("#rptOPCorte").click(that.onOPCorte);
-        $("#rptOPPantografo").click(that.onOPPantografo);
-        $("#rptRGMateriales").click(that.onRGMateriales);
-        
+        $("#rptLGPDetalle").click(that.onLGPDetalle);
+        $("#rptOPCorte").click(function () { that.onOrdenProduccion('C',this); });
+        $("#rptOPPantografo").click(function () { that.onOrdenProduccion('P',this); });
+        $("#rptRGMateriales").click(that.onRGMateriales);        
     },
-    onRGMateriales: function (e) {
+    onRGMateriales: function () {
         var idProyecto = $('#idProyectoSelect').val(),
             idEtapa = $('#idEtapaSelect').val(),
             btn = this,
@@ -43,33 +42,60 @@ var GenDocumentos = {
                         
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo generar el Requerimiento General de Materiales.");
-        }).always(function () { CMI.botonMensaje(false, btn, ' <a href="#">   <span class="fa fa-archive"></span>   Requerimiento de Materiales</a>'); });
+        }).always(function () { CMI.botonMensaje(false, btn, '  <span class="fa fa-archive"></span>   Requerimiento de Materiales'); });
     },
-    onOPPantografo: function () {
-
-    },
-    onOPCorte: function(){
-
-    },
-    onLGPDespiece: function (){
-
-    },
-    onLGPResumen: function(){
+    onOrdenProduccion: function (tipo, btn) {
         var idProyecto = $('#idProyectoSelect').val(),
             idEtapa = $('#idEtapaSelect').val(),
+            botonInfo = '', 
             data = '',
-            btn = this,
-            url = contextPath + "GenerarDocumentos/LGPResumen"; // El url del controlador   
+            url = contextPath + "GenerarDocume/OrdenProduccion"; // El url del controlador   
 
         data = 'idProyecto=' + idProyecto +
-               '&idEtapa=' + idEtapa;
+               '&idEtapa=' + idEtapa +
+               '&clase=' + tipo;
+        
+        botonInfo = tipo === 'P' ? ' Orden produccion Pantografo' : '  Oreden produccion Corte';
 
-        $(btn).attr("disabled", "disabled");
+        CMI.botonMensaje(true, btn, botonInfo);
         $.post(url, data, function (result) {
-            console.log(result);
+            if (result.Success === true) {
+                GenDocumentos.GeneraExcelOrdenProduccion(result, tipo);
+            } else {
+                CMI.DespliegaErrorDialogo(result.Message);
+            }
         }).fail(function () {
-            CMI.DespliegaErrorDialogo("No se pudo generar el Resumen de la lista general de partes.");
-        }).always(function () { $(btn).removeAttr("disabled"); });
+            CMI.DespliegaErrorDialogo("No se pudo generar el reporte de Orden de produccion.");
+        }).always(function () {
+            botonInfo = tipo === 'P' ? '<span class="fa fa-codepen"></span>  Orden produccion Pantografo' : '<span class="fa fa-scissors"></span>  Oreden produccion Corte';
+            CMI.botonMensaje(false, btn, ' <a href="#">   ' + botonInfo + '</a>');
+        });
+    },
+    onLGPDetalle: function (){
+        var idProyecto = $('#idProyectoSelect').val(),
+           idEtapa = $('#idEtapaSelect').val(),
+           btn = this,
+           data = '',
+           url = contextPath + "GenerarDocume/LGPDetalle"; // El url del controlador   
+
+        data = 'idProyecto=' + idProyecto +
+               '&idEtapa=' + idEtapa +
+               '&idUsuario=' + localStorage.idUser;
+
+        CMI.botonMensaje(true, btn, "LGP Detalle");
+        $.post(url, data, function (result) {
+            if (result.Success === true) {
+                GenDocumentos.GeneraExcelLGPDetalle(result);
+            } else {
+                CMI.DespliegaErrorDialogo(result.Message);
+            }
+
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo generar el reporte LGPDetalle.");
+        }).always(function () { CMI.botonMensaje(false, btn, ' <span class="fa fa-list"></span>  LGP Detalle'); });
+    },
+    onLGPResumen: function(){
+       
     },
     onBuscarProyecto: function () {
         var btn = this;
@@ -149,6 +175,156 @@ var GenDocumentos = {
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+    },
+    GeneraExcelLGPDetalle : function (arrData){
+        var tblDataRow = '',
+            tabla = '',           
+            tcompleta = '',
+            header = "<table border='2'>",
+            tabla_html = '',
+            etapa = $('#nombreEtapa').text().replace(/ /g, '&nbsp;');
+
+        if (arrData.Excel !== null) {
+            for (var contador = 0; contador < arrData.Excel.length; contador++) {
+                var item = arrData.Excel[contador];
+
+                tblDataRow += "<tr>";
+                tblDataRow += "<td>" + etapa + "</td>";
+                tblDataRow += "<td>" + item.planoMontaje.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.planoDespiece.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.tipoConstruccion.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.marca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.piezaMarca + "</td>";
+                tblDataRow += "<td>" + item.submarca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.perfil.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.piezas + "</td>";
+                tblDataRow += "<td>" + item.corte + "</td>";
+                tblDataRow += "<td>" + item.longitud + "</td>";
+                tblDataRow += "<td>" + item.ancho + "</td>";
+                tblDataRow += "<td>" + item.grado.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.kgm + "</td>";
+                tblDataRow += "<td>" + item.totalLA + "</td>";
+                tblDataRow += "<td>" + item.total + "</td>";
+                tblDataRow += "<td>" + item.peso + "</td>";
+                tblDataRow += "</tr>";
+            }
+        }
+        header += "<tr>";
+        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td > <table> ";
+        header += "        <tr> <td colspan='11' align='center'><strong> Listado General de Partes </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='11' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "      </table>";
+        header += " </td> ";
+        header += "<td> ";
+        header += "    <table ><tr> <td></td> </tr><tr align='right'> <td>Codigo:</td></tr><tr align='right'><td >Revision:</td></tr><tr align='right'> <td >Fecha:</td></tr><tr><td></td></tr></table>";
+        header += "</td>";
+        header += "<td> ";
+        header += "    <table><tr align='center'></tr><tr align='center'><td ><strong>" + $('#CodigoProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + $('#RevisionPro').text() + "</strong></td></tr>";
+        header += "      <tr><td  align='center'><strong>" + arrData.fecha + "</strong></td></tr>";
+        header += "    </table>";
+        header += "</td>";
+        header += "</tr> ";
+
+        tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Etapa</strong></td><td rowspan='2'>" +
+                "<strong>Montaje</strong></td><td rowspan='2'><strong>Despiece</strong></td><td rowspan='2' colspan='1'>" +
+                "<strong>Tipo Construccion</strong></td><td rowspan='2' colspan='1'><strong>Marcan</strong></td><td rowspan='2' colspan='1'><strong>Piezas</strong></td><td rowspan='2'><strong>" +
+                "SubMarcas</strong></td><td rowspan='2'><strong>Perfil</strong></td><td rowspan='2'><strong>Piezas</strong></td>" +
+                "<td rowspan='2'><strong>Corte</strong></td><td rowspan='2'><strong>Longitud</strong></td><td rowspan='2'><strong>" +
+                "Ancho</strong></td><td rowspan='2'><strong>Grado</strong></td><td rowspan='2'><strong>Kgm</strong></td><td rowspan='2'>" +
+                "<strong>Total LA</strong></td><td rowspan='2'><strong>Total</strong></td><td rowspan='2'><strong>Peso</strong></td></tr></table>";
+
+        tcompleta = "<table border='2'><tr><td><table border='1'>";
+        tcompleta += tblDataRow;
+        tcompleta += "</table></td></tr></table>";
+        header += tabla + tcompleta;
+
+        var tmpElemento = document.createElement('a'),
+            data_type = 'data:application/vnd.ms-excel',
+            tabla_div = header;
+
+        tabla_html = tabla_div.replace(/ /g, '%20');
+
+        tmpElemento.href = data_type + ', ' + tabla_html;
+        //Asignamos el nombre a nuestro EXCEL
+        tmpElemento.download = 'LGP Detalle.xls';
+        // Simulamos el click al elemento creado para descargarlo
+        tmpElemento.click();
+    },
+    GeneraExcelOrdenProduccion: function (arrData,tipo) {
+        var tblDataRow = '',
+             tabla = '',             
+             tcompleta = '',
+             header = "<table border='2'>",
+             tabla_html = '',
+             title = tipo === 'P' ? 'Pantografo' : 'Corte',
+             etapa = $('#nombreEtapa').text().replace(/ /g, '&nbsp;');
+
+        if (arrData.Excel !== null) {
+            for (var contador = 0; contador < arrData.Excel.length; contador++) {
+                var item = arrData.Excel[contador];
+
+                tblDataRow += "<tr>";
+                tblDataRow += "<td>" + etapa + "</td>";
+                tblDataRow += "<td>" + item.planoMontaje.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.planoDespiece.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.marca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.piezaMarca + "</td>";
+                tblDataRow += "<td>" + item.submarca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.perfil.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.piezas + "</td>";
+                tblDataRow += "<td>" + item.corte + "</td>";
+                tblDataRow += "<td>" + item.longitud + "</td>";
+                tblDataRow += "<td>" + item.ancho + "</td>";               
+                tblDataRow += "<td>" + item.grado.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.kgm + "</td>";
+                tblDataRow += "<td>" + item.totalLA + "</td>";
+                tblDataRow += "<td>" + item.total + "</td>";
+                tblDataRow += "<td>" + item.peso + "</td>";                
+                tblDataRow += "</tr>";                
+            }
+        }
+        header += "<tr>";
+        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td > <table> ";
+        header += "        <tr> <td colspan='11' align='center'><strong>Orden de Produccion de " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='11' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "      </table>";
+        header += " </td> ";
+        header += "<td> ";
+        header += "    <table ><tr> <td></td> </tr><tr align='right'> <td>Codigo:</td></tr><tr align='right'><td >Revision:</td></tr><tr align='right'> <td >Fecha:</td></tr><tr><td></td></tr></table>";
+        header += "</td>";
+        header += "<td> ";
+        header += "    <table><tr align='center'></tr><tr align='center'><td ><strong>" + $('#CodigoProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + $('#RevisionPro').text() + "</strong></td></tr>";
+        header += "      <tr><td  align='center'><strong>" + arrData.fecha + "</strong></td></tr>";
+        header += "    </table>";
+        header += "</td>";
+        header += "</tr> ";
+
+        tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Etapa</strong></td><td rowspan='2'>" + 
+                "<strong>Montaje</strong></td><td rowspan='2'><strong>Despiece</strong></td><td rowspan='2' colspan='1'>" + 
+                "<strong>Marca</strong></td><td rowspan='2' colspan='1'><strong>Piezas</strong></td><td rowspan='2'><strong>" + 
+                "SubMarcas</strong></td><td rowspan='2'><strong>Perfil</strong></td><td rowspan='2'><strong>Piezas</strong></td>" +
+                "<td rowspan='2'><strong>Corte</strong></td><td rowspan='2'><strong>Longitud</strong></td><td rowspan='2'><strong>" +
+                "Ancho</strong></td><td rowspan='2'><strong>Grado</strong></td><td rowspan='2'><strong>Kgm</strong></td><td rowspan='2'>" + 
+                "<strong>Total LA</strong></td><td rowspan='2'><strong>Total</strong></td><td rowspan='2'><strong>Peso</strong></td></tr></table>";
+
+        tcompleta = "<table border='2'><tr><td><table border='1'>";
+        tcompleta += tblDataRow;
+        tcompleta += "</table></td></tr></table>";
+        header += tabla + tcompleta;
+
+        var tmpElemento = document.createElement('a'),
+            data_type = 'data:application/vnd.ms-excel',
+            tabla_div = header;
+
+        tabla_html = tabla_div.replace(/ /g, '%20');
+
+        tmpElemento.href = data_type + ', ' + tabla_html;
+        //Asignamos el nombre a nuestro EXCEL
+        tmpElemento.download = 'RequerimientoGeneralMateriales.xls';
+        // Simulamos el click al elemento creado para descargarlo
+        tmpElemento.click();
     },
     GeneraExcelRGMateriales: function (arrData){
         var  tblDataRow = '',

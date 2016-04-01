@@ -50,5 +50,52 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+        /// <summary>
+        /// Se generarn los requerimientos y regresa el reporte de 
+        /// requerimiento general de materiales.
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="clase"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult OrdenProduccion(int idProyecto, int idEtapa, string clase)
+        {
+            try
+            {
+                var rptOrdenProduccion = GenerarDocumeData.CargarOrdenProduccion(idProyecto, idEtapa, clase);
+
+                return (Json(new { Success = true, Excel = rptOrdenProduccion, fecha= DateTime.Now.ToString("dd/MM/yyyy") }));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
+
+        /// <summary>
+        /// Se carga el reporte de Lisado general de partes detallado
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+         [HttpPost]
+        public JsonResult LGPDetalle(int idProyecto, int idEtapa, int idUsuario)
+        {
+            try
+            {
+                var rptLGPDetalle = GenerarDocumeData.CargarLGPDetalle(idProyecto, idEtapa, idUsuario);
+
+                return (Json(new { Success = true, Excel = rptLGPDetalle, fecha = DateTime.Now.ToString("dd/MM/yyyy") }));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
+
+        
     }
 }

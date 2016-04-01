@@ -57,11 +57,13 @@
     <Compile Include="ImpresionCodigoBarra\ListaImpresionCodigoBarra.cs" />
     <Compile Include="ListaGeneral\LGMMarcas.cs" />
     <Compile Include="ListaGeneral\LGMSubMarcas.cs" />
+    <Compile Include="ListaGeneral\LGPDetalle.cs" />
     <Compile Include="Marca\ListaMarcas.cs" />
     <Compile Include="Marca\Marca.cs" />
     <Compile Include="Material\ListaMaterial.cs" />
     <Compile Include="Material\Material.cs" />
     <Compile Include="OrdenProduccion\ListaDetalleOrdenProduccion.cs" />
+    <Compile Include="OrdenProduccion\OrdenProduccion.cs" />
     <Compile Include="OrigenRequisicion\ListaOrigenRequisicion.cs" />
     <Compile Include="OrigenRequisicion\OrigenRequisicion.cs" />
     <Compile Include="PlanosDespiece\ListaPlanosDespiece.cs" />

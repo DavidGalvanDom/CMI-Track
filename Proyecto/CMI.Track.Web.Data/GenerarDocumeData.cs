@@ -17,7 +17,108 @@ namespace CMI.Track.Web.Data
 {
     public  class GenerarDocumeData
     {
+        /// <summary>
+        /// Se carga la informacion de la orden de produccion
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        public static List<Models.LGPDetalle> CargarLGPDetalle(int idProyecto, int idEtapa, int idUsuario)
+        {
+            var lstLGPDetalle = new List<Models.LGPDetalle>();
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = idEtapa;
+                paramArray[1] = idUsuario;
 
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarLGPDetalle", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstLGPDetalle.Add(new LGPDetalle()
+                        {
+                            planoMontaje = dataReader["codigoPlanoMontaje"].ToString(),
+                            planoDespiece = dataReader["codigoPlanoDespiece"].ToString(),
+                            tipoConstruccion = dataReader["nombreTipoConstruccion"].ToString(),
+                            marca = dataReader["codigoMarca"].ToString(),
+                            piezaMarca = Convert.ToInt32(dataReader["piezasMarca"]),
+                            submarca = dataReader["codigoSubMarca"].ToString(),
+                            perfil = dataReader["perfilSubMarca"].ToString(),
+                            piezas = Convert.ToInt32(dataReader["piezasSubMarca"]),
+                            corte = Convert.ToDouble(dataReader["corteSubMarca"]),
+                            longitud = Convert.ToDouble(dataReader["longitudSubMarca"]),
+                            ancho = Convert.ToDouble(dataReader["anchoSubMarca"]),
+                            grado = dataReader["gradoSubMarca"].ToString(),
+                            kgm = Convert.ToDouble(dataReader["kgmSubMarca"]),
+                            totalLA = Convert.ToDouble(dataReader["totalLASubMarca"]),
+                            peso = Convert.ToDouble(dataReader["pesoSubMarca"]),
+                            total = Convert.ToDouble(dataReader["totalSubMarca"])
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return lstLGPDetalle;
+        }
+
+        /// <summary>
+        /// Se carga la informacion de la orden de produccion
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="clase"></param>
+        /// <returns></returns>
+        public static List<Models.OrdenProduccion> CargarOrdenProduccion(int idProyecto, int idEtapa, string clase)
+        {
+            var lstOrdenProduccion = new List<Models.OrdenProduccion>();
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = idEtapa;
+                paramArray[1] = clase;
+               
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarOrdenProduccion", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstOrdenProduccion.Add(new OrdenProduccion()
+                        {
+                            planoMontaje = dataReader["codigoPlanoMontaje"].ToString(),
+                            planoDespiece = dataReader["codigoPlanoDespiece"].ToString(),
+                            marca = dataReader["codigoMarca"].ToString(),
+                            piezaMarca = Convert.ToInt32(dataReader["piezasMarca"]),
+                            submarca = dataReader["codigoSubMarca"].ToString(),
+                            perfil = dataReader["perfilSubMarca"].ToString(),
+                            piezas = Convert.ToInt32(dataReader["piezasSubMarca"]),
+                            corte = Convert.ToDouble(dataReader["corteSubMarca"]),
+                            longitud = Convert.ToDouble(dataReader["longitudSubMarca"]),
+                            ancho = Convert.ToDouble(dataReader["anchoSubMarca"]),
+                            grado = dataReader["gradoSubMarca"].ToString(),
+                            kgm = Convert.ToDouble(dataReader["kgmSubMarca"]),
+                            totalLA = Convert.ToDouble(dataReader["totalLASubMarca"]),
+                            peso = Convert.ToDouble(dataReader["pesoSubMarca"]),
+                            total = Convert.ToDouble(dataReader["totalSubMarca"])
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return lstOrdenProduccion;
+        }
         /// <summary>
         /// Se genera los requerimientos iniciales de la etapa
         /// </summary>
