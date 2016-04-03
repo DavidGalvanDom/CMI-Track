@@ -7,9 +7,10 @@ var CMI = {
             }
         } catch (exp) {
         }
-       
+        
         CMI.eventos();       
         CMI.CargaSideBar();
+        $('#userName').text(localStorage.UserName);
     },
     eventos: function () {
         //Eventos generales

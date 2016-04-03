@@ -1,4 +1,5 @@
-﻿//js de catalogo de usuarios.
+﻿/*global _,$, CMI,bbGrid,Backbone,contextPath*/
+//js de catalogo de usuarios.
 //David Galvan
 //01/Febrero/2016
 
@@ -17,15 +18,19 @@ var Seguridad = {
     Eventos: function () {
         var that = this;
 
-        if (localStorage.modSerdad != null) {
+        if (localStorage.modSerdad !== null) {
            var accGuardar = localStorage.modSerdad.substr(1, 1) === '1' ? true : false;
            if (accGuardar === true)
                $('.btn-GuardaSeguridad').show();
         }
 
         $(document).on("click", '.btn-GuardaSeguridad', that.onGuardar);
+        $(document).on("change", '#chkAllLectura', that.onCheckAll);
+        $(document).on("change", '#chkAllEscritura', that.onCheckAll);
+        $(document).on("change", '#chkAllClonar', that.onCheckAll);
+        $(document).on("change", '#chkAllBorrar', that.onCheckAll);
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var modulos = [],
             btn = this,
             dataPost = {
@@ -36,23 +41,25 @@ var Seguridad = {
         CMI.botonMensaje(true, btn, 'Guardar');
 
         //Se agrega la coleccion de items.
-        _.each(Seguridad.colModulos.models, function (object, index) {
-            object.attributes['lecturaPermisos'] = 0;
-            object.attributes['escrituraPermisos'] = 0;
-            object.attributes['clonadoPermisos'] = 0;
-            object.attributes['borradoPermisos'] = 0;
+        _.each(Seguridad.colModulos.models, function (object) {
+            object.attributes.lecturaPermisos = 0;
+            object.attributes.escrituraPermisos = 0;
+            object.attributes.clonadoPermisos = 0;
+            object.attributes.borradoPermisos = 0;
         });
 
         //Se actuliza la coleccion con la informacion seleccionada
         $("#frmSeguridad").find("input:checked").each(function (index, item) {
-            var arrModel = item.id.split("-");
-            var model = Seguridad.colModulos.get(arrModel[0]);
-            model.attributes[arrModel[1]] = 1;
-            Seguridad.colModulos.add(model, { merge: true });            
+            if (item.id.split("-").length > 1) {
+                var arrModel = item.id.split("-");
+                var model = Seguridad.colModulos.get(arrModel[0]);
+                model.attributes[arrModel[1]] = 1;
+                Seguridad.colModulos.add(model, { merge: true });
+            }
         });
         
         //Se agrega la coleccion de items.
-        _.each(Seguridad.colModulos.models, function (object, index) {
+        _.each(Seguridad.colModulos.models, function (object) {
             modulos.push(object.attributes);
         });
         
@@ -61,7 +68,7 @@ var Seguridad = {
             dataPost,
             function (data) {
                 var div;
-                if (data.Success == true) {                   
+                if (data.Success === true) {                   
                     CMI.DespliegaInformacion(data.Message);
                     $('#seguridadUsuario').modal('hide');
                 } else {
@@ -71,11 +78,45 @@ var Seguridad = {
                 }
             }).fail(function () {
                 CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-                div = document.getElementById('divMessage');
+                var div = document.getElementById('divMessage');
                 if (div !== null) div.scrollIntoView();
             }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
        
-    },   
+    },
+    onCheckAll: function () {
+        var chk = this,
+            item,
+            text;
+        if ($(chk).attr('id') === 'chkAllLectura') { item = '#chkAllLectura'; text = 'lecturaPermisos'; }
+        if ($(chk).attr('id') === 'chkAllEscritura') {  item = '#chkAllEscritura'; text = 'escrituraPermisos'; }
+        if ($(chk).attr('id') === 'chkAllClonar') { item = '#chkAllClonar'; text = 'clonadoPermisos'; }
+        if ($(chk).attr('id') === 'chkAllBorrar') { item = '#chkAllBorrar'; text = 'borradoPermisos'; }
+
+
+        var selected = [],
+            id = '',
+            arrId = [],
+            head = $(item).prop('checked');        
+        $('input[type=checkbox]').each(function () {
+            selected.push($(this).attr('id'));
+        });
+        for (var i = 0; i < selected.length; i++) {
+            id = selected[i];
+            arrId = id.split("-");
+            if (arrId.length > 1) {
+                if (arrId[1] === text) {
+                    if (head === false) {
+                        $('#' + id).prop('checked', true);
+                        $('#' + id).removeAttr('checked');
+                    } else {
+                        $('#' + id).removeAttr('checked');
+                        $('#' + id).prop('checked', true);
+                    }
+
+                }
+            }
+        }
+    },
     serializaSeguridad: function (id) {
         return ({
             'ApeMaterno': $('#ApeMaterno').val().toUpperCase(),
@@ -100,10 +141,10 @@ var Seguridad = {
                     actionenable: false,
                     collection: Seguridad.colModulos,
                     colModel: [{ title: 'Modulo', name: 'nombreModulo', width: '50%' },
-                               { title: 'Lectura', name: 'lecturaPermisos', width: '10%', checkboxgen: true, textalign:true },
-                               { title: 'Escritura', name: 'escrituraPermisos', width: '10%', checkboxgen: true, textalign: true },
-                               { title: 'Clonar', name: 'clonadoPermisos', width: '10%', checkboxgen: true, textalign: true },
-                               { title: 'Borrar', name: 'borradoPermisos', width: '10%', checkboxgen: true, textalign: true }]
+                               { title: 'Lectura&nbsp;<input type="checkbox" id="chkAllLectura" />', name: 'lecturaPermisos', width: '10%', checkboxgen: true, textalign:true },
+                               { title: 'Escritura&nbsp;<input type="checkbox" id="chkAllEscritura" />', name: 'escrituraPermisos', width: '10%', checkboxgen: true, textalign: true },
+                               { title: 'Clonar&nbsp;<input type="checkbox" id="chkAllClonar" />', name: 'clonadoPermisos', width: '10%', checkboxgen: true, textalign: true },
+                               { title: 'Borrar&nbsp;<input type="checkbox" id="chkAllBorrar" />', name: 'borradoPermisos', width: '10%', checkboxgen: true, textalign: true }]
                 });
             } else {
                 CMI.DespliegaInformacionDialogo("No se encontraron Modulos en base de datos.");
@@ -111,8 +152,8 @@ var Seguridad = {
             }
             $('#cargandoInfoSeg').hide();
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Modulos");
-        }).always(function (e) { $('#cargandoInfoSeg').hide(); });
+        }).always(function () { $('#cargandoInfoSeg').hide(); });
     }
 };

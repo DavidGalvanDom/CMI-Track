@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlmacenData.cs" />
+    <Compile Include="AvanceData.cs" />
     <Compile Include="CalidadProcesoData.cs" />
     <Compile Include="CategoriaData.cs" />
     <Compile Include="ClienteData.cs" />

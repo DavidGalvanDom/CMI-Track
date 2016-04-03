@@ -42,8 +42,11 @@
   <ItemGroup>
     <Compile Include="Almacen\Almacen.cs" />
     <Compile Include="Almacen\ListaAlmacen.cs" />
+    <Compile Include="Avance\Avance.cs" />
+    <Compile Include="Avance\ListaAvance.cs" />
     <Compile Include="CalidadProceso\CalidadProceso.cs" />
     <Compile Include="CalidadProceso\ListaCalidadProceso.cs" />
+    <Compile Include="CalidadProceso\RegistroCalidad.cs" />
     <Compile Include="Categoria\Categoria.cs" />
     <Compile Include="Categoria\ListaCategoria.cs" />
     <Compile Include="Cliente\Cliente.cs" />

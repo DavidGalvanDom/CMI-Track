@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="AlmacenController.cs" />
     <Compile Include="AutentificacionController.cs" />
+    <Compile Include="AvanceController.cs" />
     <Compile Include="CalidadProcesoController.cs" />
     <Compile Include="CategoriaController.cs" />
     <Compile Include="ClienteController.cs" />

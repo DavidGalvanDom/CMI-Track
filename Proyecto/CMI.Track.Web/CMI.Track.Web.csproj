@@ -142,6 +142,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
     <Content Include="Scripts\AutorizaReqManualCompra.js" />
+    <Content Include="Scripts\Avance.js" />
     <Content Include="Scripts\CalidadProceso.js" />
     <Content Include="Scripts\Categoria.js" />
     <Content Include="Scripts\Cliente.js" />

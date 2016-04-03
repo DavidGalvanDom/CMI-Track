@@ -3,6 +3,10 @@ INSERT INTO cmiEstatus Values (1,getdate(), 'ACTIVO')
 
 INSERT INTO cmiEstatus Values (10,getdate(), 'ABIERTO')
 INSERT INTO cmiEstatus Values (11,getdate(), 'CERRADO')
+
+INSERT INTO [dbo].[cmiEstatus] ([idEstatus],[fechaCreacion],[nombreEstatus]) 
+VALUES (20,'2016-03-25','LIBERADO'),(21,'2016-03-25','RECHAZADO');
+
 GO
 
 INSERT INTO [cmiDepartamentos]([fechaCreacion],[fechaUltModificacion]
@@ -76,6 +80,7 @@ INSERT INTO cmiModulos Values (32,getdate(), getdate(),1,'Autorizar Requisicion'
 
 INSERT INTO cmiModulos Values (40,getdate(), getdate(),1,'Orden de Produccion','OrdenProduccion/Index',1)
 INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barra','ImpresionCodigoBarra/Index',2)
+INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance','Avance/Index',3)
 
 select * from cmiModuloMenuGrupo
 
@@ -116,6 +121,7 @@ INSERT INTO cmiModuloMenuGrupo values (4,32)
 --Produccion
 INSERT INTO cmiModuloMenuGrupo values (5,40)
 INSERT INTO cmiModuloMenuGrupo values (5,41)
+INSERT INTO cmiModuloMenuGrupo values (5,42)
 
 select * from cmiModuloMenuGrupo
 go

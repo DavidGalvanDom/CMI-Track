@@ -1,4 +1,5 @@
-﻿//js de Ordenes de Produccion
+﻿/*global $,ProyectoBuscar,EtapaBuscar,CMI,bbGrid,Backbone,contextPath*/
+//js de Ordenes de Produccion
 //Juan Lopepe
 //19/Febrero/2016
 var OrdenProduccion = {
@@ -33,13 +34,20 @@ var OrdenProduccion = {
         var arrData;
         var tblData = '';
         var tabla_html = '';
-        $.get(templateURL, function (data) { rptTemplate = data; });
-
+        $.ajax({
+            type: "GET",
+            url: templateURL,
+            async: false,
+            success: function (response) {
+                rptTemplate = response;
+            }
+        });
+        
         var url = contextPath + "OrdenProduccion/CargaDetalleOrdenProduccion?idEtapa=" + $('#idEtapaSelect').val() + "&clase=" + $('#clase').val(); // El url del controlador
         $.getJSON(url, function (data) {
             arrData = data;
             
-            for (i = 0; i < arrData.length; i++) {
+            for (var i = 0; i < arrData.length; i++) {
                 tblData += "<tr>";
                 tblData += "<td>" + arrData[i]['seccion'].replace(/ /g, '&nbsp;') + "</td>";
                 tblData += "<td>" + arrData[i]['tipo'].replace(/ /g, '&nbsp;') + "</td>";
@@ -64,6 +72,7 @@ var OrdenProduccion = {
             rptTemplate = rptTemplate.replace('myVarCodigoProyecto', $('#CodigoProyecto').text());
             rptTemplate = rptTemplate.replace('myVarRevisionProyecto', $('#RevisionPro').text());
             tabla_html = rptTemplate.replace('myVarTRs', tblData);
+            tabla_html = tabla_html.replace(/ /g, '%20');
             
             var tmpElemento = document.createElement('a');
             var data_type = 'data:application/vnd.ms-excel';
@@ -72,7 +81,7 @@ var OrdenProduccion = {
             tmpElemento.click();
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de la Orden de Produccion");
         });
     },
@@ -135,7 +144,7 @@ var OrdenProduccion = {
             $('#codigoProyecto').show();
             $('#fechaInicio').show();
             $('#fechaFin').show();
-        };
+        }
         $('#Imprimir').hide();
 
         $('#etapaRow').show();       
@@ -155,7 +164,7 @@ var OrdenProduccion = {
             $('#NombreEt').show();
             $('#FechaInicioEt').show();
             $('#FechaFinEt').show();
-        };
+        }
 
         $('#clase option[value="T"]').attr("selected", "selected");
 
@@ -219,7 +228,7 @@ var OrdenProduccion = {
                 $('#Imprimir').hide();
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de la Orden de Produccion");
         });
     }  
@@ -227,4 +236,4 @@ var OrdenProduccion = {
 
 $(function () {
     OrdenProduccion.Inicial();
-})
+});
