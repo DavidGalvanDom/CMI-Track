@@ -1,0 +1,29 @@
+﻿@model CMI.Track.Web.Models.Avance
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo Avance</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Avance", FormMethod.Post, new { id = "NuevoAvanceForm", name = "NuevoAvanceForm", @class = "form-horizontal", onsubmit = "return false" }))
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2 class="text-center"><span id="msgConfirmacion"></span></h2>
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.claseAvance)
+                @Html.HiddenFor(model => model.idMarca_Submarca)
+                @Html.HiddenFor(model => model.idSerie)
+                @Html.HiddenFor(model => model.idUsuario)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnDarAvance">Dar Avance</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

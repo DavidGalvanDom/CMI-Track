@@ -27,6 +27,7 @@ namespace CMI.Track.Web.Controllers
         public ActionResult Index()
         {
             return View();
+
         }
 
         /// <summary>

@@ -1003,6 +1003,9 @@
     <Content Include="Views\GenerarDocume\Index.cshtml" />
     <Content Include="Views\OrdenProduccion\Index.cshtml" />
     <Content Include="Views\ImpresionCodigoBarra\Index.cshtml" />
+    <Content Include="Views\Avance\Index.cshtml" />
+    <Content Include="Views\Avance\_darAvance.cshtml" />
+    <Content Include="Views\Avance\_darRegistroCalidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
