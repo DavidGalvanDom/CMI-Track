@@ -96,6 +96,48 @@ namespace CMI.Track.Web.Controllers
             }
         }
 
-        
+         /// <summary>
+         /// Se carga el reporte de Lisado general de partes Resumen
+         /// </summary>
+         /// <param name="idProyecto"></param>
+         /// <param name="idEtapa"></param>
+         /// <param name="idUsuario"></param>
+         /// <returns></returns>
+         [HttpPost]
+         public JsonResult LGPResumen(int idProyecto, int idEtapa, int idUsuario)
+         {
+             try
+             {
+                 var rptLGPResumen = GenerarDocumeData.CargarLGPResumen(idProyecto, idEtapa, idUsuario);
+
+                 return (Json(new { Success = true, Excel = rptLGPResumen, fecha = DateTime.Now.ToString("dd/MM/yyyy") }));
+             }
+             catch (Exception exp)
+             {
+                 return Json(new { Success = false, Message = exp.Message });
+             }
+         }
+
+         /// <summary>
+         /// Se carga el reporte de Trasmital
+         /// </summary>
+         /// <param name="idProyecto"></param>
+         /// <param name="idEtapa"></param>
+         /// <param name="idUsuario"></param>
+         /// <returns></returns>
+         [HttpPost]
+         public JsonResult Trasmital(int idProyecto, int idEtapa, int idUsuario)
+         {
+             try
+             {
+                 var rptTrasmital = GenerarDocumeData.CargarTrasmital(idProyecto, idEtapa, idUsuario);
+
+                 return (Json(new { Success = true, Excel = rptTrasmital, fecha = DateTime.Now.ToString("dd/MM/yyyy") }));
+             }
+             catch (Exception exp)
+             {
+                 return Json(new { Success = false, Message = exp.Message });
+             }
+         }
     }
 }

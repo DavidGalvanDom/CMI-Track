@@ -17,8 +17,50 @@ namespace CMI.Track.Web.Data
 {
     public  class GenerarDocumeData
     {
+
         /// <summary>
-        /// Se carga la informacion de la orden de produccion
+        /// Se carga la informacion del Resumen para LGP
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        public static List<Models.LGPResumen> CargarLGPResumen(int idProyecto, int idEtapa, int idUsuario)
+        {
+            var lstLGPResumen = new List<Models.LGPResumen>();
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = idEtapa;
+                paramArray[1] = idUsuario;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarLGPResumen", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstLGPResumen.Add(new LGPResumen()
+                        {
+                            planoMontaje = dataReader["codigoPlanoMontaje"].ToString(),
+                            planoDespiece = dataReader["codigoPlanoDespiece"].ToString(),
+                            tipoConstruccion = dataReader["nombreTipoConstruccion"].ToString(),
+                            marca = dataReader["codigoMarca"].ToString(),
+                            piezaMarca = Convert.ToInt32(dataReader["piezasMarca"]),
+                            peso = Convert.ToDouble(dataReader["pesoMarca"])
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return lstLGPResumen;
+        }
+        /// <summary>
+        /// Se carga la informacion de LGP Detalle
         /// </summary>
         /// <param name="idProyecto"></param>
         /// <param name="idEtapa"></param>
@@ -185,6 +227,46 @@ namespace CMI.Track.Web.Data
             }
 
             return requerimientoGenMat;
-        }                
+        }
+
+        /// <summary>
+        /// Se carga la informacion del Trasmital
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        public static List<Models.Trasmital> CargarTrasmital(int idProyecto, int idEtapa, int idUsuario)
+        {
+            var lstTrasmital = new List<Models.Trasmital>();
+            object[] paramArray = new object[2];
+            try
+            {
+                paramArray[0] = idEtapa;
+                paramArray[1] = idUsuario;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarLGPResumen", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstTrasmital.Add(new Trasmital()
+                        {
+                            planoMontaje = dataReader["nombrePlanoMontaje"].ToString(),
+                            planoDespiece = dataReader["nombrePlanoDespiece"].ToString(),
+                            claveDespiece = dataReader["codigoPlanoDespiece"].ToString(),
+                            claveMontaje = dataReader["codigoPlanoMontaje"].ToString()
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return lstTrasmital;
+        }
     }
 }

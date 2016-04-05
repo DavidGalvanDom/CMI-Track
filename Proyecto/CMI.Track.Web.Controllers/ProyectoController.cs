@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy") };
+            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy"),idEstatusRevision=1 };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objProjecto);
         }

@@ -42,7 +42,7 @@ var GenDocumentos = {
                         
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo generar el Requerimiento General de Materiales.");
-        }).always(function () { CMI.botonMensaje(false, btn, '  <span class="fa fa-archive"></span>   Requerimiento de Materiales'); });
+        }).always(function () { CMI.botonMensaje(false, btn, ' <a href="#"><span class="fa fa-archive"></span>   Requerimiento de Materiales</a>'); });
     },
     onOrdenProduccion: function (tipo, btn) {
         var idProyecto = $('#idProyectoSelect').val(),
@@ -196,9 +196,75 @@ var GenDocumentos = {
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
+    GeneraExcelTramital: function( arrData ){
+        var tblDataRow = '',
+          tabla = '',
+          total = 0,
+          tcompleta = '',
+          header = "<table border='2'>",
+          tabla_html = '',
+          etapa = $('#nombreEtapa').text().replace(/ /g, '&nbsp;');
+
+        if (arrData.Excel !== null) {
+            for (var contador = 0; contador < arrData.Excel.length; contador++) {
+                var item = arrData.Excel[contador];
+
+                tblDataRow += "<tr>";
+                tblDataRow += "<td>" + etapa + "</td>";
+                tblDataRow += "<td>" + item.planoMontaje.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.planoDespiece.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.tipoConstruccion.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.marca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td>" + item.piezaMarca + "</td>";
+                tblDataRow += "<td>" + item.peso + "</td>";
+                tblDataRow += "<td>" + (parseFloat(item.peso) * parseFloat(item.piezaMarca)) + "</td>";
+                tblDataRow += "</tr>";
+            }
+        }
+        header += "<tr>";
+        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td > <table> ";
+        header += "        <tr> <td colspan='3' align='center'><strong> Listado General de Partes Resumen</strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='3' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "      </table>";
+        header += " </td> ";
+        header += "<td> ";
+        header += "    <table ><tr> <td></td> </tr><tr align='right'> <td>Codigo:</td></tr><tr align='right'><td >Revision:</td></tr><tr align='right'> <td >Fecha:</td></tr><tr><td></td></tr></table>";
+        header += "</td>";
+        header += "<td> ";
+        header += "    <table><tr align='center'></tr><tr align='center'><td ><strong>" + $('#CodigoProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + $('#RevisionPro').text() + "</strong></td></tr>";
+        header += "      <tr><td  align='center'><strong>" + arrData.fecha + "</strong></td></tr>";
+        header += "    </table>";
+        header += "</td>";
+        header += "</tr> ";
+
+        tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Etapa</strong></td><td rowspan='2'>" +
+                "<strong>Montaje</strong></td><td rowspan='2'><strong>Despiece</strong></td><td rowspan='2' colspan='1'>" +
+                "<strong>Tipo Construccion</strong></td><td rowspan='2' colspan='1'><strong>Marcan</strong></td>" +
+                "<td rowspan='2' colspan='1'><strong># Piezas</strong></td>" +
+                "<td rowspan='2'><strong>Peso C/U</strong></td><td rowspan='2'><strong>Peso Total</strong></td></tr></table>";
+
+        tcompleta = "<table border='2'><tr><td><table border='1'>";
+        tcompleta += tblDataRow;
+        tcompleta += "</table></td></tr></table>";
+        header += tabla + tcompleta;
+
+        var tmpElemento = document.createElement('a'),
+            data_type = 'data:application/vnd.ms-excel',
+            tabla_div = header;
+
+        tabla_html = tabla_div.replace(/ /g, '%20');
+
+        tmpElemento.href = data_type + ', ' + tabla_html;
+        //Asignamos el nombre a nuestro EXCEL
+        tmpElemento.download = 'LGP Resumen.xls';
+        // Simulamos el click al elemento creado para descargarlo
+        tmpElemento.click();
+    },
     GeneraExcelLGPResumen: function (arrData){
         var tblDataRow = '',
             tabla = '',
+            total = 0,
             tcompleta = '',
             header = "<table border='2'>",
             tabla_html = '',
@@ -214,26 +280,17 @@ var GenDocumentos = {
                 tblDataRow += "<td>" + item.planoDespiece.replace(/ /g, '&nbsp;') + "</td>";
                 tblDataRow += "<td>" + item.tipoConstruccion.replace(/ /g, '&nbsp;') + "</td>";
                 tblDataRow += "<td>" + item.marca.replace(/ /g, '&nbsp;') + "</td>";
-                tblDataRow += "<td>" + item.piezaMarca + "</td>";
-                tblDataRow += "<td>" + item.submarca.replace(/ /g, '&nbsp;') + "</td>";
-                tblDataRow += "<td>" + item.perfil.replace(/ /g, '&nbsp;') + "</td>";
-                tblDataRow += "<td>" + item.piezas + "</td>";
-                tblDataRow += "<td>" + item.corte + "</td>";
-                tblDataRow += "<td>" + item.longitud + "</td>";
-                tblDataRow += "<td>" + item.ancho + "</td>";
-                tblDataRow += "<td>" + item.grado.replace(/ /g, '&nbsp;') + "</td>";
-                tblDataRow += "<td>" + item.kgm + "</td>";
-                tblDataRow += "<td>" + item.totalLA + "</td>";
-                tblDataRow += "<td>" + item.total + "</td>";
+                tblDataRow += "<td>" + item.piezaMarca + "</td>";               
                 tblDataRow += "<td>" + item.peso + "</td>";
+                tblDataRow += "<td>" + (parseFloat(item.peso) * parseFloat(item.piezaMarca)) + "</td>";
                 tblDataRow += "</tr>";
             }
         }
         header += "<tr>";
         header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='11' align='center'><strong> Listado General de Partes Resumen</strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='11' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='3' align='center'><strong> Listado General de Partes Resumen</strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='3' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
@@ -248,11 +305,9 @@ var GenDocumentos = {
 
         tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Etapa</strong></td><td rowspan='2'>" +
                 "<strong>Montaje</strong></td><td rowspan='2'><strong>Despiece</strong></td><td rowspan='2' colspan='1'>" +
-                "<strong>Tipo Construccion</strong></td><td rowspan='2' colspan='1'><strong>Marcan</strong></td><td rowspan='2' colspan='1'><strong>Piezas</strong></td><td rowspan='2'><strong>" +
-                "SubMarcas</strong></td><td rowspan='2'><strong>Perfil</strong></td><td rowspan='2'><strong>Piezas</strong></td>" +
-                "<td rowspan='2'><strong>Corte</strong></td><td rowspan='2'><strong>Longitud</strong></td><td rowspan='2'><strong>" +
-                "Ancho</strong></td><td rowspan='2'><strong>Grado</strong></td><td rowspan='2'><strong>Kgm</strong></td><td rowspan='2'>" +
-                "<strong>Total LA</strong></td><td rowspan='2'><strong>Total</strong></td><td rowspan='2'><strong>Peso</strong></td></tr></table>";
+                "<strong>Tipo Construccion</strong></td><td rowspan='2' colspan='1'><strong>Marcan</strong></td>" + 
+                "<td rowspan='2' colspan='1'><strong># Piezas</strong></td>" +                
+                "<td rowspan='2'><strong>Peso C/U</strong></td><td rowspan='2'><strong>Peso Total</strong></td></tr></table>";
 
         tcompleta = "<table border='2'><tr><td><table border='1'>";
         tcompleta += tblDataRow;
