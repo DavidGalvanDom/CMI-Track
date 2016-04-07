@@ -7,8 +7,8 @@ var CMI = {
             }
         } catch (exp) {
         }
-        
-        CMI.eventos();       
+
+        CMI.eventos();
         CMI.CargaSideBar();
         $('#userName').text(localStorage.UserName);
     },
@@ -23,7 +23,7 @@ var CMI = {
         } else {
             $('#divSideBar').show();
             $('#page-wrapper').attr('style', 'margin: 0 0 0 250px;');
-        }        
+        }
     },
     onAcercaDe: function (){
         alert('Acerca de.');
@@ -33,28 +33,28 @@ var CMI = {
         var urlEventos = contextPath + "Principal/_sideBar/" + localStorage.idUser;
         $.post(urlEventos, function (data) {
             if (data.substring(0, 5) === '<!DOC') return;
-            $('#divSideBar').html(data);           
+            $('#divSideBar').html(data);
             $('#side-menu').metisMenu();
             CMI.SeleccionaOpcionMenu();
         });
     },
     ReiniciaLocalStorage: function (pUsuario, pNombre) {
         localStorage.setItem("idUser", pUsuario);
-        localStorage.setItem("UserName", pNombre);              
+        localStorage.setItem("UserName", pNombre);
     },
     SeleccionaOpcionMenu: function (){
-        var url = window.location;        
+        var url = window.location;
         var element = $('ul.nav a').filter(function () {
             return this.href === url || url.href.indexOf(this.href) === 0;
         }).addClass('active').parent().parent().addClass('in').parent();
         if (element.is('li')) {
-            element.addClass('active');            
-        }        
+            element.addClass('active');
+        }
         return (element);
     },
-    setPermisos: function (datos) {       
+    setPermisos: function (datos) {
         localStorage.modPermisos = datos;
-        var item = document.getElementById('Permisos');       
+        var item = document.getElementById('Permisos');
         if (item !== null) {
             localStorage.modSerdad = item.textContent;
         } else {
@@ -106,13 +106,13 @@ var CMI = {
                                  msg + "</div>");
         $('#cargandoInfo').hide();
     },
-    botonMensaje: function (agregar, boton, nombre) {        
+    botonMensaje: function (agregar, boton, nombre) {
         if (agregar === true) {
             $(boton).attr("disabled", "disabled");
             $(boton).html("<span class='glyphicon glyphicon-refresh glyphicon-refresh-animate'></span> " + nombre);
         } else {
             $(boton).html(nombre);
             $(boton).removeAttr("disabled");
-        }            
+        }
     }
 };

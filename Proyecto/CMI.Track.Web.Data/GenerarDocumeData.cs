@@ -247,7 +247,7 @@ namespace CMI.Track.Web.Data
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarLGPResumen", paramArray))
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarTrasmital", paramArray))
                 {
                     while (dataReader.Read())
                     {
