@@ -80,7 +80,7 @@ INSERT INTO cmiModulos Values (32,getdate(), getdate(),1,'Autorizar Requisicion'
 
 INSERT INTO cmiModulos Values (40,getdate(), getdate(),1,'Orden de Produccion','OrdenProduccion/Index',1)
 INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barra','ImpresionCodigoBarra/Index',2)
-INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance','Avance/Index',3)
+INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance/Registro Calidad','Avance/Index',3)
 
 select * from cmiModuloMenuGrupo
 
