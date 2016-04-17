@@ -6,9 +6,10 @@ var SubMarcas = {
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
+    estatusRevision: 0,
     activeForm: '',
     gridSubMarca: {},
-    colSubMarcas: {},    
+    colSubMarcas: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -44,7 +45,7 @@ var SubMarcas = {
             btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
-            $('#usuarioCreacion').val(localStorage.idUser);            
+            $('#usuarioCreacion').val(localStorage.idUser);
             $(form + ' #idMarca').val($('#idMarcaSelect').val());
             $(form + ' #idOrdenProduccion').val($('#idEtapaSelect').val());
             //Se hace el post para guardar la informacion
@@ -190,7 +191,8 @@ var SubMarcas = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -200,6 +202,16 @@ var SubMarcas = {
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
 
+        SubMarcas.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            $('.btnNuevo').hide();
+            SubMarcas.accBorrar = false;
+            SubMarcas.accClonar = false;
+            CMI.DespliegaError("La revision del proyecto esta Cerrada. La informacion es de solo lectura.");
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+        }
         //Se inicializa la informacion seleccionada a vacio
         $('#bbGrid-subMarcas')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
@@ -309,20 +321,24 @@ var SubMarcas = {
         $('#bbGrid-subMarcas')[0].innerHTML = "";
         SubMarcas.CargaGrid();
 
-        ///Muestra el boton de nueva SubMarcas
-        if (SubMarcas.accEscritura === true)
-            $('.btnNuevo').show();
+        if (SubMarcas.estatusRevision === 1) {
+            SubMarcas.ValidaPermisos();
+            ///Muestra el boton de nueva SubMarca
+            if (SubMarcas.accEscritura === true) {
+                $('.btnNuevo').show();
+            }
+        }
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "SubMarcas/Nuevo"; // El url del controlador      
+        var url = contextPath + "SubMarcas/Nuevo"; // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-subMarcas').html(data);
             $('#nuevo-subMarcas').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos
             SubMarcas.activeForm = '#NuevaSubMarcaForm';
         });
     },

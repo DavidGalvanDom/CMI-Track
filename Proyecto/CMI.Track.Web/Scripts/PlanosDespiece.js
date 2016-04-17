@@ -6,6 +6,7 @@ var PlanosDespiece = {
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
+    estatusRevision: 0,
     activeForm: '',
     gridPlanosDespiece: {},
     colPlanosDespiece: {},
@@ -236,7 +237,8 @@ var PlanosDespiece = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -245,6 +247,17 @@ var PlanosDespiece = {
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
+
+        PlanosDespiece.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            $('.btnNuevo').hide();
+            PlanosDespiece.accBorrar = false;
+            PlanosDespiece.accClonar = false;
+            CMI.DespliegaError("La revision del proyecto esta Cerrada. La informacion es de solo lectura.");
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+        }
 
         //Se inicializa la informacion seleccionada a vacio
         $('#bbGrid-PlanosDespiece')[0].innerHTML = "";
@@ -278,10 +291,7 @@ var PlanosDespiece = {
         $('#nombrePlanosMontaje').text('Nombre Plano Montaje');
         $('#FechaInicioPlanoMontaje').text('Fecha Inicio');
         $('#FechaFinPlanosMontaje').text('Fecha Fin');
-
-
         $('#planosMontajeRow').show();
-
     },
     AsignaPlanosMontaje: function (idPlanoMontaje, nombrePlanoMontaje,
                                     fechaInicio, fechaFin){
@@ -294,9 +304,14 @@ var PlanosDespiece = {
         $('#bbGrid-PlanosDespiece')[0].innerHTML = "";
         PlanosDespiece.CargaGrid();
 
-        ///Muestra el boton de nueva PlanosDespiece
-        if (PlanosDespiece.accEscritura === true)
-            $('.btnNuevo').show();
+        if (PlanosDespiece.estatusRevision === 1) {
+            PlanosDespiece.ValidaPermisos();
+
+            ///Muestra el boton de nueva PlanosDespiece
+            if (PlanosDespiece.accEscritura === true)
+                $('.btnNuevo').show();
+        }
+
     },
     Nuevo: function () {
         CMI.CierraMensajes();

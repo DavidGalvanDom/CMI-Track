@@ -80,6 +80,7 @@
     <Compile Include="Proyecto\ListaProyectos.cs" />
     <Compile Include="Proyecto\Proyecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proyecto\Revision.cs" />
     <Compile Include="Reporte\ListaReporte.cs" />
     <Compile Include="ReqManualCompra\ListaReqManualCompra.cs" />
     <Compile Include="ReqManualCompra\ReqManualCompra.cs" />

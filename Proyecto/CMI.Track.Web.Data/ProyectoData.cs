@@ -42,7 +42,7 @@ namespace CMI.Track.Web.Data
                     while (dataReader.Read())
                     {
                        proyecto = new Proyecto()
-                        {                           
+                        {
                             id = Convert.ToInt32(dataReader["idProyecto"]),
                             nombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
                             revisionProyecto = Convert.ToString(dataReader["revisionProyecto"]),
@@ -53,7 +53,7 @@ namespace CMI.Track.Web.Data
                             estatusProyecto = Convert.ToInt32(dataReader["estatusProyecto"]),
                             idCategoria = Convert.ToInt32(dataReader["idCategoria"]),
                             idCliente = Convert.ToInt32(dataReader["idCliente"]),
-                            archivoPlanoProyecto = Convert.ToString(dataReader["archivoPlanoProyecto"]),                            
+                            archivoPlanoProyecto = Convert.ToString(dataReader["archivoPlanoProyecto"]),
                             infoGeneral = Convert.ToString(dataReader["infGeneralProyecto"]),
                             contactoCliente = Convert.ToString(dataReader["contactoCliente"]),
                             direccionCliente = Convert.ToString(dataReader["direccionCliente"]),
@@ -106,7 +106,8 @@ namespace CMI.Track.Web.Data
                             CodigoProyecto = Convert.ToString(dataReader["codigoProyecto"]),
                             nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]),
                             FechaFin = Convert.ToString(dataReader["fechaFinProyecto"]),
-                            FechaInicio = Convert.ToString(dataReader["fechaInicioProyecto"])
+                            FechaInicio = Convert.ToString(dataReader["fechaInicioProyecto"]),
+                            estatusRevision = Convert.ToInt32(dataReader["idEstatusRevision"]),
                         });
                     }
                 }
@@ -140,7 +141,7 @@ namespace CMI.Track.Web.Data
                 paramArray[8] = pobjModelo.estatusProyecto;
                 paramArray[9] = pobjModelo.idCliente;
                 paramArray[10] = pobjModelo.infoGeneral.ToUpper();
-                paramArray[11] = pobjModelo.archivoPlanoProyecto;                
+                paramArray[11] = pobjModelo.archivoPlanoProyecto;
                 paramArray[12] = pobjModelo.usuarioCreacion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
@@ -191,6 +192,48 @@ namespace CMI.Track.Web.Data
         }
 
         /// <summary>
+        /// Se respalda la informacion de la etapa y se genera una nueva Etapa
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <returns></returns>
+        public static Revision NuevaRevision(int idProyecto)
+        {
+            object[] paramArray = new object[1];
+            Revision objRevision = null;
+
+            try
+            {
+                paramArray[0] = idProyecto;
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_NuevaRevisionProyecto", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["ErrorMessage"].ToString() == "")
+                        {
+                            objRevision = new Revision()
+                            {
+                                Codigo = Convert.ToString(dataReader["Revision"]),
+                                Estatus = Convert.ToInt32(dataReader["idEstatus"]),
+                                Fecha = Convert.ToString(dataReader["Fecha"])
+                            };
+                        }
+                        else
+                        {
+                            throw new ApplicationException(dataReader["ErrorMessage"].ToString());
+                        }
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+            return (objRevision);
+        }
+
+        /// <summary>
         /// Se borra de la base de datos el proyecto
         /// </summary>
         /// <param name="idProyecto"></param>
@@ -198,7 +241,6 @@ namespace CMI.Track.Web.Data
         /// <returns></returns>
         public static string Borrar(int idProyecto, string revision)
         {
-
             object[] paramArray = new object[2];
             try
             {

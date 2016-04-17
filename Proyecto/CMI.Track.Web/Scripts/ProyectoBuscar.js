@@ -15,7 +15,8 @@ var ProyectoBuscar = {
                                             rowSelected.attributes.NombreProyecto,
                                             rowSelected.attributes.CodigoProyecto,
                                             rowSelected.attributes.FechaInicio,
-                                            rowSelected.attributes.FechaFin);
+                                            rowSelected.attributes.FechaFin,
+                                            rowSelected.attributes.estatusRevision);
     },
     CargaGrid: function () {
         $('#cargandoInfoPM').show();

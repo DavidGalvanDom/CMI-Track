@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objProjecto = new Models.Proyecto() {  fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy"),idEstatusRevision=1 };
+            var objProjecto = new Models.Proyecto() { fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy"), idEstatusRevision = 1, revisionProyecto = "001", fechaRevision = DateTime.Now.ToString("dd/MM/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objProjecto);
         }
@@ -167,7 +167,7 @@ namespace CMI.Track.Web.Controllers
         public ActionResult Actualiza(int idProyecto, string revision)
         {
             var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
-            return PartialView("_Actualiza", objProyecto);            
+            return PartialView("_Actualiza", objProyecto);
         }
 
         /// <summary>
@@ -216,10 +216,11 @@ namespace CMI.Track.Web.Controllers
         {
             var objProyecto = ProyectoData.CargaProyecto(idProyecto, revision);
             objProyecto.id = 0;
-            objProyecto.revisionProyecto = "";
+            objProyecto.revisionProyecto = "001";
             objProyecto.nombreArchivo = "";
             objProyecto.archivoPlanoProyecto = "";
             objProyecto.fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy");
+            objProyecto.fechaRevision = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.Titulo = "Clonar";
             return PartialView("_Nuevo", objProyecto);
         }
@@ -251,6 +252,24 @@ namespace CMI.Track.Web.Controllers
         public ActionResult BuscarProyecto()
         {
             return PartialView("_buscarProyecto");
+        }
+
+       /// <summary>
+       /// Se genera una nueva revision para el proyecto seleccionado.
+       /// </summary>
+       /// <param name="idProyecto"></param>
+       /// <returns></returns>
+        public JsonResult NuevaRevision(int id)
+        {
+            try
+            {
+               var revision = ProyectoData.NuevaRevision(id);
+               return Json(new { Success = true, Message = "Se genero la nueva revision.", Data = revision });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
         }
     }
 }

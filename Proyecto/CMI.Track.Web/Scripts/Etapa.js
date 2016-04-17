@@ -7,7 +7,8 @@ var Etapa = {
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
-    activeForm: '',   
+    estatusRevision : 0,
+    activeForm: '',
     gridEtapas: {},
     colEtapas : {},
     Inicial: function () {
@@ -107,7 +108,7 @@ var Etapa = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {        
+                             FechaInicio, FechaFin, idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -116,27 +117,38 @@ var Etapa = {
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
         $('#buscar-Proyecto').modal('hide');
-       
+        Etapa.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            $('.btnNuevo').hide();
+            Etapa.accBorrar = false;
+            Etapa.accClonar = false;
+            CMI.DespliegaError("La revision del proyecto esta Cerrada. La informacion es de solo lectura.");
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+            Etapa.ValidaPermisos();
+
+            ///Muestra el boton de nueva Etapa
+            if (Etapa.accEscritura === true)
+                $('.btnNuevo').show();
+        }
+
         //Se carga el grid de Etapas asignadas al proyecto
         $('#bbGrid-Etapas')[0].innerHTML = "";
         Etapa.CargaGrid();
-
-        ///Muestra el boton de nueva Etapa
-        if (Etapa.accEscritura === true)
-            $('.btnNuevo').show();
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Etapa/Nuevo"; // El url del controlador      
+        var url = contextPath + "Etapa/Nuevo"; // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-Etapa').html(data);
             $('#nuevo-Etapa').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos 
             Etapa.activeForm = '#NuevaEtapaForm';
-            Etapa.IniciaDateControls();            
+            Etapa.IniciaDateControls();
         });
     },
     Editar: function (id) {
@@ -152,10 +164,15 @@ var Etapa = {
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Etapa.activeForm = '#ActualizaEtapaForm';
             Etapa.IniciaDateControls();
+            if (Etapa.estatusRevision !== 1) {
+                $('.btn-ActualizarEtapa').hide();
+            } else {
+                $('.btn-ActualizarEtapa').show();
+            }
         });
     },
     Borrar: function (id) {
-        CMI.CierraMensajes();        
+        CMI.CierraMensajes();
         if (confirm('¿Esta seguro que desea borrar la Etapa (' + id + ') ?') === false) return;
         var url = contextPath + "Etapa/Borrar"; // El url del controlador
         $.post(url, {
@@ -205,7 +222,7 @@ var Etapa = {
 
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;       
+        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
     serializaEtapa: function (id) {
         var form = Etapa.activeForm;
@@ -218,7 +235,7 @@ var Etapa = {
             'id': id 
         });
     },
-    CargaGrid: function () {      
+    CargaGrid: function () {
         var url = contextPath + "Etapa/CargaEtapas?idProyecto=" + $('#idProyectoSelect').val() + "&revision=" + $('#RevisionPro').text(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
@@ -254,7 +271,7 @@ var Etapa = {
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion de las Etapas");
         });
-    }   
+    }
 };
 
 $(function () {

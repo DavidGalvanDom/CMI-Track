@@ -7,6 +7,7 @@ var Marcas = {
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
+    estatusRevision : 0,
     gridMarca: {},
     colMarcas: {},
     Inicial: function () {
@@ -190,7 +191,8 @@ var Marcas = {
     },   
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -199,6 +201,17 @@ var Marcas = {
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
+
+        Marcas.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            $('.btnNuevo').hide();
+            Marcas.accBorrar = false;
+            Marcas.accClonar = false;
+            CMI.DespliegaError("La revision del proyecto esta Cerrada. La informacion es de solo lectura.");
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+        }
 
         //Se inicializa la informacion seleccionada a vacio
         $('#bbGrid-Marcas')[0].innerHTML = "";
@@ -276,9 +289,13 @@ var Marcas = {
         $('#bbGrid-Marcas')[0].innerHTML = "";
         Marcas.CargaGrid();
 
-        ///Muestra el boton de nueva Marcas
-        if (Marcas.accEscritura === true)
-            $('.btnNuevo').show();
+        if (Marcas.estatusRevision === 1) {
+            Marcas.ValidaPermisos();
+            ///Muestra el boton de nueva Marca
+            if (Marcas.accEscritura === true) {
+                $('.btnNuevo').show();
+            }
+        }
     },
     Nuevo: function () {
         CMI.CierraMensajes();

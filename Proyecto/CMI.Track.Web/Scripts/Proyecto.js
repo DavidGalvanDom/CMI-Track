@@ -14,12 +14,12 @@ var Proyecto = {
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
-        this.Eventos();       
-        this.ValidaPermisos();  
+        this.Eventos();
+        this.ValidaPermisos();
     },
     Eventos: function () {
         var that = this;
-        $('.btnNuevo').click(that.Nuevo);                
+        $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onSubirArchivo);
         $(document).on("click", '.btn-ActualizarProyecto', that.onSubirArchivo);
         
@@ -34,7 +34,7 @@ var Proyecto = {
 
         $(document).on('click', '.accrowClonar', function () {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
-        });              
+        });
     },
     onGuardar: function (btn) {
         if ($("form").valid()) {
@@ -58,10 +58,9 @@ var Proyecto = {
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
         } else {
             CMI.botonMensaje(false, btn, 'Guardar');
-        }        
+        }
     },
     onActualizar: function (btn) {
-        
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -88,7 +87,7 @@ var Proyecto = {
             btn = this,
             form = Proyecto.activeForm,
             files;
-        
+
         //Agrega la clase de mandatorio cuando no ha seleccionado un cliente.
         if ($(form + ' #idCliente').val() === "0") {
             $(form + ' #nombreCliente').addClass('input-validation-error');
@@ -139,7 +138,7 @@ var Proyecto = {
                     CMI.DespliegaErrorDialogo("Este explorador no soportado por la aplicacion favor de utilizar una version mas reciente. Chrome");
                     CMI.botonMensaje(false, btn, 'Guardar');
                 }
-            } else {               
+            } else {
                 if (Proyecto.activeForm !== '#NuevoProyectoForm') {
                     Proyecto.onActualizar(btn);
                 } else {
@@ -153,24 +152,43 @@ var Proyecto = {
         var btn = this;
         $(btn).attr("disabled", "disabled");
         CMI.CierraMensajes();
-        var url = contextPath + "Cliente/BuscarCliente"; // El url del controlador      
+        var url = contextPath + "Cliente/BuscarCliente"; // El url del controlador
         $.get(url, function (data) {
             $('#buscar-Cliente').html(data);
             $('#buscar-Cliente').modal({
                 backdrop: 'static',
                 keyboard: true
-            }, 'show');            
+            }, 'show');
             ClienteBuscar.Inicial();
             ClienteBuscar.parent = Proyecto;
-            $(btn).removeAttr("disabled");            
+            $(btn).removeAttr("disabled");
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar clietnes");
         }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    onNuevaRevison: function(btn) {
+        CMI.botonMensaje(true, btn, 'Nueva Revision');
+        CMI.CierraMensajes();
+        var url = contextPath + "Proyecto/NuevaRevision/" + $("#ActualizaProyectoForm #id").val(); // El url del controlador
+        $.post(url, function (data) {
+            if (data.Success === true) {
+                $('#idEstatusRevision').val(data.Data.Estatus);
+                $('#fechaRevision').val(data.Data.Fecha);
+                $('#revisionProyecto').val(data.Data.Codigo);
+                $('#btnNuevaRevicion').hide();
+                CMI.DespliegaInformacionDialogo("Se genero la nueva revision.");
+            } else {
+                CMI.DespliegaErrorDialogo(data.Message);
+            }
 
+            CMI.botonMensaje(false, btn, 'Nueva Revision');
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo generar la nueva revision.");
+        }).always(function () { CMI.botonMensaje(false, btn, 'Nueva Revision');  });
     },
     AsignaCliente: function (idCliente, nombreClietne,
                              direccionEntrega, contactoCliente) {
-        var that = Proyecto;        
+        var that = Proyecto;
         $(that.activeForm + ' #idCliente').val(idCliente);
         $(that.activeForm + ' #contacto').text(contactoCliente);
         $(that.activeForm + ' #direccion').text(direccionEntrega);
@@ -188,7 +206,7 @@ var Proyecto = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Proyecto.activeForm = '#NuevoProyectoForm';
             $(Proyecto.activeForm + ' #btnBuscarCliente').click(Proyecto.onBuscarCliente);
             Proyecto.EventoNombreArchivo();
@@ -213,6 +231,9 @@ var Proyecto = {
             Proyecto.EventoNombreArchivo();
             Proyecto.IniciaDateControls();
             Proyecto.CargarColeccionCategorias();
+            if ($(Proyecto.activeForm + ' #idEstatusRevision').val() === '0') {
+                $('#btnNuevaRevicion').show();
+            }
         });
     },
     Borrar: function (id) {
@@ -249,7 +270,7 @@ var Proyecto = {
             $(Proyecto.activeForm + ' #btnBuscarCliente').click(Proyecto.onBuscarCliente);
             Proyecto.EventoNombreArchivo();
             Proyecto.IniciaDateControls();
-            Proyecto.CargarColeccionCategorias();                        
+            Proyecto.CargarColeccionCategorias();
         });
     },   
     CargarColeccionCategorias: function () {
@@ -291,7 +312,7 @@ var Proyecto = {
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
 
         if (modulo.accEscritura === true)
-            $('.btnNuevo').show();        
+            $('.btnNuevo').show();
     },
     serializaProyecto: function (id) {
         var form = Proyecto.activeForm;
@@ -379,7 +400,7 @@ var Proyecto = {
                 label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
             input.trigger('fileselect', [numFiles, label]);
         });
-    }       
+    }
 };
 
 $(function () {

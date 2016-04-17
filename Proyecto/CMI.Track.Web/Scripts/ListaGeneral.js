@@ -160,7 +160,8 @@ var ListaGeneral = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -170,14 +171,22 @@ var ListaGeneral = {
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
 
-        //Se inicializa la informacion seleccionada a vacio
-        $('#idEtapaSelect').val(0);
-        $('#nombreEtapa').text('Nombre Etapa');
-        $('#FechaInicioEtapa').text('Fecha Inicio');
-        $('#FechaFinEtapa').text('Fecha Fin');
-        $('#frmListaPartes').hide();
+        ListaGeneral.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            CMI.DespliegaError("El estatus de revicion esta cerrado. No se puede agregar informacion hasta que genere una nueva revision.");
+            $('#etapaRow').hide();
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+            //Se inicializa la informacion seleccionada a vacio
+            $('#idEtapaSelect').val(0);
+            $('#nombreEtapa').text('Nombre Etapa');
+            $('#FechaInicioEtapa').text('Fecha Inicio');
+            $('#FechaFinEtapa').text('Fecha Fin');
+            $('#frmListaPartes').hide();
 
-        $('#etapaRow').show();
+            $('#etapaRow').show();
+        }
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
                            FechaInicio, FechaFin) {

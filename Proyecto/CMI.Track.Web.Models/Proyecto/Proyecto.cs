@@ -22,6 +22,9 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Revision")]
         public string revisionProyecto { get; set; }
 
+        [Display(Name = "Estatus Revision")]
+        public int idEstatusRevision { get; set; }
+
         [Required(ErrorMessage = "*")]
         [StringLength(20)]
         [Display(Name = "Proyecto")]
@@ -71,8 +74,6 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Creacion")]
         public string fechaCreacion { get; set; }
-
-        public int idEstatusRevision { get; set; }
 
         public int usuarioCreacion { get; set; }
                

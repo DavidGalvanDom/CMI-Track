@@ -31,9 +31,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col-sm-2">
-
-                    </div>
+                    <div class="col-sm-2"> </div>
 
                     @Html.LabelFor(model => model.fechaFin, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-3">
@@ -83,7 +81,22 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idEstatusRevision, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        @Html.DropDownListFor(model => model.idEstatusRevision,
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ABIERTO", Value="1"},
+                                                                                  new SelectListItem{ Text="CERRADO", Value="0"}},
+                                                        "Value", "Text"), new { @class = "form-control", @disabled ="disabled"})
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" id="btnNuevaRevicion" style="display:none;" class="btn btn-default" onclick="Proyecto.onNuevaRevison(this);">Nueva Revision</button>
+                    </div>
+                    <div class="col-sm-3">
+                        
+                    </div>
+                </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.idCategoria, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-5">
@@ -117,7 +130,6 @@
                         <span class="fa fa-user fa-3x"></span>
                     </div>
                     <div class="col-sm-2"></div>
-
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2">
@@ -135,7 +147,6 @@
                     <div class="col-sm-10">
                         @Html.TextAreaFor(model => model.infoGeneral, new { @class = "form-control", maxlength = 250,
                                         onkeypress="return ( this.value.length < 250 );", rows="4" })
-                        
                     </div>
                 </div>
 
@@ -156,6 +167,7 @@
                 @Html.HiddenFor(model => model.id)
                 @Html.HiddenFor(model => model.idCliente)
                 @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.idEstatusRevision)
                 @Html.HiddenFor(model => model.archivoPlanoProyecto)
                 <input type="hidden" id="categoria" name="categoria" value="@Model.idCategoria" />
             }

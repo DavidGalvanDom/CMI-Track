@@ -462,10 +462,15 @@ table.dataTable thead .sorting:after {
 }
 
 div.header {
-    padding: 10px;    
+    padding: 10px;
 }
 
 .postroll-button  a
-  {
+{
     text-decoration:none !important;
-  }
+}
+
+.revisionCerrada {
+    background-color :  #999;
+    color: #e7e7e7
+}

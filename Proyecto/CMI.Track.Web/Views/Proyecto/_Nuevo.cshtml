@@ -65,15 +65,16 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.revisionProyecto, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-3">
-                        @Html.TextBoxFor(model => model.revisionProyecto, new { @class = "form-control", maxlength = 3 })
+                        <p class="form-control" disabled>@Html.DisplayFor(model => model.revisionProyecto)</p>
                     </div>
                     <div class="col-sm-2">
 
                     </div>
                     @Html.LabelFor(model => model.fechaRevision, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-3">
-                        <div class="input-group date" id="dtpFechaInicio">
-                            @Html.TextBoxFor(model => model.fechaRevision, new { @class = "form-control", maxlength = 10 })
+                        <div class="input-group date" >
+                            <p class="form-control" disabled>@Html.DisplayFor(model => model.fechaRevision)</p>
+                            @Html.HiddenFor(model => model.fechaRevision)
                             <span class="input-group-addon">
                                 <span class="fa fa-calendar"></span>
                             </span>
@@ -126,7 +127,7 @@
                     <div class="col-sm-5">
                         <span id="direccion" placeholder="Direccion" class="form-control">@Model.direccionCliente</span>
                     </div>
-                </div>               
+                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.infoGeneral, new { @class = "col-sm-2 control-label" })
@@ -141,8 +142,8 @@
                     </div>
                 </div>
 
-                <div class="form-group">                    
-                    <label class="col-sm-2 control-label">Plano</label>                   
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Plano</label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <span class="input-group-btn">
@@ -156,9 +157,11 @@
                 </div>
 
                 @Html.HiddenFor(model => model.id)
-                @Html.HiddenFor(model => model.idCliente)           
+                @Html.HiddenFor(model => model.idCliente)
                 @Html.HiddenFor(model => model.usuarioCreacion)
                 @Html.HiddenFor(model => model.archivoPlanoProyecto)
+                @Html.HiddenFor(model => model.revisionProyecto)
+                @Html.HiddenFor(model => model.idEstatusRevision)
                 <input type="hidden" id="categoria" name="categoria" value="@Model.idCategoria" />
             }
         </div>

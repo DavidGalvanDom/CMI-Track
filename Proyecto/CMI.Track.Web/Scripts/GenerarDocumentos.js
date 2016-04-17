@@ -179,7 +179,8 @@ var GenDocumentos = {
     },    
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -188,6 +189,13 @@ var GenDocumentos = {
         $('#FechaFin').text(FechaFin);
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
+
+        GenDocumentos.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+        }
 
         //Se inicializa la informacion seleccionada a vacio
         $('#idEtapaSelect').val(0);

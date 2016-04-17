@@ -7,6 +7,7 @@ var PlanosMontaje = {
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
+    estatusRevision: 0,
     gridPlanosMontaje: {},
     colPlanosMontaje: {},
     Inicial: function () {
@@ -187,7 +188,8 @@ var PlanosMontaje = {
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+                             FechaInicio, FechaFin,
+                             idEstatusRevision) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -197,6 +199,17 @@ var PlanosMontaje = {
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
 
+        PlanosMontaje.estatusRevision = idEstatusRevision;
+        if (idEstatusRevision !== 1) {
+            $('#RevisionPro').addClass('revisionCerrada');
+            $('.btnNuevo').hide();
+            PlanosMontaje.accBorrar = false;
+            PlanosMontaje.accClonar = false;
+            CMI.DespliegaError("La revision del proyecto esta Cerrada. La informacion es de solo lectura.");
+        } else {
+            $('#RevisionPro').removeClass('revisionCerrada');
+        }
+
         //Se inicializa la informacion seleccionada a vacio
         $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
@@ -205,12 +218,12 @@ var PlanosMontaje = {
         $('#FechaFinEtapa').text('Fecha Fin');
         $('.btnNuevo').hide();
 
-        $('#etapaRow').show();       
+        $('#etapaRow').show();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
                            FechaInicio, FechaFin) {
 
-        $('#idEtapaSelect').val(idEtapa);       
+        $('#idEtapaSelect').val(idEtapa);
         $('#nombreEtapa').text(NombreEtapa);
         $('#FechaInicioEtapa').text(FechaInicio);
         $('#FechaFinEtapa').text(FechaFin);
@@ -220,9 +233,14 @@ var PlanosMontaje = {
         $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         PlanosMontaje.CargaGrid();
 
-        ///Muestra el boton de nueva PlanosMontaje
-        if (PlanosMontaje.accEscritura === true)
-            $('.btnNuevo').show();
+        if (PlanosMontaje.estatusRevision === 1) {
+            PlanosMontaje.ValidaPermisos();
+
+            ///Muestra el boton de nueva PlanosMontaje
+            if (PlanosMontaje.accEscritura === true)
+                $('.btnNuevo').show();
+        }
+
     },
     Nuevo: function () {
         CMI.CierraMensajes();
@@ -233,7 +251,7 @@ var PlanosMontaje = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos 
             PlanosMontaje.activeForm = '#NuevoPlanosMontajeForm';
             PlanosMontaje.EventoNombreArchivo();
             PlanosMontaje.IniciaDateControls();
