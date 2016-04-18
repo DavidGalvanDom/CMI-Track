@@ -32,7 +32,7 @@ namespace CMI.Track.Web.Data
             try
             {
                 paramArray[0] = idProyecto;
-                paramArray[1] = revision;
+                paramArray[1] = null;
                 paramArray[2] = null;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
@@ -97,17 +97,19 @@ namespace CMI.Track.Web.Data
                 {
                     while (dataReader.Read())
                     {
+                        var revision = Convert.ToString(dataReader["revisionProyecto"]);
                         lstProyectos.Add(new Models.ListaProyectos()
                         {
                             id = dataReader["idProyecto"].ToString() + dataReader["revisionProyecto"].ToString(),
                             idProyecto = Convert.ToInt32(dataReader["idProyecto"]),
                             NombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
-                            Revision = Convert.ToString(dataReader["revisionProyecto"]),
+                            Revision = revision,
                             CodigoProyecto = Convert.ToString(dataReader["codigoProyecto"]),
                             nombreEstatus = Convert.ToString(dataReader["nombreEstatus"]),
                             FechaFin = Convert.ToString(dataReader["fechaFinProyecto"]),
                             FechaInicio = Convert.ToString(dataReader["fechaInicioProyecto"]),
                             estatusRevision = Convert.ToInt32(dataReader["idEstatusRevision"]),
+                            nomEstatusRevison = Convert.ToInt32(dataReader["idEstatusRevision"]) == 1? "ABIERTO":"CERRADO"
                         });
                     }
                 }

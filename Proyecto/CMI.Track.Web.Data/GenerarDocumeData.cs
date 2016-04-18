@@ -216,7 +216,7 @@ namespace CMI.Track.Web.Data
                             kgmReqGenMat = Convert.ToDouble(dataReader["kgmDetalleReq"]),
                             totalLAReqGenMat= Convert.ToDouble(dataReader["totalLADetalleReq"]),
                             pesoReqGenMat = Convert.ToDouble(dataReader["pesoDetalleReq"]),
-                            areaReqGenMat= Convert.ToDouble(dataReader["areaDetalleReq"]),                            
+                            areaReqGenMat= Convert.ToDouble(dataReader["areaDetalleReq"]),
                         });
                     }
                 }

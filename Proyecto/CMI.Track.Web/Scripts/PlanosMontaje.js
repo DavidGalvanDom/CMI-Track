@@ -271,6 +271,12 @@ var PlanosMontaje = {
             PlanosMontaje.activeForm = '#ActualizaPlanosMontajeForm';
             PlanosMontaje.EventoNombreArchivo();
             PlanosMontaje.IniciaDateControls();
+
+            if (PlanosMontaje.estatusRevision !== 1) {
+                $('.btn-ActualizarPlanosMontaje').hide();
+            } else {
+                $('.btn-ActualizarPlanosMontaje').show();
+            }
         });
     },
     Borrar: function (id) {

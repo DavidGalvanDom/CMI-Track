@@ -58,6 +58,10 @@ var GenDocumentos = {
         $.post(url, data, function (result) {
             if (result.Success === true) {
                 GenDocumentos.GeneraExcelRGMateriales(result);
+                $('#RevisionPro').addClass('revisionCerrada');
+                if (GenDocumentos.estatusRevision === 1) {
+                    CMI.DespliegaInformacion('La revision del proyecto fue cerrada y se generaron los documentos.');
+                }
             } else {
                 CMI.DespliegaError(result.Message);
             }
@@ -176,7 +180,7 @@ var GenDocumentos = {
         }).fail(function () {
             CMI.DespliegaError("No se pudo cargar el modulo de Buscar proyectos");
         }).always(function () { $(btn).removeAttr("disabled"); });
-    },    
+    },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
                              FechaInicio, FechaFin,
@@ -193,8 +197,10 @@ var GenDocumentos = {
         GenDocumentos.estatusRevision = idEstatusRevision;
         if (idEstatusRevision !== 1) {
             $('#RevisionPro').addClass('revisionCerrada');
+            $('#rptRGMateriales').html('<span class="fa fa-archive"></span> Requerimiento de Materiales');
         } else {
             $('#RevisionPro').removeClass('revisionCerrada');
+            $('#rptRGMateriales').html('<span class="fa fa-archive"></span> Cerrar revision');
         }
 
         //Se inicializa la informacion seleccionada a vacio
@@ -360,7 +366,7 @@ var GenDocumentos = {
         header += "      <tr><td  align='center'><strong>" + arrData.fecha + "</strong></td></tr>";
         header += "    </table>";
         header += "</td>";
-        header += "</tr> ";
+        header += "</tr>";
 
         tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Etapa</strong></td><td rowspan='2'>" +
                 "<strong>Montaje</strong></td><td rowspan='2'><strong>Despiece</strong></td><td rowspan='2' colspan='1'>" +
@@ -563,35 +569,36 @@ var GenDocumentos = {
                 total += (item.piezasReqGenMat * (item.longitudReqGenMat * 0.3048) * item.kgmReqGenMat);
             }
         }
-            header += "<tr>";
-            header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
-            header += "<td > <table> <tr > <td colspan='2'> </td> </tr>";
-            header += "<tr> <td colspan='2' align='center'><strong>REQUERIMIENTO</strong></td> </tr> ";
-            header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + arrData.Excel.claveEtapa + "</strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
-            header += "<tr> <td colspan='2' align='center'><strong><i> " + arrData.Excel.nombreEtapa + "</i></strong> </td> </tr> <tr> <td colspan='2' align='center'style='color:red;'><strong>Rev." + arrData.Excel.revisionProyecto + "</strong></td></tr></table></td> ";
-            header += "<td> <table > <tr align='right'><td></td><td></td><td></td><td style='border:solid;border-size:2;' align='center'><strong>No.</strong></td></tr> <tr align='center'>  <td></td><td></td><td></td> <td style='border:solid;border-size:2;'><strong>" + arrData.Excel.idProyecto + "</strong></td> </tr><tr align='right'> <td  colspan='4'>FECHA:</td></tr><tr align='right'><td colspan='4'>Folio Req.</td></tr><tr align='right'> <td  colspan='4'>DEPARTAMENTO:</td></tr><tr align='right'><td  colspan='4'>SOLICITADO POR:</td></tr></table>";
-            header += "</td><td><table><tr align='center'><td style='border:solid;border-size:2';>PROYECTO</td></tr><tr align='center'><td style='border:solid;border-size:2;'><strong>" + $('#nombreProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + arrData.Excel.fechaSolicitud + "</strong></td></tr>";
-            header += "<tr><td  align='center'><strong>" + arrData.Excel.folioRequerimiento + "</strong></td></tr>";
-            header += "<tr><td  align='center'>" + arrData.Excel.departamentoP + "</td></tr>";
-            header += "<tr><td  align='center'>" + arrData.Excel.solicitado + "</td></tr></table></td></tr>";
 
-            tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Partida</strong></td><td rowspan='2'><strong>Cantidad</strong></td><td rowspan='2'><strong>Unidad</strong></td><td rowspan='2' colspan='1'><strong>DESCRIPCION</strong></td><td rowspan='2' colspan='1'><strong>Calidad<br>de Acero</strong></td><td rowspan='2'><strong>Ancho<br>(ft.)</strong></td><td rowspan='2'><strong>Long.<br>( ft.)</strong></td><td rowspan='2'><strong>Long.(m)<br>Area (m2)</strong></td><td rowspan='2'><strong>Kg/m<br>Kg/m2</strong></td><td rowspan='2'><strong>TOTAL<br>( Kg )</strong></td></tr></table>";
-            tcompleta = "<table border='2'><tr><td><table border='1'>";
-            tcompleta += tblDataRow;
-            tcompleta += "</table></td></tr><table><tr><td colspan='8'></td><td align='right'>TOTAL</td><td style='border:solid;border-size:2;'>" + total + "</td></tr></table></table>";
-            header += tabla + tcompleta;
+        header += "<tr>";
+        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td > <table> <tr > <td colspan='2'> </td> </tr>";
+        header += "<tr> <td colspan='2' align='center'><strong>REQUERIMIENTO</strong></td> </tr> ";
+        header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + arrData.Excel.claveEtapa + "</strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "<tr> <td colspan='2' align='center'><strong><i> " + arrData.Excel.nombreEtapa + "</i></strong> </td> </tr> <tr> <td colspan='2' align='center'style='color:red;'><strong>Rev." + arrData.Excel.revisionProyecto + "</strong></td></tr></table></td> ";
+        header += "<td> <table > <tr align='right'><td></td><td></td><td></td><td style='border:solid;border-size:2;' align='center'><strong>No.</strong></td></tr> <tr align='center'>  <td></td><td></td><td></td> <td style='border:solid;border-size:2;'><strong>" + arrData.Excel.idProyecto + "</strong></td> </tr><tr align='right'> <td  colspan='4'>FECHA:</td></tr><tr align='right'><td colspan='4'>Folio Req.</td></tr><tr align='right'> <td  colspan='4'>DEPARTAMENTO:</td></tr><tr align='right'><td  colspan='4'>SOLICITADO POR:</td></tr></table>";
+        header += "</td><td><table><tr align='center'><td style='border:solid;border-size:2';>PROYECTO</td></tr><tr align='center'><td style='border:solid;border-size:2;'><strong>" + $('#nombreProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + arrData.Excel.fechaSolicitud + "</strong></td></tr>";
+        header += "<tr><td  align='center'><strong>" + arrData.Excel.folioRequerimiento + "</strong></td></tr>";
+        header += "<tr><td  align='center'>" + arrData.Excel.departamentoP + "</td></tr>";
+        header += "<tr><td  align='center'>" + arrData.Excel.solicitado + "</td></tr></table></td></tr>";
 
-            var tmpElemento = document.createElement('a'),
-                data_type = 'data:application/vnd.ms-excel',
-                tabla_div = header;
+        tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Partida</strong></td><td rowspan='2'><strong>Cantidad</strong></td><td rowspan='2'><strong>Unidad</strong></td><td rowspan='2' colspan='1'><strong>DESCRIPCION</strong></td><td rowspan='2' colspan='1'><strong>Calidad<br>de Acero</strong></td><td rowspan='2'><strong>Ancho<br>(ft.)</strong></td><td rowspan='2'><strong>Long.<br>( ft.)</strong></td><td rowspan='2'><strong>Long.(m)<br>Area (m2)</strong></td><td rowspan='2'><strong>Kg/m<br>Kg/m2</strong></td><td rowspan='2'><strong>TOTAL<br>( Kg )</strong></td></tr></table>";
+        tcompleta = "<table border='2'><tr><td><table border='1'>";
+        tcompleta += tblDataRow;
+        tcompleta += "</table></td></tr><table><tr><td colspan='8'></td><td align='right'>TOTAL</td><td style='border:solid;border-size:2;'>" + total + "</td></tr></table></table>";
+        header += tabla + tcompleta;
 
-            tabla_html = tabla_div.replace(/ /g, '%20');
+        var tmpElemento = document.createElement('a'),
+            data_type = 'data:application/vnd.ms-excel',
+            tabla_div = header;
 
-            tmpElemento.href = data_type + ', ' + tabla_html;
-            //Asignamos el nombre a nuestro EXCEL
-            tmpElemento.download = 'RequerimientoGeneralMateriales.xls';
-            // Simulamos el click al elemento creado para descargarlo
-            tmpElemento.click();
+        tabla_html = tabla_div.replace(/ /g, '%20');
+
+        tmpElemento.href = data_type + ', ' + tabla_html;
+        //Asignamos el nombre a nuestro EXCEL
+        tmpElemento.download = 'RequerimientoGeneralMateriales.xls';
+        // Simulamos el click al elemento creado para descargarlo
+        tmpElemento.click();
     }
 };
 

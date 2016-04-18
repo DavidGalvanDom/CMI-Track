@@ -354,6 +354,12 @@ var SubMarcas = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             SubMarcas.activeForm = '#ActualizaSubMarcaForm';
+
+            if (SubMarcas.estatusRevision !== 1) {
+                $('.btn-ActualizarSubMarca').hide();
+            } else {
+                $('.btn-ActualizarSubMarca').show();
+            }
         });
     },
     Borrar: function (id) {

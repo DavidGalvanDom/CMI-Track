@@ -43,5 +43,6 @@ namespace CMI.Track.Web.Models
          [Display(Name = "estatusRevision")]
         public int estatusRevision { get; set; }
 
+         public string nomEstatusRevison { get; set; }
     }
 }

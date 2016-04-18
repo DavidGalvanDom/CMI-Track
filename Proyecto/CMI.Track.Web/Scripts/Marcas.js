@@ -322,6 +322,12 @@ var Marcas = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Marcas.activeForm = '#ActualizaMarcaForm';
+
+            if (Marcas.estatusRevision !== 1) {
+                $('.btn-ActualizarMarca').hide();
+            } else {
+                $('.btn-ActualizarMarca').show();
+            }
         });
     },
     Borrar: function (id) {

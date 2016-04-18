@@ -342,6 +342,12 @@ var PlanosDespiece = {
             PlanosDespiece.activeForm = '#ActualizaPlanosDespieceForm';
             PlanosDespiece.CargarColeccionTipoConstru();
             PlanosDespiece.EventoNombreArchivo();
+
+            if (PlanosDespiece.estatusRevision !== 1) {
+                $('.btn-ActualizarPlanosDespiece').hide();
+            } else {
+                $('.btn-ActualizarPlanosDespiece').show();
+            }
         });
     },
     Borrar: function (id) {
