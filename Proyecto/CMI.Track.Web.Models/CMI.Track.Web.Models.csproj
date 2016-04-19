@@ -81,6 +81,12 @@
     <Compile Include="Proyecto\Proyecto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proyecto\Revision.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionAvanceProyecto.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionCalidad.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionDiasProceso.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionEstatusProyecto.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionPorPersona.cs" />
+    <Compile Include="ReportesProduccion\ListaReporteProduccionSemanal.cs" />
     <Compile Include="Reporte\ListaReporte.cs" />
     <Compile Include="ReqManualCompra\ListaReqManualCompra.cs" />
     <Compile Include="ReqManualCompra\ReqManualCompra.cs" />

@@ -299,15 +299,15 @@ var Marcas = {
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Marcas/Nuevo"; // El url del controlador      
+        var url = contextPath + "Marcas/Nuevo"; // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-Marcas').html(data);
             $('#nuevo-Marcas').modal({
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            Marcas.activeForm = '#NuevaMarcaForm';            
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            Marcas.activeForm = '#NuevaMarcaForm';
         });
     },
     Editar: function (id) {
@@ -357,7 +357,7 @@ var Marcas = {
             }, 'show');
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            Marcas.activeForm = '#NuevaMarcaForm';           
+            Marcas.activeForm = '#NuevaMarcaForm';
         });
     },
     ValidaPermisos: function () {

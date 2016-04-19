@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "Reportes de Produccion";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Lista</small> Reportes de Produccion <span id="nombreTipoReporte">&nbsp;</span>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Proyecto</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+        </div>
+        <div class="col-sm-1">
+            <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Rev</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="tipoReporteRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Reporte</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <select class="form-control select2" id="tipoReporte" name="tipoReporte">
+                    <option value="">Seleccione un reporte de produccion...</option>
+                    <option value="Calidad">Calidad</option>
+                    <option value="ProduccionPersona">Produccion por Persona</option>
+                    <option value="ProduccionSemanal">Produccion Semanal</option>
+                    <option value="DiasProceso">Dias Proceso</option>
+                    <option value="EstatusProyecto">Estatus Proyecto</option>
+                    <option value="AvanceProyecto">Avance Proyecto</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class='input-group date' id='dtpFechaInicio'>
+                <input type="text" class="form-control" maxlength="10" placeholder="Fecha Inicio" id="txtFechaInicio" name="txtFechaInicio" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class='input-group date' id='dtpFechaFin'>
+                <input type="text" class="form-control" maxlength="10" placeholder="Fecha Fin" id="txtFechaFin" name="txtFechaFin" />
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-1">
+        </div>
+
+        <div class="col-sm-1">
+            <div class="col-sm-1 pull-right">
+                <button class="btn btn-primary" type="button" id="btnVerReporte" name="btnVerReporte">Ver Reporte</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-ReporteProduccion" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="col-lg-12" id="Imprimir" style="display:none;">
+    <div class="col-lg-12 text-right">
+        <button class="btn btn-outline btn-primary" type="button" id="btnImprimir" name="btnImprimir">Imprimir</button>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-General"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarGeneral">
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/ReportesProduccion.js"></script>
+}

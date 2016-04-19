@@ -119,7 +119,7 @@ var PlanosMontaje = {
             EtapaBuscar.idProyecto = $('#idProyectoSelect').val();
             EtapaBuscar.revisionProyecto = $('#RevisionPro').text();
             EtapaBuscar.parent = PlanosMontaje;
-            EtapaBuscar.Inicial();            
+            EtapaBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");

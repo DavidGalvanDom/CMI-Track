@@ -184,7 +184,7 @@ var Proyecto = {
             CMI.botonMensaje(false, btn, 'Nueva Revision');
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo generar la nueva revision.");
-        }).always(function () { CMI.botonMensaje(false, btn, 'Nueva Revision');  });
+        }).always(function () { CMI.botonMensaje(false, btn, 'Nueva Revision');});
     },
     AsignaCliente: function (idCliente, nombreClietne,
                              direccionEntrega, contactoCliente) {

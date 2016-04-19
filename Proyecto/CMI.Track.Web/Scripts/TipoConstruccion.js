@@ -12,7 +12,7 @@ var TipoConstruccion = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();       
+        this.ValidaPermisos();
     },
     Eventos: function () {
         var that = this;
@@ -23,7 +23,7 @@ var TipoConstruccion = {
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
-        });       
+        });
 
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
@@ -86,9 +86,9 @@ var TipoConstruccion = {
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "TipoConstruccion/Nuevo"; // El url del controlador      
+        var url = contextPath + "TipoConstruccion/Nuevo"; // El url del controlador
         $.get(url, function (data) {
-            $('#nuevo-tipoconstruccion').html(data);           
+            $('#nuevo-tipoconstruccion').html(data);
             $('#nuevo-tipoconstruccion').modal({
                 backdrop: 'static',
                 keyboard: true
@@ -153,10 +153,10 @@ var TipoConstruccion = {
     serializaTipoConstruccion: function (id,form) {
         return ({
             'NombreTipoConstruccion': $(form + ' #NombreTipoConstruccion').val().toUpperCase(),
-            'Estatus': $(form + ' #Estatus').val(),
+            'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
-        
+
     },
     CargaGrid: function () {
         $('#cargandoInfo').show();

@@ -874,6 +874,7 @@
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
+    <Content Include="Scripts\ReportesProduccion.js" />
     <Content Include="Scripts\ReqGralMaterial.js" />
     <Content Include="Scripts\ReqManualCompra.js" />
     <Content Include="Scripts\RequerimientosBuscar.js" />
@@ -1006,6 +1007,7 @@
     <Content Include="Views\Avance\Index.cshtml" />
     <Content Include="Views\Avance\_darAvance.cshtml" />
     <Content Include="Views\Avance\_darRegistroCalidad.cshtml" />
+    <Content Include="Views\ReportesProduccion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

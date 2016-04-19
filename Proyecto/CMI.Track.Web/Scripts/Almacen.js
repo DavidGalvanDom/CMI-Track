@@ -12,7 +12,7 @@ var Almacen = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();       
+        this.ValidaPermisos();
     },
     Eventos: function () {
         var that = this;
@@ -23,7 +23,7 @@ var Almacen = {
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
-        });       
+        });
 
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
@@ -81,7 +81,7 @@ var Almacen = {
         }
     },
     Nuevo: function () {
-        CMI.CierraMensajes();        
+        CMI.CierraMensajes();
         var url = contextPath + "Almacen/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
             $('#nuevo-Almacen').html(data);

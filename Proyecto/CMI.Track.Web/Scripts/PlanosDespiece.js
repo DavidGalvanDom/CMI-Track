@@ -158,7 +158,7 @@ var PlanosDespiece = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            PlanosMontajeBuscar.idEtapa = $('#idEtapaSelect').val();            
+            PlanosMontajeBuscar.idEtapa = $('#idEtapaSelect').val();
             PlanosMontajeBuscar.parent = PlanosDespiece;
             PlanosMontajeBuscar.Inicial();
             $(btn).removeAttr("disabled");

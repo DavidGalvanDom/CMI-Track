@@ -75,6 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoController.cs" />
     <Compile Include="ReporteController.cs" />
+    <Compile Include="ReportesProduccionController.cs" />
     <Compile Include="ReqGralMaterialController.cs" />
     <Compile Include="ReqManualCompraController.cs" />
     <Compile Include="RutaFabricacionController.cs" />
