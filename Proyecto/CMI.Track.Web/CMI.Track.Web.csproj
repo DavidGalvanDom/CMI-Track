@@ -135,7 +135,11 @@
     <Content Include="Content\images\CMI.TRACK.reportes.png" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\SiteLogon.css" />
+    <Content Include="Content\template\rpt_kardex.html" />
+    <Content Include="Content\template\rpt_materiales_proyecto.html" />
+    <Content Include="Content\template\rpt_movtos_materiales.html" />
     <Content Include="Content\template\rpt_OrdenProduccion.html" />
+    <Content Include="Content\template\rpt_requisicion_manual.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
