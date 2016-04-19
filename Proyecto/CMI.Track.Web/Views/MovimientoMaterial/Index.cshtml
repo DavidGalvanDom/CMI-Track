@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "MovimientosMaterial";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Lista</small> Movimientos Materiales
+            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+        </h1>        
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div id="rowDocumento">
+        <div class="col-sm-1"> <label class="control-label">Documento</label></div>
+        <div class="col-sm-3">
+            <select id="idDoc" name="idDoc" class="form-control" required="required"></select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+         <div id="bbGrid-clear" class="col-lg-12">
+             <div id="cargandoInfo">Cargando informacion...</div>  
+         </div>                   
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="col-lg-12" id="Imprimir" style="display:none;">
+        <div class="col-lg-12">
+            <button class="btn btn-outline btn-primary pull-right " type="button" id="btnImprimir" name="btnImprimir">Imprimir</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-movimientomaterial"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoMovimientoMaterialLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="actualiza-movimientomaterial"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoMovimientoMaterialLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-Material"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarMaterial">
+</div>
+
+
+@section Scripts {
+    <script src="~/Scripts/MovimientoMaterial.js"></script>
+}
+

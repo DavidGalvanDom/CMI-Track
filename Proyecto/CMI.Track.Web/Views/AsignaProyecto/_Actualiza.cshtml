@@ -1,0 +1,35 @@
+﻿@model CMI.Track.Web.Models.AsignaProyecto
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Entrega Material</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Actualizar", "MaterialProyecto", FormMethod.Post, new { id = "ActualizarMaterialProyectoForm", name = "ActualizarMaterialProyectoForm", @class = "form-horizontal" }))
+            {
+                <div class="form-group">
+
+                    <div class="col-sm-5">
+                        <span>Cantidad Entregada</span>
+                        @Html.TextBoxFor(model => model.cantEntrega, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                </div>
+
+                <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
+                @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.idAlmacen)
+                @Html.HiddenFor(model => model.idMaterialSelect)
+                @Html.HiddenFor(model => model.idEtapa)
+                @Html.HiddenFor(model => model.idProyecto)
+                @Html.HiddenFor(model => model.id)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarCantidadEntrega">Actualizar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

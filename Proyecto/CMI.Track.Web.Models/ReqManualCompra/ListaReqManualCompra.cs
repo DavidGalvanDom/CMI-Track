@@ -64,5 +64,42 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "NombreOrigen")]
         public string NombreOrigen { get; set; }
+
+        [Display(Name = "Serie")]
+        public string Serie { get; set; }
+
+
+        [Display(Name = "Factura")]
+        public string Factura { get; set; }
+
+
+        [Display(Name = "Proveedor")]
+        public string Proveedor { get; set; }
+
+
+        [Display(Name = "Fecha Factura")]
+        public string FechaFac { get; set; }
+
+        [Display(Name = "idProyecto", AutoGenerateField = false)]
+        public int idProyecto { get; set; }
+
+        [Display(Name = "Nombre Proyecto")]
+        public string NombreProyecto { get; set; }
+
+        [Display(Name = "idEtapa", AutoGenerateField = false)]
+        public int idEtapa { get; set; }
+
+        [Display(Name = "Nombre Etapa")]
+        public string NombreEtapa { get; set; }
+
+        [Display(Name = "Folio Requerimiento")]
+        public string FolioRequerimiento { get; set; }
+
+        [Display(Name = "Nombre Departamento")]
+        public string NombreDepto { get; set; }
+
+        [Display(Name = "Nombre Usuario")]
+        public string NomnreUsuario { get; set; }
+        public int usuarioCreacion { get; set; }
     }
 }

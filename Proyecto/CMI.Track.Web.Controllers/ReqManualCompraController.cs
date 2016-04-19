@@ -67,7 +67,7 @@ namespace CMI.Track.Web.Controllers
         {
             try
             {
-                var lstRequisiciones = ReqManulCompraData.CargaRequisiconesGeneral(idEtapa, idProyecto, idRequerimiento, null);
+                var lstRequisiciones = ReqManulCompraData.CargaRequisicionesGeneral(idEtapa, idProyecto, idRequerimiento, null);
 
                 return (Json(lstRequisiciones, JsonRequestBehavior.AllowGet));
             }
@@ -175,6 +175,44 @@ namespace CMI.Track.Web.Controllers
         public ActionResult BuscarRequisiciones()
         {
             return PartialView("_buscarRequisicion");
+        }
+
+        /// <summary>
+        /// Carga la coleccion de infor REquerimiento
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaInfoRequerimiento(int idProyecto, int idEtapa, int idRequerimiento)
+        {
+            try
+            {
+                var lstlistaRptRequerimientos = ReqManulCompraData.CargaInfoRequerimiento(idProyecto, idEtapa, idRequerimiento);
+
+                return (Json(lstlistaRptRequerimientos, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Carga la coleccion de infor Requisicion
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaInfoRequisicion(int idProyecto, int idEtapa, int idRequerimiento)
+        {
+            try
+            {
+                var lstlistaRptRequisicion = ReqManulCompraData.CargaInfoRequisicion(idProyecto, idEtapa, idRequerimiento);
+
+                return (Json(lstlistaRptRequisicion, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
   

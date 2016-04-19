@@ -1,0 +1,183 @@
+﻿@model CMI.Track.Web.Models.RecepcionRequisicion
+@{
+    ViewBag.Title = "Recepción de Requisición de Compra";
+}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Recepción</small> Requisición de Compra
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+    <div id="alerta" class="alert alert-success" style="display:none;"></div>
+<div id="myCollapsible" class="collapse in">
+
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Proyecto</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+            <div class="col-sm-1">
+                <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Rev</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
+            </div>
+           
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="etapaRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Etapa</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="nombreEtapa" name="nombreEtapa" class="form-control" placeholder="Nombre Etapa" title="Nombre Etapa"> Nombre Etapa </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarEtapa" name="btnBuscarEtapa"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idEtapaSelect" name="idEtapaSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaInicioEtapa" placeholder="Fecha Inicio Etapa" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaFinEtapa" placeholder="Fecha Fin Etapa" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="requerimientoRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Req.</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="folioRequerimiento" name="folioRequerimiento" class="form-control" placeholder="Folio Requerimiento" title="Folio Requermiento"> Folio Requermiento </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarReq" name="btnBuscarReq"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idRequerimientoSelect" name="idRequerimientoSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="fechaSolicitud" placeholder="Fecha Solicitud" class="form-control" title="Fecha Fin">Fecha Solicitud</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="requisicionRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Requisición</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="idRequisicion" name="idRequisicion" class="form-control" placeholder="Requisicion" title="Requisicion"> Requisicion </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarRequisicion" name="btnBuscarRequisicion"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12" id="DatosFactura" style="display:none;">
+        <div class="col-sm-1"> <label class="control-label">Factura</label></div>
+        <div class="col-sm-2">
+            <input type="text" id="SerieFac" placeholder="Serie" class="form-control" title="SerieFac">
+        </div>
+        <div class="col-sm-2">
+            <input type="text" id="FacturaReq" placeholder="Factura" class="form-control" title="FacturaReq">
+        </div>
+        <div class="col-sm-2">
+            <input type="text" id="ProveedorFac" placeholder="Proveedor" class="form-control" title="ProveedorFac">
+        </div>
+        <div class="col-sm-3">
+                <div class='input-group date' id='dtpFechaFactura'>
+                    <input type="text" id="FechaFactura" placeholder="Fecha Factura" class="form-control" title="FechaFactura">
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br />
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div id="bbGrid-DetalleRequisicionCompras" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+    </div>
+    </div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-General"
+        tabindex="-1" role="dialog"
+        aria-labelledby="buscarGeneral">
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-ReqManualCompra"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoReqManualCompraLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="asigna-recibido"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarMaterial">
+</div>
+
+@Html.HiddenFor(model => model.usuarioCreacion)
+ 
+@section Scripts {
+    <script src="~/Scripts/RecepcionRequisicion.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+    </script>
+}
+
+
+
+

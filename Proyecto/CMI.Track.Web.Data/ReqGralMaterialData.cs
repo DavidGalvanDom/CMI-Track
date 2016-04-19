@@ -86,16 +86,16 @@ namespace CMI.Track.Web.Data
                     {
                         listaReqGralMateriales.Add(new Models.ListaReqGralMaterial()
                         {
-                            id = Convert.ToInt32(dataReader["idSubMarca"]),
-                            perfilSubMarca = Convert.ToString(dataReader["perfilSubMarca"]),
-                            piezasSubMarca = Convert.ToInt32(dataReader["piezasSubMarca"]),
-                            corteSubMarca = Convert.ToInt32(dataReader["corteSubMarca"]),
-                            longitudSubMarca = Convert.ToInt32(dataReader["longitudSubMarca"]),
-                            anchoSubMarca = Convert.ToInt32(dataReader["anchoSubMarca"]),
-                            gradoSubMarca = Convert.ToString(dataReader["gradoSubMarca"]),
-                            kgmSubMarca = Convert.ToInt32(dataReader["kgmSubMarca"]),
-                            totalLASubMarca = Convert.ToInt32(dataReader["totalLASubMarca"]),
-                            pesoSubMarca = Convert.ToInt32(dataReader["pesoSubMarca"]),
+                            id = Convert.ToInt32(dataReader["numeroRenglon"]),
+                            perfilSubMarca = Convert.ToString(dataReader["perfilDetalleReq"]),
+                            piezasSubMarca = Convert.ToInt32(dataReader["piezasDetalleReq"]),
+                            corteSubMarca = Convert.ToInt32(dataReader["cortesDetalleReq"]),
+                            longitudSubMarca = Convert.ToInt32(dataReader["logitudDetalleReq"]),
+                            anchoSubMarca = Convert.ToInt32(dataReader["anchoDetalleReq"]),
+                            gradoSubMarca = Convert.ToString(dataReader["gradoDetalleReq"]),
+                            kgmSubMarca = Convert.ToInt32(dataReader["kgmDetalleReq"]),
+                            totalLASubMarca = Convert.ToInt32(dataReader["totalLADetalleReq"]),
+                            pesoSubMarca = Convert.ToInt32(dataReader["pesoDetalleReq"]),
                         });
                     }
                 }

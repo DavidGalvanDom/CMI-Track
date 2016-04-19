@@ -141,6 +141,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\Almacen.js" />
+    <Content Include="Scripts\AsignaProyecto.js" />
     <Content Include="Scripts\AutorizaReqManualCompra.js" />
     <Content Include="Scripts\Avance.js" />
     <Content Include="Scripts\CalidadProceso.js" />
@@ -156,6 +157,7 @@
     </Content>
     <Content Include="Scripts\Grupo.js" />
     <Content Include="Scripts\ImpresionCodigoBarra.js" />
+    <Content Include="Scripts\Kardex.js" />
     <Content Include="Scripts\lib\backbone\backbone-min.js" />
     <Content Include="Scripts\lib\backbone\backbone.js" />
     <Content Include="Scripts\lib\bbGrid.js" />
@@ -865,6 +867,7 @@
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\MaterialesBuscar.js" />
+    <Content Include="Scripts\MovimientoMaterial.js" />
     <Content Include="Scripts\OrdenProduccion.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
     <Content Include="Scripts\PlanosDespiece.js" />
@@ -874,6 +877,7 @@
     <Content Include="Scripts\Proceso.js" />
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
+    <Content Include="Scripts\RecepcionRequisicion.js" />
     <Content Include="Scripts\ReportesProduccion.js" />
     <Content Include="Scripts\ReqGralMaterial.js" />
     <Content Include="Scripts\ReqManualCompra.js" />
@@ -1008,6 +1012,18 @@
     <Content Include="Views\Avance\_darAvance.cshtml" />
     <Content Include="Views\Avance\_darRegistroCalidad.cshtml" />
     <Content Include="Views\ReportesProduccion\Index.cshtml" />
+    <Content Include="Views\AsignaProyecto\Index.cshtml" />
+    <Content Include="Views\AsignaProyecto\_Actualiza.cshtml" />
+    <Content Include="Views\AsignaProyecto\_NuevoM.cshtml" />
+    <Content Include="Views\AsignaProyecto\_NuevoMM.cshtml" />
+    <Content Include="Views\AsignaProyecto\_NuevoR.cshtml" />
+    <Content Include="Views\AsignaProyecto\_Opcion.cshtml" />
+    <Content Include="Views\Kardex\Index.cshtml" />
+    <Content Include="Views\MovimientoMaterial\Index.cshtml" />
+    <Content Include="Views\MovimientoMaterial\_Actualiza.cshtml" />
+    <Content Include="Views\MovimientoMaterial\_Nuevo.cshtml" />
+    <Content Include="Views\RecepcionRequisicion\Index.cshtml" />
+    <Content Include="Views\RecepcionRequisicion\_Actualiza.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,27 @@
+﻿@model CMI.Track.Web.Models.AsignaProyecto
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Elige una opción para asignar materiales</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Opcion", "OpcionAsigna", FormMethod.Post, new { id = "OpcionAsignaForm", name = "OpcionAsignaForm", @class = "form-horizontal" }))
+            {
+
+                    <div align="center">
+                        <button type="button" class="btn btn-primary btn-pRequisicion" data-dismiss="modal"><span class="glyphicon glyphicon-list-alt"></span>  Requisición</button>
+
+                        <button type="button" class="btn btn-primary btn-pMaterial" data-dismiss="modal"><span class="glyphicon glyphicon-check"></span>  Material</button>
+                    </div>
+
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <!--<button type="button" class="btn btn-primary btn-ActualizarCantidadEntrega">Actualizar</button>-->
+        </div>
+    </div><!-- /.modal-content -->
+</div>

@@ -154,88 +154,14 @@ namespace CMI.Track.Web.Data
             return lstReqManualCompra;
         }
 
-        /// <summary>
-        /// Se carga el listado de categorias
-        /// </summary>
-        /// <returns>Lista categorias</returns>
-        public static List<Models.ListaCategoria> CargaCategoriasActivas()
-        {
-            var listaCategorias = new List<Models.ListaCategoria>();
-            object[] paramArray = new object[2];
-            try
-            {
-                paramArray[0] = null;
-                paramArray[1] = 1;
-
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarCategorias", paramArray))
-                {
-                    while (dataReader.Read())
-                    {
-                        listaCategorias.Add(new Models.ListaCategoria()
-                        {
-                            id = Convert.ToInt32(dataReader["idCategoria"]),
-                            NombreCategoria = Convert.ToString(dataReader["nombreCategoria"]),
-                            Estatus = Convert.ToString(dataReader["nombreEstatus"]),
-
-                        });
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-
-            return listaCategorias;
-        }
-
-
-        /// <summary>
-        /// Se carga el listado de categorias
-        /// </summary>
-        /// <returns>Lista Categorias</returns>
-        public static Models.Categoria CargaCategoria(string idCategoria)
-        {
-            object[] paramArray = new object[2];
-            try
-            {
-                paramArray[0] = idCategoria == "" ? null : idCategoria;
-                paramArray[1] = null;
-                            
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarCategorias", paramArray))
-                {
-                    while (dataReader.Read())
-                    {
-                        var objCategoria = new Models.Categoria()
-                        {
-                            id = Convert.ToInt32(dataReader["idCategoria"]),
-                            NombreCategoria = Convert.ToString(dataReader["nombreCategoria"]),
-                            Estatus = Convert.ToString(dataReader["nombreEstatus"]),                           
-                        };
-
-                        return objCategoria;
-                    }
-                }
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-
-            return null;
-
-        }
+ 
         /// <summary>
         /// Se carga el listado de requisiciones
         /// </summary>
         /// <param name="idEtapa"></param>
         /// <param name="idEstatus"></param>
         /// <returns>Lista de Etapas</returns>
-        public static List<Models.ListaReqManualCompra> CargaRequisiconesGeneral(int idEtapa, int idProyecto, int idRequerimiento, int? idEstatus)
+        public static List<Models.ListaReqManualCompra> CargaRequisicionesGeneral(int idEtapa, int idProyecto, int idRequerimiento, int? idEstatus)
         {
             var listaRequisiciones = new List<Models.ListaReqManualCompra>();
             object[] paramArray = new object[4];
@@ -258,6 +184,10 @@ namespace CMI.Track.Web.Data
                             NombreOrigen = Convert.ToString(dataReader["nombreOrigenRequisicion"]),
                             Causa = Convert.ToString(dataReader["causaRequisicion"]),
                             Estatus = Convert.ToString(dataReader["Estatus"]),
+                            Serie = Convert.ToString(dataReader["serieRequisicion"]),
+                            Factura = Convert.ToString(dataReader["facturaRequisicion"]),
+                            Proveedor = Convert.ToString(dataReader["proveedorRequisicion"]),
+                            FechaFac = Convert.ToString(dataReader["fechaFacturaRequisicion"]),
                         });
                     }
                 }
@@ -286,7 +216,7 @@ namespace CMI.Track.Web.Data
                 paramArray[4] = pobjModelo.usuarioCreacion;
                 paramArray[5] = pobjModelo.idMaterialSelect;
                 paramArray[6] = pobjModelo.Cantidad;
-                paramArray[7] = pobjModelo.Causa.ToUpper();
+                paramArray[7] = pobjModelo.Causa;
                 paramArray[8] = pobjModelo.Unidad;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
@@ -375,6 +305,88 @@ namespace CMI.Track.Web.Data
             {
                 throw new ApplicationException(exp.Message, exp);
             }
+        }
+
+        /// <summary>
+        /// Se carga el reporte de requerimiento
+        /// </summary>
+        /// <returns>Lista Requerimiento</returns>
+        public static List<Models.ListaReqManualCompra> CargaInfoRequerimiento(int idProyecto, int idEtapa, int idRequerimiento)
+        {
+            var listaRptRequerimiento = new List<Models.ListaReqManualCompra>();
+            object[] paramArray = new object[3];
+            try
+            {
+                paramArray[0] = idProyecto;
+                paramArray[1] = idEtapa;
+                paramArray[2] = idRequerimiento;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarRptRequerimiento", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        listaRptRequerimiento.Add(new Models.ListaReqManualCompra()
+                        {
+                            idProyecto = Convert.ToInt32(dataReader["idProyecto"]),
+                            NombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
+                            idEtapa = Convert.ToInt32(dataReader["idEtapa"]),
+                            NombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),
+                            FolioRequerimiento = Convert.ToString(dataReader["folioRequerimiento"]),
+                            NombreDepto = Convert.ToString(dataReader["nombreDepartamento"]),
+                            NomnreUsuario = Convert.ToString(dataReader["nombreUsuario"]),
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return listaRptRequerimiento;
+        }
+
+        /// <summary>
+        /// Se carga el reporte de requisiciones
+        /// </summary>
+        /// <returns>Lista Requerimiento</returns>
+        public static List<Models.ListaReqManualCompra> CargaInfoRequisicion(int idProyecto, int idEtapa, int idRequerimiento)
+        {
+            var listaRptRequerimiento = new List<Models.ListaReqManualCompra>();
+            object[] paramArray = new object[3];
+            try
+            {
+                paramArray[0] = idProyecto;
+                paramArray[1] = idEtapa;
+                paramArray[2] = idRequerimiento;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarRptRequisicion", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        listaRptRequerimiento.Add(new Models.ListaReqManualCompra()
+                        {
+                            idProyecto = Convert.ToInt32(dataReader["idProyecto"]),
+                            NombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
+                            idEtapa = Convert.ToInt32(dataReader["idEtapa"]),
+                            NombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),
+                            FolioRequerimiento = Convert.ToString(dataReader["folioRequisicion"]),
+                            NombreDepto = Convert.ToString(dataReader["nombreDepartamento"]),
+                            NomnreUsuario = Convert.ToString(dataReader["nombreUsuario"]),
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return listaRptRequerimiento;
         }
 
        

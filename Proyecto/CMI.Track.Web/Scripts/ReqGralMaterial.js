@@ -19,38 +19,29 @@ var Requerimiento = {
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarReq").click(that.onBuscarRequerimiento);
-        $("#btnImprimir").click(that.onImprimir3);
+        $("#btnImprimir").click(that.onImprimir);
         
         $('#etapaRow').hide();
         $('#requerimientoRow').hide();
         $('#Imprimir').hide();
-        $('#FechaFinEt').hide();
-        $('#FechaInicioEt').hide();
-        $('#NombreEt').hide();
-        $('#FolioRequerimiento').hide();
-        $('#FechaSolicitud').hide();
-        $('#NombreProyecto').hide();
-        $('#revisionPro').hide();
-        $('#codigoProyecto').hide();
-        $('#fechaInicio').hide();
-        $('#fechaFin').hide();
         $('#btnCollapse').hide();
     },
-    onImprimir3: function () {
+    onImprimir: function () {
         var tableData;
         var tablaheader;
         var tabla;
         var tcompleta;
         var total = 0;
         var f = new Date();
+        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var header = "<table border='2'>";
         var f = new Date();
-        var urlHeader = contextPath + "Reporte/CargaInfoRequerimiento?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+        var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequerimiento?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
         $.getJSON(urlHeader, function (data) {
             tablaheader = data;
             for (j = 0; j < tablaheader.length; j++) {
                 header += "<tr>";
-                header += "<td colspan='3'><img src=" + routeUrlImages + "'//Content/images/CMI.TRACK.reportes.png' /></td>"
+                header += "<td colspan='3'><img src="+ urlImagen + " /></td>"
                 header += "<td > <table> <tr > <td colspan='2'> </td> </tr>";
                 header += "<tr> <td colspan='2' align='center'><strong>REQUERIMIENTO</strong></td> </tr> ";
                 header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + tablaheader[j]['idEtapa'] + "</strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
@@ -101,22 +92,6 @@ var Requerimiento = {
         });
         });
     
-    },
-    onImprimir: function () {
-        //alert("Hola Mundo");
-        //Creamos un Elemento Temporal en forma de enlace
-       var tmpElemento = document.createElement('a');
-        // obtenemos la información desde el div que lo contiene en el html
-        // Obtenemos la información de la tabla
-        var data_type = 'data:application/vnd.ms-excel';
-        var tabla_div = document.getElementsByClassName('bbGrid-grid');
-        alert(tabla_div[0]);
-        var tabla_html = tabla_div[0].outerHTML.replace(/ /g, '%20');
-        tmpElemento.href = data_type + ', ' + tabla_html;
-        //Asignamos el nombre a nuestro EXCEL
-        tmpElemento.download = 'Requerimiento_General.xls';
-       // Simulamos el click al elemento creado para descargarlo
-        tmpElemento.click();
     },
     onBuscarProyecto: function () {
         var btn = this;

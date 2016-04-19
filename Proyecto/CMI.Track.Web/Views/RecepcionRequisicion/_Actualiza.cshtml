@@ -1,0 +1,46 @@
+﻿@model CMI.Track.Web.Models.RecepcionRequisicion
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Asignar cantidad recibida</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Actualizar", "RecepcionRequisicion", FormMethod.Post, new { id = "ActualizarRecepcionRequisicionForm", name = "ActualizarRecepcionRequisicionForm", @class = "form-horizontal" }))
+            {
+                <div class="form-group">
+
+                    <div class="col-sm-5">
+                        <span>Cantidad Recibida</span>
+                        @Html.TextBoxFor(model => model.cantidadRecibida, new { @class = "form-control", maxlength = 20 })
+                    </div>
+                </div>
+
+                <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
+                @Html.HiddenFor(model => model.idItem)
+                @Html.HiddenFor(model => model.idMaterialR)
+                @Html.HiddenFor(model => model.nombreMat)
+                @Html.HiddenFor(model => model.Ancho)
+                @Html.HiddenFor(model => model.Largo)
+                @Html.HiddenFor(model => model.Peso)
+                @Html.HiddenFor(model => model.Calidad)
+                @Html.HiddenFor(model => model.cantidadSol)
+                @Html.HiddenFor(model => model.cantidadRec)
+                @Html.HiddenFor(model => model.Existencia)
+                @Html.HiddenFor(model => model.Serie)
+                @Html.HiddenFor(model => model.Factura)
+                @Html.HiddenFor(model => model.Proveedor)
+                @Html.HiddenFor(model => model.FechaFac)
+                @Html.HiddenFor(model => model.idRequisicionF)
+                @Html.HiddenFor(model => model.idRequerimiento)
+                @Html.HiddenFor(model => model.usuarioCreacion)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarCantidadRecibida">Actualizar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>

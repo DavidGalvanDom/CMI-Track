@@ -16,7 +16,11 @@ var RequisicionesBuscar = {
         RequisicionesBuscar.parent.AsignaRequisicion(rowSelected.attributes.id,
                                             rowSelected.attributes.NombreOrigen,
                                             rowSelected.attributes.Causa,
-                                            rowSelected.attributes.Estatus);
+                                            rowSelected.attributes.Estatus,
+                                            rowSelected.attributes.Serie,
+                                            rowSelected.attributes.Factura,
+                                            rowSelected.attributes.Proveedor,
+                                            rowSelected.attributes.FechaFac);
     },
     CargaGrid: function () {
         $('#cargandoInfoBE').show();
@@ -36,7 +40,7 @@ var RequisicionesBuscar = {
                     collection: RequisicionesBuscar.colRequisicion,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Origen', name: 'NombreOrigen', filter: true, filterType: 'input' },
-                               { title: 'Causa', name: 'Causa', filter: true, filterType: 'input' },
+                               { title: 'Causa', name: 'Causa', filter: true, filterType: 'input'},
                                { title: 'Estatus', name: 'Estatus', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
                         RequisicionesBuscar.onSeleccionar(this.selectedRows[0]);

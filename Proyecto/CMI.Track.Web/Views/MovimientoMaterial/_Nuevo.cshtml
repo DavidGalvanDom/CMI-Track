@@ -1,0 +1,77 @@
+﻿@model CMI.Track.Web.Models.MovimientoMaterial
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">@ViewBag.Titulo   Movimientos Materiales</h4>
+        </div>
+        <div class="modal-body">
+            <div class="clientAlertDlg"></div>
+            @using (Html.BeginForm("Nuevo", "Movimiento", FormMethod.Post, new { id = "NuevoMovtoMForm", name = "NuevoMovtoMForm", @class = "form-horizontal" }))
+            {
+
+                <div class="form-group" id="doc">
+        
+                    <div class="col-sm-3"> <label class="control-label">Documento</label></div>
+                    <div class="col-sm-3">
+                        @Html.TextBoxFor(model => model.idDocumento, new { @class = "form-control", maxlength = 100 })
+                    </div>
+   
+                    <div class="col-sm-3"> <label class="control-label">Tipo Movto</label></div>
+                    <div class="col-sm-3">
+                        <select id="TipoMovto" name="TipoMovto" class="form-control" required="required"></select>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-3"> <label class="control-label">Almacen</label></div>
+                    <div class="col-sm-3">
+                        <select id="idAlmacen" name="idAlmacen" class="form-control" required="required"></select>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="col-sm-3"> <label class="control-label">Material</label></div>
+                        <span id="idMaterial" style="display:none;">Id</span>
+                        <div class="input-group">
+                            <input type="text" id="idMaterialSelect" name="idMaterialSelect" class="form-control" placeholder="Id" title="Id" disabled>
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat"><span class="fa fa-search"></span></button>
+                            </span>
+                        </div>
+                        @Html.HiddenFor(model => model.idMaterialM)
+
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="col-sm-3"> <label class="control-label">Cantidad</label></div>
+                    <div class="col-sm-3">
+                       @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary btn-AgregarMaterial">Agregar</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br />
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div id="bbGrid-MovtoMateriales" class="col-lg-12">
+                            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+                        </div>
+                    </div>
+                    </div>
+
+                @Html.HiddenFor(model => model.usuarioCreacion)
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-GuardaNuevo">Cerrar</button>
+        </div>
+    </div><!-- /.modal-content -->
+</div>
+
+
+

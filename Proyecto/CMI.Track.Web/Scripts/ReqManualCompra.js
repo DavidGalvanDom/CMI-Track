@@ -17,6 +17,7 @@ var ReqMCompra = {
         $.ajaxSetup({ cache: false });
         this.Eventos();
         this.ValidaPermisos();
+        
     },
     Eventos: function () {
         var that = this;
@@ -27,18 +28,9 @@ var ReqMCompra = {
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
         $(document).on("click", '.btn-ActualizarMaterialRequi', that.onActualizar);
+        $("#Origen").change(that.onCambiaOrigen);
         
         $('#etapaRow').hide();
-        $('#FechaFinEt').hide();
-        $('#FechaInicioEt').hide();
-        $('#NombreEt').hide();
-        $('#FolioRequerimiento').hide();
-        $('#FechaSolicitud').hide();
-        $('#NombreProyecto').hide();
-        $('#revisionPro').hide();
-        $('#codigoProyecto').hide();
-        $('#fechaInicio').hide();
-        $('#fechaFin').hide();
         $('#btnCollapse').hide();
         $('#Imprimir').hide();
         $('#OrigenDiv').hide();
@@ -57,38 +49,44 @@ var ReqMCompra = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
+    onCambiaOrigen: function () {
+
+        if ($('#Origen').val() == 3) {
+            $('#CausaDiv').show();
+        }
+        else {
+            $('#CausaDiv').hide();
+        }
+    },
     onImprimir: function () {
+        var templateURL = contextPath + "Content/template/rpt_requisicion_manual.html";
+        var rptTemplate = '';
+        var tabla_html;
+        var tablatmp = '';
         var tableData;
         var tablaheader;
-        var tabla;
-        var tfirma;
         var total = 0;
         var f = new Date();
-        var tcompleta
-        var header = "<table  border='2'>";
+        var tcompleta = ''
+        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var f = new Date();
-        var urlHeader = contextPath + "Reporte/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+        $.get(templateURL, function (data) { rptTemplate = data; });
+        var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
         $.getJSON(urlHeader, function (data) {
             tablaheader = data;
             for (j = 0; j < tablaheader.length; j++) {
-                header += "<tr>";
-                header += "<td colspan='3'><img src='http://localhost:13410//Content/images/CMI.TRACK.reportes.png' /></td>"
-                header += "<td > <table > <tr > <td colspan='2'> </td> </tr>";
-                header += "<tr> <td colspan='2' align='center'><strong>REQUISICION  DE  COMPRA</strong></td> </tr> ";
-                header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + tablaheader[j]['idEtapa'] + "</strong> </td> </tr><tr> <td colspan='2'> </td></tr> ";
-                header += "<tr> <td colspan='2' align='center'><strong><i> " + tablaheader[j]['NombreEtapa'] + "</i></strong> </td> </tr> <tr> <td colspan='2' align='center' style='color:red;'>95% <strong>Rev.A</strong></td> </tr></table></td> ";
-                header += "<td> <table> <tr align='right'><td></td><td></td><td></td><td style='border:solid;border-size:2;' align='center'><strong>No.</strong></td></tr> <tr align='center'> <td></td><td></td><td></td> <td style='border:solid;border-size:2;'><strong>" + tablaheader[j]['id'] + "</strong></td> </tr><tr align='right'> <td  colspan='4'><strong>Folio Requisicion</strong></td></tr><tr align='right'><td colspan='4'>FECHA:</td></tr><tr align='right'> <td  colspan='4'>DEPARTAMENTO:</td></tr><tr align='right'><td  colspan='4'>SOLICITADO POR:</td></tr></table>";
-                header += "</td><td><table ><tr align='center'><td style='border:solid;border-size:2;'>PROYECTO</td></tr><tr align='center'><td style='border:solid;border-size:2;'><strong>" + tablaheader[j]['NombreProyecto'] + "</strong></td></tr><tr align='center'><td><strong>" + tablaheader[j]['FolioRequerimiento'] + "</strong></td></tr>";
-                header += "<tr><td  align='center'> <strong>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</strong> </td></tr>";
-                header += "<tr><td  align='center' style='border:solid;'>" + tablaheader[j]['NombreDepto'] + "</td></tr>"
-                header += "<tr><td  align='center' style='border:solid;'> " + tablaheader[j]['NomnreUsuario'] + "</td></tr></table></td></tr>";
+                rptTemplate = rptTemplate.replace('vrEtapa', 'ETAPA #'+ tablaheader[j]['idEtapa']);
+                rptTemplate = rptTemplate.replace('vrDesEtapa', tablaheader[j]['NombreEtapa']);
+                rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
+                rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
+                rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
+                rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
+                rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
             }
-
+       
             var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 tableData = data;
-                tabla = "<table  border='2' ><tr align='center'><td rowspan='2'><strong>Partida</strong></td><td rowspan='2'><strong>Cantidad</strong></td><td rowspan='2'><strong>Unidad</strong></td><td rowspan='2' colspan='1'><strong>DESCRIPCION</strong></td><td rowspan='2' colspan='1'><strong>Calidad<br>de Acero</strong></td><td rowspan='2'><strong>Ancho<br>(ft.)</strong></td><td rowspan='2'><strong>Long.<br>( ft.)</strong></td><td rowspan='2'><strong>Long.(m)<br>Area (m2)</strong></td><td rowspan='2'><strong>Kg/m<br>Kg/m2</strong></td><td rowspan='2'><strong>TOTAL<br>( Kg )</strong></td></tr></table>";
-                tcompleta = "<table border='2'><tr><td><table border='1'>";
                 for (i = 0; i < tableData.length; i++) {
                     tcompleta += "<tr>";
                     tcompleta += "<td></td>";
@@ -103,24 +101,15 @@ var ReqMCompra = {
                     tcompleta += "<td>" + tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso'] + "</td>";
                     tcompleta += "</tr>";
                     total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
+                  
                 }
-
-                tfirma = "<table border='2'><tr><td><table><tr><td colspan='8'></td><td align='right'>TOTAL</td><td style='border:solid;border-size:2;'>" + total + "</td></tr><tr><td colspan='2'>OBSERVACIONES:</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>";
-                tfirma += "<tr><td colspan='10'></td></tr>";
-                tfirma += "<tr><td colspan='10'></td></tr>";
-                tfirma += "<tr><td colspan='3' align='center'>ELABORADO POR:</td><td colspan='5' align='center'>APROBADO POR:</td><td align='right'>RECIBI:</td><td>_______________</td></tr>";
-                tfirma += "<tr><td colspan='10'></td></tr>";
-                tfirma += "<tr><td colspan='3' align='center'>_____________________</td><td colspan='5' align='center'>_______________________</td><td align='right'>FECHA</td><td>_______________</td></tr>";
-                tfirma += "<tr><td colspan='10'></td></tr>";
-                tfirma += "</tr></table></td></tr></table>";
-
-                tcompleta += "</table></td></tr></table>";
-                header += tabla + tcompleta + tfirma;
+                
+                rptTemplate = rptTemplate.replace('vrTotal', total);
+                rptTemplate = rptTemplate.replace('vrImagen', urlImagen);
+                tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
-                var tabla_div = header;
-               // alert(tabla_div);
-                var tabla_html = tabla_div.replace(/ /g, '%20');
+               tabla_html = tablatmp.replace(/ /g, '%20');
                 tmpElemento.href = data_type + ', ' + tabla_html;
                 //Asignamos el nombre a nuestro EXCEL
                 tmpElemento.download = 'Requisicion.xls';
@@ -132,6 +121,7 @@ var ReqMCompra = {
                 CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
             });
         });
+
 
     },
     onGuardar: function () {
@@ -328,7 +318,7 @@ var ReqMCompra = {
         ReqMCompra.CargarColeccionOrigenReq();
         $('#Imprimir').show();
         $('#OrigenDiv').show();
-        $('#CausaDiv').show();
+        //$('#CausaDiv').show();
        // $('#Imprimir').show();
         ///Muestra el boton de nueva ReqMatGral
         if (ReqMCompra.accEscritura === true)
@@ -448,19 +438,44 @@ var ReqMCompra = {
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "ReqManualCompra/Nuevo"; // El url del controlador      
-        $.get(url, function (data) {
-            $('#nuevo-ReqManualCompra').html(data);
-            $('#nuevo-ReqManualCompra').modal({
-                backdrop: 'static',
-                keyboard: true
-            }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
-            $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
-            ReqMCompra.CargarColeccionUnidadMedida();
-            ReqMCompra.CargarColeccionAlmacen();
-        });
+        var url = contextPath + "ReqManualCompra/Nuevo"; // El url del controlador   
+        if ($('#Origen').val() != '')
+        {
+            if ($('#Origen').val() == 3) {
+                if ($('#Causa').val() != '') {
+                    $.get(url, function (data) {
+                        $('#nuevo-ReqManualCompra').html(data);
+                        $('#nuevo-ReqManualCompra').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        }, 'show');
+                        CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+                        ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
+                        $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
+                        ReqMCompra.CargarColeccionUnidadMedida();
+                        ReqMCompra.CargarColeccionAlmacen();
+                    });
+                } else {
+                    CMI.DespliegaError("Por favor agregar una causa");
+                }                
+            }
+            else {
+                $.get(url, function (data) {
+                    $('#nuevo-ReqManualCompra').html(data);
+                    $('#nuevo-ReqManualCompra').modal({
+                        backdrop: 'static',
+                        keyboard: true
+                    }, 'show');
+                    CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+                    ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
+                    $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
+                    ReqMCompra.CargarColeccionUnidadMedida();
+                    ReqMCompra.CargarColeccionAlmacen();
+                });
+            }
+        } else {
+            CMI.DespliegaError("Por favor seleccione un Origen");
+        }
     },
               Editar: function (idRow) {
                 var id, idRequerimiento, row;

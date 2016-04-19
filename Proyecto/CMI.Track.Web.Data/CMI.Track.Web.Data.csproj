@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlmacenData.cs" />
+    <Compile Include="AsignaProyectoData.cs" />
     <Compile Include="AvanceData.cs" />
     <Compile Include="CalidadProcesoData.cs" />
     <Compile Include="CategoriaData.cs" />
@@ -57,9 +58,11 @@
     <Compile Include="GenerarDocumeData.cs" />
     <Compile Include="GrupoData.cs" />
     <Compile Include="ImpresionCodigoBarraData.cs" />
+    <Compile Include="KardexData.cs" />
     <Compile Include="ListaGeneralData.cs" />
     <Compile Include="MarcasData.cs" />
     <Compile Include="MaterialData.cs" />
+    <Compile Include="MovimientoMaterialData.cs" />
     <Compile Include="OrdenProduccionData.cs" />
     <Compile Include="OrigenRequisicionData.cs" />
     <Compile Include="PlanosDespieceData.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="ProcesoData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoData.cs" />
+    <Compile Include="RecepcionRequisicionData.cs" />
     <Compile Include="ReporteData.cs" />
     <Compile Include="ReportesProduccionData.cs" />
     <Compile Include="ReqGralMaterialData.cs" />
