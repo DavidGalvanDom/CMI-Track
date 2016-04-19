@@ -45,6 +45,7 @@ Insert into cmiMenuGrupo VALUES (5,'Produccion','fa-dashboard',getdate(),getdate
 Insert into cmiMenuGrupo VALUES (6,'Embarque','fa-truck',getdate(),getdate(),1,1)
 
 
+
 INSERT INTO cmiModulos Values (1,getdate(), getdate(),1,'Usuario','Usuario/Index',1)
 INSERT INTO cmiModulos Values (2,getdate(), getdate(),1,'Departamento','Departamento/Index',2)
 INSERT INTO cmiModulos Values (3,getdate(), getdate(),1,'Permisos','',3)
@@ -81,6 +82,7 @@ INSERT INTO cmiModulos Values (32,getdate(), getdate(),1,'Autorizar Requisicion'
 INSERT INTO cmiModulos Values (40,getdate(), getdate(),1,'Orden de Produccion','OrdenProduccion/Index',1)
 INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barra','ImpresionCodigoBarra/Index',2)
 INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance/Registro Calidad','Avance/Index',3)
+INSERT INTO cmiModulos VALUES (43, GETDATE(), GETDATE(), 1, 'Reportes Produccion', 'ReportesProduccion/Index', 4)
 
 select * from cmiModuloMenuGrupo
 
@@ -122,6 +124,7 @@ INSERT INTO cmiModuloMenuGrupo values (4,32)
 INSERT INTO cmiModuloMenuGrupo values (5,40)
 INSERT INTO cmiModuloMenuGrupo values (5,41)
 INSERT INTO cmiModuloMenuGrupo values (5,42)
+INSERT INTO cmiModuloMenuGrupo  VALUES (5,43)
 
 select * from cmiModuloMenuGrupo
 go
