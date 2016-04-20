@@ -88,7 +88,7 @@ INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barr
 INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance/Registro Calidad','Avance/Index',3)
 INSERT INTO cmiModulos VALUES (43, GETDATE(), GETDATE(), 1, 'Reportes Produccion', 'ReportesProduccion/Index', 4)
 
-select * from cmiModuloMenuGrupo
+select * from cmiModulos
 
 INSERT INTO cmiModuloMenuGrupo values (1,1)
 INSERT INTO cmiModuloMenuGrupo values (1,2)

@@ -51,7 +51,7 @@ var ReqMCompra = {
     },
     onCambiaOrigen: function () {
 
-        if ($('#Origen').val() == 3) {
+        if ($('#Origen').val() == 2) {
             $('#CausaDiv').show();
         }
         else {
