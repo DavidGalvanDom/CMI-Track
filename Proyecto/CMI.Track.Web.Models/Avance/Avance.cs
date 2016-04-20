@@ -28,7 +28,7 @@ namespace CMI.Track.Web.Models
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Id Serie")]
-        public int idSerie { get; set; }
+        public string idSerie { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Fecha Avance")]
