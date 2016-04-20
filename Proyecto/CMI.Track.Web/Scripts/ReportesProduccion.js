@@ -558,7 +558,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;CALIDAD',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date();
+             fechaReporte = Date().toJSON().slice(0, 10);
 
         var excludeArray = ["id"];
         
@@ -626,7 +626,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;PRODUCCION&nbsp;POR&nbsp;PERSONA',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date();
+             fechaReporte = Date().toJSON().slice(0, 10);
 
         var excludeArray = ["id","idUsuario","idProyecto"];
 
@@ -696,7 +696,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;PRODUCCION&nbsp;SEMANAL',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date();
+             fechaReporte = Date().toJSON().slice(0, 10);
 
         var excludeArray = ["id", "idProyecto"];
 
@@ -766,7 +766,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;DIAS&nbsp;DE&nbsp;PROCESO',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date();
+             fechaReporte = Date().toJSON().slice(0, 10);
 
         var excludeArray = ["id", "idProyecto", "idEtapa", "idElemento"];
 
@@ -836,7 +836,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;ESTATUS&nbsp;DE&nbsp;PROYECTO',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date();
+             fechaReporte = Date().toJSON().slice(0, 10);
 
         var excludeArray = ["id"];
 
@@ -904,7 +904,7 @@ var ReportesProduccion = {
          tabla_html = '',
          title = 'REPORTE&nbsp;DE&nbsp;AVANCE&nbsp;DE&nbsp;PROYECTO',
          proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-         fechaReporte = Date();
+         fechaReporte = Date().toJSON().slice(0, 10);
 
     var excludeArray = ["id"];
 
