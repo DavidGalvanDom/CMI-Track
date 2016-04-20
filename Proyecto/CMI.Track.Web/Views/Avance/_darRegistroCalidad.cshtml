@@ -23,6 +23,36 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.bLongitud, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.bLongitud, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-1"> </div>
+                    @Html.LabelFor(model => model.bBarrenacion, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.bBarrenacion, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-1"> </div>
+                    @Html.LabelFor(model => model.bPlaca, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.bPlaca, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-2"> </div>
+                    @Html.LabelFor(model => model.bSoldadura, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.bSoldadura, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-1"> </div>
+                    @Html.LabelFor(model => model.bPintura, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-1">
+                        @Html.CheckBoxFor(model => model.bPintura, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.observacionesRegistroCalidad, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
                         @Html.TextAreaFor(model => model.observacionesRegistroCalidad, new
