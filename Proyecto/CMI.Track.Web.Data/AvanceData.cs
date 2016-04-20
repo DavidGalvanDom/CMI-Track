@@ -133,15 +133,20 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string DarRegistroCalidad(Models.RegistroCalidad pobjModelo)
         {
-            object[] paramArray = new object[6];
+            object[] paramArray = new object[11];
             try
             {
                 paramArray[0] = pobjModelo.claseRegistro.ToUpper();
                 paramArray[1] = pobjModelo.idMarca_Submarca;
                 paramArray[2] = pobjModelo.idSerie;
                 paramArray[3] = pobjModelo.idUsuario;
-                paramArray[4] = pobjModelo.observacionesRegistroCalidad.ToUpper();
+                paramArray[4] = (pobjModelo.observacionesRegistroCalidad == null ? "" : pobjModelo.observacionesRegistroCalidad.ToUpper());
                 paramArray[5] = pobjModelo.idEstatus;
+                paramArray[6] = pobjModelo.bLongitud;
+                paramArray[7] = pobjModelo.bBarrenacion;
+                paramArray[8] = pobjModelo.bPlaca;
+                paramArray[9] = pobjModelo.bSoldadura;
+                paramArray[10] = pobjModelo.bPintura;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_DarRegistroCalidad", paramArray);
