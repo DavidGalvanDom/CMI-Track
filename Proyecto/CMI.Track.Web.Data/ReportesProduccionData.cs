@@ -32,8 +32,8 @@ namespace CMI.Track.Web.Data
             try
             {
                 paramArray[0] = idProyecto;
-                paramArray[1] = DateTime.ParseExact(fechaInicio, "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture);
-                paramArray[2] = DateTime.ParseExact(fechaFin, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                paramArray[1] = fechaInicio;
+                paramArray[2] = fechaFin;
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -84,8 +84,8 @@ namespace CMI.Track.Web.Data
             try
             {
                 paramArray[0] = idProyecto;
-                paramArray[1] = DateTime.ParseExact(fechaInicio, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                paramArray[2] = DateTime.ParseExact(fechaFin, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                paramArray[1] = fechaInicio;
+                paramArray[2] = fechaFin;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -132,8 +132,8 @@ namespace CMI.Track.Web.Data
             try
             {
                 paramArray[0] = idProyecto;
-                paramArray[1] = DateTime.ParseExact(fechaInicio, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                paramArray[2] = DateTime.ParseExact(fechaFin, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                paramArray[1] = fechaInicio;
+                paramArray[2] = fechaFin;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -178,8 +178,8 @@ namespace CMI.Track.Web.Data
             try
             {
                 paramArray[0] = idProyecto;
-                paramArray[1] = DateTime.ParseExact(fechaInicio, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                paramArray[2] = DateTime.ParseExact(fechaFin, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                paramArray[1] = fechaInicio;
+                paramArray[2] = fechaFin;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 

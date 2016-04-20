@@ -199,9 +199,9 @@ var RutaFabricacion = {
     },
     serializaRutaFabricacion: function (id,form) {
         return ({
-            'idCategoria': $(form + ' #idCategoria').val(),
+            'nombreCategoria': $(form + ' #idCategoria option:selected').text().toUpperCase(),
             'secuencia': $(form + ' #secuencia').val(),
-            'idProceso': $(form + ' #idProceso').val(),
+            'nombreProceso': $(form + ' #idProceso option:selected').text().toUpperCase(),
             'estatus': $(form + ' #idEstatus option:selected').text().toUpperCase(),
             'id': id
         });
