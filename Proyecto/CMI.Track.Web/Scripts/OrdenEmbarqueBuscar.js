@@ -40,10 +40,10 @@ var OrdenEmbarqueBuscar = {
                     actionenable: false,
                     detalle: false,
                     collection: OrdenEmbarqueBuscar.colOrdenEmbarque,
-                    colModel: [{ title: 'Orden Embarque', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Orden Produccion', name: 'idOrdenProduccion', width: '8%', filter: true, filterType: 'input' },
-                               { title: 'Observacion', name: 'observacionOrdenEmbarque', width: '38%', filter: true, filterType: 'input' },
-                               { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' }],
+                    colModel: [{ title: 'Orden Embarque', name: 'id', width: '15%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Orden Produccion', name: 'idOrdenProduccion', width: '15%', filter: true, filterType: 'input' },
+                               { title: 'Observacion', name: 'observacionOrdenEmbarque', width: '55%', filter: true, filterType: 'input' },
+                               { title: 'Fecha', name: 'fechaCreacion', width: '15%', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
                         OrdenEmbarqueBuscar.onSeleccionar(this.selectedRows[0]);
                     }
