@@ -61,6 +61,7 @@
     <Compile Include="EtapaController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="GenerarDocumeController.cs" />
+    <Compile Include="GenerarEmbarqueController.cs" />
     <Compile Include="GrupoController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="ImpresionCodigoBarraController.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="MarcasController.cs" />
     <Compile Include="MaterialController.cs" />
     <Compile Include="MovimientoMaterialController.cs" />
+    <Compile Include="OrdenEmbarqueController.cs" />
     <Compile Include="OrdenProduccionController.cs" />
     <Compile Include="OrigenRequisicionController.cs" />
     <Compile Include="PlanosDespieceController.cs" />

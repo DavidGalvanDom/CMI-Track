@@ -1,9 +1,11 @@
-﻿//js de lista de Proyectos.
+﻿/*global $, CMI, Backbone, bbGrid,contextPath*/
+//js de lista de Proyectos.
 //David Galvan
 //17/Febrero/2016
 var ProyectoBuscar = {
     colProyectos: {},
     parent: {},
+    gridProyecto : {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
@@ -26,7 +28,7 @@ var ProyectoBuscar = {
             ProyectoBuscar.colProyecto = new Backbone.Collection(data);
             var bolFilter = ProyectoBuscar.colProyecto.length > 0 ? true : false;
             if (bolFilter) {
-                gridProyecto = new bbGrid.View({
+                ProyectoBuscar.gridProyecto = new bbGrid.View({
                     container: $('#bbGrid-buscaProyecto'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -51,7 +53,7 @@ var ProyectoBuscar = {
                 $('#bbGrid-buscaProyecto')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Proyecto");
         });
     }

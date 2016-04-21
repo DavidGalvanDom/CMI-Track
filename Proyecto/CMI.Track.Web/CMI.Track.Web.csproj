@@ -153,6 +153,7 @@
     <Content Include="Scripts\Cliente.js" />
     <Content Include="Scripts\ClienteBuscar.js" />
     <Content Include="Scripts\Departamento.js" />
+    <Content Include="Scripts\EmbarqueTablet.js" />
     <Content Include="Scripts\Etapa.js" />
     <Content Include="Scripts\EtapasBuscar.js" />
     <Content Include="Scripts\GenerarDocumentos.js" />
@@ -873,6 +874,7 @@
     <Content Include="Scripts\MaterialesBuscar.js" />
     <Content Include="Scripts\MovimientoMaterial.js" />
     <Content Include="Scripts\OrdenProduccion.js" />
+    <Content Include="Scripts\OrdenEmbarqueBuscar.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
     <Content Include="Scripts\PlanosDespiece.js" />
     <Content Include="Scripts\PlanosDespieceBuscar.js" />
@@ -1028,6 +1030,9 @@
     <Content Include="Views\MovimientoMaterial\_Nuevo.cshtml" />
     <Content Include="Views\RecepcionRequisicion\Index.cshtml" />
     <Content Include="Views\RecepcionRequisicion\_Actualiza.cshtml" />
+    <Content Include="Views\GenerarEmbarque\Tablet1.cshtml" />
+    <Content Include="Views\OrdenEmbarque\Index.cshtml" />
+    <Content Include="Views\OrdenEmbarque\_buscarOrdenEmbarque.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

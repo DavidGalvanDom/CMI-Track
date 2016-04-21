@@ -63,6 +63,7 @@
     <Compile Include="MarcasData.cs" />
     <Compile Include="MaterialData.cs" />
     <Compile Include="MovimientoMaterialData.cs" />
+    <Compile Include="OrdenEmbarqueData.cs" />
     <Compile Include="OrdenProduccionData.cs" />
     <Compile Include="OrigenRequisicionData.cs" />
     <Compile Include="PlanosDespieceData.cs" />

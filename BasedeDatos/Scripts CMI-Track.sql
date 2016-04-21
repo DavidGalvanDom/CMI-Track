@@ -23,7 +23,7 @@ INSERT INTO [cmiUsuarios]
            ,[apeMaternoUsuario],[idProcesoOrigen]
            ,[idProcesoDestino])
      VALUES
-           (getdate()     ,getdate()
+           (getdate(),getdate()
            ,1,'DAVID'
            ,'TEM' ,'AREA'
            ,1 ,'DAVID@HOT.COM'
@@ -88,6 +88,11 @@ INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barr
 INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance/Registro Calidad','Avance/Index',3)
 INSERT INTO cmiModulos VALUES (43, GETDATE(), GETDATE(), 1, 'Reportes Produccion', 'ReportesProduccion/Index', 4)
 
+INSERT INTO cmiModulos Values (50,getdate(), getdate(),1,'Orden de Embarque','OrdenEmbarque/Index',1)
+INSERT INTO cmiModulos Values (51,getdate(), getdate(),1,'Generar Embarque Tablet 1','GenerarEmbarque/Tablet1',2)
+INSERT INTO cmiModulos Values (52,getdate(), getdate(),1,'Generar Embarque Tablet 2','GenerarEmbarque/Tablet2',3)
+INSERT INTO cmiModulos Values (53,getdate(), getdate(),1,'Generar Remision','Remision/Index',4)
+
 select * from cmiModulos
 
 INSERT INTO cmiModuloMenuGrupo values (1,1)
@@ -133,6 +138,12 @@ INSERT INTO cmiModuloMenuGrupo values (5,41)
 INSERT INTO cmiModuloMenuGrupo values (5,42)
 INSERT INTO cmiModuloMenuGrupo  VALUES (5,43)
 
+--Embarque
+INSERT INTO cmiModuloMenuGrupo values (6,50)
+INSERT INTO cmiModuloMenuGrupo values (6,51)
+INSERT INTO cmiModuloMenuGrupo values (6,52)
+INSERT INTO cmiModuloMenuGrupo  VALUES (6,53)
+
 select * from cmiModuloMenuGrupo
 go
 
@@ -157,30 +168,11 @@ INSERT INTO [cmiPermisos] VALUES (1 ,20 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
 
 GO
 
+--Catalogos 
 
-
-INSERT INTO [dbo].[cmiRequerimientos]
-           ([idRequerimiento]
-           ,[fechaCreacion]
-           ,[fechaUltModificacion]
-           ,[idEstatus]
-           ,[folioRequerimiento]
-           ,[fechaSolicitud]
-           ,[idOrigenRequisicion]
-           ,[idDepartamento]
-           ,[usuarioSolicita]
-           ,[idEtapa]
-           ,[usuarioCreacion])
-     VALUES
-           (1
-           ,GETDATE()
-           ,GETDATE()
-           ,1
-           ,'FOL001'
-           ,GETDATE()
-           ,1
-           ,2
-           ,1
-           ,1
-           ,1)
-GO
+--Categorias
+--Origenes Requisicion
+--Procesos
+--Tipos de Procesos
+--Tipos de Movimientos de Material
+--Unidad de Medida
