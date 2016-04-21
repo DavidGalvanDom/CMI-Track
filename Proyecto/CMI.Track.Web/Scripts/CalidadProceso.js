@@ -1,4 +1,5 @@
-﻿//js de catalogo de CalidadProceso
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de CalidadProceso
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -35,7 +36,7 @@ var CalidadProceso = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -44,7 +45,7 @@ var CalidadProceso = {
             $.post(contextPath + "CalidadProceso/Nuevo",
                 $("#NuevoCalidadProcesoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         CalidadProceso.colCalidadesProceso.add(CalidadProceso.serializaCalidadProceso(data.id, '#NuevoCalidadProcesoForm'));
                         CMI.DespliegaInformacion('La Relacion Calidad Proceso fue guardada con exito ');
                         $('#nuevo-CalidadProceso').modal('hide');
@@ -60,7 +61,7 @@ var CalidadProceso = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -68,7 +69,7 @@ var CalidadProceso = {
             $.post(contextPath + "CalidadProceso/Actualiza",
                 $("#ActualizaCalidadProcesoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-CalidadProceso').modal('hide');
                         CalidadProceso.colCalidadesProceso.add(CalidadProceso.serializaCalidadProceso(data.id, '#ActualizaCalidadProcesoForm'), { merge: true });
                         CMI.DespliegaInformacion('La Relacion Calidad Proceso fue Actualizada con exito ');
@@ -126,7 +127,7 @@ var CalidadProceso = {
         if (confirm('¿Esta seguro que desea borrar el registro?') === false) return;
         var url = contextPath + "CalidadProceso/Borrar"; // El url del controlador
         $.post(url, { idProceso: idProceso, idTipoCalidad: idTipoCalidad }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 CalidadProceso.colCalidadesProceso.remove(idRow);
                 CMI.DespliegaInformacion(data.Message + "  Proceso:" + idProceso + "  TipoCalidad:" + idTipoCalidad);
             } else {
@@ -140,7 +141,7 @@ var CalidadProceso = {
             $.getJSON(url, function (data) {
                 CalidadProceso.colTiposCalidad = data;
                 CalidadProceso.CargaListaTiposCalidad(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Tipos de Calidad");
             });
         } else {
@@ -164,7 +165,7 @@ var CalidadProceso = {
             $.getJSON(url, function (data) {
                 CalidadProceso.colProcesos = data;
                 CalidadProceso.CargaListaProcesos(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Procesos");
             });
         } else {
@@ -210,7 +211,7 @@ var CalidadProceso = {
             CalidadProceso.colCalidadesProceso = new Backbone.Collection(data);
             var bolFilter = CalidadProceso.colCalidadesProceso.length > 0 ? true : false;
             if (bolFilter) {
-                gridCalidadesProceso = new bbGrid.View({
+                CalidadProceso.gridCalidadesProceso = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -233,7 +234,7 @@ var CalidadProceso = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Relaciones Calidad Proceso");
         });
     }

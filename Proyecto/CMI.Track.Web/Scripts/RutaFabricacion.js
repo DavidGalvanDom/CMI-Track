@@ -1,4 +1,5 @@
-﻿//js de catalogo de RutaFabricacion
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de RutaFabricacion
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -35,7 +36,7 @@ var RutaFabricacion = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -60,7 +61,7 @@ var RutaFabricacion = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -68,7 +69,7 @@ var RutaFabricacion = {
             $.post(contextPath + "RutaFabricacion/Actualiza",
                 $("#ActualizaRutaFabricacionForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-RutaFabricacion').modal('hide');
                         RutaFabricacion.colRutasFabricacion.add(RutaFabricacion.serializaRutaFabricacion(data.id, '#ActualizaRutaFabricacionForm'), { merge: true });
                         CMI.DespliegaInformacion('La Ruta de Fabricacion fue Actualizada. Id:' + data.id);
@@ -115,7 +116,7 @@ var RutaFabricacion = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "RutaFabricacion/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 RutaFabricacion.colRutasFabricacion.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -145,7 +146,7 @@ var RutaFabricacion = {
             $.getJSON(url, function (data) {
                 RutaFabricacion.colCategorias = data;
                 RutaFabricacion.CargaListaCategorias(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las Categorias");
             });
         } else {
@@ -169,7 +170,7 @@ var RutaFabricacion = {
             $.getJSON(url, function (data) {
                 RutaFabricacion.colProcesos = data;
                 RutaFabricacion.CargaListaProcesos(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Procesos");
             });
         } else {
@@ -188,8 +189,7 @@ var RutaFabricacion = {
         $(form + ' #idProceso').val($(form + ' #proceso').val());
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
         RutaFabricacion.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         RutaFabricacion.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         RutaFabricacion.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -214,7 +214,7 @@ var RutaFabricacion = {
             RutaFabricacion.colRutasFabricacion = new Backbone.Collection(data);
             var bolFilter = RutaFabricacion.colRutasFabricacion.length > 0 ? true : false;
             if (bolFilter) {
-                gridRutasFabricacion = new bbGrid.View({
+                RutaFabricacion.gridRutasFabricacion = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -238,7 +238,7 @@ var RutaFabricacion = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Rutas de Fabricacion");
         });
     }

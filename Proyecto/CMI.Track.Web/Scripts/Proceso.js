@@ -1,4 +1,5 @@
-﻿//js de catalogo de Proceso
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de Proceso
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -34,7 +35,7 @@ var Proceso = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -43,7 +44,7 @@ var Proceso = {
             $.post(contextPath + "Proceso/Nuevo",
                 $("#NuevoProcesoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Proceso.colProcesos.add(Proceso.serializaProceso(data.id, '#NuevoProcesoForm'));
                         CMI.DespliegaInformacion('El Proceso fue guardado con el Id: ' + data.id);
                         $('#nuevo-Proceso').modal('hide');
@@ -59,7 +60,7 @@ var Proceso = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -67,7 +68,7 @@ var Proceso = {
             $.post(contextPath + "Proceso/Actualiza",
                 $("#ActualizaProcesoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Proceso').modal('hide');
                         Proceso.colProcesos.add(Proceso.serializaProceso(data.id, '#ActualizaProcesoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Proceso fue Actualizado. Id:' + data.id);
@@ -111,7 +112,7 @@ var Proceso = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "Proceso/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Proceso.colProcesos.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -140,7 +141,7 @@ var Proceso = {
             $.getJSON(url, function (data) {
                 Proceso.colTiposProceso = data;
                 Proceso.CargaListaTiposProceso(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Tipos de Proceso");
             });
         } else {
@@ -159,8 +160,7 @@ var Proceso = {
         $(form + ' #idTipoProceso').val($(form + ' #tipoproceso').val());
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            item;
+        var permisos = localStorage.modPermisos;
         Proceso.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         Proceso.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         Proceso.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -185,7 +185,7 @@ var Proceso = {
             Proceso.colProcesos = new Backbone.Collection(data);
             var bolFilter = Proceso.colProcesos.length > 0 ? true : false;
             if (bolFilter) {
-                gridProcesos = new bbGrid.View({
+                Proceso.gridProcesos = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -209,7 +209,7 @@ var Proceso = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los Procesos");
         });
     }
