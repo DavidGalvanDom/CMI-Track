@@ -182,10 +182,10 @@ var EmbarqueTablet = {
 
                     $.post(url, data, function (result) {
                         if (result.Success === true) {
-                            marcas[0].attributes.piezasLeidas = marcas[0].attributes.piezasLeidas + 1;
-                            marcas[0].attributes.Saldo = marcas[0].attributes.Saldo - 1;
-                            //Actualiza el grid
-                            EmbarqueTablet.colEmbarques.add(marcas[0], { merge: true });
+                            $('#codigoBarras').val('');
+                            marcas[0].set('piezasLeidas', marcas[0].attributes.piezasLeidas + 1);
+                            marcas[0].set('Saldo', marcas[0].attributes.Saldo - 1);
+                            EmbarqueTablet.gridEmbarque.renderPage();
                         } else {
                             CMI.DespliegaError(result.Message);
                         }

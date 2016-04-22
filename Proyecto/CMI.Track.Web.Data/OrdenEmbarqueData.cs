@@ -49,7 +49,15 @@ namespace CMI.Track.Web.Data
             }
             catch (Exception exp)
             {
-                throw new ApplicationException(exp.Message, exp);
+                if (exp.HResult == -2146232060)
+                {
+                    throw new ApplicationException("La Serie no corresponde a la Marca de codigo de barras");
+                }
+                else
+                {
+                    throw new ApplicationException(exp.Message, exp);
+                }
+                
             }
 
             return resultado;

@@ -305,12 +305,13 @@
         showCollection: function (collection, allrows) {
             var self = this;
             this.clearGrid();
-            _.each(collection, function (model) {               
+            _.each(collection, function (model) {
                 self.renderRow(model);
             });
             if (collection.length === 0 && !this.autofetch) {
                 this.$grid.append('<tbody><tr class="bbGrid-noRows"><td colspan="' + this.colLength + '">' + this.dict.noData + '</td></tr></tbody>');
             }
+
             //Se calcula el total de columnas
             if (this.enableTotal) {
 
@@ -321,7 +322,7 @@
                         col.total = 0;
                     }
                 });
-                
+
                 _.each(allrows, function (model) {
                     _.each(cols, function (col) {
                         if (col.total !== undefined) {
@@ -329,7 +330,6 @@
                         }
                     });
                 });
-                
                 this.total = new bbGrid.TotalView({ view: this, cols: cols });
                 this.$total = this.total.render();
                 this.$grid.append(this.$total);
@@ -401,7 +401,7 @@
             if (this.rows === _.size(this.rowViews)) {
                 return false;
             }
-            
+
             this.rowViews[model.id] = new bbGrid.RowView({ model: model, view: this });    
             this.$grid.append(this.rowViews[model.id].render().el);
         },
