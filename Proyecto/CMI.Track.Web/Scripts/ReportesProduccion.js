@@ -1,4 +1,4 @@
-﻿/*global $, CMI, ProyectoBuscar,EtapaBuscar,routeUrlImages,contextPath,bbGrid,Backbone*/
+﻿/*global $, CMI, ProyectoBuscar,routeUrlImages,contextPath,bbGrid,Backbone*/
 //js Reportes de Produccion
 //Juan Lopepe
 //04/Abril/2016
@@ -27,7 +27,6 @@ var ReportesProduccion = {
         //Asignacion de variables
         var btn = this;
         var tipoReporte = $('#tipoReporte').val();
-        var nombreReporte = $('#tipoReporte option:selected').text();
         var fechaIni = $('#txtFechaInicio').val();
         var fechaFin = $('#txtFechaFin').val();
         var idProyecto = $('#idProyectoSelect').val(),
@@ -250,7 +249,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                         gridReportesProduccion = new bbGrid.View({
+                         ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -304,7 +303,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                        var gridReportesProduccion = new bbGrid.View({
+                        ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -353,7 +352,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                        gridReportesProduccion = new bbGrid.View({
+                        ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -401,7 +400,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                        gridReportesProduccion = new bbGrid.View({
+                        ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -457,7 +456,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                        gridReportesProduccion = new bbGrid.View({
+                        ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -508,7 +507,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
-                        gridReportesProduccion = new bbGrid.View({
+                        ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
                             rowList: [5, 10, 25, 50, 100],
@@ -560,14 +559,15 @@ var ReportesProduccion = {
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
              fechaReporte = Date().toJSON().slice(0, 10);
 
-        var excludeArray = ["id"];
+        var excludeArray = ["id"],
+            name;
         
         var imprimeCols = 0;
         for (var contador = 0; contador < arrData.length; contador++) {
             var item = arrData[contador];
             if (imprimeCols === 0) {
                 tabla = "<table  border='2' ><tr align='center'>";
-                for (var name in item) {
+                for (name in item) {
                     if (excludeArray.indexOf(name) === -1) {
                         tabla += "<td rowspan='2'><strong>" + name.toUpperCase() + "</strong></td>";
                     }
@@ -576,7 +576,7 @@ var ReportesProduccion = {
                 imprimeCols = 1;
             }
             tblDataRow += "<tr>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tblDataRow += "<td>" + item[name].replace(/ /g, '&nbsp;') + "</td>";
                 }
@@ -628,14 +628,15 @@ var ReportesProduccion = {
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
              fechaReporte = Date().toJSON().slice(0, 10);
 
-        var excludeArray = ["id","idUsuario","idProyecto"];
+        var excludeArray = ["id","idUsuario","idProyecto"],
+            name;
 
         var imprimeCols = 0;
         for (var contador = 0; contador < arrData.length; contador++) {
             var item = arrData[contador];
             if (imprimeCols === 0) {
                 tabla = "<table  border='2' ><tr align='center'>";
-                for (var name in item) {
+                for (name in item) {
                     if (excludeArray.indexOf(name) === -1) {
                         if (name === "elemento") name = "codigo";
                         if (name === "idSerie") name = "serie";
@@ -646,7 +647,7 @@ var ReportesProduccion = {
                 imprimeCols = 1;
             }
             tblDataRow += "<tr>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tblDataRow += "<td>" + item[name] + "</td>";
                 }
@@ -698,14 +699,15 @@ var ReportesProduccion = {
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
              fechaReporte = Date().toJSON().slice(0, 10);
 
-        var excludeArray = ["id", "idProyecto"];
+        var excludeArray = ["id", "idProyecto"],
+            name;
 
         var imprimeCols = 0;
         for (var contador = 0; contador < arrData.length; contador++) {
             var item = arrData[contador];
             if (imprimeCols === 0) {
                 tabla = "<table  border='2' ><tr align='center'>";
-                for (var name in item) {
+                for (name in item) {
                     if (excludeArray.indexOf(name) === -1) {
                         if (name === "elemento") name = "codigo";
                         if (name === "idSerie") name = "serie";
@@ -716,7 +718,7 @@ var ReportesProduccion = {
                 imprimeCols = 1;
             }
             tblDataRow += "<tr>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tblDataRow += "<td>" + item[name] + "</td>";
                 }
@@ -768,14 +770,15 @@ var ReportesProduccion = {
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
              fechaReporte = Date().toJSON().slice(0, 10);
 
-        var excludeArray = ["id", "idProyecto", "idEtapa", "idElemento"];
+        var excludeArray = ["id", "idProyecto", "idEtapa", "idElemento"],
+            name;
 
         var imprimeCols = 0;
         for (var contador = 0; contador < arrData.length; contador++) {
             var item = arrData[contador];
             if (imprimeCols === 0) {
                 tabla = "<table  border='2' ><tr align='center'>";
-                for (var name in item) {
+                for (name in item) {
                     if (excludeArray.indexOf(name) === -1) {
                         if (name === "elemento") name = "codigo";
                         if (name === "idSerie") name = "serie";
@@ -786,7 +789,7 @@ var ReportesProduccion = {
                 imprimeCols = 1;
             }
             tblDataRow += "<tr>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tblDataRow += "<td>" + item[name] + "</td>";
                 }
@@ -838,14 +841,15 @@ var ReportesProduccion = {
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
              fechaReporte = Date().toJSON().slice(0, 10);
 
-        var excludeArray = ["id"];
+        var excludeArray = ["id"],
+            name;
 
         var imprimeCols = 0;
         for (var contador = 0; contador < arrData.length; contador++) {
             var item = arrData[contador];
             if (imprimeCols === 0) {
                 tabla = "<table  border='2' ><tr align='center'>";
-                for (var name in item) {
+                for (name in item) {
                     if (excludeArray.indexOf(name) === -1) {
                         tabla += "<td rowspan='2'><strong>" + name.toUpperCase() + "</strong></td>";
                     }
@@ -854,7 +858,7 @@ var ReportesProduccion = {
                 imprimeCols = 1;
             }
             tblDataRow += "<tr>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tblDataRow += "<td>" + item[name] + "</td>";
                 }
@@ -906,14 +910,15 @@ var ReportesProduccion = {
          proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
          fechaReporte = Date().toJSON().slice(0, 10);
 
-    var excludeArray = ["id"];
+        var excludeArray = ["id"],
+            name;
 
     var imprimeCols = 0;
     for (var contador = 0; contador < arrData.length; contador++) {
         var item = arrData[contador];
         if (imprimeCols === 0) {
             tabla = "<table  border='2' ><tr align='center'>";
-            for (var name in item) {
+            for (name in item) {
                 if (excludeArray.indexOf(name) === -1) {
                     tabla += "<td rowspan='2'><strong>" + name.toUpperCase() + "</strong></td>";
                 }
@@ -922,7 +927,7 @@ var ReportesProduccion = {
             imprimeCols = 1;
         }
         tblDataRow += "<tr>";
-        for (var name in item) {
+        for (name in item) {
             if (excludeArray.indexOf(name) === -1) {
                 tblDataRow += "<td>" + item[name] + "</td>";
             }

@@ -1,4 +1,5 @@
-﻿//js de catalogo de Tipos de Material.
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de Tipos de Material.
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -33,7 +34,7 @@ var TipoMaterial = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -42,7 +43,7 @@ var TipoMaterial = {
             $.post(contextPath + "TipoMaterial/Nuevo",
                 $("#NuevoTipoMaterialForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id, '#NuevoTipoMaterialForm'));
                         CMI.DespliegaInformacion('El Tipo de Material fue guardado con el Id: ' + data.id);
                         $('#nuevo-TipoMaterial').modal('hide');
@@ -60,7 +61,7 @@ var TipoMaterial = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -68,7 +69,7 @@ var TipoMaterial = {
             $.post(contextPath + "TipoMaterial/Actualiza",
                 $("#ActualizaTipoMaterialForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-TipoMaterial').modal('hide');
                         TipoMaterial.colTiposMaterial.add(TipoMaterial.serializaTipoMaterial(data.id, '#ActualizaTipoMaterialForm'), { merge: true });
                         CMI.DespliegaInformacion('El Tipo de Material fue Actualizado. Id:' + data.id);
@@ -112,7 +113,7 @@ var TipoMaterial = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "TipoMaterial/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 TipoMaterial.colTiposMaterial.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -135,8 +136,7 @@ var TipoMaterial = {
         });
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-                    item;
+        var permisos = localStorage.modPermisos;
         TipoMaterial.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         TipoMaterial.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         TipoMaterial.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -160,7 +160,7 @@ var TipoMaterial = {
             TipoMaterial.colTiposMaterial = new Backbone.Collection(data);
             var bolFilter = TipoMaterial.colTiposMaterial.length > 0 ? true : false;
             if (bolFilter) {
-                gridTiposMaterial = new bbGrid.View({
+                TipoMaterial.gridTiposMaterial = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -183,7 +183,7 @@ var TipoMaterial = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los Tipos de Material");
         });
     }

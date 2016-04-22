@@ -1,4 +1,4 @@
-﻿/*global $, CMI, Backbone, bbGrid*/
+﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
 //js de catalogo de Almacen
 //Juan Lopepe
 //01/Febrero/2016

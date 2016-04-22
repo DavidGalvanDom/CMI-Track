@@ -1,4 +1,5 @@
-﻿//js de catalogo de Unidades de Medida.
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de Unidades de Medida.
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -33,7 +34,7 @@ var UnidadMedida = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -42,7 +43,7 @@ var UnidadMedida = {
             $.post(contextPath + "UnidadMedida/Nuevo",
                 $("#NuevoUnidadMedidaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id, '#NuevoUnidadMedidaForm'));
                         CMI.DespliegaInformacion('La Unidad de Medida fue guardada con el Id: ' + data.id);
                         $('#nuevo-UnidadMedida').modal('hide');
@@ -60,7 +61,7 @@ var UnidadMedida = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -68,7 +69,7 @@ var UnidadMedida = {
             $.post(contextPath + "UnidadMedida/Actualiza",
                 $("#ActualizaUnidadMedidaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-UnidadMedida').modal('hide');
                         UnidadMedida.colUnidadesMedida.add(UnidadMedida.serializaUnidadMedida(data.id,'#ActualizaUnidadMedidaForm'), { merge: true });
                         CMI.DespliegaInformacion('La Unidad de Medida fue Actualizada. Id:' + data.id);
@@ -112,7 +113,7 @@ var UnidadMedida = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "UnidadMedida/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 UnidadMedida.colUnidadesMedida.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -161,7 +162,7 @@ var UnidadMedida = {
             UnidadMedida.colUnidadesMedida = new Backbone.Collection(data);
             var bolFilter = UnidadMedida.colUnidadesMedida.length > 0 ? true : false;
             if (bolFilter) {
-                gridUnidadesMedida = new bbGrid.View({
+                UnidadMedida.gridUnidadesMedida = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -185,7 +186,7 @@ var UnidadMedida = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Unidades de Medida");
         });
     }

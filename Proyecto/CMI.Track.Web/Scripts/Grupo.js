@@ -1,4 +1,5 @@
-﻿//js de catalogo de Grupo
+﻿/*global $, CMI, contextPath, Backbone, bbGrid*/
+//js de catalogo de Grupo
 //Juan Lopepe
 //01/Febrero/2016
 
@@ -33,7 +34,7 @@ var Grupo = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -42,7 +43,7 @@ var Grupo = {
             $.post(contextPath + "Grupo/Nuevo",
                 $("#NuevoGrupoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Grupo.colGrupos.add(Grupo.serializaGrupo(data.id, '#NuevoGrupoForm'));
                         CMI.DespliegaInformacion('El Grupo fue guardado con el Id: ' + data.id);
                         $('#nuevo-Grupo').modal('hide');
@@ -60,7 +61,7 @@ var Grupo = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -68,7 +69,7 @@ var Grupo = {
             $.post(contextPath + "Grupo/Actualiza",
                 $("#ActualizaGrupoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Grupo').modal('hide');
                         Grupo.colGrupos.add(Grupo.serializaGrupo(data.id, '#ActualizaGrupoForm'), { merge: true });
                         CMI.DespliegaInformacion('El Grupo fue Actualizado. Id:' + data.id);
@@ -112,7 +113,7 @@ var Grupo = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "Grupo/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Grupo.colGrupos.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -159,7 +160,7 @@ var Grupo = {
             Grupo.colGrupos = new Backbone.Collection(data);
             var bolFilter = Grupo.colGrupos.length > 0 ? true : false;
             if (bolFilter) {
-                gridGrupos = new bbGrid.View({
+                Grupo.gridGrupos = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -182,7 +183,7 @@ var Grupo = {
             }
 
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los Grupos");
         });
     }

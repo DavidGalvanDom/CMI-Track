@@ -173,8 +173,7 @@ var OrdenProduccion = {
 
     },
     ValidaPermisos: function () {
-        var permisos = localStorage.modPermisos,
-            modulo = OrdenProduccion;
+        var modulo = OrdenProduccion;
 
         modulo.accEscritura = false;
         modulo.accBorrar = false;
@@ -188,7 +187,7 @@ var OrdenProduccion = {
             OrdenProduccion.colDetalleOrdenProduccion = new Backbone.Collection(data);
             var bolFilter = OrdenProduccion.colDetalleOrdenProduccion.length > 0 ? true : false;
             if (bolFilter) {
-                gridOrdenProduccion = new bbGrid.View({
+                OrdenProduccion.gridOrdenProduccion = new bbGrid.View({
                     container: $('#bbGrid-OrdenProduccion'),
                     rows: 10,
                     rowList: [5, 10, 25, 50, 100],
