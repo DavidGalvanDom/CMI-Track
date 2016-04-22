@@ -4,11 +4,13 @@
 //20/Abril/2016
 var EmbarqueTablet = {
     activeForm: '',
+    origen : '',
     estatusRevision: 0,
     gridEmbarque: {},
     colEmbarques: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
+        this.origen = 'EM';
         this.Eventos();
     },
     Eventos: function () {
@@ -16,14 +18,20 @@ var EmbarqueTablet = {
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarOrdenEmbarque").click(that.onBuscarOrdenEmbarque);
-        $('.btnNuevo').click(that.Nuevo);
+        $('#btnBuscarCodigoBarra').click(that.onBuscarCodBarras);
+        $('#codigoBarras').keypress(function (e) {
+            if (e.keyCode == 13) {  // detect the enter key
+                that.onBuscarCodBarras();
+            }
+        });
+
         $('#etapaRow').hide();
     },
     onBuscarProyecto: function () {
         var btn = this;
         $(btn).attr("disabled", "disabled");
         CMI.CierraMensajes();
-        var url = contextPath + "Proyecto/BuscarProyecto"; // El url del controlador      
+        var url = contextPath + "Proyecto/BuscarProyecto"; // El url del controlador
         $.get(url, function (data) {
             $('#buscar-General').html(data);
             $('#buscar-General').modal({
@@ -107,6 +115,7 @@ var EmbarqueTablet = {
         $('.btnNuevo').hide();
 
         $('#etapaRow').show();
+        $('#codBarras').hide();
         $('#ordenEmbarqueRow').hide();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -123,7 +132,7 @@ var EmbarqueTablet = {
         $('#idOrdenProduccion').text('Orden Produccion');
         $('#FechaCreacionOE').text('Fecha Creacion');
         $('#Observacion').text('Observacion');
-
+        $('#codBarras').hide();
         $('#ordenEmbarqueRow').show();
 
     },
@@ -136,57 +145,88 @@ var EmbarqueTablet = {
         $('#FechaCreacionOE').text(fecha);
         $('#Observacion').text(observacion);
         $('#buscar-General').modal('hide');
+        $('#codBarras').show();
         //Se carga el grid de EmbarqueTablet asignadas a la Orden
         $('#bbGrid-Embarques')[0].innerHTML = "";
-        //EmbarqueTablet.CargaGrid();
+        EmbarqueTablet.CargaGrid();
+    },
+    onBuscarCodBarras : function (){
+        var codigo = $('#codigoBarras').val(),
+            marca = '',
+            serie = '',
+            url = contextPath + "GenerarEmbarque/GenerarEmbarque",
+            data = '',
+            marcas = [],
+            arrCodigo = [];
 
-    },
-    IniciaDateControls: function () {
-        var form = EmbarqueTablet.activeForm;
-        $(form + ' #dtpFechaInicio').datetimepicker({ format: 'DD/MM/YYYY' });
-        $(form + ' #dtpFechaFin').datetimepicker({
-            useCurrent: false,
-            format: 'DD/MM/YYYY'
-        });
-        $(form + ' #dtpFechaInicio').on("dp.change", function (e) {
-            $('#dtpFechaFin').data("DateTimePicker").minDate(e.date);
-        });
-        $(form + ' #dtpFechaFin').on("dp.change", function (e) {
-            $('#dtpFechaInicio').data("DateTimePicker").maxDate(e.date);
-        });
-    },
-    serializaEmbarqueTablet: function (id) {
-        var form = EmbarqueTablet.activeForm;
-        return ({
-            'nombrePlanoMontaje': $(form + ' #nombrePlanoMontaje').val().toUpperCase(),
-            'fechaInicio': $(form + ' #fechaInicio').val(),
-            'fechaFin': $(form + ' #fechaFin').val(),
-            'nombreEstatus': $('#idEstatus option:selected').text().toUpperCase(),
-            'id': id
-        });
+        if (codigo.length >= 6) {
+            arrCodigo = codigo.split('-');
+            if (arrCodigo.length === 3) {
+                marca = parseInt(arrCodigo[1],10);
+                serie = arrCodigo[2];
+
+                marcas = EmbarqueTablet.colEmbarques.where({ idMarca: marca });
+
+                if (marcas.length > 0) {
+
+                    if (marcas[0].attributes.Saldo === 0) {
+                        CMI.DespliegaError("La marca del codigo (" + codigo + ") ya fue completada. El saldo es cero.");
+                        return;
+                    }
+
+                    data = 'idDetaOrdenEmb=' + marcas[0].id + 
+                           '&idMarca=' + marca +
+                           '&serie=' + serie + 
+                           '&origen=' + EmbarqueTablet.origen +
+                           '&idUsuario=' + localStorage.idUser;
+
+                    $.post(url, data, function (result) {
+                        if (result.Success === true) {
+                            marcas[0].attributes.piezasLeidas = marcas[0].attributes.piezasLeidas + 1;
+                            marcas[0].attributes.Saldo = marcas[0].attributes.Saldo - 1;
+                            //Actualiza el grid
+                            EmbarqueTablet.colEmbarques.add(marcas[0], { merge: true });
+                        } else {
+                            CMI.DespliegaError(result.Message);
+                        }
+                    });
+
+                } else {
+                    CMI.DespliegaError("La marca del codigo (" + codigo + ") no existe en la Orden de Embarque.");
+                }
+
+            } else {
+                CMI.DespliegaError("El codigo (" + codigo + ") no es valido.");
+            }
+        } else {
+            CMI.DespliegaError("El codigo (" + codigo + ") no es valido.");
+        }
     },
     CargaGrid: function () {
-        var url = contextPath + "GenerarEmbarque/CargaDetalleOrden?idEtapa=" + $('#idEtapaSelect').val(); // El url del controlador
+        var url = contextPath + "GenerarEmbarque/CargaDetalleOrden/" + $('#idOrdenEmbarSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             EmbarqueTablet.colEmbarques = new Backbone.Collection(data);
             var bolFilter = EmbarqueTablet.colEmbarques.length > 0 ? true : false;
             if (bolFilter) {
-                gridPlanosMontaje = new bbGrid.View({
+               EmbarqueTablet.gridEmbarque = new bbGrid.View({
                     container: $('#bbGrid-Embarques'),
-                    rows: 15,
-                    rowList: [5, 15, 25, 50, 100],
+                    enableTotal : true,
                     enableSearch: false,
-                    actionenable: true,
                     detalle: false,
-                    collection: PlanosMontaje.colEmbarques,
-                    seguridad: PlanosMontaje.accSeguridad,
-                    colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre PlanosMontaje', name: 'nombrePlanoMontaje', filter: true, filterType: 'input' },
-                               { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
-                               { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' },
-                               { title: 'Estatus', name: 'nombreEstatus', filter: true }]
+                    collection: EmbarqueTablet.colEmbarques,
+                    seguridad: false,
+                    colModel: [{ title: 'Orden Embarque', name: 'idOrdenEmbarque', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Proyecto', name: 'nombreProyecto', filter: true, filterType: 'input' },
+                               { title: 'Etapa', name: 'claveEtapa', filter: true, filterType: 'input' },
+                               { title: 'Nombre Pieza', name: 'nombreMarca', filter: true, filterType: 'input' },
+                               { title: 'Pieza', name: 'piezas', filter: true, filterType: 'input', total:0 },
+                               { title: 'Piezas Confir', name: 'piezasLeidas', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Saldo', name: 'Saldo', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Peso C/U', name: 'peso', filter: true, filterType: 'input' },
+                               { title: 'Peso Total', name: 'pesoTotal', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Nombre Plano', name: 'nombrePlano', filter: true, filterType: 'input' }]
                 });
                 $('#cargandoInfo').hide();
             }

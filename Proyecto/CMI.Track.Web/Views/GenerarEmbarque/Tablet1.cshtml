@@ -75,7 +75,7 @@
         <div class="col-sm-1"> <label class="control-label">Orden Embarque</label></div>
         <div class="col-sm-4">
             <div class="input-group">
-                <p id="idOrdenEmbarque" name="idOrdenEmbarque" class="form-control" title="Nombre Etapa"> IdOrdenEmbarque </p>
+                <p id="idOrdenEmbarque" name="idOrdenEmbarque" class="form-control" title="Id Orden Embarque"> Id Orden Embarque </p>
                 <span class="input-group-btn">
                     <button class="btn btn-secondary" type="button" id="btnBuscarOrdenEmbarque" name="btnBuscarOrdenEmbarque"><span class="fa fa-search"></span></button>
                 </span>
@@ -83,13 +83,30 @@
             <input type="hidden" id="idOrdenEmbarSelect" name="idOrdenEmbarSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="idOrdenProduccion" class="form-control" title="Fecha Fin">Orden Produccion</span>
+            <span id="idOrdenProduccion" class="form-control" title="Orden Produccion">Orden Produccion</span>
         </div>
         <div class="col-sm-2">
-            <span id="FechaCreacionOE" class="form-control" title="Fecha Inicio">Fecha Creacion</span>
+            <span id="FechaCreacionOE" class="form-control" title="Fecha Creacion">Fecha Creacion</span>
         </div>
         <div class="col-sm-3">
             <span id="Observacion" class="form-control" title="Observacion">Observacion</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="codBarras" style="display:none;">
+    <div class="col-sm-7"></div>
+    <div class="col-sm-2 text-right"> <label class="control-label">C. Barras</label></div>
+    <div class="col-sm-3">
+        <div class="input-group">
+            <input type="text" id="codigoBarras" name="codigoBarras" class="form-control" title="Codigo de Barras" placeholder="Codigo de Barras" />
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" id="btnBuscarCodigoBarra" name="btnBuscarCodigoBarra"><span class="fa fa-search"></span></button>
+            </span>
         </div>
     </div>
 </div>

@@ -72,6 +72,7 @@
     <Compile Include="Material\Material.cs" />
     <Compile Include="MovimientoMaterial\ListaMovimientoMaterial.cs" />
     <Compile Include="MovimientoMaterial\MovimientoMaterial.cs" />
+    <Compile Include="OrdenEmbarque\DetalleOrdenEmbarque.cs" />
     <Compile Include="OrdenEmbarque\ListaOrdenEmbarque.cs" />
     <Compile Include="OrdenProduccion\ListaDetalleOrdenProduccion.cs" />
     <Compile Include="OrdenProduccion\OrdenProduccion.cs" />
