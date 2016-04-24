@@ -1,178 +1,207 @@
-INSERT INTO cmiEstatus Values (0,getdate(), 'INACTIVO')
-INSERT INTO cmiEstatus Values (1,getdate(), 'ACTIVO')
+USE CMITrackVer1
+/*
+	Configuracion inicial
+	---------------------
+	1.  Estatus.
+	2.  Departamentos.
+	3.  Usuarios.
+	4.  VarControl.
+	5.  Menus.
+	6.  Tipos de Calidad.
+	7.  Tipos de Proceso.
+	8.  Procesos.
+	9.  Calidad Proceso.
+	10. Unidades de Medida.
+*/
 
-INSERT INTO cmiEstatus Values (10,getdate(), 'ABIERTO')
-INSERT INTO cmiEstatus Values (11,getdate(), 'CERRADO')
+BEGIN -- 1. Estatus
+	INSERT INTO cmiEstatus VALUES (0, GETDATE(), 'INACTIVO')
+	INSERT INTO cmiEstatus VALUES (1, GETDATE(), 'ACTIVO')
 
-INSERT INTO [dbo].[cmiEstatus] ([idEstatus],[fechaCreacion],[nombreEstatus]) 
-VALUES (20,'2016-03-25','LIBERADO'),(21,'2016-03-25','RECHAZADO');
+	INSERT INTO cmiEstatus VALUES (10, GETDATE(), 'ABIERTO')
+	INSERT INTO cmiEstatus VALUES (11, GETDATE(), 'CERRADO')
 
-GO
+	INSERT INTO cmiEstatus VALUES (20, GETDATE(),'LIBERADO')
+	INSERT INTO cmiEstatus VALUES (21, GETDATE(),'RECHAZADO')
+END
 
-INSERT INTO [cmiDepartamentos]([fechaCreacion],[fechaUltModificacion]
-            ,[idEstatus],[nombreDepartamento]  ,[usuarioCreacion])
-     VALUES(getdate()  ,getdate() ,1 ,'Admin'   ,null)
-GO
-INSERT INTO [cmiUsuarios]
-           ([fechaCreacion] ,[fechaUltModificacion]
-           ,[idEstatus] ,[nombreUsuario]
-           ,[puestoUsuario] ,[areaUsuario]
-           ,[idDepartamento] ,[emailUsuario]
-           ,[loginUsuario] ,[passwordUsuario]
-           ,[autorizaRequisiciones],[apePaternoUsuario]
-           ,[apeMaternoUsuario],[idProcesoOrigen]
-           ,[idProcesoDestino])
-     VALUES
-           (getdate(),getdate()
-           ,1,'DAVID'
-           ,'TEM' ,'AREA'
-           ,1 ,'DAVID@HOT.COM'
-           ,'DGALVAN'  ,'1'
-           ,1 ,'GALVAN'
-           ,'DOMIN'  ,NULL
-           ,NULL)
-GO
+BEGIN -- 2. Departamentos
+	INSERT INTO cmiDepartamentos (fechaCreacion, fechaUltModificacion, idEstatus, nombreDepartamento, usuarioCreacion)
+						VALUES	 (GETDATE(), GETDATE(), 1, 'Admin', null)
+END
 
-insert into cmiVarControl values('TBL','PRO','0',1,GETDATE())
+BEGIN -- 3. Usuarios
+	INSERT INTO cmiUsuarios (fechaCreacion, 	fechaUltModificacion, 	idEstatus, 		nombreUsuario, 		puestoUsuario, 			areaUsuario
+							,idDepartamento, 	emailUsuario, 			loginUsuario, 	passwordUsuario, 	autorizaRequisiciones,	apePaternoUsuario
+							,apeMaternoUsuario,	idProcesoOrigen,		idProcesoDestino)
+					VALUES	(GETDATE(), 		GETDATE(), 				1, 				'ADMIN', 			'ADMIN' ,				'ADMIN'
+							,1,					'ADMIN@CMI.TRACK.COM'	,'ADMIN',		'1',				1,						'CMI'
+							,'TRACK',			NULL,					NULL)
+	
+	INSERT INTO cmiPermisos VALUES (1,1,GETDATE(),GETDATE(),1,1,1,1,1,1)
+	INSERT INTO cmiPermisos VALUES (1,2,GETDATE(),GETDATE(),1,1,1,1,1,1)
+	INSERT INTO cmiPermisos VALUES (1,3,GETDATE(),GETDATE(),1,1,1,1,1,1)
+END
 
-select * from cmiMenuGrupo
+BEGIN -- 4. VarControl
+	INSERT INTO cmiVarControl VALUES('TBL', 'PRO', '0', 1, GETDATE())
+END
 
-Insert into cmiMenuGrupo VALUES (1,'Usuarios','fa-users',getdate(),getdate(),1,1)
-Insert into cmiMenuGrupo VALUES (2,'General','fa-database',getdate(),getdate(),1,1)
-Insert into cmiMenuGrupo VALUES (3,'Ingenieria','fa-university',getdate(),getdate(),1,1)
-Insert into cmiMenuGrupo VALUES (4,'Requisiciones','fa-file-text',getdate(),getdate(),1,1)
-Insert into cmiMenuGrupo VALUES (5,'Produccion','fa-dashboard',getdate(),getdate(),1,1)
-Insert into cmiMenuGrupo VALUES (6,'Embarque','fa-truck',getdate(),getdate(),1,1)
+BEGIN -- 5. Menus
+	--| MENU GRUPO |--
+	
+	-- SELECT * FROM cmiMenuGrupo
+	
+	INSERT INTO cmiMenuGrupo VALUES (1,'Usuarios',		'fa-users', 	GETDATE(),GETDATE(),1,1)
+	INSERT INTO cmiMenuGrupo VALUES (2,'General',		'fa-database',	GETDATE(),GETDATE(),1,1)
+	INSERT INTO cmiMenuGrupo VALUES (3,'Ingenieria',	'fa-university',GETDATE(),GETDATE(),1,1)
+	INSERT INTO cmiMenuGrupo VALUES (4,'Requisiciones',	'fa-file-text',	GETDATE(),GETDATE(),1,1)
+	INSERT INTO cmiMenuGrupo VALUES (5,'Produccion',	'fa-dashboard',	GETDATE(),GETDATE(),1,1)
+	INSERT INTO cmiMenuGrupo VALUES (6,'Embarque',		'fa-truck',		GETDATE(),GETDATE(),1,1)
+	
+	--| MODULOS |--
+	
+	-- SELECT * FROM cmiModulos
+	--Usuarios
+	INSERT INTO cmiModulos VALUES (1, GETDATE(),GETDATE(),1,'Usuario',						'Usuario/Index',				1)
+	INSERT INTO cmiModulos VALUES (2, GETDATE(),GETDATE(),1,'Departamento',					'Departamento/Index',			2)
+	INSERT INTO cmiModulos VALUES (3, GETDATE(),GETDATE(),1,'Permisos',						'',								3)
+	--General
+	INSERT INTO cmiModulos VALUES (4,GETDATE(),GETDATE(),1,'Almacen',						'Almacen/Index',				1)
+	INSERT INTO cmiModulos VALUES (5,GETDATE(),GETDATE(),1,'Tipo Calidad',					'TipoCalidad/Index',			2)
+	INSERT INTO cmiModulos VALUES (6,GETDATE(),GETDATE(),1,'Calidad-Proceso',				'CalidadProceso/Index',			3)
+	INSERT INTO cmiModulos VALUES (7,GETDATE(),GETDATE(),1,'Categoria',						'Categoria/Index',				4)
+	INSERT INTO cmiModulos VALUES (8,GETDATE(),GETDATE(),1,'Clientes',						'Cliente/Index',				5)
+	INSERT INTO cmiModulos VALUES (9,GETDATE(),GETDATE(),1,'Grupos Material',				'Grupo/Index',					6)
+	INSERT INTO cmiModulos VALUES (10,GETDATE(),GETDATE(),1,'Materiales',					'Material/Index',				7)
+	INSERT INTO cmiModulos VALUES (11,GETDATE(),GETDATE(),1,'Origen Requisicion',			'OrigenRequisicion/Index',		8)
+	INSERT INTO cmiModulos VALUES (12,GETDATE(),GETDATE(),1,'Procesos',						'Proceso/Index',				9)
+	INSERT INTO cmiModulos VALUES (13,GETDATE(),GETDATE(),1,'Rutas de Fabricacion', 		'RutaFabricacion/Index',		10)
+	INSERT INTO cmiModulos VALUES (14,GETDATE(),GETDATE(),1,'Tipo Construccion',			'TipoConstruccion/Index',		11)
+	INSERT INTO cmiModulos VALUES (15,GETDATE(),GETDATE(),1,'Tipo Proceso',					'TipoProceso/Index',			12)
+	INSERT INTO cmiModulos VALUES (16,GETDATE(),GETDATE(),1,'Tipo Material',				'TipoMaterial/Index',			13)
+	INSERT INTO cmiModulos VALUES (17,GETDATE(),GETDATE(),1,'Tipos Movtos Mat',				'TipoMovtoMaterial/Index',		14)
+	INSERT INTO cmiModulos VALUES (18,GETDATE(),GETDATE(),1,'Unidad de Medida',				'UnidadMedida/Index',			15)
+	--Ingenieria
+	INSERT INTO cmiModulos VALUES (19,GETDATE(),GETDATE(),1,'Proyecto',						'Proyecto/Index',				1)
+	INSERT INTO cmiModulos VALUES (20,GETDATE(),GETDATE(),1,'Etapa',						'Etapa/Index',					2)
+	INSERT INTO cmiModulos VALUES (21,GETDATE(),GETDATE(),1,'Planos de Montaje',			'PlanosMontaje/Index',			3)
+	INSERT INTO cmiModulos VALUES (22,GETDATE(),GETDATE(),1,'Planos Despiece',				'PlanosDespiece/Index',			4)
+	INSERT INTO cmiModulos VALUES (23,GETDATE(),GETDATE(),1,'Marcas',						'Marcas/Index',					5)
+	INSERT INTO cmiModulos VALUES (24,GETDATE(),GETDATE(),1,'SubMarcas',					'SubMarcas/Index',				6)
+	INSERT INTO cmiModulos VALUES (25,GETDATE(),GETDATE(),1,'Lista General',				'ListaGeneral/Index',			7)
+	INSERT INTO cmiModulos VALUES (26,GETDATE(),GETDATE(),1,'General Documentos',			'GenerarDocume/Index',			8)
+	--Requisiciones
+	INSERT INTO cmiModulos VALUES (27,GETDATE(),GETDATE(),1,'Requerimiento',				'ReqGralMaterial/Index',		1)
+	INSERT INTO cmiModulos VALUES (28,GETDATE(),GETDATE(),1,'Requisicion Manual',			'ReqManualCompra/Index',		2)
+	INSERT INTO cmiModulos VALUES (29,GETDATE(),GETDATE(),1,'Autorizar Requisicion',		'ReqManualCompra/Autorizar',	3)
+	INSERT INTO cmiModulos VALUES (30,GETDATE(),GETDATE(),1,'Recepcion Requisicion Compra',	'RecepcionRequisicion/Index',	4)
+	INSERT INTO cmiModulos VALUES (31,GETDATE(),GETDATE(),1,'Asigna Materiales Proyecto',	'AsignaProyecto/Index',			5)
+	INSERT INTO cmiModulos VALUES (32,GETDATE(),GETDATE(),1,'Movimientos Materiales',		'MovimientoMaterial/Index',		6)
+	INSERT INTO cmiModulos VALUES (33,GETDATE(),GETDATE(),1,'Kardex',						'Kardex/Index',					7)
+	--Produccion
+	INSERT INTO cmiModulos VALUES (34,GETDATE(),GETDATE(),1,'Orden de Produccion',			'OrdenProduccion/Index',		1)
+	INSERT INTO cmiModulos VALUES (35,GETDATE(),GETDATE(),1,'Impresion Codigos Barra',		'ImpresionCodigoBarra/Index',	2)
+	INSERT INTO cmiModulos VALUES (36,GETDATE(),GETDATE(),1,'Avance/Registro Calidad',		'Avance/Index',					3)
+	INSERT INTO cmiModulos VALUES (37,GETDATE(),GETDATE(),1,'Reportes Produccion',			'ReportesProduccion/Index',		4)
+	--Embarque
+	INSERT INTO cmiModulos VALUES (38,GETDATE(),GETDATE(),1,'Orden de Embarque',			'OrdenEmbarque/Index',			1)
+	INSERT INTO cmiModulos VALUES (39,GETDATE(),GETDATE(),1,'Embarque Tablet 1',			'GenerarEmbarque/Tablet1',		2)
+	INSERT INTO cmiModulos VALUES (40,GETDATE(),GETDATE(),1,'Embarque Tablet 2',			'GenerarEmbarque/Tablet2',		3)
+	INSERT INTO cmiModulos VALUES (41,GETDATE(),GETDATE(),1,'Remision',						'Remision/Index',				4)
+	
+	--| MODULOS - MENU GRUPO |--
+	
+	-- SELECT * FROM cmiModuloMenuGrupo
+	--Usuarios
+	INSERT INTO cmiModuloMenuGrupo VALUES (1,1)
+	INSERT INTO cmiModuloMenuGrupo VALUES (1,2)
+	INSERT INTO cmiModuloMenuGrupo VALUES (1,3)
+	--General
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,4)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,5)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,6)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,7)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,8)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,9)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,10)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,11)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,12)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,13)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,14)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,15)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,16)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,17)
+	INSERT INTO cmiModuloMenuGrupo VALUES (2,18)
+	--Ingenieria
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,19)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,20)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,21)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,22)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,23)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,24)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,25)
+	INSERT INTO cmiModuloMenuGrupo VALUES (3,26)
+	--Requisiciones
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,27)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,28)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,29)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,30)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,31)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,32)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,33)
+	--Produccion
+	INSERT INTO cmiModuloMenuGrupo VALUES (5,34)
+	INSERT INTO cmiModuloMenuGrupo VALUES (5,35)
+	INSERT INTO cmiModuloMenuGrupo VALUES (5,36)
+	INSERT INTO cmiModuloMenuGrupo VALUES (5,37)
+	--Embarque
+	INSERT INTO cmiModuloMenuGrupo VALUES (6,38)
+	INSERT INTO cmiModuloMenuGrupo VALUES (6,39)
+	INSERT INTO cmiModuloMenuGrupo VALUES (6,40)
+	INSERT INTO cmiModuloMenuGrupo VALUES (6,41)
+END
 
+BEGIN -- 6. Tipos de Calidad
+	INSERT INTO cmiTiposCalidad (fechaCreacion,	fechaUltModificacion,	idEstatus,	nombreTipoCalidad,	usuarioCreacion)
+						VALUES	(GETDATE(),		GETDATE(),				1,			'LONGITUD',			1),
+								(GETDATE(),		GETDATE(),				1,			'BARRENACION',		1),
+								(GETDATE(),		GETDATE(),				1,			'PLACA',			1),
+								(GETDATE(),		GETDATE(),				1,			'SOLDADURA',		1),
+								(GETDATE(),		GETDATE(),				1,			'PINTURA',			1)
+END
 
+BEGIN -- 7. Tipos de Proceso
+	INSERT INTO cmiTiposProceso (fechaCreacion,	fechaUltModificacion,	idEstatus,	nombreTipoProceso,	usuarioCreacion)
+						VALUES	(GETDATE(),		GETDATE(),				1,			'PRODUCTIVO',		1),
+								(GETDATE(),		GETDATE(),				1,			'CALIDAD',			1)
+END
 
-INSERT INTO cmiModulos Values (1,getdate(), getdate(),1,'Usuario','Usuario/Index',1)
-INSERT INTO cmiModulos Values (2,getdate(), getdate(),1,'Departamento','Departamento/Index',2)
-INSERT INTO cmiModulos Values (3,getdate(), getdate(),1,'Permisos','',3)
+BEGIN -- 8. Procesos
+	INSERT INTO cmiProcesos (fechaCreacion,	fechaUltModificacion,	idEstatus,	nombreProceso,		idTipoProceso,	usuarioCreacion,	claseAvance)
+					VALUES	(GETDATE(),		GETDATE(),				1,			'CORTE',			1,				1,					'S'),
+							(GETDATE(),		GETDATE(),				1,			'PANTOGRAFO',		1,				1,					'S'),
+							(GETDATE(),		GETDATE(),				1,			'ENSAMBLE',			1,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'CALIDAD ENSAMBLE',	2,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'SOLDADURA',		1,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'CALIDAD SOLDADURA',2,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'LIMPIEZA',			1,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'PINTURA',			1,				1,					'M'),
+							(GETDATE(),		GETDATE(),				1,			'EMBARQUE',			2,				1,					'M')
+END
 
-INSERT INTO cmiModulos Values (4,getdate(), getdate(),1,'Tipo Construccion','TipoConstruccion/Index',11)
-INSERT INTO cmiModulos Values (5,getdate(), getdate(),1,'Categoria','Categoria/Index',4)
-INSERT INTO cmiModulos Values (6,getdate(), getdate(),1,'Tipo Proceso','TipoProceso/Index',12)
-INSERT INTO cmiModulos Values (7,getdate(), getdate(),1,'Procesos','Proceso/Index',9)
-INSERT INTO cmiModulos Values (8,getdate(), getdate(),1,'Rutas de Fabricacion','RutaFabricacion/Index',10)
-INSERT INTO cmiModulos Values (9,getdate(), getdate(),1,'Tipo Material','TipoMaterial/Index',13)
-INSERT INTO cmiModulos Values (10,getdate(), getdate(),1,'Unidad de Medida','UnidadMedida/Index',15)
-INSERT INTO cmiModulos Values (11,getdate(), getdate(),1,'Tipo Calidad','TipoCalidad/Index',2)
-INSERT INTO cmiModulos Values (12,getdate(), getdate(),1,'Calidad-Proceso','CalidadProceso/Index',3)
-INSERT INTO cmiModulos Values (13,getdate(), getdate(),1,'Grupos Material','Grupo/Index',6)
-INSERT INTO cmiModulos Values (14,getdate(), getdate(),1,'Almacen','Almacen/Index',1)
-INSERT INTO cmiModulos Values (15,getdate(), getdate(),1,'Materiales','Material/Index',7)
-INSERT INTO cmiModulos Values (16,getdate(), getdate(),1,'Tipos Movtos Mat','TipoMovtoMaterial/Index',14)
-INSERT INTO cmiModulos Values (17,getdate(), getdate(),1,'Clientes','Cliente/Index',5)
-INSERT INTO cmiModulos Values (18,getdate(), getdate(),1,'Origen Requisicion','OrigenRequisicion/Index',8)
+BEGIN -- 9. Calidad Proceso
+	INSERT INTO cmiCalidadProceso	(idProceso,	idTipoCalidad,	fechaCreacion,	fechaUltModificacion,	secuenciaCalidadProceso,	idEstatus,	usuarioCreacion)
+						VALUES		(4,			1,				GETDATE(),		GETDATE(),				1,							1,			1),
+									(4,			2,				GETDATE(),		GETDATE(),				2,							1,			1),
+									(6,			4,				GETDATE(),		GETDATE(),				1,							1,			1),
+									(6,			5,				GETDATE(),		GETDATE(),				2,							1,			1)
+									
+END
 
-INSERT INTO cmiModulos Values (20,getdate(), getdate(),1,'Proyecto','Proyecto/Index',1)
-INSERT INTO cmiModulos Values (21,getdate(), getdate(),1,'Etapa','Etapa/Index',2)
-INSERT INTO cmiModulos Values (22,getdate(), getdate(),1,'Planos de Montaje','PlanosMontaje/Index',3)
-INSERT INTO cmiModulos Values (23,getdate(), getdate(),1,'Planos Despiece','PlanosDespiece/Index',4)
-INSERT INTO cmiModulos Values (24,getdate(), getdate(),1,'Marcas','Marcas/Index',5)
-INSERT INTO cmiModulos Values (25,getdate(), getdate(),1,'SubMarcas','SubMarcas/Index',6)
-INSERT INTO cmiModulos Values (26,getdate(), getdate(),1,'Lista General','ListaGeneral/Index',7)
-INSERT INTO cmiModulos Values (27,getdate(), getdate(),1,'General Documentos','GenerarDocume/Index',8)
-
-INSERT INTO cmiModulos Values (30,getdate(), getdate(),1,'Requerimiento','ReqGralMaterial/Index',1)
-INSERT INTO cmiModulos Values (31,getdate(), getdate(),1,'Requisicion Manual','ReqManualCompra/Index',2)
-INSERT INTO cmiModulos Values (32,getdate(), getdate(),1,'Autorizar Requisicion','ReqManualCompra/Autorizar',3)
-INSERT INTO cmiModulos Values (33,getdate(), getdate(),1,'Recepcion Requisicion Compra','RecepcionRequisicion/Index',4)
-INSERT INTO cmiModulos Values (34,getdate(), getdate(),1,'Asigna Materiales Proyecto','AsignaProyecto/Index',5)
-INSERT INTO cmiModulos Values (35,getdate(), getdate(),1,'Movimientos Materiales','MovimientoMaterial/Index',6)
-INSERT INTO cmiModulos Values (36,getdate(), getdate(),1,'Kardex','Kardex/Index',7)
-
-INSERT INTO cmiModulos Values (40,getdate(), getdate(),1,'Orden de Produccion','OrdenProduccion/Index',1)
-INSERT INTO cmiModulos Values (41,getdate(), getdate(),1,'Impresion Codigos Barra','ImpresionCodigoBarra/Index',2)
-INSERT INTO cmiModulos Values (42,getdate(), getdate(),1,'Avance/Registro Calidad','Avance/Index',3)
-INSERT INTO cmiModulos VALUES (43, GETDATE(), GETDATE(), 1, 'Reportes Produccion', 'ReportesProduccion/Index', 4)
-
-INSERT INTO cmiModulos Values (50,getdate(), getdate(),1,'Orden de Embarque','OrdenEmbarque/Index',1)
-INSERT INTO cmiModulos Values (51,getdate(), getdate(),1,'Generar Embarque Tablet 1','GenerarEmbarque/Tablet1',2)
-INSERT INTO cmiModulos Values (52,getdate(), getdate(),1,'Generar Embarque Tablet 2','GenerarEmbarque/Tablet2',3)
-INSERT INTO cmiModulos Values (53,getdate(), getdate(),1,'Generar Remision','Remision/Index',4)
-
-select * from cmiModulos
-
-INSERT INTO cmiModuloMenuGrupo values (1,1)
-INSERT INTO cmiModuloMenuGrupo values (1,2)
-INSERT INTO cmiModuloMenuGrupo values (1,3)
-
-INSERT INTO cmiModuloMenuGrupo values (2,4)
-INSERT INTO cmiModuloMenuGrupo values (2,5)
-INSERT INTO cmiModuloMenuGrupo values (2,6)
-INSERT INTO cmiModuloMenuGrupo values (2,7)
-INSERT INTO cmiModuloMenuGrupo values (2,8)
-INSERT INTO cmiModuloMenuGrupo values (2,9)
-INSERT INTO cmiModuloMenuGrupo values (2,10)
-INSERT INTO cmiModuloMenuGrupo values (2,11)
-INSERT INTO cmiModuloMenuGrupo values (2,12)
-INSERT INTO cmiModuloMenuGrupo values (2,13)
-INSERT INTO cmiModuloMenuGrupo values (2,14)
-INSERT INTO cmiModuloMenuGrupo values (2,15)
-INSERT INTO cmiModuloMenuGrupo values (2,16)
-INSERT INTO cmiModuloMenuGrupo values (2,17)
-INSERT INTO cmiModuloMenuGrupo values (2,18)
-
-INSERT INTO cmiModuloMenuGrupo values (3,20)
-INSERT INTO cmiModuloMenuGrupo values (3,21)
-INSERT INTO cmiModuloMenuGrupo values (3,22)
-INSERT INTO cmiModuloMenuGrupo values (3,23)
-INSERT INTO cmiModuloMenuGrupo values (3,24)
-INSERT INTO cmiModuloMenuGrupo values (3,25)
-INSERT INTO cmiModuloMenuGrupo values (3,26)
-INSERT INTO cmiModuloMenuGrupo values (3,27)
-
---Requisiciones
-INSERT INTO cmiModuloMenuGrupo values (4,30)
-INSERT INTO cmiModuloMenuGrupo values (4,31)
-INSERT INTO cmiModuloMenuGrupo values (4,32)
-INSERT INTO cmiModuloMenuGrupo values (4,33)
-INSERT INTO cmiModuloMenuGrupo values (4,34)
-INSERT INTO cmiModuloMenuGrupo values (4,35)
-INSERT INTO cmiModuloMenuGrupo values (4,36)
---Produccion
-INSERT INTO cmiModuloMenuGrupo values (5,40)
-INSERT INTO cmiModuloMenuGrupo values (5,41)
-INSERT INTO cmiModuloMenuGrupo values (5,42)
-INSERT INTO cmiModuloMenuGrupo  VALUES (5,43)
-
---Embarque
-INSERT INTO cmiModuloMenuGrupo values (6,50)
-INSERT INTO cmiModuloMenuGrupo values (6,51)
-INSERT INTO cmiModuloMenuGrupo values (6,52)
-INSERT INTO cmiModuloMenuGrupo  VALUES (6,53)
-
-select * from cmiModuloMenuGrupo
-go
-
-INSERT INTO [cmiPermisos] VALUES (1 ,1 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,2 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,3 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,4 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,5 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,6 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,7 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,8 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,9 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,11 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,12 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,13 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,14 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,15 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,16 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,17 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,18 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-INSERT INTO [cmiPermisos] VALUES (1 ,20 ,getdate(),getdate() ,1,1 ,1,1 ,1 ,1)
-
-GO
-
---Catalogos 
-
---Categorias
---Origenes Requisicion
---Procesos
---Tipos de Procesos
---Tipos de Movimientos de Material
---Unidad de Medida
+BEGIN -- 10. Unidades de Medida
+	INSERT INTO cmiUnidadesMedida	(fechaCreacion,	fechaUltModificacion,	idEstatus,	nombreCortoUnidadMedida,	nombreUnidadMedida,	usuarioCreacion)
+							VALUES	(GETDATE(),		GETDATE(),				1,			'M',						'METRO/S',			1),
+									(GETDATE(),		GETDATE(),				1,			'KG',						'KILOGRAMO/S',		1),
+									(GETDATE(),		GETDATE(),				1,			'PT',						'PIEZA/S',			1)
+END
