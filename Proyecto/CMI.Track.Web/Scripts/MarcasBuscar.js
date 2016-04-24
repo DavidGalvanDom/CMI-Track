@@ -1,48 +1,50 @@
-﻿//js de lista de Marcas.
-//David Galvan
-//01/Marzo/2016
-var MarcasBuscar = {
+﻿//js de lista de Materiales.
+//David Jasso
+//17/Febrero/2016
+var MarcaBuscar = {
     colMarcas: {},
-    idPlanoDespiece: 0,
+    idProyecto: 0,
+    idEtapa: 0,
     parent: {},
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
     },
     onSeleccionar: function (idRow) {
-        var rowSelected = MarcasBuscar.colMarcas.get(idRow);
-        MarcasBuscar.parent.AsignaMarca(rowSelected.attributes.id,
-                                        rowSelected.attributes.nombreMarca,
-                                        rowSelected.attributes.codigoMarca,
-                                        rowSelected.attributes.Piezas);
+        var rowSelected = MarcaBuscar.colMarcas.get(idRow);
+        MarcaBuscar.parent.AsignaMarca(rowSelected.attributes.id);
     },
     CargaGrid: function () {
-        $('#cargandoInfoMA').show();
-        var url = contextPath + "Marcas/CargaMarcasActivas?idPlanoDespiece=" + MarcasBuscar.idPlanoDespiece; // El url del controlador
+        $('#cargandoInfoBM').show();
+        var url = contextPath + "OrdenEmbarque/CargaMarcas?idProyecto=" + MarcaBuscar.idProyecto + "&idEtapa=" + MarcaBuscar.idEtapa; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaErrorDialogo(data.Message); return; }
-            MarcasBuscar.colMarcas = new Backbone.Collection(data);
-            var bolFilter = MarcasBuscar.colMarcas.length > 0 ? true : false;
+            MarcaBuscar.colMarcas = new Backbone.Collection(data);
+            var bolFilter = MarcaBuscar.colMarcas.length > 0 ? true : false;
             if (bolFilter) {
-                gridMarcas = new bbGrid.View({
+                gridMarca = new bbGrid.View({
                     container: $('#bbGrid-buscaMarcas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
                     actionenable: false,
                     detalle: false,
-                    collection: MarcasBuscar.colMarcas,
+                    collection: MarcaBuscar.colMarcas,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'nombreMarca', filter: true, filterType: 'input' },
-                               { title: 'Codigo', name: 'codigoMarca', filter: true, filterType: 'input' },
-                               { title: 'Piezas', name: 'Piezas', filter: true, filterType: 'input' }],
+                               { title: 'Proyecto', name: 'NombreProyecto', filter: true, filterType: 'input' },
+                               { title: 'Etapa', name: 'idEtapa', filter: true, filterType: 'input' },
+                               { title: 'Marca', name: 'NombreMarca', filter: true, filterType: 'input' },
+                               { title: 'Piezas', name: 'Piezas', filter: true, filterType: 'input' },
+                               { title: 'Peso', name: 'Peso', filter: true, filterType: 'input' },
+                               { title: 'Total', name: 'Total', filter: true, filterType: 'input' },
+                               { title: 'Plano', name: 'NombrePlano', filter: true, filterType: 'input' }],
                     onRowDblClick: function () {
-                        MarcasBuscar.onSeleccionar(this.selectedRows[0]);
+                        MarcaBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });
-                $('#cargandoInfoMA').hide();
+                $('#cargandoInfoBM').hide();
             } else {
-                CMI.DespliegaInformacionDialogo("No se encontraron Marcas registradas");
+                CMI.DespliegaInformacionDialogo("No se encontraron Marcas.");
                 $('#bbGrid-buscaMarcas')[0].innerHTML = "";
             }
             //getJSON fail

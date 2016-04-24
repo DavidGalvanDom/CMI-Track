@@ -12,7 +12,7 @@ var TipoConstruccion = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();
+        this.ValidaPermisos();       
     },
     Eventos: function () {
         var that = this;
@@ -23,7 +23,7 @@ var TipoConstruccion = {
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
-        });
+        });       
 
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
@@ -36,6 +36,7 @@ var TipoConstruccion = {
     
     onGuardar: function (e) {
         var btn = this;
+
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -44,7 +45,7 @@ var TipoConstruccion = {
                 $("#NuevoTipoConstruccionForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id,'#NuevoTipoConstruccionForm'));
+                        TipoConstruccion.colTiposConstruccion.add(TipoConstruccion.serializaTipoConstruccion(data.id, '#NuevoTipoConstruccionForm'));
                         CMI.DespliegaInformacion('El Tipo de construccion fue guardado con el Id: ' + data.id);
                         $('#nuevo-tipoconstruccion').modal('hide');
                         if (TipoConstruccion.colTiposConstruccion.length === 1) {
@@ -86,9 +87,9 @@ var TipoConstruccion = {
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "TipoConstruccion/Nuevo"; // El url del controlador
+        var url = contextPath + "TipoConstruccion/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-tipoconstruccion').html(data);
+            $('#nuevo-tipoconstruccion').html(data);           
             $('#nuevo-tipoconstruccion').modal({
                 backdrop: 'static',
                 keyboard: true
@@ -156,7 +157,7 @@ var TipoConstruccion = {
             'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
-
+        
     },
     CargaGrid: function () {
         $('#cargandoInfo').show();

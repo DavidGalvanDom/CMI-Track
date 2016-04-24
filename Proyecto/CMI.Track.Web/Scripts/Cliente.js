@@ -12,7 +12,7 @@ var Cliente = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();
+        this.ValidaPermisos();       
     },
     Eventos: function () {
         var that = this;
@@ -23,7 +23,7 @@ var Cliente = {
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
-        });
+        });       
 
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
@@ -33,15 +33,17 @@ var Cliente = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
+    
     onGuardar: function (e) {
         var btn = this;
+
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Cliente/Nuevo",
                 $("#NuevoClienteForm *").serialize(),
-                function (data) {
+                function (data) {                    
                     if (data.Success == true) {
                         Cliente.colClientes.add(Cliente.serializaCliente(data.id, '#NuevoClienteForm'));
                         CMI.DespliegaInformacion('El cliente fue guardado con el Id: ' + data.id);
@@ -55,9 +57,10 @@ var Cliente = {
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
         } else {
             CMI.botonMensaje(false, btn, 'Guardar');
-        }
+        }       
     },
     onActualizar: function (e) {
         var btn = this;
@@ -77,15 +80,18 @@ var Cliente = {
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
         } else {
+
             CMI.botonMensaje(false, btn, 'Guardar');
-        }
+        }  
+          
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Cliente/Nuevo"; // El url del controlador
+        var url = contextPath + "Cliente/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-cliente').html(data);
+            $('#nuevo-cliente').html(data);           
             $('#nuevo-cliente').modal({
                 backdrop: 'static',
                 keyboard: true
@@ -160,7 +166,7 @@ var Cliente = {
             'PaisCliente': $(from + ' #PaisCliente').val().toUpperCase(),
             'Estatus': $(from + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
-        });
+        });        
     },
     CargaGrid: function () {
         $('#cargandoInfo').show();

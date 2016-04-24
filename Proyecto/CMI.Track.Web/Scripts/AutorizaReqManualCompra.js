@@ -61,10 +61,10 @@ var ReqMCompra = {
         $.post(url, data, function (result) {
             if (result.Success === true) {
                 CMI.DespliegaInformacion('Requisicion Autorizada');
+                $('#Autorizar').hide();
             } else {
               //  $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
-                ListaGeneral.ExportarExcel(result.excel);
                 CMI.botonMensaje(false, btn, 'Autorizar');
             }
         }).fail(function () {
@@ -85,10 +85,11 @@ var ReqMCompra = {
         $.post(url, data, function (result) {
             if (result.Success === true) {
                 CMI.DespliegaInformacion('Requisicion Rechazada');
+                $('#Autorizar').hide();
             } else {
                 //  $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
-                ListaGeneral.ExportarExcel(result.excel);
+                
                 CMI.botonMensaje(false, btn, 'Rechazar');
             }
         }).fail(function () {

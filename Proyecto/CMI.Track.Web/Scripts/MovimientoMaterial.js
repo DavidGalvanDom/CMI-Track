@@ -15,7 +15,6 @@ var MovtoMaterial = {
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
-        $('#Imprimir').show();
         this.Eventos();
         this.ValidaPermisos();
 
@@ -65,8 +64,8 @@ var MovtoMaterial = {
         var tablaheader;
         var total = 0;
         var tcompleta = ''
-        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var f = new Date();
+        if ($('#idDoc').val() != "undefined") {
         $.get(templateURL, function (data) { rptTemplate = data; });
         var urlHeader = contextPath + "MovimientoMaterial/CargaHeaderMovimientos?id=" + $('#idDoc').val(); // El url del controlador
         $.getJSON(urlHeader, function (data) {
@@ -101,7 +100,7 @@ var MovtoMaterial = {
                 }
 
                 rptTemplate = rptTemplate.replace('vrTotal', total);
-                rptTemplate = rptTemplate.replace('vrImagen', urlImagen);
+                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
                 tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
@@ -118,7 +117,10 @@ var MovtoMaterial = {
             });
         });
 
-
+        }
+        else {
+            CMI.DespliegaError("Favor de seleccionar documento");
+        }
     },
     onGuardar: function (e) {
        
@@ -418,9 +420,11 @@ var MovtoMaterial = {
                 });
                 
                 $('#cargandoInfo').hide();
+                $('#Imprimir').show();
                 
             } else {
-                CMI.DespliegaInformacion("No se encontraron movimeintos registrados");
+                CMI.DespliegaInformacion("No se encontraron movimientos registrados");
+                $('#Imprimir').hide();
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
 

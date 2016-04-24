@@ -157,7 +157,7 @@ var TipoMovtoMaterial = {
         return ({
             'NombreTipoMovtoMaterial': $(form + ' #NombreTipoMovtoMaterial').val().toUpperCase(),
             'TipoMovimiento': $(form + ' #TipoMovimiento').val().toUpperCase(),
-            'Estatus': $(form + ' #Estatus').val(),
+            'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
         

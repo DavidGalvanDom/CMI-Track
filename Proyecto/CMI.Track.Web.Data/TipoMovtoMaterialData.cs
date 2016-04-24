@@ -115,7 +115,7 @@ namespace CMI.Track.Web.Data
                             id = Convert.ToInt32(dataReader["idTipoMovtoMaterial"]),
                             NombreTipoMovtoMaterial = Convert.ToString(dataReader["nombreTipoMovtoMaterial"]),
                             TipoMovimiento = Convert.ToString(dataReader["tipoMovtoMaterial"]),
-                            Estatus = Convert.ToString(dataReader["nombreEstatus"]),                       
+                            Estatus = Convert.ToString(dataReader["idEstatus"]),                       
                         };
 
                         return objTipoMovtoMaterial;

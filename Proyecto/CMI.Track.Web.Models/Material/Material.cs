@@ -29,7 +29,7 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "UM")]
         [Required(ErrorMessage = "*")]
-        public string AnchoUM { get; set; }
+        public int AnchoUM { get; set; }
 
         [Display(Name = "Largo")]
         [Required(ErrorMessage = "*")]
@@ -37,7 +37,7 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "UM")]
         [Required(ErrorMessage = "*")]
-        public string LargoUM { get; set; }
+        public int LargoUM { get; set; }
 
         [Display(Name = "Peso")]
         [Required(ErrorMessage = "*")]
@@ -45,7 +45,7 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "UM")]
         [Required(ErrorMessage = "*")]
-        public string PesoUM { get; set; }
+        public int PesoUM { get; set; }
 
         [Required(ErrorMessage = "*")]
         [StringLength(100)]
@@ -54,11 +54,11 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Tipo")]
         [Required(ErrorMessage = "*")]
-        public string TipoMaterial { get; set; }
+        public int TipoMaterial { get; set; }
 
         [Display(Name = "Grupo")]
         [Required(ErrorMessage = "*")]
-        public string Grupo { get; set; }
+        public int Grupo { get; set; }
 
         [Required(ErrorMessage = "*")]
         [StringLength(100)]

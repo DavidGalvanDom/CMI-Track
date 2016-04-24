@@ -51,7 +51,7 @@ var ReqMCompra = {
     },
     onCambiaOrigen: function () {
 
-        if ($('#Origen').val() == 2) {
+        if ($('#Origen').val() == 3) {
             $('#CausaDiv').show();
         }
         else {
@@ -66,9 +66,7 @@ var ReqMCompra = {
         var tableData;
         var tablaheader;
         var total = 0;
-        var f = new Date();
         var tcompleta = ''
-        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var f = new Date();
         $.get(templateURL, function (data) { rptTemplate = data; });
         var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
@@ -105,7 +103,8 @@ var ReqMCompra = {
                 }
                 
                 rptTemplate = rptTemplate.replace('vrTotal', total);
-                rptTemplate = rptTemplate.replace('vrImagen', urlImagen);
+                rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
                 tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
@@ -405,7 +404,7 @@ var ReqMCompra = {
                                  + '</option>');
         });
 
-        $(form + '#Unidad').val($(form + '#Unidad').val());
+        $(form + '#Unidad').val($(form + '#unid').val());
     },
     CargarColeccionAlmacen: function () {
         var form = ReqMCompra.activeForm;
@@ -434,14 +433,14 @@ var ReqMCompra = {
                                  + '</option>');
         });
 
-        $(form + '#Almacen').val($(form + '#Almacen').val());
+        $(form + '#Almacen').val($(form + '#alm').val());
     },
     Nuevo: function () {
         CMI.CierraMensajes();
         var url = contextPath + "ReqManualCompra/Nuevo"; // El url del controlador   
         if ($('#Origen').val() != '')
         {
-            if ($('#Origen').val() == 3) {
+            if ($('#Origen').val() == 2) {
                 if ($('#Causa').val() != '') {
                     $.get(url, function (data) {
                         $('#nuevo-ReqManualCompra').html(data);
@@ -477,26 +476,28 @@ var ReqMCompra = {
             CMI.DespliegaError("Por favor seleccione un Origen");
         }
     },
-              Editar: function (idRow) {
-                var id, idRequerimiento, row;
-            CMI.CierraMensajes();
-                //Se toma de la colleccion el renglon seleccionado
-            row = ReqMCompra.colReqMCompra.get(idRow);
-                //Se toman los valores de la coleccion
-            id = row.attributes.id;
-            idRequerimiento = $('#idRequerimientoSelect').val();
-            var url = contextPath + "ReqManualCompra/Actualiza"; // El url del controlador
-            $.get(url, { id: id, idRequerimiento: idRequerimiento }, function (data) {
-                $('#actualiza-ReqManualCompra').html(data);
-                $('#actualiza-ReqManualCompra').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-                ReqMCompra.CargarColeccionUnidadMedida();
-                ReqMCompra.CargarColeccionAlmacen();
-                CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            });
-        },
+    Editar: function (idRow) {
+        var id, idRequerimiento, row;
+    CMI.CierraMensajes();
+        //Se toma de la colleccion el renglon seleccionado
+    row = ReqMCompra.colReqMCompra.get(idRow);
+        //Se toman los valores de la coleccion
+    id = row.attributes.id;
+    idRequerimiento = $('#idRequerimientoSelect').val();
+    var url = contextPath + "ReqManualCompra/Actualiza"; // El url del controlador
+    $.get(url, { id: id, idRequerimiento: idRequerimiento }, function (data) {
+        $('#actualiza-ReqManualCompra').html(data);
+        $('#actualiza-ReqManualCompra').modal({
+            backdrop: 'static',
+            keyboard: true
+        }, 'show');
+        ReqMCompra.CargarColeccionUnidadMedida();
+        ReqMCompra.CargarColeccionAlmacen();
+        CMI.RedefinirValidaciones();
+
+        //para los formularios dinamicos
+    });
+    },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
             modulo = ReqMCompra;

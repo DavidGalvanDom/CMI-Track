@@ -21,44 +21,53 @@
              
 
                 <div class="form-group">
+                    
                     <div class="col-sm-2">
+                        <span>Material</span>
                         <span id="idMaterial" style="display:none;">Id</span>
                         <div class="input-group">
-                            <input type="text" id="idMaterialSelect" name="idMaterialSelect" class="form-control" placeholder="Id" title="Id" disabled>
+                            <input type="text" id="idMaterialSelect" name="idMaterialSelect" class="form-control" placeholder="Id" title="Id" >
                             <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat"><span class="fa fa-search"></span></button>
                             </span>
                         </div>
                     </div>
 
-                    <div class="col-sm-5">
-                        <input type="text" id="NombreMat" placeholder="Material" class="form-control" title="NombreMaterial" disabled>
+                    <div class="col-sm-4">
+                        <span style="color:white;">nombre material</span>
+                        <input type="text" id="NombreMat" placeholder="Material" class="form-control" title="NombreMaterial" >
                     </div>
 
                     <div class="col-sm-3">
+                        <span>Unidad Medida</span>
                         <select id="Unidad" name="Unidad" class="form-control" required="required"></select>
                     </div>
 
-                    <div class="col-sm-2">
-                        <input type="text" id="CalidadAcero" placeholder="Calidad Acero" class="form-control" title="CalidadAcero">
+                    <div class="col-sm-3">
+                        <span>Cantidad solicitada</span>
+                        @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
                     </div>
                 </div>
 
                 <div class="form-group">
 
                     <div class="col-sm-3">
+                        <span>Ancho</span>
                         <input type="text" id="AnchoMat" placeholder="Ancho" class="form-control" title="Ancho">
                     </div>
 
                     <div class="col-sm-3">
+                        <span>Longitud</span>
                         <input type="text" id="LongitudMat" placeholder="Longitud" class="form-control" title="Longitud">
                     </div>
 
                     <div class="col-sm-3">
-                        @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
+                        <span>Calidad Acero</span>
+                        <input type="text" id="CalidadAcero" placeholder="Calidad Acero" class="form-control" title="CalidadAcero">
                     </div>
 
                     <div class="col-sm-3">
+                        <span>Peso</span>
                         <input type="text" id="PesoMat" placeholder="Peso" class="form-control" title="PesoMat">
                     </div>
 

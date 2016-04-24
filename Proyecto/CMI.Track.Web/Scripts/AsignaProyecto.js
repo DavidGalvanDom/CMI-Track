@@ -148,9 +148,7 @@ var MaterialesProyecto = {
         var Solicita;
         var tablaheader;
         var total = 0;
-        var f = new Date();
         var tcompleta = ''
-        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var f = new Date();
         $.get(templateURL, function (data) { rptTemplate = data; });
         var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
@@ -190,12 +188,13 @@ var MaterialesProyecto = {
                 // rptTemplate = rptTemplate.replace('vrTotal', total);
                 rptTemplate = rptTemplate.replace('vrEtapa', 'ETAPA #' + Etapa);
                 rptTemplate = rptTemplate.replace('vrDesEtapa', DesEtapa);
+                rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
                 rptTemplate = rptTemplate.replace('vrNoPro', $('#idProyectoSelect').val());
                 rptTemplate = rptTemplate.replace('vrNombrePro', NomPro);
                 rptTemplate = rptTemplate.replace('vrFolioReq', FolReq);
                 rptTemplate = rptTemplate.replace('vrDepto', Depto);
                 rptTemplate = rptTemplate.replace('vrSolicita', Solicita);
-                rptTemplate = rptTemplate.replace('vrImagen', urlImagen);
+                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
                 tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';

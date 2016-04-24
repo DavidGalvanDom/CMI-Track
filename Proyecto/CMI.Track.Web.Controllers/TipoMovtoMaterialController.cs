@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objTipoMovtoMaterial = new Models.TipoMovtoMaterial() { Estatus = "Activo" };
+            var objTipoMovtoMaterial = new Models.TipoMovtoMaterial();
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objTipoMovtoMaterial);
         }

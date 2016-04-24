@@ -92,6 +92,7 @@ namespace CMI.Track.Web.Data
                             PaisCliente = Convert.ToString(dataReader["paisCliente"]),
                             ContactoCliente = Convert.ToString(dataReader["contactoCliente"]),
                             Estatus = Convert.ToString(dataReader["nombreEstatus"]),
+
                         });
                     }
                 }
@@ -134,7 +135,7 @@ namespace CMI.Track.Web.Data
                             EstadoCliente = Convert.ToString(dataReader["estadoCliente"]),
                             PaisCliente = Convert.ToString(dataReader["paisCliente"]),
                             ContactoCliente = Convert.ToString(dataReader["contactoCliente"]),
-                            Estatus = Convert.ToString(dataReader["idEstatus"]),
+                            Estatus = Convert.ToString(dataReader["idEstatus"]),                           
                         };
 
                         return objCliente;

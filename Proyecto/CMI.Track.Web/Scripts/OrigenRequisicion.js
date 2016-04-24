@@ -165,7 +165,7 @@ var OrigenReq = {
     serializaOrigenRequisicion: function (id, form) {
         return ({
             'NombreOrigenRequisicion': $(form + ' #NombreOrigenRequisicion').val().toUpperCase(),
-            'Estatus': $(form + ' #Estatus').val(),
+            'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
         

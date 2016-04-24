@@ -114,7 +114,7 @@ namespace CMI.Track.Web.Data
                         {
                             id = Convert.ToInt32(dataReader["idCategoria"]),
                             NombreCategoria = Convert.ToString(dataReader["nombreCategoria"]),
-                            Estatus = Convert.ToString(dataReader["nombreEstatus"]),                           
+                            Estatus = Convert.ToString(dataReader["idEstatus"]),                           
                         };
 
                         return objCategoria;

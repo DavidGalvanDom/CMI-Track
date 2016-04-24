@@ -1,7 +1,137 @@
-﻿
+﻿@model CMI.Track.Web.Models.OrdenEmbarque
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ordenes de Embarque";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            <small>Generar</small> Orden de Embarque
+            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+        </h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div id="myCollapsible" class="collapse in">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Proyecto</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="nombreProyecto" name="nombreProyecto" class="form-control" placeholder="Nombre Proyecto" title="Nombre Proyecto"> Nombre Proyecto </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarProyecto" name="btnBuscarProyecto"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idProyectoSelect" name="idProyectoSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaInicio" placeholder="FechaInicio" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaFin" placeholder="FechaFin" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+            <div class="col-sm-1">
+                <span id="RevisionPro" name="RevisionPro" class="form-control" title="Revision">Rev</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="CodigoProyecto" placeholder="CodigoProyecto" class="form-control" title="Codigo Proyecto">Codigo Proyecto</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <br />
+        </div>
+    </div>
+    <div class="row" id="etapaRow" style="display:none;">
+        <div class="form-group">
+            <div class="col-sm-1"> <label class="control-label">Etapa</label></div>
+            <div class="col-sm-4">
+                <div class="input-group">
+                    <p id="nombreEtapa" name="nombreEtapa" class="form-control" placeholder="Nombre Etapa" title="Nombre Etapa"> Nombre Etapa </p>
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button" id="btnBuscarEtapa" name="btnBuscarEtapa"><span class="fa fa-search"></span></button>
+                    </span>
+                </div>
+                <input type="hidden" id="idEtapaSelect" name="idEtapaSelect" />
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaInicioEtapa" placeholder="Fecha Inicio Etapa" class="form-control" title="Fecha Inicio">Fecha Inicio</span>
+            </div>
+            <div class="col-sm-2">
+                <span id="FechaFinEtapa" placeholder="Fecha Fin Etapa" class="form-control" title="Fecha Fin">Fecha Fin</span>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon " aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+    <div id="rowOrdenEmbarque" style="display:none;">
+        <div class="col-sm-1"> <label class="control-label">Orden Embarque</label></div>
+        <div class="col-sm-3">
+            <select id="idOrdenEmb" name="idOrdenEmb" class="form-control" required="required"></select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row">
+      <div class="col-lg-12">
+        <div id="bbGrid-OrdenEmbarque" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <br />
+            </div>
+        </div>
+        <div class="col-lg-12" id="Imprimir" style="display:none;">
+            <div class="col-lg-12">
+                <button class="btn btn-outline btn-primary pull-right " type="button" id="btnImprimir" name="btnImprimir">Imprimir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-General"
+        tabindex="-1" role="dialog"
+        aria-labelledby="buscarGeneral">
+</div>
+
+
+<div class="modal fade bs-example-modal-lg" id="nuevo-OrdenEmbarque"
+     tabindex="-1" role="dialog"
+     aria-labelledby="nuevoReqManualCompraLabel">
+</div>
+
+<div class="modal fade bs-example-modal-lg" id="buscar-marca"
+     tabindex="-1" role="dialog"
+     aria-labelledby="buscarMarca">
+</div>
+
+
+
+@section Scripts {
+    <script src="~/Scripts/OrdenEmbarque.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+    </script>
+}
+
+
+
 

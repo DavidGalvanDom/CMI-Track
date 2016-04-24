@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objOrigenReq = new Models.OrigenRequisicion() { Estatus = "Activo" };
+            var objOrigenReq = new Models.OrigenRequisicion();
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objOrigenReq);
         }

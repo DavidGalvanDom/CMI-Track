@@ -8,13 +8,13 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"> </div>
-            @using (Html.BeginForm("Actualiza", "TipoConstruccion", FormMethod.Post, new { id = "ActualizaTipoConstruccionForm", name = "ActualizaTipoConstruccionForm", @class = "form-horizontal", onsubmit = "return false" }))
+            @using (Html.BeginForm("Actualiza", "TipoConstruccion", FormMethod.Post, new { id = "ActualizaTipoConstruccionForm", name = "ActualizaTipoConstruccionForm", @class = "form-horizontal" }))
             {
 
             <div class="form-group">
                 <label class="col-sm-3 control-label">Id</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static">@Html.DisplayFor(model => model.id)</p>
+                    <p class="form-control-static">@Html.DisplayFor(model => model.id)</p>                   
                 </div>
                 <div class="col-sm-1">
                     @Html.HiddenFor(model => model.id)
@@ -35,15 +35,17 @@
                     @Html.LabelFor(model => model.Estatus, new { @class = "col-sm-3 control-label" })
                     <div class="col-sm-8">
                         @Html.DropDownListFor(model => model.Estatus,
-                                                new SelectList(new[]{
-                                                new SelectListItem{ Text="ACTIVO", Value="1"},
-                                                new SelectListItem{ Text="INACTIVO", Value="0"}},
-                                                "Value", "Text"), new { @class = "form-control" })
+                                                                    new SelectList(new[]{
+                                                                                  new SelectListItem{ Text="ACTIVO", Value="1"},
+                                                                                  new SelectListItem{ Text="INACTIVO", Value="0"}},
+                                                           "Value", "Text"), new { @class = "form-control" })
                     </div>
                     <div class="col-sm-1">
                         @Html.ValidationMessageFor(model => model.Estatus, null, new { @class = "help-inline" })
                     </div>
                 </div>
+
+
             @Html.HiddenFor(model => model.Estatus);
             @Html.HiddenFor(model => model.usuarioCreacion)
             }

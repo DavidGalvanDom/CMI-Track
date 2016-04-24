@@ -25,6 +25,9 @@ namespace CMI.Track.Web.Controllers
         /// <returns>ActionResult</returns>
         public ActionResult Tablet1()
         {
+            ViewBag.Fecha = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.origenTablet= "EM";
+
             return View();
         }
 
@@ -34,7 +37,10 @@ namespace CMI.Track.Web.Controllers
         /// <returns>ActionResult</returns>
         public ActionResult Tablet2()
         {
-            return View();
+            ViewBag.Fecha = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.origenTablet = "RE";
+
+            return View("Tablet1");
         }
 
         /// <summary>
@@ -42,11 +48,11 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <param name="idEtapa"></param>
         /// <returns></returns>
-        public JsonResult CargaDetalleOrden(int id)
+        public JsonResult CargaDetalleOrden(int id,string tipo)
         {
             try
             {
-                var lstDetalleOrdenEmbarque = OrdenEmbarqueData.CargarDetalleOrdenEmbarque(id);
+                var lstDetalleOrdenEmbarque = OrdenEmbarqueData.CargarDetalleOrdenEmbarque(id,tipo);
 
                 return (Json(lstDetalleOrdenEmbarque, JsonRequestBehavior.AllowGet));
             }

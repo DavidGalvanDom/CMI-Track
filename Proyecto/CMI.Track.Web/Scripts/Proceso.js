@@ -14,7 +14,7 @@ var Proceso = {
         $.ajaxSetup({ cache: false });
         this.CargaGrid();
         this.Eventos();
-        this.ValidaPermisos();       
+        this.ValidaPermisos();
     },
     Eventos: function () {
         var that = this;

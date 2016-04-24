@@ -107,7 +107,8 @@ var Categoria = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-
+            ReqMCompra.CargarColeccionUnidadMedida();
+            ReqMCompra.CargarColeccionAlmacen();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -152,7 +153,7 @@ var Categoria = {
     serializaCategoria: function (id,form) {
         return ({
             'NombreCategoria': $(form + ' #NombreCategoria').val().toUpperCase(),
-            'Estatus': $(form + ' #Estatus').val(),
+            'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

@@ -112,7 +112,7 @@ namespace CMI.Track.Web.Data
                         {
                             id = Convert.ToInt32(dataReader["idTipoProceso"]),
                             NombreTipoProceso = Convert.ToString(dataReader["nombreTipoProceso"]),
-                            Estatus = Convert.ToString(dataReader["nombreEstatus"]),                           
+                            Estatus = Convert.ToString(dataReader["idEstatus"]),                           
                         };
 
                         return objTipoProceso;

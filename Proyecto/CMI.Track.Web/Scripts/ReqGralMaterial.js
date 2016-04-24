@@ -32,8 +32,6 @@ var Requerimiento = {
         var tabla;
         var tcompleta;
         var total = 0;
-        var f = new Date();
-        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var header = "<table border='2'>";
         var f = new Date();
         var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequerimiento?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
@@ -41,11 +39,11 @@ var Requerimiento = {
             tablaheader = data;
             for (j = 0; j < tablaheader.length; j++) {
                 header += "<tr>";
-                header += "<td colspan='3'><img src="+ urlImagen + " /></td>"
+                header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>"
                 header += "<td > <table> <tr > <td colspan='2'> </td> </tr>";
                 header += "<tr> <td colspan='2' align='center'><strong>REQUERIMIENTO</strong></td> </tr> ";
                 header += "<tr> <td colspan='2' align='center'><strong> ETAPA #" + tablaheader[j]['idEtapa'] + "</strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
-                header += "<tr> <td colspan='2' align='center'><strong><i> " + tablaheader[j]['NombreEtapa'] + "</i></strong> </td> </tr> <tr> <td colspan='2' align='center'style='color:red;'>95% <strong>Rev.A</strong></td></tr></table></td> ";
+                header += "<tr> <td colspan='2' align='center'><strong><i> " + tablaheader[j]['NombreEtapa'] + "</i></strong> </td> </tr> <tr> <td colspan='2' align='center'style='color:red;'><strong></strong></td></tr></table></td> ";
                 header += "<td> <table > <tr align='right'><td></td><td></td><td></td><td style='border:solid;border-size:2;' align='center'><strong>No.</strong></td></tr> <tr align='center'>  <td></td><td></td><td></td> <td style='border:solid;border-size:2;'><strong>" + tablaheader[j]['id'] + "</strong></td> </tr><tr align='right'> <td  colspan='4'>FECHA:</td></tr><tr align='right'><td colspan='4'>Folio Req.</td></tr><tr align='right'> <td  colspan='4'>DEPARTAMENTO:</td></tr><tr align='right'><td  colspan='4'>SOLICITADO POR:</td></tr></table>";
                 header += "</td><td><table><tr align='center'><td style='border:solid;border-size:2';>PROYECTO</td></tr><tr align='center'><td style='border:solid;border-size:2;'><strong>" + tablaheader[j]['NombreProyecto'] + "</strong></td></tr><tr align='center'><td><strong>" + f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear() + "</strong></td></tr>";
                 header += "<tr><td  align='center'><strong>" + tablaheader[j]['FolioRequerimiento'] + "</strong></td></tr>";

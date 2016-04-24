@@ -50,7 +50,8 @@ var Material = {
             $.post(contextPath + "Material/Nuevo",
                 $("#NuevoMaterialForm *").serialize(),
                 function (data) {
-                    var ser = $("#NuevoMaterialForm *").serialize();             
+                    var ser = $("#NuevoMaterialForm *").serialize();
+                    //alert(ser);
                     if (data.Success == true) {
                         Material.colMateriales.add(Material.serializaMaterial(data.id, '#NuevoMaterialForm'));
                         CMI.DespliegaInformacion('El material fue guardado con el Id: ' + data.id);
@@ -110,7 +111,8 @@ var Material = {
             Material.CargarColeccionUnidadMedidaPeso('#NuevoMaterialForm');
             Material.CargarColeccionTipoMaterial('#NuevoMaterialForm');
             Material.CargarColeccionGrupo('#NuevoMaterialForm');
-
+           // Material.CargarColeccionTipoMaterial();
+           // Material.CargarColeccionGrupo();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -123,14 +125,16 @@ var Material = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
+          
             Material.CargarColeccionUnidadMedidaAncho('#ActualizaMaterialForm');
             Material.CargarColeccionUnidadMedidaLargo('#ActualizaMaterialForm');
             Material.CargarColeccionUnidadMedidaPeso('#ActualizaMaterialForm');
             Material.CargarColeccionTipoMaterial('#ActualizaMaterialForm');
             Material.CargarColeccionGrupo('#ActualizaMaterialForm');
+            CMI.RedefinirValidaciones();
            // Material.CargarColeccionTipoMaterial();
            // Material.CargarColeccionGrupo();
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            //para los formularios dinamicos
         });
     },
     Borrar: function (id) {
@@ -160,7 +164,8 @@ var Material = {
             Material.CargarColeccionUnidadMedidaPeso('#NuevoMaterialForm');
             Material.CargarColeccionTipoMaterial('#NuevoMaterialForm');
             Material.CargarColeccionGrupo('#NuevoMaterialForm');
-
+           // Material.CargarColeccionTipoMaterial();
+          //  Material.CargarColeccionGrupo();
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
         });
     },
@@ -190,7 +195,7 @@ var Material = {
                                  + '</option>');
         });
 
-        $(form + ' #AnchoUM').val($(form + ' #AnchoUM').val());
+        $(form + ' #AnchoUM').val($(form + ' #am').val());
     },
     CargarColeccionUnidadMedidaLargo: function (form) {
         if (Material.colUnidadMedidaLargo.length < 1) {
@@ -218,7 +223,7 @@ var Material = {
                                  + '</option>');
         });
 
-        $(form + ' #LargoUM').val($(form + ' #LargoUM').val());
+        $(form + ' #LargoUM').val($(form + ' #lm').val());
     },
     CargarColeccionUnidadMedidaPeso: function (form) {
         if (Material.colUnidadMedidaPeso.length < 1) {
@@ -246,7 +251,7 @@ var Material = {
                                  + '</option>');
         });
 
-        $(form + ' #PesoUM').val($(form + ' #PesoUM').val());
+        $(form + ' #PesoUM').val($(form + ' #pm').val());
     },
     CargarColeccionTipoMaterial: function (form) {
         if (Material.colTipoMaterial.length < 1) {
@@ -274,7 +279,7 @@ var Material = {
                                  + '</option>');
         });
 
-        $(form + ' #TipoMaterial').val($(form + ' #TipoMaterial').val());
+        $(form + ' #TipoMaterial').val($(form + ' #tipom').val());
     },
     CargarColeccionGrupo: function (form) {
         if (Material.colGrupo.length < 1) {
@@ -302,7 +307,7 @@ var Material = {
                                  + '</option>');
         });
 
-        $(form + ' #Grupo').val($(form + ' #Grupo').val());
+        $(form + ' #Grupo').val($(form + ' #grp').val());
     },
     ValidaPermisos: function () {
 
@@ -329,7 +334,7 @@ var Material = {
             'TipoMaterial': $('#TipoMaterial option:selected').text().toUpperCase(),
             'Grupo': $('#Grupo option:selected').text().toUpperCase(),
             'Observaciones': $(from + ' #Observaciones').val().toUpperCase(),
-            'Estatus': $(from + ' #Estatus').val(),
+            'Estatus': $('#Estatus option:selected').text().toUpperCase(),
             'id': id
         });        
     },

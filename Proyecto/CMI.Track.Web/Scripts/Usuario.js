@@ -64,7 +64,7 @@ var Usuario = {
                     if (data.Success == true) {
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
                         CMI.DespliegaInformacion('El Usuario fue guardado con el Id: ' + data.id);
-                        $('#nuevo-usuario').modal('hide');                        
+                        $('#nuevo-usuario').modal('hide');
                         if (Usuario.colUsuarios.length === 1) {
                             Usuario.CargaGrid();
                         }
@@ -118,7 +118,7 @@ var Usuario = {
                 keyboard: true
             }, 'show');
             Seguridad.Inicial(idUsuairo);
-            _usuario = Usuario.colUsuarios.get(idUsuairo);            
+            _usuario = Usuario.colUsuarios.get(idUsuairo);
             $('#usuarioSelec').html('<small>Seguridad - </small>' + _usuario.attributes.NombreCompleto);
         });
     },
@@ -126,7 +126,7 @@ var Usuario = {
         CMI.CierraMensajes();
         var url = contextPath + "Usuario/Nuevo"; // El url del controlador      
         $.get(url, function (data) {
-            $('#nuevo-usuario').html(data);           
+            $('#nuevo-usuario').html(data);
             $('#nuevo-usuario').modal({
                 backdrop: 'static',
                 keyboard: true
@@ -148,7 +148,7 @@ var Usuario = {
 
             CMI.RedefinirValidaciones(); //para los formularios dinamicos
             Usuario.CargarColeccionDepartamentos('#ActualizaUsuarioForm');
-            Usuario.CargarColeccionProcesos('#ActualizaUsuarioForm');            
+            Usuario.CargarColeccionProcesos('#ActualizaUsuarioForm');
         });
     },
     Borrar: function (id) {
@@ -180,7 +180,7 @@ var Usuario = {
             Usuario.CargarColeccionProcesos('#NuevoUsuarioForm');
         });
     },
-    ValidaNomUsuario: function () {       
+    ValidaNomUsuario: function () {
             var that = $(this);
             var idUsuario = $('#id').val() !== undefined ? $('#id').val() : -1;
             var urlValida = contextPath + 'Usuario/ValidaLoginUsuario?loginUsuario=' + $(this).val() + '&idUsuario=' + idUsuario;
@@ -207,11 +207,11 @@ var Usuario = {
             Usuario.CargaListaDepartamentos(form);
         }
     },
-    CargaListaDepartamentos: function (form) {       
+    CargaListaDepartamentos: function (form) {
         var select = $(form + ' #idDepartamento').empty();
         // constructs the suggestion engine               
         select.append('<option> </option>');
-        
+
         $.each(Usuario.colDepartamentos, function (i, item) {
             select.append('<option value="'
                                  + item.id

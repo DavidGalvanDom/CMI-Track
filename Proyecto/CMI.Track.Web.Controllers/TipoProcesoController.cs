@@ -74,7 +74,7 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objTipoProceso = new Models.TipoProceso() { Estatus = "Activo" };
+            var objTipoProceso = new Models.TipoProceso();
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objTipoProceso);
         }

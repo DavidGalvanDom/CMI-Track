@@ -164,7 +164,7 @@ var TipoProceso = {
     serializaTipoProceso: function (id, form) {
         return ({
             'NombreTipoProceso': $(form + ' #NombreTipoProceso').val().toUpperCase(),
-            'Estatus': $(form + ' #Estatus').val(),
+            'Estatus': $(form + ' #Estatus option:selected').text().toUpperCase(),
             'id': id
         });
     },

@@ -35,7 +35,6 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Alamcen")]
         public int Almacen { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Causa")]
         public string Causa { get; set; }
 
@@ -45,7 +44,10 @@ namespace CMI.Track.Web.Models
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Unidad")]
-        public string Unidad { get; set; }
+        public int Unidad { get; set; }
+
+        [Display(Name = "idUnidad")]
+        public int idUnidad { get; set; }
 
         [Required(ErrorMessage = "*")]
         [Display(Name = "Cantidad")]

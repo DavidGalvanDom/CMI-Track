@@ -95,7 +95,8 @@ namespace CMI.Track.Web.Data
                             Largo = Convert.ToInt32(dataReader["largoMaterial"]),
                             Cantidad = Convert.ToInt32(dataReader["cantidadSolicitada"]),
                             Peso = Convert.ToInt32(dataReader["pesoMaterial"]),
-                            Unidad = Convert.ToString(dataReader["nombreCortoUnidadMedida"])
+                            Unidad = Convert.ToInt32(dataReader["idUnidadMedida"]),
+                            Almacen = Convert.ToInt32(dataReader["idAlmacen"])
                         };
 
                         return objRequiMaterial;

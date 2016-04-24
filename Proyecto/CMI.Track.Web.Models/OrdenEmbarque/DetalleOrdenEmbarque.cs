@@ -48,7 +48,7 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Nombre Plano")]
         public string nombrePlano { get; set; }
 
-        [Display(Name = "piezas")]
+        [Display(Name = "Saldo")]
         public int Saldo { get; set; }
 
          [Display(Name = "pesoTotal")]

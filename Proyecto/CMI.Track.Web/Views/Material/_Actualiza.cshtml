@@ -8,7 +8,7 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"> </div>
-            @using (Html.BeginForm("Actualiza", "Material", FormMethod.Post, new { id = "ActualizaMaterialForm", name = "ActualizaMaterialForm", @class = "form-horizontal", onsubmit = "return false" }))
+            @using (Html.BeginForm("Actualiza", "Material", FormMethod.Post, new { id = "ActualizaMaterialForm", name = "ActualizaMaterialForm", @class = "form-horizontal" }))
             {
 
             <div class="form-group">
@@ -104,9 +104,13 @@
 
                 </div>
 
-
             @Html.HiddenFor(model => model.Estatus);
             @Html.HiddenFor(model => model.usuarioCreacion)
+    <input type="hidden" id="grp" name="grp" value="@Model.Grupo" />
+    <input type="hidden" id="tipom" name="tipom" value="@Model.TipoMaterial" />
+    <input type="hidden" id="am" name="am" value="@Model.AnchoUM" />
+    <input type="hidden" id="lm" name="lm" value="@Model.LargoUM" />
+    <input type="hidden" id="pm" name="pm" value="@Model.PesoUM" />
             }
         </div>
         <div class="modal-footer">

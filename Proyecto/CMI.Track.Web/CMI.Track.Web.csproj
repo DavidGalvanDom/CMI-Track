@@ -139,6 +139,7 @@
     <Content Include="Content\template\rpt_materiales_proyecto.html" />
     <Content Include="Content\template\rpt_movtos_materiales.html" />
     <Content Include="Content\template\rpt_OrdenProduccion.html" />
+    <Content Include="Content\template\rpt_orden_embarque.html" />
     <Content Include="Content\template\rpt_requisicion_manual.html" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -873,6 +874,7 @@
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\MaterialesBuscar.js" />
     <Content Include="Scripts\MovimientoMaterial.js" />
+    <Content Include="Scripts\OrdenEmbarque.js" />
     <Content Include="Scripts\OrdenProduccion.js" />
     <Content Include="Scripts\OrdenEmbarqueBuscar.js" />
     <Content Include="Scripts\OrigenRequisicion.js" />
@@ -884,6 +886,7 @@
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
     <Content Include="Scripts\RecepcionRequisicion.js" />
+    <Content Include="Scripts\Remision.js" />
     <Content Include="Scripts\ReportesProduccion.js" />
     <Content Include="Scripts\ReqGralMaterial.js" />
     <Content Include="Scripts\ReqManualCompra.js" />
@@ -1033,6 +1036,7 @@
     <Content Include="Views\GenerarEmbarque\Tablet1.cshtml" />
     <Content Include="Views\OrdenEmbarque\Index.cshtml" />
     <Content Include="Views\OrdenEmbarque\_buscarOrdenEmbarque.cshtml" />
+    <Content Include="Views\Remision\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

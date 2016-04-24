@@ -193,7 +193,7 @@ namespace CMI.Track.Web.Data
                         listaMovimientos.Add(new Models.ListaMovimientoMaterial()
                         {
                             id = Convert.ToInt32(dataReader["idTipoMovtoMaterial"]),
-                            TipoMovto = Convert.ToString(dataReader["tipoMovtoMaterial"]),
+                            TipoMovto = Convert.ToString(dataReader["nombreTipoMovtoMaterial"]),
 
                         });
                     }

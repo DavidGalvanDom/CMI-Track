@@ -1,4 +1,4 @@
-﻿///Propósito: Modelo de Lista de Planos Montaje
+﻿///Propósito: Modelo de Ordenes de embarque
 ///Fecha creación: 20/Febrero/16
 ///Creador: David Galvan
 ///Fecha modifiacción: 
@@ -13,63 +13,41 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CMI.Track.Web.Models
 {
-    public class ListaOrdenEmbarque
+    public class OrdenEmbarque
     {
-        [Display(Name = "id", AutoGenerateField = false)]
+        [Display(Name = "id")]
         public int id { get; set; }
 
+        [Required(ErrorMessage = "*")]
 
         [Display(Name = "IdProyecto")]
         public int idProyecto { get; set; }
 
 
-        [Display(Name = "NombreProyecto")]
-        public string NombreProyecto { get; set; }
-
-
-        [Display(Name = "Codigo")]
-        public string Codigo { get; set; }
-
-
-        [Display(Name = "Revision")]
-        public string Revision { get; set; }
-
-        [Display(Name = "NombreMarca")]
-        public string NombreMarca { get; set; }
-
-        [Display(Name = "NombreEtapa")]
-        public string NombreEtapa { get; set; }
-
-
         [Display(Name = "IdEtapa")]
         public int idEtapa { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "OrdenP")]
         public int OrdenP { get; set; }
 
+        [Required(ErrorMessage = "*")]
         [Display(Name = "EstatusOE")]
         public int EstatusOE { get; set; }
 
         [Display(Name = "Obervaciones")]
         public string Obervaciones { get; set; }
 
+        [Display(Name = "Marca")]
+        public int idMarca { get; set; }
 
-        [Display(Name = "Piezas")]
-        public double Piezas { get; set; }
-
-        [Display(Name = "Peso")]
-        public double Peso { get; set; }
-
-        [Display(Name = "Total")]
-        public double Total { get; set; }
-
-        [Display(Name = "NombrePlano")]
-        public string NombrePlano { get; set; }
+        [Display(Name = "Revision")]
+        public string Revision { get; set; }
 
 
         [Display(Name = "idOrdenEmb")]
         public int idOrdenEmb { get; set; }
-
         public int usuarioCreacion { get; set; }
+       
     }
 }

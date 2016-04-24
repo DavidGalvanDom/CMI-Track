@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Generar Embarque Tablet";
 }
-
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -122,6 +119,22 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="divImprimir" style="display:none;">
+    <div class="col-lg-10">
+    </div>
+    <div class="col-lg-2 pull-right">
+        <button class="btn btn-default" onclick="EmbarqueTablet.onImprimir();">Imprimir</button>
+    </div>
+</div>
+<input type="hidden" id="fecha" value="@ViewBag.Fecha" />
+<input type="hidden" id="origentablet" value="@ViewBag.origenTablet" />
+
+
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
      tabindex="-1" role="dialog"

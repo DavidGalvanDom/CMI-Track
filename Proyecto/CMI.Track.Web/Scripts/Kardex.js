@@ -43,7 +43,6 @@ var Kardex = {
         var tablaheader;
         var total = 0;
         var tcompleta = ''
-        var urlImagen = window.location.protocol + '//' + window.location.host + '//Content/images/CMI.TRACK.reportes.png';
         var f = new Date();
         $.get(templateURL, function (data) { rptTemplate = data; });
       //  var urlHeader = contextPath + "Kardex/CargaHeaderMovimientos?id=" + $('#idDoc').val(); // El url del controlador
@@ -80,7 +79,7 @@ var Kardex = {
                 rptTemplate = rptTemplate.replace('vrAlmacen', $('#idAlmacen').val());
                 rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
                 rptTemplate = rptTemplate.replace('vrTotal', total);
-                rptTemplate = rptTemplate.replace('vrImagen', urlImagen);
+                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
                 tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
