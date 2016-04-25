@@ -11,6 +11,9 @@
     content: '';
     background: transparent url(../Content/images/1.png) repeat top left;
 }
+    .cb-slideshow li {
+        list-style-type: none;
+    }
 .cb-slideshow li span {
     width: 100%;
     height: 100%;
