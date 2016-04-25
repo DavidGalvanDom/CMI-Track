@@ -45,7 +45,6 @@ var Marcas = {
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
-            debugger
             if (parseInt($(form + ' #piezas').val()) > 1295) {
                 CMI.DespliegaErrorDialogo("El valor de piezas no puede ser mayor a 1295.");
                 $(form + ' #piezas').focus();

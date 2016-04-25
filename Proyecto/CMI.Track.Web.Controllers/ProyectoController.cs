@@ -68,7 +68,7 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Define un nuevo usuario
+        /// Define un nuevo proyecto
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]

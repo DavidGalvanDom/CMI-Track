@@ -240,7 +240,6 @@ var GenDocumentos = {
           header = "<table border='2'>",
           tabla_html = '',
           etapa = $('#nombreEtapa').text().replace(/ /g, '&nbsp;');
-        debugger
         if (arrData.Excel !== null) {
             for (var contador = 0; contador < arrData.Excel.length; contador++) {
                 var item = arrData.Excel[contador];

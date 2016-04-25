@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoData.cs" />
     <Compile Include="RecepcionRequisicionData.cs" />
+    <Compile Include="RemisionData.cs" />
     <Compile Include="ReporteData.cs" />
     <Compile Include="ReportesProduccionData.cs" />
     <Compile Include="ReqGralMaterialData.cs" />

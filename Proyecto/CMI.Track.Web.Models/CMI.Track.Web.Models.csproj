@@ -92,6 +92,7 @@
     <Compile Include="Proyecto\Revision.cs" />
     <Compile Include="RecepcionRequisicion\ListaRecepcionRequisicion.cs" />
     <Compile Include="RecepcionRequisicion\RecepcionRequisicion.cs" />
+    <Compile Include="Remision\Remision.cs" />
     <Compile Include="ReportesProduccion\ListaReporteProduccionAvanceProyecto.cs" />
     <Compile Include="ReportesProduccion\ListaReporteProduccionCalidad.cs" />
     <Compile Include="ReportesProduccion\ListaReporteProduccionDiasProceso.cs" />

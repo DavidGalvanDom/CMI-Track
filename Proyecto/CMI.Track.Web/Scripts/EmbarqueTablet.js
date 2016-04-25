@@ -256,7 +256,6 @@ var EmbarqueTablet = {
                                '&idUsuario=' + localStorage.idUser;
 
                         $.post(url, data, function (result) {
-                            debugger
                             if (result.Success === true) {
                                 $('#codigoBarras').val('');
                                 marcas[0].set('piezasLeidas', marcas[0].attributes.piezasLeidas + 1);

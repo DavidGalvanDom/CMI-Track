@@ -26,5 +26,41 @@ namespace CMI.Track.Web.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Define un nueva Remision
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Nuevo()
+        {
+            var objRemision = new Models.Remision() { fechaRemision = DateTime.Now.ToString("dd/MM/yyyy") };
+            ViewBag.Titulo = "Nuevo";
+            return PartialView("_Nuevo", objRemision);
+        }
+
+        /// <summary>
+        /// Define un nueva Remision
+        /// </summary>
+        /// <returns>JsonResult</returns>
+        [HttpPost]
+        public JsonResult Nuevo(Models.Remision pobjRemision)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var idRemision = RemisionData.Guardar(pobjRemision);
+                    return Json(new { Success = true, id = idRemision, Message = "Se guardo correctamente la Remision " });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "La informacion de la Remision esta incompleta" });
+        }
+
     }
 }
