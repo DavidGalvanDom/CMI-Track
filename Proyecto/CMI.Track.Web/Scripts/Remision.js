@@ -7,7 +7,7 @@ var Remision = {
     origen: '',
     estatusRevision: 0,
     saldo: 0,
-    gridEmbarque: {},
+    gridRemisiones: {},
     gridOrdenEmbar : {},
     colOrdenEmbar: null,
     colRemisiones: {},
@@ -21,14 +21,70 @@ var Remision = {
         var that = this;
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
+        $(document).on("click", '.btn-Actualizar', that.onActualizar);
+
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
 
+        //Remover Orden Embarque
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
         });
 
+        //Editar Remisin
+        $(document).on('click', '.accrowEdit', function () {
+            that.EditarRemision($(this).parent().parent().attr("data-modelId"));
+        });
+
         $('#etapaRow').hide();
+    },
+    onActualizar: function (){
+        var form = Remision.activeForm,
+            btn = this,
+            contador = 0,
+            data = '';
+        if ($(form + ' #idCliente').val() === "0") {
+            $(form + ' #nombreCliente').addClass('input-validation-error');
+        }
+
+        if ($("form").valid()) {
+            CMI.botonMensaje(true, btn, 'Actualizar');
+            $(Remision.activeForm + ' #usuarioCreacion').val(localStorage.idUser);
+
+            if (Remision.colOrdenEmbar == null || Remision.colOrdenEmbar.length < 1) {
+                CMI.DespliegaErrorDialogo('Debe seleccionar por lo menos una Orden de embarque');
+                CMI.botonMensaje(false, btn, 'Actualizar');
+                return;
+            }
+
+            data = $("#ActualizarRemisionForm *").serialize();
+
+            while (Remision.colOrdenEmbar.length > contador) {
+                data = data + '&lstOrdenEmbarque=' + Remision.colOrdenEmbar.at(contador).attributes.id;
+                contador = contador + 1;
+            }
+
+            //Se hace el post para guardar la informacion
+            $.post(contextPath + "Remision/Actualiza",
+                data,
+                function (data) {
+                    if (data.Success == true) {
+                        Remision.colRemisiones.add(Remision.serializaRemision(data.id), { merge: true });
+                        CMI.DespliegaInformacion('La Remision fue Actualizada correctamente.');
+                        $('#actualiza-Remision').modal('hide');
+                        if (Remision.colRemisiones.length === 1) {
+                            $('#bbGrid-Remisiones')[0].innerHTML = "";
+                            Remision.CargaGrid();
+                        }
+                    } else {
+                        CMI.DespliegaErrorDialogo(data.Message);
+                    }
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al actulizar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
+        } else {
+            CMI.botonMensaje(false, btn, 'Actualizar');
+        }
     },
     onGuardar: function () {
         var form = Remision.activeForm,
@@ -42,7 +98,7 @@ var Remision = {
 
         if ($("form").valid()) {
             CMI.botonMensaje(true, btn, 'Guardar');
-            $('#usuarioCreacion').val(localStorage.idUser);
+            $(Remision.activeForm + ' #usuarioCreacion').val(localStorage.idUser);
 
             if (Remision.colOrdenEmbar == null || Remision.colOrdenEmbar.length < 1) {
                 CMI.DespliegaErrorDialogo('Debe seleccionar por lo menos una Orden de embarque');
@@ -56,7 +112,7 @@ var Remision = {
                 data = data + '&lstOrdenEmbarque=' + Remision.colOrdenEmbar.at(contador).attributes.id;
                 contador = contador + 1;
             }
-            console.log(data);
+
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Remision/Nuevo",
                 data,
@@ -66,6 +122,7 @@ var Remision = {
                         CMI.DespliegaInformacion('La Remision fue guardada con el Id: ' + data.id);
                         $('#nuevo-Remision').modal('hide');
                         if (Remision.colRemisiones.length === 1) {
+                            $('#bbGrid-Remisiones')[0].innerHTML = "";
                             Remision.CargaGrid();
                         }
                     } else {
@@ -120,7 +177,7 @@ var Remision = {
         var btn = this;
         $(btn).attr("disabled", "disabled");
         CMI.CierraMensajes();
-        var url = contextPath + "OrdenEmbarque/BuscarOrdenEmbarque/"; // El url del controlador
+        var url = contextPath + "OrdenEmbarque/BuscarOrdenEmbarque?sinRemision=true"; // El url del controlador
         $.get(url, function (data) {
             $('#buscar-General').html(data);
             $('#buscar-General').modal({
@@ -154,6 +211,37 @@ var Remision = {
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar clietnes");
         }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    EditarRemision: function (id){
+        CMI.CierraMensajes();
+        var url = contextPath + "Remision/Actualiza/" + id; // El url del controlador
+        $.get(url, function (data) {
+            $('#actualiza-Remision').html(data);
+            $('#actualiza-Remision').modal({
+                backdrop: 'static',
+                keyboard: true
+            }, 'show');
+
+            CMI.RedefinirValidaciones(); //para los formularios dinamicos
+            Remision.activeForm = '#ActualizarRemisionForm';
+            $(Remision.activeForm + ' #btnBuscarCliente').click(Remision.onBuscarCliente);
+            Remision.IniciaDateControls();
+            Remision.CargaOrdenesRemision(id);
+        });
+    },
+    CargaOrdenesRemision: function (id) {
+        $.get(contextPath + "Remision/CargaEmbarquesRemisiones/" + id,
+               function (data) {
+                   if (data.Success === true) {
+                       Remision.colOrdenEmbar = new Backbone.Collection(data.Data);
+                       $('#bbGrid-OrdenEmbarA')[0].innerHTML = "";
+                       Remision.CargaGridOrdenEmbarque('A');
+                   } else {
+                       CMI.DespliegaErrorDialogo(data.Message);
+                   }
+               }).fail(function () {
+                   CMI.DespliegaErrorDialogo("Error al cargar los Embarques de la remision");
+               });
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
@@ -218,6 +306,10 @@ var Remision = {
 
         if (Remision.accEscritura === true)
             $('.btnNuevo').show();
+
+        //Se carga el grid de Remision asignadas a la Orden
+        $('#bbGrid-Remisiones')[0].innerHTML = "";
+        Remision.CargaGrid();
     },
     AsignaOrdenEmbarque: function (idOrdenEmbarque, idOrdenProduccion,
                                     observacion, fecha) {
@@ -231,23 +323,20 @@ var Remision = {
             id: idOrdenEmbarque,
             idOrdenProduccion: idOrdenProduccion,
             fechaCreacion: fecha,
-            Observacion: observacion
+            observacionOrdenEmbarque: observacion
         };
 
         if (Remision.colOrdenEmbar === null) {
             Remision.colOrdenEmbar = new Backbone.Collection(data);
-            Remision.CargaGridOrdenEmbarque();
+            $('#bbGrid-OrdenEmbarN')[0].innerHTML = "";
+            Remision.CargaGridOrdenEmbarque('N');
         } else {
             Remision.colOrdenEmbar.add(data, { merge: true });
         }
-
-        //Se carga el grid de Remision asignadas a la Orden
-        $('#bbGrid-Embarques')[0].innerHTML = "";
-        Remision.CargaGrid();
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Remision/Nuevo"; // El url del controlador
+        var url = contextPath + "Remision/Nuevo?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val(); // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-Remision').html(data);
             $('#nuevo-Remision').modal({
@@ -273,56 +362,56 @@ var Remision = {
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
-
+    },
+    serializaRemision: function (id){
+        return ({
+            'id' : id,
+            'NombreCliente': $( Remision.activeForm + ' #nombreCliente').text(),
+            'Transporte': $( Remision.activeForm + ' #transporte').val(),
+            'fechaEnvio': $( Remision.activeForm + ' #fechaEnvio').val(),
+            'fechaRemision': $( Remision.activeForm + ' #fechaRemision').val()
+        });
     },
     CargaGrid: function () {
-        var url = contextPath + "GenerarEmbarque/CargaDetalleOrden?id=" + $('#idOrdenEmbarSelect').val() + "&tipo=" + Remision.origen; // El url del controlador
+        var url = contextPath + "Remision/CargaRemisiones?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
-            $('#cargandoInfo').show();
+            $('#cargandoInfoEM').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             Remision.colRemisiones = new Backbone.Collection(data);
             var bolFilter = Remision.colRemisiones.length > 0 ? true : false;
             if (bolFilter) {
-                Remision.gridEmbarque = new bbGrid.View({
-                    container: $('#bbGrid-Embarques'),
-                    enableTotal: true,
+                Remision.gridRemisiones = new bbGrid.View({
+                    container: $('#bbGrid-Remisiones'),
+                    actionenable: true,
                     enableSearch: false,
-                    detalle: false,
+                    detalle: Remision.accEscritura,
                     collection: Remision.colRemisiones,
                     seguridad: false,
-                    colModel: [{ title: 'Orden Embarque', name: 'idOrdenEmbarque', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Proyecto', name: 'nombreProyecto', filter: true, filterType: 'input' },
-                               { title: 'Etapa', name: 'claveEtapa', filter: true, filterType: 'input' },
-                               { title: 'Nombre Pieza', name: 'nombreMarca', filter: true, filterType: 'input' },
-                               { title: 'Pieza', name: 'piezas', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Piezas Confir', name: 'piezasLeidas', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Saldo', name: 'Saldo', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Peso C/U', name: 'peso', filter: true, filterType: 'input' },
-                               { title: 'Peso Total', name: 'pesoTotal', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Nombre Plano', name: 'nombrePlano', filter: true, filterType: 'input' }]
+                    detalle: false,
+                    borrar: false,
+                    colModel: [{ title: 'Remision', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Nombre Cliente', name: 'NombreCliente', filter: true, filterType: 'input' },
+                               { title: 'Transporte', name: 'Transporte', filter: true, filterType: 'input' },
+                               { title: 'Fecha Envio', name: 'fechaEnvio', filter: true, filterType: 'input' },
+                               { title: 'Fecha Remision', name: 'fechaRemision', filter: true, filterType: 'input'}]
                 });
-                $('#cargandoInfo').hide();
-                $('#divImprimir').show();
-                if (Remision.gridEmbarque.colModel[6].total === 0) {
-                    CMI.DespliegaInformacion("La Orden de Embarque ya fue registrada en su totalidad.");
-                    $('#codBarras').hide();
-                }
+                $('#cargandoInfoEM').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron el detalle de la orden de Embarque seleccionada");
-                $('#bbGrid-Embarques')[0].innerHTML = "";
-                $('#divImprimir').hide();
+                CMI.DespliegaInformacion("No se encontraron Remisiones para el proyecto y etapa seleccionados.");
+                $('#bbGrid-Remisiones')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {
-            CMI.DespliegaError("No se pudo cargar la informacion de la Orden de Embarque");
+            CMI.DespliegaError("No se pudo cargar la informacion de las Remisiones");
         });
     },
-    CargaGridOrdenEmbarque: function () {
+    CargaGridOrdenEmbarque: function (tipo) {
         var bolFilter = Remision.colOrdenEmbar.length > 0 ? true : false;
         if (bolFilter) {
+            $('#cargandoInfoOE').show();
             Remision.gridOrdenEmbar = new bbGrid.View({
-                container: $('#bbGrid-OrdenEmbar'),
+                container: $('#bbGrid-OrdenEmbar' + tipo),
                 enableSearch: false,
                 actionenable: true,
                 detalle: false,
@@ -333,13 +422,13 @@ var Remision = {
                 colModel: [{ title: 'Embarque', name: 'id', width: '8%' },
                            { title: 'Produccion', name: 'idOrdenProduccion' },
                            { title: 'Fecha', name: 'fechaCreacion'},
-                           { title: 'Observacion', name: 'Observacion'}]
+                           { title: 'Observacion', name: 'observacionOrdenEmbarque' }]
             });
-            $('#cargandoInfo').hide();
+            $('#cargandoInfoOE').hide();
         }
         else {
             CMI.DespliegaInformacion("No se encontraron Ordees de Embarque");
-            $('#bbGrid-OrdenEmbar')[0].innerHTML = "";
+            $('#bbGrid-OrdenEmbar' + tipo)[0].innerHTML = "";
         }
     }
 };

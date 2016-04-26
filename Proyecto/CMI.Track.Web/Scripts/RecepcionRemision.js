@@ -2,11 +2,11 @@
 //js de Generacion de Embarque Tablet
 //David Galvan
 //20/Abril/2016
-var EmbarqueTablet = {
+var RecepcionRemision = {
     activeForm: '',
-    origen : '',
+    origen: '',
     estatusRevision: 0,
-    saldo : 0,
+    saldo: 0,
     gridEmbarque: {},
     colEmbarques: {},
     Inicial: function () {
@@ -36,10 +36,10 @@ var EmbarqueTablet = {
             header = "<table border='2'>",
             tabla_html = '',
             fecha = '';
-        
-        if (EmbarqueTablet.colEmbarques !== null) {
-            for (var contador = 0; contador < EmbarqueTablet.colEmbarques.length; contador++) {
-                var item = EmbarqueTablet.colEmbarques.at(contador).attributes;
+
+        if (RecepcionRemision.colEmbarques !== null) {
+            for (var contador = 0; contador < RecepcionRemision.colEmbarques.length; contador++) {
+                var item = RecepcionRemision.colEmbarques.at(contador).attributes;
 
                 tblDataRow += "<tr>";
                 tblDataRow += "<td>" + item.idOrdenEmbarque + "</td>";
@@ -110,7 +110,7 @@ var EmbarqueTablet = {
                 keyboard: true
             }, 'show');
             ProyectoBuscar.Inicial();
-            ProyectoBuscar.parent = EmbarqueTablet;
+            ProyectoBuscar.parent = RecepcionRemision;
             $(btn).removeAttr("disabled");
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
@@ -129,7 +129,7 @@ var EmbarqueTablet = {
             }, 'show');
             EtapaBuscar.idProyecto = $('#idProyectoSelect').val();
             EtapaBuscar.revisionProyecto = $('#RevisionPro').text();
-            EtapaBuscar.parent = EmbarqueTablet;
+            EtapaBuscar.parent = RecepcionRemision;
             EtapaBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
@@ -150,7 +150,7 @@ var EmbarqueTablet = {
             OrdenEmbarqueBuscar.idProyecto = $('#idProyectoSelect').val();
             OrdenEmbarqueBuscar.revisionProyecto = $('#RevisionPro').text();
             OrdenEmbarqueBuscar.idEtapa = $('#idEtapaSelect').val();
-            OrdenEmbarqueBuscar.parent = EmbarqueTablet;
+            OrdenEmbarqueBuscar.parent = RecepcionRemision;
             OrdenEmbarqueBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
@@ -170,7 +170,7 @@ var EmbarqueTablet = {
         ///Se cierra la ventana de Proyectos
         $('#buscar-General').modal('hide');
 
-        EmbarqueTablet.estatusRevision = idEstatusRevision;
+        RecepcionRemision.estatusRevision = idEstatusRevision;
         if (idEstatusRevision !== 1) {
             $('#RevisionPro').addClass('revisionCerrada');
         } else {
@@ -178,7 +178,7 @@ var EmbarqueTablet = {
         }
 
         //Se inicializa la informacion seleccionada a vacio
-        $('#bbGrid-Embarques')[0].innerHTML = "";
+        $('#bbGrid-Remision')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
         $('#nombreEtapa').text('Nombre Etapa');
         $('#FechaInicioEtapa').text('Fecha Inicio');
@@ -187,7 +187,7 @@ var EmbarqueTablet = {
 
         $('#etapaRow').show();
         $('#codBarras').hide();
-        $('#ordenEmbarqueRow').hide();
+        $('#remisionRow').hide();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
                            FechaInicio, FechaFin) {
@@ -204,11 +204,11 @@ var EmbarqueTablet = {
         $('#FechaCreacionOE').text('Fecha Creacion');
         $('#Observacion').text('Observacion');
         $('#codBarras').hide();
-        $('#ordenEmbarqueRow').show();
+        $('#remisionRow').show();
 
     },
-    AsignaOrdenEmbarque: function (idOrdenEmbarque, idOrdenProduccion, 
-                                    observacion, fecha){
+    AsignaOrdenEmbarque: function (idOrdenEmbarque, idOrdenProduccion,
+                                    observacion, fecha) {
 
         $('#idOrdenEmbarSelect').val(idOrdenEmbarque);
         $('#idOrdenEmbarque').text(idOrdenEmbarque);
@@ -217,11 +217,11 @@ var EmbarqueTablet = {
         $('#Observacion').text(observacion);
         $('#buscar-General').modal('hide');
         $('#codBarras').show();
-        //Se carga el grid de EmbarqueTablet asignadas a la Orden
+        //Se carga el grid de RecepcionRemision asignadas a la Orden
         $('#bbGrid-Embarques')[0].innerHTML = "";
-        EmbarqueTablet.CargaGrid();
+        RecepcionRemision.CargaGrid();
     },
-    onBuscarCodBarras : function (){
+    onBuscarCodBarras: function () {
         var codigo = $('#codigoBarras').val(),
             marca = '',
             serie = '',
@@ -235,12 +235,12 @@ var EmbarqueTablet = {
             arrCodigo = codigo.split('-');
             if (arrCodigo.length === 3) {
                 tipoMarca = arrCodigo[0];
-                marca = parseInt(arrCodigo[1],10);
+                marca = parseInt(arrCodigo[1], 10);
                 serie = arrCodigo[2];
                 //Solo se leen Marcas
                 if (tipoMarca === 'M') {
 
-                    marcas = EmbarqueTablet.colEmbarques.where({ idMarca: marca });
+                    marcas = RecepcionRemision.colEmbarques.where({ idMarca: marca });
 
                     if (marcas.length > 0) {
 
@@ -252,7 +252,7 @@ var EmbarqueTablet = {
                         data = 'idDetaOrdenEmb=' + marcas[0].id +
                                '&idMarca=' + marca +
                                '&serie=' + serie +
-                               '&origen=' + EmbarqueTablet.origen +
+                               '&origen=' + RecepcionRemision.origen +
                                '&idUsuario=' + localStorage.idUser;
 
                         $.post(url, data, function (result) {
@@ -260,8 +260,8 @@ var EmbarqueTablet = {
                                 $('#codigoBarras').val('');
                                 marcas[0].set('piezasLeidas', marcas[0].attributes.piezasLeidas + 1);
                                 marcas[0].set('Saldo', marcas[0].attributes.Saldo - 1);
-                                EmbarqueTablet.gridEmbarque.renderPage();
-                                if (EmbarqueTablet.gridEmbarque.colModel[6].total === 0) { //Encabezado de Saldo en total
+                                RecepcionRemision.gridEmbarque.renderPage();
+                                if (RecepcionRemision.gridEmbarque.colModel[6].total === 0) { //Encabezado de Saldo en total
                                     CMI.DespliegaInformacion("La Orden de Embarque ya fue registrada en su totalidad.");
                                     $('#codBarras').hide();
                                 }
@@ -285,34 +285,34 @@ var EmbarqueTablet = {
         }
     },
     CargaGrid: function () {
-        var url = contextPath + "GenerarEmbarque/CargaDetalleOrden?id=" + $('#idOrdenEmbarSelect').val() + "&tipo=" + EmbarqueTablet.origen; // El url del controlador
+        var url = contextPath + "GenerarEmbarque/CargaDetalleOrden?id=" + $('#idOrdenEmbarSelect').val() + "&tipo=" + RecepcionRemision.origen; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            EmbarqueTablet.colEmbarques = new Backbone.Collection(data);
-            var bolFilter = EmbarqueTablet.colEmbarques.length > 0 ? true : false;
+            RecepcionRemision.colEmbarques = new Backbone.Collection(data);
+            var bolFilter = RecepcionRemision.colEmbarques.length > 0 ? true : false;
             if (bolFilter) {
-               EmbarqueTablet.gridEmbarque = new bbGrid.View({
+                RecepcionRemision.gridEmbarque = new bbGrid.View({
                     container: $('#bbGrid-Embarques'),
-                    enableTotal : true,
+                    enableTotal: true,
                     enableSearch: false,
                     detalle: false,
-                    collection: EmbarqueTablet.colEmbarques,
+                    collection: RecepcionRemision.colEmbarques,
                     seguridad: false,
                     colModel: [{ title: 'Orden Embarque', name: 'idOrdenEmbarque', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Proyecto', name: 'nombreProyecto', filter: true, filterType: 'input' },
                                { title: 'Etapa', name: 'claveEtapa', filter: true, filterType: 'input' },
                                { title: 'Nombre Pieza', name: 'nombreMarca', filter: true, filterType: 'input' },
-                               { title: 'Pieza', name: 'piezas', filter: true, filterType: 'input', total:0 },
+                               { title: 'Pieza', name: 'piezas', filter: true, filterType: 'input', total: 0 },
                                { title: 'Piezas Confir', name: 'piezasLeidas', filter: true, filterType: 'input', total: 0 },
                                { title: 'Saldo', name: 'Saldo', filter: true, filterType: 'input', total: 0 },
                                { title: 'Peso C/U', name: 'peso', filter: true, filterType: 'input' },
                                { title: 'Peso Total', name: 'pesoTotal', filter: true, filterType: 'input', total: 0 },
                                { title: 'Nombre Plano', name: 'nombrePlano', filter: true, filterType: 'input' }]
-               });
-               $('#cargandoInfo').hide();
-               $('#divImprimir').show();
-               if (EmbarqueTablet.gridEmbarque.colModel[6].total === 0) {
+                });
+                $('#cargandoInfo').hide();
+                $('#divImprimir').show();
+                if (RecepcionRemision.gridEmbarque.colModel[6].total === 0) {
                     CMI.DespliegaInformacion("La Orden de Embarque ya fue registrada en su totalidad.");
                     $('#codBarras').hide();
                 }
@@ -330,5 +330,5 @@ var EmbarqueTablet = {
 };
 
 $(function () {
-    EmbarqueTablet.Inicial();
+    RecepcionRemision.Inicial();
 })

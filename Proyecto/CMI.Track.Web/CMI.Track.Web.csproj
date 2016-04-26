@@ -886,6 +886,7 @@
     <Content Include="Scripts\Proyecto.js" />
     <Content Include="Scripts\ProyectoBuscar.js" />
     <Content Include="Scripts\RecepcionRequisicion.js" />
+    <Content Include="Scripts\RecepcionRemision.js" />
     <Content Include="Scripts\Remision.js" />
     <Content Include="Scripts\ReportesProduccion.js" />
     <Content Include="Scripts\ReqGralMaterial.js" />
@@ -1040,6 +1041,8 @@
     <Content Include="Views\OrdenEmbarque\_buscaMarca.cshtml" />
     <Content Include="Views\OrdenEmbarque\_Nuevo.cshtml" />
     <Content Include="Views\Remision\_Nuevo.cshtml" />
+    <Content Include="Views\Remision\_Actualiza.cshtml" />
+    <Content Include="Views\RecepcionRemision\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

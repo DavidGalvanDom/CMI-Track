@@ -23,8 +23,8 @@ var OrdenEmbarqueBuscar = {
     CargaGrid: function () {
         var data = 'idProyecto=' + OrdenEmbarqueBuscar.idProyecto +
               '&revision=' + OrdenEmbarqueBuscar.revisionProyecto +
-              '&idEtapa=' + OrdenEmbarqueBuscar.idEtapa;
-
+              '&idEtapa=' + OrdenEmbarqueBuscar.idEtapa +
+              '&sinRemision=' + $('#sinRemision').val();
         $('#cargandoInfoOE').show();
         var url = contextPath + "OrdenEmbarque/CargaOrdenEmbarqueActivos"; // El url del controlador
         $.getJSON(url,data, function (data) {

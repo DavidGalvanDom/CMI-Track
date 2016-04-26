@@ -34,11 +34,11 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaOrdenEmbarqueActivos(int idProyecto, string revision, int idEtapa)
+        public JsonResult CargaOrdenEmbarqueActivos(int idProyecto, string revision, int idEtapa, bool sinRemision)
         {
             try
             {
-                var lstOrdenEmbarque = OrdenEmbarqueData.CargarOrdenesEmbarque(idProyecto, revision, idEtapa,1);
+                var lstOrdenEmbarque = OrdenEmbarqueData.CargarOrdenesEmbarque(idProyecto, revision, idEtapa, 1, sinRemision);
 
                 return (Json(lstOrdenEmbarque, JsonRequestBehavior.AllowGet));
             }
@@ -53,8 +53,9 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult BuscarOrdenEmbarque()
+        public ActionResult BuscarOrdenEmbarque(bool sinRemision)
         {
+            ViewBag.sinRemision = sinRemision.ToString();
             return PartialView("_buscarOrdenEmbarque");
         }
         /// <summary>

@@ -45,6 +45,19 @@ namespace CMI.Track.Web.Models
         public int usuarioCreacion { get; set; }
 
         [Required(ErrorMessage = "*")]
+        public int idProyecto { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        public int idEtapa { get; set; }
+
+        [Required(ErrorMessage = "*")]
         public List<int> lstOrdenEmbarque { get; set; }
+
+        public string nombreCliente { get; set; }
+
+        public string direccionCliente { get; set; }
+
+        public string nombreContacto { get; set; }
+
     }
 }

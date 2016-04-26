@@ -79,6 +79,7 @@
     <Compile Include="ProcesoController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoController.cs" />
+    <Compile Include="RecepcionRemisionController.cs" />
     <Compile Include="RecepcionRequisicionController.cs" />
     <Compile Include="RemisionController.cs" />
     <Compile Include="ReporteController.cs" />

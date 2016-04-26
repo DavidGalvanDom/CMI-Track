@@ -25,7 +25,8 @@ namespace CMI.Track.Web.Data
         /// <param name="idRequerimiento"></param>
         /// <param name="idEstatus"></param>
         /// <returns>Lista de Marcas</returns>
-        public static List<Models.ListaOrdenEmbarque> CargaOrdenEmbarque(int idProyecto, int idEtapa, string idOrden)
+        public static List<Models.ListaOrdenEmbarque> CargaOrdenEmbarque(int idProyecto, int idEtapa,
+                                                                    string idOrden)
         {
             var lstOrdenEmbarque = new List<Models.ListaOrdenEmbarque>();
             object[] paramArray = new object[3];
@@ -34,6 +35,7 @@ namespace CMI.Track.Web.Data
                 paramArray[0] = idProyecto;
                 paramArray[1] = idEtapa;
                 paramArray[2] = idOrden == "undefined" ? null : idOrden;
+           
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -312,16 +314,17 @@ namespace CMI.Track.Web.Data
         /// <param name="idEstatus"></param>
         /// <returns></returns>
         public static List<Models.ListaOrdenEmbarqueBusqueda> CargarOrdenesEmbarque(int idProyecto, string revision,
-                                                                        int idEtapa, int? idEstatus)
+                                                                        int idEtapa, int? idEstatus, bool sinRemision)
         {
             var lstOrdenesEmbarque = new List<Models.ListaOrdenEmbarqueBusqueda>();
-            object[] paramArray = new object[4];
+            object[] paramArray = new object[5];
             try
             {
                 paramArray[0] = idProyecto;
                 paramArray[1] = revision;
                 paramArray[2] = idEtapa;
                 paramArray[3] = idEstatus;
+                paramArray[4] = sinRemision;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 

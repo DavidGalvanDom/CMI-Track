@@ -1,12 +1,10 @@
 ﻿@{
-    ViewBag.Title = "Remisiones";
+    ViewBag.Title = "Recepcion de Remisiones";
 }
-
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            <small>Generar</small> Remisiones
-            <button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>
+            <small>Generar</small> Recepcion de Remisiones
         </h1>
     </div>
     <!-- /.col-lg-12 -->
@@ -68,29 +66,62 @@
         <br />
     </div>
 </div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <div id="bbGrid-Remisiones" class="col-lg-12">
-            <div id="cargandoInfoEM" style="display:none;">Cargando Informacion...</div>
+<div class="row" id="remisionRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Remisiones</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="idRemision" name="idRemision" class="form-control" title="id Remision"> Id Remision </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarRemision" name="btnBuscarRemision"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idRemisionSelect" name="idRemisionSelect" />
+        </div>
+        <div class="col-sm-2">
+            <span id="idOrdenProduccion" class="form-control" title="Orden Produccion">Orden Produccion</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="FechaEnvio" class="form-control" title="Fecha Envio">Fecha Envio</span>
         </div>
     </div>
 </div>
-
-<div class="modal fade bs-example-modal-lg" id="nuevo-Remision"
-     tabindex="-1" role="dialog"
-     aria-labelledby="nuevoRemisionLabel">
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
 </div>
-
-<div class="modal fade bs-example-modal-lg" id="actualiza-Remision"
-     tabindex="-1" role="dialog"
-     aria-labelledby="actulizaRemisionLabel">
+<div class="row" id="codBarras" style="display:none;">
+    <div class="col-sm-7"></div>
+    <div class="col-sm-2 text-right"> <label class="control-label">C. Barras</label></div>
+    <div class="col-sm-3">
+        <div class="input-group">
+            <input type="text" id="codigoBarras" name="codigoBarras" class="form-control" title="Codigo de Barras" placeholder="Codigo de Barras" />
+            <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" id="btnBuscarCodigoBarra" name="btnBuscarCodigoBarra"><span class="fa fa-search"></span></button>
+            </span>
+        </div>
+    </div>
 </div>
-
-<div class="modal fade bs-example-modal-lg" id="buscar-Cliente"
-     tabindex="-1" role="dialog"
-     aria-labelledby="buscarCliente">
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-Remision" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<input type="hidden" id="fecha" value="@ViewBag.Fecha" />
+
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
      tabindex="-1" role="dialog"
@@ -98,12 +129,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/Scripts/Remision.js"></script>
+    <script src="~/Scripts/EmbarqueTablet.js"></script>
 }
-
-
-
-
-
-
-

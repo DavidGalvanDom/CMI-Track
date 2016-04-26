@@ -28,13 +28,34 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
+        /// Se carga la lista de Remisiones
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaRemisiones(int idProyecto, int idEtapa)
+        {
+            try
+            {
+                var lstRemisiones = RemisionData.CargaRemisiones(idProyecto, idEtapa,null);
+
+                return (Json(lstRemisiones, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
         /// Define un nueva Remision
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
-        public ActionResult Nuevo()
+        public ActionResult Nuevo(int idProyecto, int idEtapa)
         {
-            var objRemision = new Models.Remision() { fechaRemision = DateTime.Now.ToString("dd/MM/yyyy") };
+            var objRemision = new Models.Remision() { idProyecto= idProyecto, idEtapa=idEtapa, fechaRemision = DateTime.Now.ToString("dd/MM/yyyy") };
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objRemision);
         }
@@ -60,6 +81,61 @@ namespace CMI.Track.Web.Controllers
             }
 
             return Json(new { Success = false, Message = "La informacion de la Remision esta incompleta" });
+        }
+
+        /// <summary>
+        /// Carga el formulario para actulizar el proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Actualiza(int id)
+        {
+            var objRemision = RemisionData.CargaRemision(id);
+            return PartialView("_Actualiza", objRemision);
+        }
+
+        /// <summary>
+        /// Actualiza la informacion del proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public ActionResult Actualiza(Models.Remision pobjModelo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    RemisionData.Actualiza(pobjModelo);
+                    return Json(new { Success = true, id = pobjModelo.id.ToString(), Message = "Gracias por actualizar la informacion de la remision." });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "La informacion de la Remision esta incompleta" });
+        }
+
+
+        /// <summary>
+        /// Se carga la lista de Embarque asignados a la Remision
+        /// </summary>
+        /// <param name="id">Id Remision</param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaEmbarquesRemisiones(int id)
+        {
+            try
+            {
+                var lstEmbarquesRemision = RemisionData.CargaEmbarquesRemision(id);
+
+                return (Json(new { Success = true, Data = lstEmbarquesRemision }, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
     }
