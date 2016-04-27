@@ -110,7 +110,7 @@ BEGIN -- 5. Menus
 	INSERT INTO cmiModulos VALUES (40,GETDATE(),GETDATE(),1,'Embarque Tablet 2',			'GenerarEmbarque/Tablet2',		3)
 	INSERT INTO cmiModulos VALUES (41,GETDATE(),GETDATE(),1,'Remision',						'Remision/Index',				4)
 	INSERT INTO cmiModulos VALUES (42,GETDATE(),GETDATE(),1,'Recepcion Remision',			'RecepcionRemision/Index',		5)
-	INSERT INTO cmiModulos VALUES (43,GETDATE(),GETDATE(),1,'Reporte Remision',				'Remision/Reporte',				6)
+	
 	
 	--| MODULOS - MENU GRUPO |--
 	
@@ -163,7 +163,7 @@ BEGIN -- 5. Menus
 	INSERT INTO cmiModuloMenuGrupo VALUES (6,40)
 	INSERT INTO cmiModuloMenuGrupo VALUES (6,41)
 	INSERT INTO cmiModuloMenuGrupo VALUES (6,42)
-	INSERT INTO cmiModuloMenuGrupo VALUES (6,43)
+	
 END
 
 BEGIN -- 6. Tipos de Calidad

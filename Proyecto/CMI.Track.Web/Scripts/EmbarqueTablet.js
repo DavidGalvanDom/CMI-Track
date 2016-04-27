@@ -1,4 +1,4 @@
-﻿/*global $, CMI, Backbone, bbGrid*/
+﻿/*global $, CMI, Backbone, bbGrid,EtapaBuscar, contextPath, routeUrlImages,ProyectoBuscar,OrdenEmbarqueBuscar*/
 //js de Generacion de Embarque Tablet
 //David Galvan
 //20/Abril/2016
@@ -21,7 +21,7 @@ var EmbarqueTablet = {
         $("#btnBuscarOrdenEmbarque").click(that.onBuscarOrdenEmbarque);
         $('#btnBuscarCodigoBarra').click(that.onBuscarCodBarras);
         $('#codigoBarras').keypress(function (e) {
-            if (e.keyCode == 13) {  // detect the enter key
+            if (e.keyCode === 13) {  // detect the enter key
                 that.onBuscarCodBarras();
             }
         });
@@ -31,11 +31,9 @@ var EmbarqueTablet = {
     onImprimir: function () {
         var tblDataRow = '',
             tabla = '',
-            total = 0,
             tcompleta = '',
             header = "<table border='2'>",
-            tabla_html = '',
-            fecha = '';
+            tabla_html = '';
         
         if (EmbarqueTablet.colEmbarques !== null) {
             for (var contador = 0; contador < EmbarqueTablet.colEmbarques.length; contador++) {
@@ -133,7 +131,7 @@ var EmbarqueTablet = {
             EtapaBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
-            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
+            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar Etapas");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
     onBuscarOrdenEmbarque: function () {
@@ -154,7 +152,7 @@ var EmbarqueTablet = {
             OrdenEmbarqueBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
-            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
+            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar Orden Embarque");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
     AsignaProyecto: function (idProyecto, Revision,
@@ -323,7 +321,7 @@ var EmbarqueTablet = {
                 $('#divImprimir').hide();
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de la Orden de Embarque");
         });
     }
@@ -331,4 +329,4 @@ var EmbarqueTablet = {
 
 $(function () {
     EmbarqueTablet.Inicial();
-})
+});

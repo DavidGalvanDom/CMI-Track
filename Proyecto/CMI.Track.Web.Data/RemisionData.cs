@@ -95,6 +95,49 @@ namespace CMI.Track.Web.Data
         }
 
         /// <summary>
+        /// Se cargna las marcar de las ordenes de embarque 
+        /// asignadas a la remision
+        /// </summary>
+        /// <param name="idRemision"></param>
+        /// <returns></returns>
+        public static List<DetalleRemision> CargaDestalleRemision(int idRemision)
+        {
+            var lstRemisiones = new List<Models.DetalleRemision>();
+            try
+            {
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarRemisionesDetalle", idRemision))
+                {
+                    while (dataReader.Read())
+                    {
+                        lstRemisiones.Add(new Models.DetalleRemision()
+                        {
+                            id = Convert.ToInt32(dataReader["idRemision"]),
+                            Proyecto = Convert.ToString(dataReader["nombreProyecto"]),
+                            Marca = Convert.ToString(dataReader["codigoMarca"]),
+                            idMarca = Convert.ToInt32(dataReader["idMarca"]),
+                            Etapa = Convert.ToString(dataReader["claveEtapa"]),
+                            NombrePlano = Convert.ToString(dataReader["codigoPlanoMontaje"]),
+                            idOrdenEmbarque = Convert.ToInt32(dataReader["idOrdenEmbarque"]),
+                            Piezas = Convert.ToInt32(dataReader["piezasMarca"]),
+                            Saldo = Convert.ToInt32(dataReader["piezasMarca"]) - Convert.ToInt32(dataReader["piezasLeidas"]),
+                            PiezasLeidas = Convert.ToInt32(dataReader["piezasLeidas"]),
+                            PesoCU = Convert.ToDouble(dataReader["pesoMarca"]),
+                            PesoTotal = Convert.ToDouble(dataReader["pesoMarca"]) * Convert.ToInt32(dataReader["piezasMarca"]),
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return lstRemisiones;
+        }
+
+        /// <summary>
         /// Se cargan las Remisiones del Proyecto y Etapa
         /// </summary>
         /// <param name="idProyecto"></param>
@@ -257,6 +300,53 @@ namespace CMI.Track.Web.Data
             {
                 throw new ApplicationException(exp.Message, exp);
             }
+        }
+
+        /// <summary>
+        /// Se registra la Marca de acuerdo a la serie de la Orden Embarque 
+        /// que pertenece a la Remision
+        /// </summary>
+        /// <param name="idDetaOrdenEmb"></param>
+        /// <param name="idMarca"></param>
+        /// <param name="serie"></param>
+        /// <param name="idRemision"></param>
+        /// <returns></returns>
+        public static string GenerarRemision(int idDetaOrdenEmb, int idMarca,
+                                              string serie, int idRemision, int idUsuario)
+        {
+            string resultado = "";
+            object[] paramArray = new object[5];
+            try
+            {
+                paramArray[0] = idDetaOrdenEmb;
+                paramArray[1] = idMarca;
+                paramArray[2] = serie;
+                paramArray[3] = idRemision;
+                paramArray[4] = idUsuario;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                var result = db.ExecuteScalar("usp_RegistraRepcepRemision", paramArray);
+
+                if (result != null)
+                {
+                    resultado = result.ToString();
+                }
+
+            }
+            catch (Exception exp)
+            {
+                if (exp.HResult == -2146232060)
+                {
+                    throw new ApplicationException("La Serie no corresponde a la Marca de codigo de barras");
+                }
+                else
+                {
+                    throw new ApplicationException(exp.Message, exp);
+                }
+
+            }
+
+            return resultado;
         }
     }
 }

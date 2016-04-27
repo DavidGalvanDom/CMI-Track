@@ -138,5 +138,73 @@ namespace CMI.Track.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Despliega ventana emergente con el grid de proyectos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult BuscarRemision()
+        {
+            return PartialView("_buscarRemision");
+        }
+
+        /// <summary>
+        /// Se cargan solo los proyectos que esten activos.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaRemisionesActivas(int idProyecto, int idEtapa)
+        {
+            try
+            {
+                var lstRemisiones = RemisionData.CargaRemisiones(idProyecto, idEtapa,1);
+
+                return (Json(lstRemisiones, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Se carga a nivel Marca de las Ordenes de embarque asignadas a la remision
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaDetalleRemision(int id)
+        {
+            try
+            {
+                var lstDetalleRemision = RemisionData.CargaDestalleRemision(id);
+
+                return (Json(new { Success = true, Data = lstDetalleRemision, fecha = DateTime.Now.ToString("dd/MM/yyyy") }, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Carga el formulario para actulizar el proyecto
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public JsonResult Remision(int id)
+        {
+            try
+            {
+                var objRemision = RemisionData.CargaRemision(id);
+
+                return (Json(new { Success = true, Data = objRemision }, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

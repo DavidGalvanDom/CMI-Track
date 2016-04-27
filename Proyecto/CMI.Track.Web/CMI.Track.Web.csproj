@@ -888,6 +888,7 @@
     <Content Include="Scripts\RecepcionRequisicion.js" />
     <Content Include="Scripts\RecepcionRemision.js" />
     <Content Include="Scripts\Remision.js" />
+    <Content Include="Scripts\RemisionBuscar.js" />
     <Content Include="Scripts\ReportesProduccion.js" />
     <Content Include="Scripts\ReqGralMaterial.js" />
     <Content Include="Scripts\ReqManualCompra.js" />
@@ -1043,6 +1044,7 @@
     <Content Include="Views\Remision\_Nuevo.cshtml" />
     <Content Include="Views\Remision\_Actualiza.cshtml" />
     <Content Include="Views\RecepcionRemision\Index.cshtml" />
+    <Content Include="Views\Remision\_buscarRemision.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

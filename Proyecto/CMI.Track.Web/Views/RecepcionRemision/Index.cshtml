@@ -79,7 +79,7 @@
             <input type="hidden" id="idRemisionSelect" name="idRemisionSelect" />
         </div>
         <div class="col-sm-2">
-            <span id="idOrdenProduccion" class="form-control" title="Orden Produccion">Orden Produccion</span>
+            <span id="nombreCliente" class="form-control" title="Nombre Cliente">Nombre del Cliente</span>
         </div>
         <div class="col-sm-2">
             <span id="FechaEnvio" class="form-control" title="Fecha Envio">Fecha Envio</span>
@@ -118,6 +118,16 @@
 <div class="row">
     <div class="col-sm-12">
         <br />
+    </div>
+</div>
+<div class="row" id="divImprimir" style="display:none;">
+    <div class="col-lg-10">
+    </div>
+    <div class="col-lg-2 pull-right">
+        <button class="btn btn-default" onclick="RecepcionRemision.onImprimir();">
+            <i class="fa fa-print" aria-hidden="true"></i>
+            Imprimir
+        </button>
     </div>
 </div>
 <input type="hidden" id="fecha" value="@ViewBag.Fecha" />

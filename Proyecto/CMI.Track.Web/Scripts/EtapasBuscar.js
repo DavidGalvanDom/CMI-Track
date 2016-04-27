@@ -1,4 +1,4 @@
-﻿//js de lista de Proyectos.
+﻿//js de lista de Etapas.
 //David Galvan
 //17/Febrero/2016
 var EtapaBuscar = {

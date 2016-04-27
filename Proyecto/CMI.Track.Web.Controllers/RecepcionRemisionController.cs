@@ -29,5 +29,54 @@ namespace CMI.Track.Web.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Detalle a nivel Marca de las Ordenes de embarque que pertenecen auna Remision
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaDetalleRemision(int id)
+        {
+            try
+            {
+                var lstRemisiones = RemisionData.CargaDestalleRemision(id);
+
+                return (Json(lstRemisiones, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+       /// <summary>
+       /// Se registra la Marca
+       /// </summary>
+       /// <param name="idDetaOrdenEmb"></param>
+       /// <param name="idMarca"></param>
+       /// <param name="serie"></param>
+       /// <param name="idRemision"></param>
+       /// <param name="idUsuario"></param>
+       /// <returns></returns>
+        [HttpPost]
+        public JsonResult GenerarRecepcionRemision(int idOrdenEmb, int idMarca,
+                                           string serie, int idRemision, 
+                                           int idUsuario)
+        {
+            try
+            {
+                var resultado = RemisionData.GenerarRemision(idOrdenEmb, idMarca, serie, idRemision, idUsuario);
+
+                if(resultado.Length == 0)
+                    return (Json(new { Success = true }, JsonRequestBehavior.AllowGet));
+                else
+                    return (Json(new { Success = false, Message = resultado }, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿/*global $, CMI, Backbone, bbGrid*/
+﻿/*global $, CMI, Backbone, bbGrid,ProyectoBuscar,OrdenEmbarqueBuscar,EtapaBuscar,contextPath, ClienteBuscar*/
 //js de Generacion de Embarque Tablet
 //David Galvan
 //20/Abril/2016
@@ -11,6 +11,7 @@ var Remision = {
     gridOrdenEmbar : {},
     colOrdenEmbar: null,
     colRemisiones: {},
+    remisionSelected: null,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.origen = $('#origentablet').val();
@@ -51,7 +52,7 @@ var Remision = {
             CMI.botonMensaje(true, btn, 'Actualizar');
             $(Remision.activeForm + ' #usuarioCreacion').val(localStorage.idUser);
 
-            if (Remision.colOrdenEmbar == null || Remision.colOrdenEmbar.length < 1) {
+            if (Remision.colOrdenEmbar === null || Remision.colOrdenEmbar.length < 1) {
                 CMI.DespliegaErrorDialogo('Debe seleccionar por lo menos una Orden de embarque');
                 CMI.botonMensaje(false, btn, 'Actualizar');
                 return;
@@ -68,7 +69,7 @@ var Remision = {
             $.post(contextPath + "Remision/Actualiza",
                 data,
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Remision.colRemisiones.add(Remision.serializaRemision(data.id), { merge: true });
                         CMI.DespliegaInformacion('La Remision fue Actualizada correctamente.');
                         $('#actualiza-Remision').modal('hide');
@@ -100,7 +101,7 @@ var Remision = {
             CMI.botonMensaje(true, btn, 'Guardar');
             $(Remision.activeForm + ' #usuarioCreacion').val(localStorage.idUser);
 
-            if (Remision.colOrdenEmbar == null || Remision.colOrdenEmbar.length < 1) {
+            if (Remision.colOrdenEmbar === null || Remision.colOrdenEmbar.length < 1) {
                 CMI.DespliegaErrorDialogo('Debe seleccionar por lo menos una Orden de embarque');
                 CMI.botonMensaje(false, btn, 'Guardar');
                 return;
@@ -117,7 +118,7 @@ var Remision = {
             $.post(contextPath + "Remision/Nuevo",
                 data,
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Remision.colRemisiones.add(Remision.serializaRemision(data.id));
                         CMI.DespliegaInformacion('La Remision fue guardada con el Id: ' + data.id);
                         $('#nuevo-Remision').modal('hide');
@@ -150,7 +151,7 @@ var Remision = {
             ProyectoBuscar.parent = Remision;
             $(btn).removeAttr("disabled");
         }).fail(function () {
-            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
+            CMI.DespliegaError("No se pudo cargar el modulo de Buscar proyectos");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
     onBuscarEtapa: function () {
@@ -170,8 +171,27 @@ var Remision = {
             EtapaBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
-            CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar proyectos");
+            CMI.DespliegaError("No se pudo cargar el modulo de Buscar etapa");
         }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    onImprimir: function () {
+        CMI.CierraMensajes();
+        var url = contextPath + "Remision/Remision/"; // El url del controlador
+        if (Remision.remisionSelected !== null) {
+            url = url + Remision.remisionSelected;
+            $.get(url, function (data) {
+                if (data.Success === true) {
+                    Remision.CargaDetalleRemision(Remision.remisionSelected, data.Data);
+                } else {
+                    CMI.DespliegaError(data.Message);
+                }
+            }).fail(function () {
+                CMI.DespliegaError("No se pudo cargar la informacion de la Remision");
+            });
+
+        } else {
+            CMI.DespliegaError("Debe seleccionar una Remision de la lista.");
+        }
     },
     onBuscarOrdenEmbarque: function () {
         var btn = this;
@@ -211,6 +231,18 @@ var Remision = {
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar clietnes");
         }).always(function () { $(btn).removeAttr("disabled"); });
+    },
+    CargaDetalleRemision: function (id, remision) {
+        var url = contextPath + "Remision/CargaDetalleRemision/" + id; // El url del controlador
+        $.get(url, function (data) {
+            if (data.Success === true) {
+                Remision.GeneraExcelRemision(Remision.remisionSelected, remision, data.Data, data.fecha);
+            } else {
+                CMI.DespliegaError(data.Message);
+            }
+        }).fail(function () {
+            CMI.DespliegaError("No se pudo cargar la informacion del Detalle de Remision");
+        });
     },
     EditarRemision: function (id){
         CMI.CierraMensajes();
@@ -285,7 +317,6 @@ var Remision = {
         $('.btnNuevo').hide();
 
         $('#etapaRow').show();
-
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
                            FechaInicio, FechaFin) {
@@ -384,26 +415,32 @@ var Remision = {
                     container: $('#bbGrid-Remisiones'),
                     actionenable: true,
                     enableSearch: false,
-                    detalle: Remision.accEscritura,
+                    detalle: false,
+                    editar: Remision.accEscritura,
                     collection: Remision.colRemisiones,
                     seguridad: false,
-                    detalle: false,
                     borrar: false,
                     colModel: [{ title: 'Remision', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Cliente', name: 'NombreCliente', filter: true, filterType: 'input' },
                                { title: 'Transporte', name: 'Transporte', filter: true, filterType: 'input' },
                                { title: 'Fecha Envio', name: 'fechaEnvio', filter: true, filterType: 'input' },
-                               { title: 'Fecha Remision', name: 'fechaRemision', filter: true, filterType: 'input'}]
+                               { title: 'Fecha Remision', name: 'fechaRemision', filter: true, filterType: 'input' }],
+                    onRowClick: function () {
+                        $('#rowImprimir').show();
+                        Remision.remisionSelected = this.selectedRows[0];
+                }
                 });
                 $('#cargandoInfoEM').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Remisiones para el proyecto y etapa seleccionados.");
                 $('#bbGrid-Remisiones')[0].innerHTML = "";
+                $('#rowImprimir').hide();
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Remisiones");
+            $('#rowImprimir').hide();
         });
     },
     CargaGridOrdenEmbarque: function (tipo) {
@@ -430,9 +467,84 @@ var Remision = {
             CMI.DespliegaInformacion("No se encontraron Ordees de Embarque");
             $('#bbGrid-OrdenEmbar' + tipo)[0].innerHTML = "";
         }
+    },
+    GeneraExcelRemision: function (id, remision, detalle, fecha) {
+        var tblDataRow = '',
+          tabla = '',
+          tcompleta = '',
+          header = "<table border='2'>",
+          tabla_html = '';
+
+        if (detalle !== null) {
+            for (var contador = 0; contador < detalle.length; contador++) {
+                var item = detalle[contador];
+                tblDataRow += "<tr>";
+                tblDataRow += "<td>" + item.idOrdenEmbarque + "</td>";
+                tblDataRow += "<td colspan='6'>" + item.Marca.replace(/ /g, '&nbsp;') + "</td>";
+                tblDataRow += "<td colspan='2'>" + item.Piezas + "</td>";
+                tblDataRow += "<td colspan='2'>" + item.PesoCU + "</td>";
+                tblDataRow += "</tr>";
+            }
+        }
+        header += "<tr>";
+        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td > <table> ";
+        header += "        <tr> <td colspan='6' align='center'><strong> Reporte Remision </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='6' align='center'><strong> " + $('#nombreProyecto').text() + " - " + $('#nombreEtapa').text() + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "      </table>";
+        header += " </td> ";
+        header += "<td> ";
+        header += "    <table ><tr> <td></td> </tr><tr align='right'> <td>Codigo:</td></tr><tr align='right'><td >Revision:</td></tr><tr align='right'><td >Folio:</td></tr><tr align='right'> <td >Fecha:</td></tr></table>";
+        header += "</td>";
+        header += "<td> ";
+        header += "    <table><tr align='center'></tr><tr align='center'><td ><strong>" + $('#CodigoProyecto').text() + "</strong></td></tr><tr align='center'><td><strong>" + $('#RevisionPro').text() + "</strong></td></tr>";
+        header += "      <tr><td  align='center'><strong>" + id + "</strong></td></tr>";
+        header += "      <tr><td  align='center'><strong>" + fecha + "</strong></td></tr>";
+        header += "    </table>";
+        header += "</td>";
+        header += "</tr></table>";
+
+        header += "<table border='2'>";
+        header += "<tr align='center'> <td colspan='2'>REMITIDO: </td> <td colspan='4'>" + remision.nombreCliente + "</td> <td colspan='2'>TRANSPORTE: </td> <td colspan='3'>" + remision.transporte + "</td></tr>";
+        header += "<tr align='center'> <td colspan='2'>DOMICILIO: </td> <td colspan='4'>" + remision.direccionCliente + "</td> <td colspan='2'>PLACAS: </td><td colspan='3'>" + remision.placas + "</td></tr>";
+        header += "<tr align='center'> <td colspan='2'>CONTACTO: </td> <td colspan='4'>" + remision.nombreContacto + "</td> <td colspan='2'>CONDUCTOR: </td><td colspan='3'>" + remision.conductor + "</td></tr>";
+        header += "<tr align='center'> <td colspan='2'> </td> <td colspan='4'></td> <td colspan='2'>FIRMA DE RECIBIDO: </td><td colspan='3'></td></tr>";
+        header += "</table>";
+
+        tabla = "<table  border='2' ><tr align='center'>" +
+                "<td rowspan='2'><strong>Orden Embarque</strong></td>" +
+                "<td rowspan='2' colspan='6'><strong>Nombre Pieza</strong></td>" +
+                "<td rowspan='2' colspan='2'><strong>Pieza</strong></td>" +
+                "<td rowspan='2' colspan='2'><strong>Peso </strong></td>" +
+                "</tr></table>";
+
+        tcompleta = "<table border='2'><tr><td><table border='1'>";
+        tcompleta += tblDataRow;
+        tcompleta += "</table></td></tr></table>";
+
+        tcompleta += "<table ><tr><td></td></tr> <tr >";
+        tcompleta += "<td colspan='2'></td>";
+        tcompleta += "<td colspan='3' style='border:solid;border-size:2'>SOLICITO</td>";
+        tcompleta += "<td colspan='3' style='border:solid;border-size:2'>AUTORIZO: </td>";
+        tcompleta += "<td colspan='3' style='border:solid;border-size:2'>RECIBIO: </td>";
+        tcompleta += "</tr></table>";
+
+        header += tabla + tcompleta;
+
+        var tmpElemento = document.createElement('a'),
+            data_type = 'data:application/vnd.ms-excel',
+            tabla_div = header;
+
+        tabla_html = tabla_div.replace(/ /g, '%20');
+
+        tmpElemento.href = data_type + ', ' + tabla_html;
+        //Asignamos el nombre a nuestro EXCEL
+        tmpElemento.download = 'Reporte_Remision.xls';
+        // Simulamos el click al elemento creado para descargarlo
+        tmpElemento.click();
     }
 };
 
 $(function () {
     Remision.Inicial();
-})
+});

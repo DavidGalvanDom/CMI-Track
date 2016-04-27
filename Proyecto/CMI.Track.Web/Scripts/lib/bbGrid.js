@@ -43,9 +43,12 @@
     };
 
     viewOptions = ['autofetch', 'buttons', 'colModel', 'container',
-        'enableSearch', 'multiselect', 'actionenable', 'enableTotal', 'actionplus', 'rows', 'rowList', 'selectedRows',
-        'subgrid', 'subgridAccordion', 'onRowClick', 'onRowDblClick', 'onReady','seguridad',
-        'onBeforeRender', 'onRowExpanded', 'onRowCollapsed', 'events','editar','detalle','borrar','actionpicture','clone'];
+        'enableSearch', 'multiselect', 'actionenable', 'enableTotal',
+        'actionplus', 'rows', 'rowList', 'selectedRows',
+        'subgrid', 'subgridAccordion', 'onRowClick', 'onRowDblClick',
+        'onReady', 'seguridad', 'onBeforeRender', 'onRowExpanded',
+        'onRowCollapsed', 'events', 'editar', 'detalle',
+        'borrar', 'actionpicture', 'clone'];
 
     bbGrid.View = function (options) {
         options || (options = {});
