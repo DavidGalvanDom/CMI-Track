@@ -870,6 +870,7 @@
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\ListaGeneral.js" />
     <Content Include="Scripts\MarcasBuscar.js" />
+    <Content Include="Scripts\MarcasBuscarMateriales.js" />
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\MaterialesBuscar.js" />

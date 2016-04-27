@@ -1,4 +1,5 @@
-﻿//js de catalogo de Etapas.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
+//js de catalogo de Etapas.
 //David Galvan
 //17/Febrero/2016
 

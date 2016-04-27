@@ -1,4 +1,5 @@
-﻿//js de catalogo de SubMarcas.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath, EtapaBuscar, ProyectoBuscar, PlanosMontajeBuscar,MarcaBuscar, PlanosDespieceBuscar*/
+//js de catalogo de SubMarcas.
 //David Galvan
 //01/Marzo/2016
 var SubMarcas = {
@@ -71,15 +72,14 @@ var SubMarcas = {
         }
     },
     onActualizar: function () {
-        var form = SubMarcas.activeForm,
-            btn = this;
+        var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
             $.post(contextPath + "SubMarcas/Actualiza",
                 $("#ActualizaSubMarcaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-subMarcas').modal('hide');
                         SubMarcas.colSubMarcas.add(SubMarcas.serializaSubMarcas(data.id), { merge: true });
                         CMI.DespliegaInformacion('La SubMarcas fue Actualizada. Id:' + data.id);
@@ -369,7 +369,7 @@ var SubMarcas = {
         $.post(url, {
             id: id
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 SubMarcas.colSubMarcas.remove(id);
                 CMI.DespliegaInformacion(data.Message);
             }
@@ -425,7 +425,7 @@ var SubMarcas = {
             SubMarcas.colSubMarcas = new Backbone.Collection(data);
             var bolFilter = SubMarcas.colSubMarcas.length > 0 ? true : false;
             if (bolFilter) {
-                gridMarcas = new bbGrid.View({
+                SubMarcas.gridSubMarca = new bbGrid.View({
                     container: $('#bbGrid-subMarcas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -457,7 +457,7 @@ var SubMarcas = {
                 $('#bbGrid-subMarcas')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las SubMarcas");
         });
     }
@@ -465,4 +465,4 @@ var SubMarcas = {
 
 $(function () {
     SubMarcas.Inicial();
-})
+});
