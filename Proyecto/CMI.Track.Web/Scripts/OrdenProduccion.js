@@ -1,4 +1,4 @@
-﻿/*global $,ProyectoBuscar,EtapaBuscar,CMI,bbGrid,Backbone,contextPath*/
+﻿/*global $,ProyectoBuscar,EtapaBuscar,CMI,bbGrid,Backbone,contextPath,routeUrlImages*/
 //js de Ordenes de Produccion
 //Juan Lopepe
 //19/Febrero/2016
@@ -69,8 +69,12 @@ var OrdenProduccion = {
                 tblData += "</tr>";
             }
 
-            rptTemplate = rptTemplate.replace('myVarCodigoProyecto', $('#CodigoProyecto').text());
-            rptTemplate = rptTemplate.replace('myVarRevisionProyecto', $('#RevisionPro').text());
+            rptTemplate = rptTemplate.replace('myVarRouteUrlImages', routeUrlImages);
+            rptTemplate = rptTemplate.replace('myVarProyecto', $('#NombreProyecto').text());
+            rptTemplate = rptTemplate.replace('myVarCodigo', $('#CodigoProyecto').text());
+            rptTemplate = rptTemplate.replace('myVarRevision', $('#RevisionPro').text());
+            rptTemplate = rptTemplate.replace('myVarFecha', CMI.MuestraFechaActual());
+
             tabla_html = rptTemplate.replace('myVarTRs', tblData);
             tabla_html = tabla_html.replace(/ /g, '%20');
             
