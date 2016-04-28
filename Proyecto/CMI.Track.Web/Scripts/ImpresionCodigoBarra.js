@@ -38,6 +38,9 @@ var ImpresionCodigoBarra = {
             for (i = 0; i < arrData.length; i++) {
                 tblData += "<tr>";
                 tblData += "<td>" + arrData[i]['codigoBarra'].replace(/ /g, '&nbsp;') + "</td>";
+                tblData += "<td>" + $('#nombreProyecto').text().replace(/ /g, '&nbsp;') + "</td>";
+                tblData += "<td>" + $('#nombreEtapa').text().replace(/ /g, '&nbsp;') + "</td>";
+                tblData += "<td>" + arrData[i]['codigo'].replace(/ /g, '&nbsp;') + "</td>";
                 tblData += "</tr>";
             }
             tblData += "</table>";
@@ -93,9 +96,7 @@ var ImpresionCodigoBarra = {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar etapas");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
-    AsignaProyecto: function (idProyecto, Revision,
-                             NombreProyecto, CodigoProyecto,
-                             FechaInicio, FechaFin) {
+    AsignaProyecto: function (idProyecto, Revision, NombreProyecto, CodigoProyecto, FechaInicio, FechaFin) {
         $('#idProyectoSelect').val(idProyecto);
         $('#RevisionPro').text(Revision);
         $('#nombreProyecto').text(NombreProyecto);
@@ -119,8 +120,7 @@ var ImpresionCodigoBarra = {
 
         $('#etapaRow').show();       
     },
-    AsignaEtapa: function (idEtapa, NombreEtapa,
-                           FechaInicio, FechaFin) {
+    AsignaEtapa: function (idEtapa, NombreEtapa, FechaInicio, FechaFin) {
 
         $('#idEtapaSelect').val(idEtapa);       
         $('#nombreEtapa').text(NombreEtapa);
