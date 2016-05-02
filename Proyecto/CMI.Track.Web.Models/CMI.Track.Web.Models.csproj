@@ -44,9 +44,8 @@
     <Compile Include="Almacen\ListaAlmacen.cs" />
     <Compile Include="AsignaProyecto\AsiganProyecto.cs" />
     <Compile Include="AsignaProyecto\ListaAsiganProyecto.cs" />
-    <Compile Include="Avance\Avance.cs" />
+    <Compile Include="Avance\ActividadProduccion.cs" />
     <Compile Include="Avance\ListaAvance.cs" />
-    <Compile Include="Avance\RegistroCalidad.cs" />
     <Compile Include="CalidadProceso\CalidadProceso.cs" />
     <Compile Include="CalidadProceso\ListaCalidadProceso.cs" />
     <Compile Include="Categoria\Categoria.cs" />
