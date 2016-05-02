@@ -30,6 +30,7 @@ namespace CMI.Track.Web.Data
             try
             {
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                double pesoMarca = 0;
 
                 using (DbConnection conn = db.CreateConnection())
                 {
@@ -40,6 +41,7 @@ namespace CMI.Track.Web.Data
                         //Se insertan primero todas las marcas.
                         foreach (var marca in lstLGMMarcas)
                         {
+                            pesoMarca = 0;
                             var cmdMarca = db.GetSqlStringCommand(@"
                                                 INSERT INTO [cmiMarcas] 
                                                             ([idPlanoDespiece],[codigoMarca] ,[nombreMarca] ,[piezasMarca] ,[pesoMarca] ,[idEstatus] ,
@@ -74,7 +76,7 @@ namespace CMI.Track.Web.Data
                                             ([idMarca],[perfilSubMarca],[piezasSubMarca],[corteSubMarca],[longitudSubMarca],[anchoSubMarca]
                                             ,[gradoSubMarca],[kgmSubMarca],[totalLASubMarca],[pesoSubMarca],[codigoSubMarca],[claseSubMarca]
                                             ,[totalSubMarca],[idOrdenProduccion],[alturaSubMarca],[idEstatus],[usuarioCreacion],[fechaCreacion]
-                                            ,[fechaUltModificacion])                                                
+                                            ,[fechaUltModificacion])
                                             VALUES (@idMarca, @perfil,@piezas,@corte,@longitud,@ancho,
                                             @grado,@kgm, @totalLA,@peso,@codigo,@clase,
                                             @total,@idOrdenProduccion,@altura,1,@usuarioCreacion,GETDATE(),
@@ -99,12 +101,23 @@ namespace CMI.Track.Web.Data
 
                                 // Datos de las submarca
                                 db.ExecuteNonQuery(cmdSubMarca, trans);
+
+                                pesoMarca = pesoMarca + subMarca.pesoSubMarcas;
                             }
 
-                        }                       
+                            var cmdMarcaPeso = db.GetSqlStringCommand(@"
+                                                UPDATE [cmiMarcas] SET [pesoMarca] = @pesoMarca
+                                                WHERE IdMarca = @idMarca ");
+
+                            db.AddInParameter(cmdMarcaPeso, "@idMarca", DbType.Int32, marca.id);
+                            db.AddInParameter(cmdMarcaPeso, "@pesoMarca", DbType.Double, pesoMarca);
+
+                            // Actualiza el peso de la marca con la sumatoria de todas las submarcas
+                            db.ExecuteNonQuery(cmdMarcaPeso, trans);
+                        }
 
                         // Commit the transaction.
-                        trans.Commit();                        
+                        trans.Commit();
                     }
                     catch(Exception exp)
                     {

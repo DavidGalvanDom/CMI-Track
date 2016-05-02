@@ -123,8 +123,8 @@ namespace CMI.Track.Web.Data
                             Piezas = Convert.ToInt32(dataReader["piezasMarca"]),
                             Saldo = Convert.ToInt32(dataReader["piezasMarca"]) - Convert.ToInt32(dataReader["piezasLeidas"]),
                             PiezasLeidas = Convert.ToInt32(dataReader["piezasLeidas"]),
-                            PesoCU = Convert.ToDouble(dataReader["pesoMarca"]),
-                            PesoTotal = Convert.ToDouble(dataReader["pesoMarca"]) * Convert.ToInt32(dataReader["piezasMarca"]),
+                            PesoCU = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]), 2, MidpointRounding.AwayFromZero),
+                            PesoTotal = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]) * Convert.ToInt32(dataReader["piezasMarca"]), 2, MidpointRounding.AwayFromZero),
                         });
                     }
                 }

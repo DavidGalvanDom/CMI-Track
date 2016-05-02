@@ -81,7 +81,7 @@ namespace CMI.Track.Web.Controllers
                {
                    var cadenaCvcNoExiste = "PLANO_DESPIECE,TIPO_CONSTRUCCION,Error" + Environment.NewLine;
                    foreach (var plano in planosTipo)
-                       cadenaCvcNoExiste += string.Format("{0},{1},No existe Catalogo Planos Dispiece para el proyecto y etapa seleccionada", plano.codigoPlanoDespiece, plano.nombreTipoContruccion) + Environment.NewLine;
+                       cadenaCvcNoExiste += string.Format("{0},{1},No existe Catalogo Planos Despiece para el proyecto y etapa seleccionada", plano.codigoPlanoDespiece, plano.nombreTipoContruccion) + Environment.NewLine;
 
                    return Json(new { Success = false, Message = "Los Planos despiece no existen en base de datos.", excel = cadenaCvcNoExiste });
                }
@@ -198,15 +198,15 @@ namespace CMI.Track.Web.Controllers
                                kgmSubMarcas = Convert.ToDouble(arrLinea[14]),
                                totalLASubMarcas = Convert.ToDouble(arrLinea[15]),
                                totalSubMarcas = Convert.ToDouble(arrLinea[16]),
-                               pesoSubMarcas = Convert.ToDouble(arrLinea[17]),                             
+                               pesoSubMarcas = Convert.ToDouble(arrLinea[17]),
                            });
-                       }                  
+                       }
                }
 
                archivo.Close();
 
                //Se guarda en base de datos la informacion del Archivo
-               ListaGeneralData.GuardarInformacion(idProyecto, idEtapa, listMarcas, idUsuario);             
+               ListaGeneralData.GuardarInformacion(idProyecto, idEtapa, listMarcas, idUsuario);
 
                return Json(new { Success = true});
            }

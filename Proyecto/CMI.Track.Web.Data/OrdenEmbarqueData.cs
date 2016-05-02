@@ -58,7 +58,7 @@ namespace CMI.Track.Web.Data
                              idSerie =  Convert.ToString(dataReader["idSerie"]),
                              NombreMarca = Convert.ToString(dataReader["nombreMarca"]),
                              NombrePlano = Convert.ToString(dataReader["nombrePlanoMontaje"]),
-                             Peso = Convert.ToDouble(dataReader["pesoMarca"]),
+                             Peso = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]), 2, MidpointRounding.AwayFromZero),
                              Piezas = Convert.ToInt32(dataReader["piezasMarca"])
                          });
 
@@ -101,7 +101,7 @@ namespace CMI.Track.Web.Data
                             nombrePlano = Convert.ToString(dataReader["nombrePlanoMontaje"]),
                             nombreMarca = Convert.ToString(dataReader["nombreMarca"]),
                             piezas = Convert.ToInt32(dataReader["piezasMarca"]),
-                            peso = Convert.ToDouble(dataReader["pesoMarca"]),
+                            peso = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]), 2, MidpointRounding.AwayFromZero),
                             pesoTotal = Convert.ToInt32(dataReader["piezasMarca"]) * Convert.ToDouble(dataReader["pesoMarca"])
                         });
                     }
@@ -140,7 +140,7 @@ namespace CMI.Track.Web.Data
                             idSerie = Convert.ToString(dataReader["idSerie"]),
                             NombreMarca = Convert.ToString(dataReader["nombreMarca"]),
                             Piezas = Convert.ToDouble(dataReader["piezasMarca"]),
-                            Peso = Convert.ToDouble(dataReader["pesoMarca"]),
+                            Peso = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]), 2, MidpointRounding.AwayFromZero),
                             NombrePlano = Convert.ToString(dataReader["nombrePlanoMontaje"])
                         });
                     }
@@ -402,8 +402,8 @@ namespace CMI.Track.Web.Data
                             nombrePlano = Convert.ToString(dataReader["codigoPlanoMontaje"]),
                             piezas = Convert.ToInt32(dataReader["piezasMarca"]),
                             piezasLeidas = Convert.ToInt32(dataReader["piezasLeidas"]),
-                            peso = Convert.ToDouble(dataReader["pesoMarca"]),
-                            pesoTotal = Convert.ToDouble(dataReader["pesoMarca"]) * Convert.ToInt32(dataReader["piezasMarca"]),
+                            peso = Math.Round(Convert.ToDouble(dataReader["pesoMarca"]), 2, MidpointRounding.AwayFromZero),
+                            pesoTotal =  Math.Round( Convert.ToDouble(dataReader["pesoMarca"]) * Convert.ToInt32(dataReader["piezasMarca"]),2, MidpointRounding.AwayFromZero),
                             Saldo = Convert.ToInt32(dataReader["piezasMarca"]) - Convert.ToInt32(dataReader["piezasLeidas"])
                         });
                     }
