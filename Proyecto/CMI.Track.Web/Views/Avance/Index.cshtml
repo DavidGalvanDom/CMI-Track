@@ -86,24 +86,32 @@
 <div class="row" id="procesoRow" style="display:none;">
     <div class="form-group">
         <div class="col-sm-1"> <label class="control-label">P. Act.</label></div>
-        <div class="col-sm-3">
+        <div class="col-sm-2" data-colsize="1">
             <div class="input-group">
                 <select class="form-control" id="selectProcesoActual" name="selectProcesoActual"></select>
                 <input type="hidden" id="idTipoProceso" value="" />
             </div>
         </div>
         <div class="col-sm-1 text-right"> <label class="control-label">P. Sig.</label></div>
-        <div class="col-sm-3">
+        <div class="col-sm-2" data-colsize="1">
             <div class="input-group">
                 <select class="form-control" id="selectProcesoSiguiente" name="selectProcesoSiguiente"></select>
             </div>
         </div>
+        <div id="usuarioFabricoDiv">
+            <div class="col-sm-1 text-right"> <label class="control-label" style="font-size:small">Fabrico</label></div>
+            <div class="col-sm-2">
+                <div class="input-group">
+                    <select class="form-control select2" id="selectUsuarioFabrico" name="selectUsuarioFabrico"></select>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-1 text-right"> <label class="control-label" style="font-size:small">C. Barras</label></div>
-        <div class="col-sm-3">
+        <div class="col-sm-2" data-colsize="1">
             <div class="input-group">
                 <input type="text" id="codigoBarras" name="codigoBarras" class="form-control" title="Codigo de Barras" placeholder="Codigo de Barras" />
                 <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button" id="btnBuscarCodigoBarra" name="btnBuscarCodigoBarra"><span class="fa fa-search"></span></button>
+                    <button class="btn btn-secondary" type="button" id="btnBuscarCodigoBarra" name="btnBuscarCodigoBarra"><span class="fa fa-barcode"></span></button>
                 </span>
             </div>
         </div>

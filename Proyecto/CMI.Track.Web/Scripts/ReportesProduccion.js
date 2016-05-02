@@ -656,10 +656,10 @@ var ReportesProduccion = {
         }
 
         header += "<tr>";
-        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='6' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='6' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
@@ -936,7 +936,7 @@ var ReportesProduccion = {
     }
 
     header += "<tr>";
-    header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+    header += "<td colspan='1'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
     header += "<td > <table> ";
     header += "        <tr> <td colspan='2' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
     header += "        <tr> <td colspan='2' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";

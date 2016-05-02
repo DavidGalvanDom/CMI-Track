@@ -10,6 +10,7 @@ var Avance = {
     activeForm: '',
     gridAvance: {},
     colAvance: {},
+    colUsuarios: [],
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -26,6 +27,137 @@ var Avance = {
         $(document).on('click', '#btnDarRegistroCalidad', that.onDarRegistroCalidad);
         $(document).on('click', '.btnInfo-DarAvance', that.onClickDarAvance);
         $(document).on('click', '.btnInfo-DarRevision', that.onClickDarRevision);
+        $('#codigoBarras').keypress(function (e) {
+            if (e.which === 13) {
+                that.onEnterCodigoBarras();
+            }
+        });
+    },
+    onEnterCodigoBarras: function () {
+        $('#codigoBarras').val($('#codigoBarras').val().toUpperCase());
+        
+        if ($('#codigoBarras').val().length > 0) {
+            CMI.CierraMensajes();
+
+            var idTipoProceso = $('#idTipoProceso').val();
+            if (idTipoProceso === '1') {//PRODUCTIVO
+                var url = contextPath + "Avance/CargarAvance?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras=" + $('#codigoBarras').val(); // El url del controlador
+                $.getJSON(url, function (data) {
+                    if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+                    if (data.length != 1) { CMI.DespliegaError("No se encontro el elemento " + $('#codigoBarras').val() + " en el proceso " + $('#selectProcesoActual').text()); return; }
+                    
+                    //Click Dar Avance
+                    if ($('#selectUsuarioFabrico').val() === '') {
+                        $('.select2-container').addClass('has-error');
+                        $("form").valid();
+                        return;
+                    } else {
+                        $('.select2-container').removeClass('has-error');
+                    }
+
+                    var id = $('#codigoBarras').val();
+                    var clase = id.split("-")[0];
+                    var idMarca_Submarca = id.split("-")[1];
+                    var idSerie = id.split("-")[2];
+                    var elemento = clase === 'S' ? "SubMarca " + idMarca_Submarca : "Marca " + idMarca_Submarca + " y Serie " + idSerie;
+                    var mensaje = "¿Desea dar el avance a la " + elemento + "?";
+
+                    CMI.CierraMensajes();
+
+                    var url = contextPath + "Avance/MostrarDarAvance"; // El url del controlador      
+                    $.get(url, function (data) {
+                        $('#buscar-General').html(data);
+                        $('#buscar-General').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        }, 'show');
+
+                        if ($('#selectProcesoActual').text() === 'PANTOGRAFO') {
+                            $('#rowPiezas').show();
+                            var darClick = false;
+                        } else {
+                            $('#piezas').val(1);
+                            $('#rowPiezas').hide();
+                            var darClick = true;
+                        }
+
+                        $('#tipo').val('P');
+                        $('#clase').val(clase);
+                        $('#idSubmarca').val((clase === 'S' ? idMarca_Submarca : 0));
+                        $('#idMarca').val((clase === 'M' ? idMarca_Submarca : 0));
+                        $('#idSerie').val((clase === 'M' ? idSerie : '00'));
+                        $('#idUsuarioFabrico').val($('#selectUsuarioFabrico').val());
+                        $('#observaciones').val('');
+                        $('#longitud').val(false);
+                        $('#barrenacion').val(false);
+                        $('#placa').val(false);
+                        $('#soldadura').val(false);
+                        $('#pintura').val(false);
+                        $('#usuarioCreacion').val(localStorage.idUser);
+
+                        $('#msgConfirmacion').text(mensaje);
+
+                        if (darClick) {
+                            Avance.onDarAvance();
+                        }
+
+                    }).fail(function () {
+                        CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Dar Avance");
+                    }).always(function () { });
+                    //End Click Dar Avance
+                }).fail(function () {
+                    CMI.DespliegaError("No se pudo cargar la informacion del Avance");
+                });
+            } else {//CALIDAD
+                var url = contextPath + "Avance/CargarRevision?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras=" + $('#codigoBarras').val(); // El url del controlador
+                $.getJSON(url, function (data) {
+                    if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+                    if (data.length != 1) { CMI.DespliegaError("No se encontro el elemento " + $('#codigoBarras').val() + " en el proceso " + $('#selectProcesoActual').text()); return; }
+
+                    //Click Dar Revision
+                    if ($('#selectUsuarioFabrico').val() === '') {
+                        $('.select2-container').addClass('has-error');
+                        $("form").valid();
+                        return;
+                    } else {
+                        $('.select2-container').removeClass('has-error');
+                    }
+
+                    var id = $('#codigoBarras').val();
+                    var clase = id.split("-")[0];
+                    var idMarca_Submarca = id.split("-")[1];
+                    var idSerie = id.split("-")[2];
+
+                    CMI.CierraMensajes();
+
+                    var url = contextPath + "Avance/MostrarDarRegistroCalidad"; // El url del controlador      
+                    $.get(url, function (data) {
+                        $('#buscar-General').html(data);
+                        $('#buscar-General').modal({
+                            backdrop: 'static',
+                            keyboard: true
+                        }, 'show');
+
+                        $('#tipo').val('C');
+                        $('#clase').val(clase);
+                        $('#idSubmarca').val((clase === 'S' ? idMarca_Submarca : 0));
+                        $('#idMarca').val((clase === 'M' ? idMarca_Submarca : 0));
+                        $('#idSerie').val((clase === 'M' ? idSerie : '00'));
+                        $('#piezas').val(1);
+                        $('#idUsuarioFabrico').val(localStorage.idUser);
+                        $('#observaciones').val('');
+                        $('#usuarioCreacion').val(localStorage.idUser);
+
+                    }).fail(function () {
+                        CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Registro de Calidad");
+                    }).always(function () { });
+
+                //getJSON fail
+                }).fail(function () {
+                    CMI.DespliegaError("No se pudo cargar la informacion de la Revision");
+                });
+            }
+        }
     },
     onBuscarCodigoBarra: function () {
         $('#codigoBarras').val($('#codigoBarras').val().toUpperCase());
@@ -84,14 +216,15 @@ var Avance = {
 
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "Avance/DarAvance",
-                $("#NuevoAvanceForm *").serialize(),
+            $.post(contextPath + "Avance/InsertarActividadProduccion",
+                $("#NuevoActividadForm *").serialize(),
                 function (data) {
                     if (data.Success === true) {
                         $('#buscar-General').modal('hide');
                         $('#bbGrid-Avance')[0].innerHTML = "";
                         Avance.CargaGridAvance();
                         CMI.DespliegaInformacion('Avance realizado.');
+                        $('#codigoBarras').val('');
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
@@ -109,14 +242,15 @@ var Avance = {
 
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "Avance/DarRegistroCalidad",
-                $("#NuevoRegistroCalidadForm *").serialize(),
+            $.post(contextPath + "Avance/InsertarActividadProduccion",
+                $("#NuevoActividadForm *").serialize(),
                 function (data) {
                     if (data.Success === true) {
                         $('#buscar-General').modal('hide');
                         $('#bbGrid-Avance')[0].innerHTML = "";
                         Avance.CargaGridRevision();
                         CMI.DespliegaInformacion('Registro de Calidad realizado.');
+                        $('#codigoBarras').val('');
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
@@ -132,12 +266,20 @@ var Avance = {
         $("#divResumen").slideToggle("fast");
     },
     onClickDarAvance: function () {
+        if($('#selectUsuarioFabrico').val() === ''){
+            $('.select2-container').addClass('has-error');
+            $("form").valid();
+            return;
+        } else {
+            $('.select2-container').removeClass('has-error');
+        }
+
         var btn = this;
         var id = $(btn).attr("data-id");
-        var claseAvance = id.split("-")[0];
+        var clase = id.split("-")[0];
         var idMarca_Submarca = id.split("-")[1];
         var idSerie = id.split("-")[2];
-        var elemento = claseAvance === 'S' ? "SubMarca " + idMarca_Submarca : "Marca " + idMarca_Submarca + " y Serie " + idSerie;
+        var elemento = clase === 'S' ? "SubMarca " + idMarca_Submarca : "Marca " + idMarca_Submarca + " y Serie " + idSerie;
         var mensaje = "¿Desea dar el avance a la " + elemento + "?";
 
         CMI.CierraMensajes();
@@ -151,10 +293,26 @@ var Avance = {
                 keyboard: true
             }, 'show');
 
-            $('#claseAvance').val(claseAvance);
-            $('#idMarca_Submarca').val(idMarca_Submarca);
-            $('#idSerie').val(idSerie);
-            $('#idUsuario').val(localStorage.idUser);
+            if ($('#selectProcesoActual').text() === 'PANTOGRAFO') {
+                $('#rowPiezas').show();
+            } else {
+                $('#piezas').val(1);
+                $('#rowPiezas').hide();
+            }
+
+            $('#tipo').val('P');
+            $('#clase').val(clase);
+            $('#idSubmarca').val((clase === 'S' ? idMarca_Submarca : 0));
+            $('#idMarca').val((clase === 'M' ? idMarca_Submarca : 0));
+            $('#idSerie').val((clase === 'M' ? idSerie : '00'));
+            $('#idUsuarioFabrico').val($('#selectUsuarioFabrico').val());
+            $('#observaciones').val('');
+            $('#longitud').val('0');
+            $('#barrenacion').val('0');
+            $('#placa').val('0');
+            $('#soldadura').val('0');
+            $('#pintura').val('0');
+            $('#usuarioCreacion').val(localStorage.idUser);
 
             $('#msgConfirmacion').text(mensaje);
 
@@ -165,7 +323,7 @@ var Avance = {
     onClickDarRevision: function () {
         var btn = this;
         var id = $(btn).attr("data-id");
-        var claseRevision = id.split("-")[0];
+        var clase = id.split("-")[0];
         var idMarca_Submarca = id.split("-")[1];
         var idSerie = id.split("-")[2];
         
@@ -180,10 +338,15 @@ var Avance = {
                 keyboard: true
             }, 'show');
 
-            $('#claseRegistro').val(claseRevision);
-            $('#idMarca_Submarca').val(idMarca_Submarca);
-            $('#idSerie').val(idSerie);
-            $('#idUsuario').val(localStorage.idUser);
+            $('#tipo').val('C');
+            $('#clase').val(clase);
+            $('#idSubmarca').val((clase === 'S' ? idMarca_Submarca : 0));
+            $('#idMarca').val((clase === 'M' ? idMarca_Submarca : 0));
+            $('#idSerie').val((clase === 'M' ? idSerie : '00'));
+            $('#piezas').val(1);
+            $('#idUsuarioFabrico').val(localStorage.idUser);
+            $('#observaciones').val('');
+            $('#usuarioCreacion').val(localStorage.idUser);
 
         }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Registro de Calidad");
@@ -216,6 +379,7 @@ var Avance = {
         } else {//CALIDAD
             Avance.CargaGridRevision();
         }
+        Avance.CargaDivUsuarioFabrico();
 
     },
     AsignaProyecto: function (idProyecto, Revision, NombreProyecto, CodigoProyecto, FechaInicio, FechaFin) {
@@ -286,8 +450,42 @@ var Avance = {
             $("#btnBuscarEtapa").prop("disabled", true);
         });
     },
+    CargaDivUsuarioFabrico: function () {
+        var idTipoProceso = $('#idTipoProceso').val();
+        $('#selectUsuarioFabrico').empty();
+        if (idTipoProceso === '1') {//PRODUCTIVO
+            var url = contextPath + "Usuario/CargaUsuarios"; // El url del controlador
+            $.getJSON(url, function (json) {
+                Avance.colUsuarios = json;
+                if (Avance.colUsuarios.length > 0) {
+                    $.each(Avance.colUsuarios, function (i, item) {
+                        if (item.id !== undefined) {
+                            $('#selectUsuarioFabrico')
+                            .append($('<option>', {
+                                value: item.id,
+                                text: item.NombreCompleto
+                            }));
+                        }
+                    });
+                    $(".select2").select2({ allowClear: true, placeholder: 'Departamento' });
+                }
+                else {
+                    CMI.DespliegaInformacion("No se encontraron Usuarios.");
+                }
+            }).fail(function () {
+                CMI.DespliegaError("No se pudo cargar la informacion de los Usuarios.");
+            });
+            $("[data-colsize]").removeClass("col-sm-3");
+            $("[data-colsize]").addClass("col-sm-2");
+            $('#usuarioFabricoDiv').show();
+        } else {//CALIDAD
+            $("[data-colsize]").removeClass("col-sm-2");
+            $("[data-colsize]").addClass("col-sm-3");
+            $('#usuarioFabricoDiv').hide();
+        }
+    },
     CargaGridAvance: function () {
-        var url = contextPath + "Avance/CargarAvance?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras=" + $('#codigoBarras').val(); // El url del controlador
+        var url = contextPath + "Avance/CargarAvance?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras="; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -326,7 +524,7 @@ var Avance = {
         });
     },
     CargaGridRevision: function () {
-        var url = contextPath + "Avance/CargarRevision?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras=" + $('#codigoBarras').val(); // El url del controlador
+        var url = contextPath + "Avance/CargarRevision?idEtapa=" + $('#idEtapaSelect').val() + "&idProceso=" + $('#selectProcesoActual').val() + "&codigoBarras="; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }

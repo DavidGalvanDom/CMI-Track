@@ -101,55 +101,33 @@ namespace CMI.Track.Web.Data
         }
 
         /// <summary>
-        /// Se da un Avance a un elemento
+        /// Se da un Avance o registro de calidad a un elemento
         /// </summary>
         /// <param name="pobjModelo"></param>
         /// <returns>value</returns>
-        public static string DarAvance(Models.Avance pobjModelo)
+        public static string InsertarActividadProduccion(Models.ActividadProduccion pobjModelo)
         {
-            object[] paramArray = new object[4];
+            object[] paramArray = new object[15];
             try
             {
-                paramArray[0] = pobjModelo.claseAvance.ToUpper();
-                paramArray[1] = pobjModelo.idMarca_Submarca;
-                paramArray[2] = pobjModelo.idSerie;
-                paramArray[3] = pobjModelo.idUsuario;
-                
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteScalar("usp_DarAvance", paramArray);
-                
-                return (result.ToString());
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-        }
-
-        /// <summary>
-        /// Se da un Avance a un elemento
-        /// </summary>
-        /// <param name="pobjModelo"></param>
-        /// <returns>value</returns>
-        public static string DarRegistroCalidad(Models.RegistroCalidad pobjModelo)
-        {
-            object[] paramArray = new object[11];
-            try
-            {
-                paramArray[0] = pobjModelo.claseRegistro.ToUpper();
-                paramArray[1] = pobjModelo.idMarca_Submarca;
-                paramArray[2] = pobjModelo.idSerie;
-                paramArray[3] = pobjModelo.idUsuario;
-                paramArray[4] = (pobjModelo.observacionesRegistroCalidad == null ? "" : pobjModelo.observacionesRegistroCalidad.ToUpper());
-                paramArray[5] = pobjModelo.idEstatus;
-                paramArray[6] = pobjModelo.bLongitud;
-                paramArray[7] = pobjModelo.bBarrenacion;
-                paramArray[8] = pobjModelo.bPlaca;
-                paramArray[9] = pobjModelo.bSoldadura;
-                paramArray[10] = pobjModelo.bPintura;
+                paramArray[0] = pobjModelo.tipo.ToUpper();
+                paramArray[1] = pobjModelo.clase.ToUpper();
+                paramArray[2] = pobjModelo.idSubmarca;
+                paramArray[3] = pobjModelo.idMarca;
+                paramArray[4] = pobjModelo.idSerie;
+                paramArray[5] = (pobjModelo.piezas == null ? 1 : pobjModelo.piezas);
+                paramArray[6] = pobjModelo.idUsuarioFabrico;
+                paramArray[7] = pobjModelo.idEstatus_Calidad;
+                paramArray[8] = pobjModelo.observaciones;
+                paramArray[9] = pobjModelo.longitud;
+                paramArray[10] = pobjModelo.barrenacion;
+                paramArray[11] = pobjModelo.placa;
+                paramArray[12] = pobjModelo.soldadura;
+                paramArray[13] = pobjModelo.pintura;
+                paramArray[14] = pobjModelo.usuarioCreacion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteScalar("usp_DarRegistroCalidad", paramArray);
+                var result = db.ExecuteScalar("usp_InsertarActividadProduccion", paramArray);
 
                 return (result.ToString());
             }

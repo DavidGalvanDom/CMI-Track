@@ -1,4 +1,4 @@
-﻿@model CMI.Track.Web.Models.RegistroCalidad
+﻿@model CMI.Track.Web.Models.ActividadProduccion
 
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -8,54 +8,54 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "RegistroCalidad", FormMethod.Post, new { id = "NuevoRegistroCalidadForm", name = "NuevoRegistroCalidadForm", @class = "form-horizontal", onsubmit = "return false" }))
+            @using (Html.BeginForm("Nuevo", "ActividadProduccion", FormMethod.Post, new { id = "NuevoActividadForm", name = "NuevoActividadForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.idEstatus, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.idEstatus_Calidad, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
-                        @Html.DropDownListFor(model => model.idEstatus,
-                                                                                new SelectList(new[]{
-                                                                                                new SelectListItem{ Text="LIBERADO", Value="20"},
-                                                                                                new SelectListItem{ Text="RECHAZADO", Value="21"}},
-                                                                        "Value", "Text"), new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.idEstatus_Calidad,
+                            new SelectList(new[]{
+                                new SelectListItem{ Text="LIBERADO", Value="20"},
+                                new SelectListItem{ Text="RECHAZADO", Value="21"}},
+                            "Value", "Text"), new { @class = "form-control" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.bLongitud, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.longitud, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-1">
-                        @Html.CheckBoxFor(model => model.bLongitud, new { @class = "form-control" })
+                        @Html.CheckBoxFor(model => model.longitud, new { @class = "form-control" })
                     </div>
                     <div class="col-sm-1"> </div>
-                    @Html.LabelFor(model => model.bBarrenacion, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.barrenacion, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-1">
-                        @Html.CheckBoxFor(model => model.bBarrenacion, new { @class = "form-control" })
+                        @Html.CheckBoxFor(model => model.barrenacion, new { @class = "form-control" })
                     </div>
                     <div class="col-sm-1"> </div>
-                    @Html.LabelFor(model => model.bPlaca, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.placa, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-1">
-                        @Html.CheckBoxFor(model => model.bPlaca, new { @class = "form-control" })
+                        @Html.CheckBoxFor(model => model.placa, new { @class = "form-control" })
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-2"> </div>
-                    @Html.LabelFor(model => model.bSoldadura, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.soldadura, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-1">
-                        @Html.CheckBoxFor(model => model.bSoldadura, new { @class = "form-control" })
+                        @Html.CheckBoxFor(model => model.soldadura, new { @class = "form-control" })
                     </div>
                     <div class="col-sm-1"> </div>
-                    @Html.LabelFor(model => model.bPintura, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.pintura, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-1">
-                        @Html.CheckBoxFor(model => model.bPintura, new { @class = "form-control" })
+                        @Html.CheckBoxFor(model => model.pintura, new { @class = "form-control" })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.observacionesRegistroCalidad, new { @class = "col-sm-2 control-label" })
+                    @Html.LabelFor(model => model.observaciones, new { @class = "col-sm-2 control-label" })
                     <div class="col-sm-10">
-                        @Html.TextAreaFor(model => model.observacionesRegistroCalidad, new
+                        @Html.TextAreaFor(model => model.observaciones, new
                     {
                         @class = "form-control",
                         maxlength = 250,
@@ -65,10 +65,13 @@
                     </div>
                 </div>
                 
-                @Html.HiddenFor(model => model.claseRegistro)
-                @Html.HiddenFor(model => model.idMarca_Submarca)
+                @Html.HiddenFor(model => model.tipo)
+                @Html.HiddenFor(model => model.clase)
+                @Html.HiddenFor(model => model.idSubmarca)
+                @Html.HiddenFor(model => model.idMarca)
                 @Html.HiddenFor(model => model.idSerie)
-                @Html.HiddenFor(model => model.idUsuario)
+                @Html.HiddenFor(model => model.idUsuarioFabrico)
+                @Html.HiddenFor(model => model.usuarioCreacion)
             }
         </div>
         <div class="modal-footer">
