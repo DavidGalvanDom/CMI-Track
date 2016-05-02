@@ -206,5 +206,24 @@ namespace CMI.Track.Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Se Elimina la Remision de la base de datos
+        /// </summary>
+        /// <param name="idOrdenEmebarque"></param>
+        /// <returns></returns>
+        public JsonResult Borrar(int id)
+        {
+            try
+            {
+                RemisionData.Borrar(id);
+
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

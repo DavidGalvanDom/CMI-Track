@@ -15,8 +15,10 @@ namespace CMI.Track.Web.Models
 {
     public class DetalleRemision
     {
+        public string id { get; set; }
+
         [Display(Name = "idRemision")]
-        public int id { get; set; }
+        public int idRemision { get; set; }
 
         public int idOrdenEmbarque { get; set; }
 

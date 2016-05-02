@@ -27,12 +27,16 @@ var Remision = {
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
 
-        //Remover Orden Embarque
-        $(document).on('click', '.accrowBorrar', function () {
+        //Remover Orden de embarque al momento de editar
+        $(document).on('click', '.modal-body .accrowBorrar', function () {
+            that.BorrarOrden($(this).parent().parent().attr("data-modelId"));
+        });
+
+        $(document).on('click', '#bbGrid-Remisiones .accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
         });
 
-        //Editar Remisin
+        //Editar Remision
         $(document).on('click', '.accrowEdit', function () {
             that.EditarRemision($(this).parent().parent().attr("data-modelId"));
         });
@@ -277,6 +281,19 @@ var Remision = {
     },
     Borrar: function (id) {
         CMI.CierraMensajes();
+        if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
+        var url = contextPath + "Remision/Borrar"; // El url del controlador
+        $.post(url, { id: id }, function (data) {
+            if (data.Success === true) {
+                Remision.colRemisiones.remove(id);
+                CMI.DespliegaInformacion("Se borro la Remision con  id:" + id);
+            } else {
+                CMI.DespliegaError(data.Message);
+            }
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar la Remision."); });
+    },
+    BorrarOrden: function (id) {
+        CMI.CierraMensajes();
         Remision.colOrdenEmbar.remove(id);
     },
     AsignaCliente: function (idCliente, nombreClietne,
@@ -419,7 +436,7 @@ var Remision = {
                     editar: Remision.accEscritura,
                     collection: Remision.colRemisiones,
                     seguridad: false,
-                    borrar: false,
+                    borrar: Remision.accBorrar,
                     colModel: [{ title: 'Remision', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Cliente', name: 'NombreCliente', filter: true, filterType: 'input' },
                                { title: 'Transporte', name: 'Transporte', filter: true, filterType: 'input' },

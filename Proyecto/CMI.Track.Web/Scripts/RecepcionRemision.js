@@ -180,7 +180,7 @@ var RecepcionRemision = {
                         data = 'idOrdenEmb=' + marcas[0].attributes.idOrdenEmbarque +
                                '&idMarca=' + marca +
                                '&serie=' + serie +
-                               '&idRemision=' + marcas[0].id +
+                               '&idRemision=' + marcas[0].attributes.idRemision +
                                '&idUsuario=' + localStorage.idUser;
 
                         $.post(url, data, function (result) {
@@ -296,7 +296,7 @@ var RecepcionRemision = {
                     detalle: false,
                     collection: RecepcionRemision.colDetalleRemision,
                     seguridad: false,
-                    colModel: [{ title: 'Remision', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                    colModel: [{ title: 'Remision', name: 'idRemision', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Orden Embarque', name: 'idOrdenEmbarque', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Proyecto', name: 'Proyecto', filter: true, filterType: 'input' },
                                { title: 'Etapa', name: 'Etapa', filter: true, filterType: 'input' },

@@ -84,6 +84,7 @@ var CMI = {
         $(".clientAlert").html("<div class='alert alert-danger'>" +
                                 "<button type='button' class='close' data-dismiss='alert'>x</button>" +
                                   error + "</div>");
+        $(".clientAlert").focus();
         setTimeout(CMI.CierraMensajes, 10000);
         $('#cargandoInfo').hide();
     },

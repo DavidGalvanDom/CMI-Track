@@ -106,14 +106,14 @@ namespace CMI.Track.Web.Data
             try
             {
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-
                 using (IDataReader dataReader = db.ExecuteReader("usp_CargarRemisionesDetalle", idRemision))
                 {
                     while (dataReader.Read())
                     {
                         lstRemisiones.Add(new Models.DetalleRemision()
                         {
-                            id = Convert.ToInt32(dataReader["idRemision"]),
+                            id = string.Format("{0}{1}", Convert.ToInt32(dataReader["idOrdenEmbarque"]), Convert.ToString(dataReader["idMarca"])),
+                            idRemision = Convert.ToInt32(dataReader["idRemision"]),
                             Proyecto = Convert.ToString(dataReader["nombreProyecto"]),
                             Marca = Convert.ToString(dataReader["codigoMarca"]),
                             idMarca = Convert.ToInt32(dataReader["idMarca"]),
@@ -347,6 +347,28 @@ namespace CMI.Track.Web.Data
             }
 
             return resultado;
+        }
+
+        /// <summary>
+        /// Se borra el encabezado y el detalle de la Remision
+        /// </summary>
+        /// <param name="id"></param>
+        public static void Borrar(int idRemision)
+        {
+            object[] paramArray = new object[1];
+            try
+            {
+                paramArray[0] = idRemision;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+                var result = db.ExecuteNonQuery("usp_RemueveRemision", paramArray);
+
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
         }
     }
 }
