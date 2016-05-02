@@ -73,9 +73,11 @@
     <Compile Include="MovimientoMaterial\ListaMovimientoMaterial.cs" />
     <Compile Include="MovimientoMaterial\MovimientoMaterial.cs" />
     <Compile Include="OrdenEmbarque\DetalleOrdenEmbarque.cs" />
+    <Compile Include="OrdenEmbarque\ListaMarcasOrdenEm.cs" />
     <Compile Include="OrdenEmbarque\ListaOrdenEmbarque.cs" />
     <Compile Include="OrdenEmbarque\ListaOrdenEmbarqueBusqueda.cs" />
     <Compile Include="OrdenEmbarque\OrdenEmbarque.cs" />
+    <Compile Include="OrdenEmbarque\ReportOrdenEmbarque.cs" />
     <Compile Include="OrdenProduccion\ListaDetalleOrdenProduccion.cs" />
     <Compile Include="OrdenProduccion\OrdenProduccion.cs" />
     <Compile Include="OrigenRequisicion\ListaOrigenRequisicion.cs" />

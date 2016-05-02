@@ -51,7 +51,7 @@ var ReqMCompra = {
     },
     onCambiaOrigen: function () {
 
-        if ($('#Origen').val() == 3) {
+        if ($('#Origen').val() === 2) {
             $('#CausaDiv').show();
         }
         else {
@@ -81,7 +81,7 @@ var ReqMCompra = {
                 rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
                 rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
             }
-       
+
             var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 tableData = data;
@@ -99,9 +99,9 @@ var ReqMCompra = {
                     tcompleta += "<td>" + tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso'] + "</td>";
                     tcompleta += "</tr>";
                     total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
-                  
+
                 }
-                
+
                 rptTemplate = rptTemplate.replace('vrTotal', total);
                 rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
                 rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");

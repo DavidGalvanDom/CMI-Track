@@ -16,7 +16,7 @@ namespace CMI.Track.Web.Models
     public  class DetalleOrdenEmbarque
     {
         [Display(Name = "id")]
-        public int id { get; set; }
+        public string id { get; set; }
 
         [Display(Name = "claveEtapa")]
         public string claveEtapa { get; set; }

@@ -12,7 +12,7 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
-<div id="myCollapsible" class="collapse in">
+
     <div class="row">
         <div class="form-group">
             <div class="col-sm-1"> <label class="control-label">Proyecto</label></div>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-    </div>
+        </div>
     <div class="row">
         <div class="col-sm-12">
             <br />
@@ -65,21 +65,8 @@
             </div>
         </div>
     </div>
-</div>
-<button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon " aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
-<div class="row">
-    <div class="col-sm-12">
-        <br />
-    </div>
-</div>
-<div class="row">
-    <div id="rowOrdenEmbarque" style="display:none;">
-        <div class="col-sm-1"> <label class="control-label">Orden Embarque</label></div>
-        <div class="col-sm-3">
-            <select id="idOrdenEmb" name="idOrdenEmb" class="form-control" required="required"></select>
-        </div>
-    </div>
-</div>
+
+
 <div class="row">
     <div class="col-sm-12">
         <br />
@@ -111,10 +98,14 @@
         aria-labelledby="buscarGeneral">
 </div>
 
+<div class="modal fade bs-example-modal-lg" id="editar-OrdenEmbarque"
+     tabindex="-1" role="dialog"
+     aria-labelledby="editarOrdenEmbarqueLabel">
+</div>
 
 <div class="modal fade bs-example-modal-lg" id="nuevo-OrdenEmbarque"
      tabindex="-1" role="dialog"
-     aria-labelledby="nuevoReqManualCompraLabel">
+     aria-labelledby="nuevoOrdenEmbarqueLabel">
 </div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-marca"
@@ -122,19 +113,6 @@
      aria-labelledby="buscarMarca">
 </div>
 
-
-
 @section Scripts {
     <script src="~/Scripts/OrdenEmbarque.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
-            });
-        });
-    </script>
 }
-
-
-
-

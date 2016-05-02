@@ -1,15 +1,31 @@
-﻿@model CMI.Track.Web.Models.OrdenEmbarque 
+﻿@model CMI.Track.Web.Models.OrdenEmbarque
 
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Nueva Orden Embarque</h4>
+            <h4 class="modal-title">Actualizar Orden Embarque</h4>
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg" tabindex="0"></div>
-            @using (Html.BeginForm("Nuevo", "OrdenEmbarque", FormMethod.Post, new { id = "NuevoOrdenEmbarqueForm", name = "NuevoOrdenEmbarqueForm", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Actualiza", "OrdenEmbarque", FormMethod.Post, new { id = "ActualizaOrdenEmbarqueForm", name = "ActualizaOrdenEmbarqueForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Id</label>
+                    <div class="col-sm-2">
+                        <p class="form-control">@Html.DisplayFor(model => model.id)</p>
+                    </div>
+                    <div class="col-sm-3"></div>
+                    @Html.LabelFor(model => model.fechaCreacion, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-3">
+                        <div class='input-group date'>
+                            @Html.TextBoxFor(model => model.fechaCreacion, new { @class = "form-control", maxlength = 10, @disabled = "disabled" })
+                            <span class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-sm-2"> <label class="control-label">Proyecto</label></div>
                     <div class="col-sm-4"> <label class="form-control" id="lblNuevoProyecto"></label></div>
@@ -20,22 +36,22 @@
                     <div class="col-sm-2"> <label class="control-label">Estatus OE</label></div>
                     <div class="col-sm-5">
                         @Html.DropDownListFor(model => model.EstatusOE,
-                                            new SelectList(new[]{
-                                                            new SelectListItem{ Text="ABIERTO", Value="1"},
-                                                            new SelectListItem{ Text="CERRADO", Value="0"}},
-                                    "Value", "Text"), new { @class = "form-control" })
+                                                        new SelectList(new[]{
+                                                                        new SelectListItem{ Text="ABIERTO", Value="1"},
+                                                                        new SelectListItem{ Text="CERRADO", Value="0"}},
+                                                "Value", "Text"), new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-2"> <label class="control-label">Observaciones</label></div>
                     <div class="col-sm-10">
                         @Html.TextAreaFor(model => model.Obervaciones, new
-                                {
-                                    @class = "form-control",
-                                    maxlength = 250,
-                                    onkeypress = "return ( this.value.length < 250 );",
-                                    rows = "4"
-                                })
+                                            {
+                                                @class = "form-control",
+                                                maxlength = 250,
+                                                onkeypress = "return ( this.value.length < 250 );",
+                                                rows = "4"
+                                            })
                     </div>
                 </div>
                 <div class="form-group">
@@ -58,14 +74,16 @@
                 </div>
                 @Html.HiddenFor(model => model.id)
                 @Html.HiddenFor(model => model.usuarioCreacion)
-                @Html.HiddenFor(model => model.fechaCreacion)
                 @Html.HiddenFor(model => model.idEtapa)
-                @Html.HiddenFor(model => model.idProyecto)
             }
-    </div>
+        </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary btn-GuardaNuevo">Guardar</button>
+            <button type="button" class="btn btn-primary btn-ActualizarOE" style="display:none;">Actualizar</button>
         </div>
     </div><!-- /.modal-content -->
 </div>
+
+<script>
+    OrdenEmbarque.lstMarcasSelect = @Html.Raw(Json.Encode(Model.lstMarcasExis));
+</script>

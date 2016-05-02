@@ -870,7 +870,6 @@
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\ListaGeneral.js" />
     <Content Include="Scripts\MarcasBuscar.js" />
-    <Content Include="Scripts\MarcasBuscarMateriales.js" />
     <Content Include="Scripts\Marcas.js" />
     <Content Include="Scripts\Material.js" />
     <Content Include="Scripts\MaterialesBuscar.js" />
@@ -1040,12 +1039,12 @@
     <Content Include="Views\OrdenEmbarque\Index.cshtml" />
     <Content Include="Views\OrdenEmbarque\_buscarOrdenEmbarque.cshtml" />
     <Content Include="Views\Remision\Index.cshtml" />
-    <Content Include="Views\OrdenEmbarque\_buscaMarca.cshtml" />
     <Content Include="Views\OrdenEmbarque\_Nuevo.cshtml" />
     <Content Include="Views\Remision\_Nuevo.cshtml" />
     <Content Include="Views\Remision\_Actualiza.cshtml" />
     <Content Include="Views\RecepcionRemision\Index.cshtml" />
     <Content Include="Views\Remision\_buscarRemision.cshtml" />
+    <Content Include="Views\OrdenEmbarque\_Actualiza.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

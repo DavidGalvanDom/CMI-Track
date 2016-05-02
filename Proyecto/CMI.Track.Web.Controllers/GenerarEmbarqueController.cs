@@ -72,13 +72,13 @@ namespace CMI.Track.Web.Controllers
         /// <param name="idUsuario"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GenerarEmbarque (int idDetaOrdenEmb, int idMarca,
+        public JsonResult GenerarEmbarque(int idOrdenEmbarque, int idMarca,
                                             string serie, string origen, 
                                             int idUsuario)
         {
             try
             {
-                var resultado = OrdenEmbarqueData.GenerarEmbarque(idDetaOrdenEmb, idMarca, serie, origen,idUsuario);
+                var resultado = OrdenEmbarqueData.GenerarEmbarque(idOrdenEmbarque, idMarca, serie, origen, idUsuario);
 
                 if(resultado.Length == 0)
                     return (Json(new { Success = true }, JsonRequestBehavior.AllowGet));

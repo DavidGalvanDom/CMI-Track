@@ -167,7 +167,7 @@ var RecepcionRemision = {
                 serie = arrCodigo[2];
                 //Solo se leen Marcas
                 if (tipoMarca === 'M') {
-                    
+
                     marcas = RecepcionRemision.colDetalleRemision.where({ idMarca: marca });
 
                     if (marcas.length > 0) {

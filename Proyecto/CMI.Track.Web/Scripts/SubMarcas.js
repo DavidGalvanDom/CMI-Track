@@ -1,4 +1,4 @@
-﻿/*global $, CMI, Backbone, bbGrid, contextPath, EtapaBuscar, ProyectoBuscar, PlanosMontajeBuscar,MarcaBuscar, PlanosDespieceBuscar*/
+﻿/*global $, CMI, Backbone, bbGrid, contextPath, EtapaBuscar, ProyectoBuscar, PlanosMontajeBuscar,MarcasBuscar, PlanosDespieceBuscar*/
 //js de catalogo de SubMarcas.
 //David Galvan
 //01/Marzo/2016

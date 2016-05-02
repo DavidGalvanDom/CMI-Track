@@ -26,5 +26,8 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Fecha")]
         public string fechaCreacion { get; set; }
+
+        [Display(Name="Estatus")]
+        public string estatuOrdeEmbarque { get; set; }
     }
 }

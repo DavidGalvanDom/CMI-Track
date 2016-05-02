@@ -247,7 +247,7 @@ var EmbarqueTablet = {
                             return;
                         }
 
-                        data = 'idDetaOrdenEmb=' + marcas[0].id +
+                        data = 'idOrdenEmbarque=' + marcas[0].attributes.idOrdenEmbarque +
                                '&idMarca=' + marca +
                                '&serie=' + serie +
                                '&origen=' + EmbarqueTablet.origen +
@@ -313,6 +313,7 @@ var EmbarqueTablet = {
                if (EmbarqueTablet.gridEmbarque.colModel[6].total === 0) {
                     CMI.DespliegaInformacion("La Orden de Embarque ya fue registrada en su totalidad.");
                     $('#codBarras').hide();
+                    $('#divImprimir').hide();
                 }
             }
             else {

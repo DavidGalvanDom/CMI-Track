@@ -29,16 +29,56 @@ namespace CMI.Track.Web.Controllers
             return View();
         }
 
- 	/// <summary>
+        /// <summary>
+        /// Se carga el detalle de la oreden de embarque
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <param name="idEtapa"></param>
+        /// <param name="idOrdenEmebarque"></param>
+        /// <returns></returns>
+        public JsonResult CargaReporteDetaOE(int id)
+        {
+            try
+            {
+                var lstOrdenEmbarque = OrdenEmbarqueData.CargaReporteDetaOE(id);
+
+                return (Json(lstOrdenEmbarque, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+ 	    /// <summary>
         /// Se cargan solo los proyectos que esten activos.
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaOrdenEmbarqueActivos(int idProyecto, string revision, int idEtapa, bool sinRemision)
+        public JsonResult CargaOrdenEmbarqueActivos(int idProyecto, int idEtapa, bool sinRemision)
         {
             try
             {
-                var lstOrdenEmbarque = OrdenEmbarqueData.CargarOrdenesEmbarque(idProyecto, revision, idEtapa, 1, sinRemision);
+                var lstOrdenEmbarque = OrdenEmbarqueData.CargarOrdenesEmbarque(idProyecto,  idEtapa, 1, sinRemision);
+
+                return (Json(lstOrdenEmbarque, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Se cargan solo los proyectos que esten activos.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaOrdenEmbarques(int idProyecto, int idEtapa)
+        {
+            try
+            {
+                var lstOrdenEmbarque = OrdenEmbarqueData.CargarOrdenesEmbarque(idProyecto, idEtapa, null,false);
 
                 return (Json(lstOrdenEmbarque, JsonRequestBehavior.AllowGet));
             }
@@ -57,45 +97,6 @@ namespace CMI.Track.Web.Controllers
         {
             ViewBag.sinRemision = sinRemision.ToString();
             return PartialView("_buscarOrdenEmbarque");
-        }
-        /// <summary>
-        /// Se cargan los detallesdel requerimeino manual seleccionado
-        /// </summary>
-        /// <param name="idProyecto"></param>
-        /// <param name="idEtapa"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public JsonResult CargaOrdenEmbarque(int idProyecto, int idEtapa, string idOrden)
-        {
-            try
-            {
-                var lstOrdenEmb = OrdenEmbarqueData.CargaOrdenEmbarque(idProyecto, idEtapa, idOrden);
-
-                return (Json(lstOrdenEmb, JsonRequestBehavior.AllowGet));
-            }
-            catch (Exception exp)
-            {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        /// <summary>
-        /// Carga la coleccion de ordenes de embarque
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public JsonResult CargaOrdenes()
-        {
-            try
-            {
-                var lstOrdenes = OrdenEmbarqueData.CargaOrdenes();
-
-                return (Json(lstOrdenes, JsonRequestBehavior.AllowGet));
-            }
-            catch (Exception exp)
-            {
-                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
-            }
         }
 
         /// <summary>
@@ -124,13 +125,13 @@ namespace CMI.Track.Web.Controllers
         [HttpGet]
         public ActionResult Nuevo()
         {
-            var objOrdenEmbarque = new Models.OrdenEmbarque() {  };
+            var objOrdenEmbarque = new Models.OrdenEmbarque() { EstatusOE = 1, fechaCreacion = DateTime.Now.ToString("dd/MM/yyyy")};
             ViewBag.Titulo = "Nuevo";
             return PartialView("_Nuevo", objOrdenEmbarque);
         }
 
         /// <summary>
-        /// Define un nuevo categoria
+        /// Se crea una nueva Orden de Embarque
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
@@ -141,7 +142,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {
                     var idOrden = OrdenEmbarqueData.Guardar(pobjModelo);
-                    return Json(new { Success = true, id = idOrden, Message = "Se guardo correctamente la pieza" });
+                    return Json(new { Success = true, id = idOrden, Message = "Se guardo correctamente la Orden de Embarque" });
                 }
                 catch (Exception exp)
                 {
@@ -151,10 +152,7 @@ namespace CMI.Track.Web.Controllers
 
             return Json(new { Success = false, Message = "Informacion incompleta" });
         }
-    
 
-
-  
         /// <summary>
         /// Despliega ventana emergente con el grid de Requerimientos
         /// </summary>
@@ -165,14 +163,12 @@ namespace CMI.Track.Web.Controllers
             return PartialView("_buscarRequisicion");
         }
 
-
-
         /// <summary>
         /// Carga la coleccion de marcas
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaMarcas(int idProyecto, int idEtapa)
+        public JsonResult CargaMarcasDispo(int idProyecto, int idEtapa)
         {
             try
             {
@@ -185,14 +181,58 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
         /// <summary>
-        /// Despliega ventana emergente con el grid de marcas
+        /// Define un nuevo usuario
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpGet]
+        public ActionResult Actualiza(int id)
+        {
+            var objOrdeEmbarque = OrdenEmbarqueData.CargarOrdenEmbarque(id);
+            return PartialView("_Actualiza", objOrdeEmbarque);
+        }
+
+        /// <summary>
+        /// Se actualizan los datos de la Orden de Embarque
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult BuscarMarca()
+        [HttpPost]
+        public JsonResult Actualiza(Models.OrdenEmbarque pobjModelo)
         {
-            return PartialView("_buscaMarca");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    OrdenEmbarqueData.Actualizar(pobjModelo);
+                    return Json(new { Success = true,id = pobjModelo.id, Message = "Se actulizo correctamente la Orden de Embarque" });
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { Success = false, Message = exp.Message });
+                }
+            }
+
+            return Json(new { Success = false, Message = "Informacion incompleta" });
+        }
+
+        /// <summary>
+        /// Se Elimina la Orden de Embarque de la base de datos
+        /// </summary>
+        /// <param name="idOrdenEmebarque"></param>
+        /// <returns></returns>
+        public JsonResult Borrar(int id)
+        {
+            try
+            {
+                OrdenEmbarqueData.Borrar(id);
+
+                return Json(new { Success = true }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
   

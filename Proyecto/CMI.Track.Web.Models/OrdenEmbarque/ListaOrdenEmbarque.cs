@@ -52,8 +52,7 @@ namespace CMI.Track.Web.Models
 
         [Display(Name = "Obervaciones")]
         public string Obervaciones { get; set; }
-
-
+        
         [Display(Name = "Piezas")]
         public double Piezas { get; set; }
 
@@ -66,10 +65,15 @@ namespace CMI.Track.Web.Models
         [Display(Name = "NombrePlano")]
         public string NombrePlano { get; set; }
 
-
         [Display(Name = "idOrdenEmb")]
         public int idOrdenEmb { get; set; }
 
         public int usuarioCreacion { get; set; }
+        
+        [Display(Name = "idSerie")]
+        public string idSerie { get; set; }
+
+        [Display(Name = "idMarca")]
+        public int idMarca { get; set; }
     }
 }
