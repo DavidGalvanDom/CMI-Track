@@ -1,4 +1,4 @@
-﻿@model CMI.Track.Web.Models.Avance
+﻿@model CMI.Track.Web.Models.ActividadProduccion
 
 <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -8,17 +8,33 @@
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
-            @using (Html.BeginForm("Nuevo", "Avance", FormMethod.Post, new { id = "NuevoAvanceForm", name = "NuevoAvanceForm", @class = "form-horizontal", onsubmit = "return false" }))
+            @using (Html.BeginForm("Nuevo", "ActividadProduccion", FormMethod.Post, new { id = "NuevoActividadForm", name = "NuevoActividadForm", @class = "form-horizontal", onsubmit = "return false" }))
             {
                 <div class="row">
                     <div class="col-sm-12">
                         <h2 class="text-center"><span id="msgConfirmacion"></span></h2>
                     </div>
                 </div>
-                @Html.HiddenFor(model => model.claseAvance)
-                @Html.HiddenFor(model => model.idMarca_Submarca)
+                <div class="row" id="rowPiezas">
+                    <div class="col-sm-3"></div>
+                    @Html.LabelFor(model => model.piezas, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.piezas, new { @class = "form-control", type = "number", maxlength = 5 })
+                    </div>
+                </div>
+                @Html.HiddenFor(model => model.tipo)
+                @Html.HiddenFor(model => model.clase)
+                @Html.HiddenFor(model => model.idSubmarca)
+                @Html.HiddenFor(model => model.idMarca)
                 @Html.HiddenFor(model => model.idSerie)
-                @Html.HiddenFor(model => model.idUsuario)
+                @Html.HiddenFor(model => model.idUsuarioFabrico)
+                @Html.HiddenFor(model => model.observaciones)
+                @Html.HiddenFor(model => model.longitud)
+                @Html.HiddenFor(model => model.barrenacion)
+                @Html.HiddenFor(model => model.placa)
+                @Html.HiddenFor(model => model.soldadura)
+                @Html.HiddenFor(model => model.pintura)
+                @Html.HiddenFor(model => model.usuarioCreacion)
             }
         </div>
         <div class="modal-footer">

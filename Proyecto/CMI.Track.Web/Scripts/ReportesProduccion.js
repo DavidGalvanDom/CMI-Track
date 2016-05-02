@@ -557,7 +557,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;CALIDAD',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date().toJSON().slice(0, 10);
+             fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id"],
             name;
@@ -626,7 +626,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;PRODUCCION&nbsp;POR&nbsp;PERSONA',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date().toJSON().slice(0, 10);
+             fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id","idUsuario","idProyecto"],
             name;
@@ -656,10 +656,10 @@ var ReportesProduccion = {
         }
 
         header += "<tr>";
-        header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+        header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='6' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='6' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
@@ -697,7 +697,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;PRODUCCION&nbsp;SEMANAL',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date().toJSON().slice(0, 10);
+             fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id", "idProyecto"],
             name;
@@ -768,7 +768,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;DIAS&nbsp;DE&nbsp;PROCESO',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date().toJSON().slice(0, 10);
+             fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id", "idProyecto", "idEtapa", "idElemento"],
             name;
@@ -839,7 +839,7 @@ var ReportesProduccion = {
              tabla_html = '',
              title = 'REPORTE&nbsp;DE&nbsp;ESTATUS&nbsp;DE&nbsp;PROYECTO',
              proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-             fechaReporte = Date().toJSON().slice(0, 10);
+             fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id"],
             name;
@@ -908,7 +908,7 @@ var ReportesProduccion = {
          tabla_html = '',
          title = 'REPORTE&nbsp;DE&nbsp;AVANCE&nbsp;DE&nbsp;PROYECTO',
          proyecto = $('#nombreProyecto').text().replace(/ /g, '&nbsp;'),
-         fechaReporte = Date().toJSON().slice(0, 10);
+         fechaReporte = CMI.MuestraFechaActual();
 
         var excludeArray = ["id"],
             name;
@@ -936,7 +936,7 @@ var ReportesProduccion = {
     }
 
     header += "<tr>";
-    header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
+    header += "<td colspan='1'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
     header += "<td > <table> ";
     header += "        <tr> <td colspan='2' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
     header += "        <tr> <td colspan='2' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";

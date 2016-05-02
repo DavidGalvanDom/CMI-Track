@@ -107,6 +107,17 @@ var CMI = {
                                  msg + "</div>");
         $('#cargandoInfo').hide();
     },
+    MuestraFechaActual: function () {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //Enero es 0!
+
+        var yyyy = today.getFullYear();
+        if (dd < 10) { dd = '0' + dd; }
+        if (mm < 10) { mm = '0' + mm; }
+        var today = dd + '/' + mm + '/' + yyyy;
+        return today;
+    },
     botonMensaje: function (agregar, boton, nombre) {
         if (agregar === true) {
             $(boton).attr("disabled", "disabled");

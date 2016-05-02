@@ -89,19 +89,19 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Da un Avance
+        /// Da un Avance o un registro de calidad
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
-        public JsonResult DarAvance(Models.Avance pobjAvance)
+        public JsonResult InsertarActividadProduccion(Models.ActividadProduccion pobjActividad)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var resultado = AvanceData.DarAvance(pobjAvance);
+                    var resultado = AvanceData.InsertarActividadProduccion(pobjActividad);
 
-                    return Json(new { Success = true, Message = "Se guardo correctamente el Avance " });
+                    return Json(new { Success = true, Message = "Se guardo correctamente el Registro de Actividad " });
                 }
                 catch (Exception exp)
                 {
@@ -109,32 +109,8 @@ namespace CMI.Track.Web.Controllers
                 }
             }
 
-            return Json(new { Success = false, Message = "La informacion del Avance esta incompleta" });
+            return Json(new { Success = false, Message = "La informacion del Registro de Actividad esta incompleta" });
         }
-
-        /// <summary>
-        /// Da un RegistroCalidad
-        /// </summary>
-        /// <returns>ActionResult</returns>
-        [HttpPost]
-        public JsonResult DarRegistroCalidad(Models.RegistroCalidad pobjRegistroCalidad)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var resultado = AvanceData.DarRegistroCalidad(pobjRegistroCalidad);
-                    return Json(new { Success = true, Message = "Se guardo correctamente el Registro de Calidad " });
-                }
-                catch (Exception exp)
-                {
-                    return Json(new { Success = false, Message = exp.Message });
-                }
-            }
-
-            return Json(new { Success = false, Message = "Llene todos los campos para Registrar la Informacion de Calidad" });
-        }
-
     }
 
 }
