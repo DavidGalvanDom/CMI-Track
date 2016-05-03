@@ -1,4 +1,4 @@
-﻿/*global $, CMI, Backbone, bbGrid*/
+﻿/*global $, CMI, Backbone, bbGrid, contextPath, Seguridad*/
 //js de catalogo de usuarios.
 //David Galvan
 //29/Enero/2016
@@ -43,7 +43,7 @@ var Usuario = {
 
         $(document).on('change', '#NombreUsuario', that.ValidaNomUsuario);
     },    
-    onGuardar: function (e) {
+    onGuardar: function () {
         var btn = this;
                
         if($('#NuevoUsuarioForm #idDepartamento').val() === ''){
@@ -61,7 +61,7 @@ var Usuario = {
             $.post(contextPath + "Usuario/Nuevo",
                 $("#NuevoUsuarioForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#NuevoUsuarioForm'));
                         CMI.DespliegaInformacion('El Usuario fue guardado con el Id: ' + data.id);
                         $('#nuevo-usuario').modal('hide');
@@ -77,7 +77,7 @@ var Usuario = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (e) {
+    onActualizar: function () {
         var btn = this;
 
         if ($('#ActualizaUsuarioForm #idDepartamento').val() === '') {
@@ -94,7 +94,7 @@ var Usuario = {
             $.post(contextPath + "Usuario/Actualiza",
                 $("#ActualizaUsuarioForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-usuario').modal('hide');
                         Usuario.colUsuarios.add(Usuario.serializaUsuario(data.id, '#ActualizaUsuarioForm'), { merge: true });
                         CMI.DespliegaInformacion('El usuario fue Actualizado. Id:' + data.id);
@@ -156,7 +156,7 @@ var Usuario = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "Usuario/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Usuario.colUsuarios.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             }
@@ -200,7 +200,7 @@ var Usuario = {
             $.getJSON(url, function (data) {
                 Usuario.colDepartamentos = data;
                 Usuario.CargaListaDepartamentos(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Departamentos");
             });
         } else {
@@ -230,7 +230,7 @@ var Usuario = {
             $.getJSON(url, function (data) {
                 Usuario.colProcesos = data;
                 Usuario.CargaListaProcesos(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los procesos");
             });
         } else {
@@ -262,7 +262,7 @@ var Usuario = {
         if (modulo.accEscritura === true)
             $('.btnNuevo').show();
        
-        if (localStorage.modSerdad != null) {
+        if (localStorage.modSerdad !== null) {
             modulo.accSeguridad = localStorage.modSerdad.substr(0, 1) === '1' ? true : false;
         }
     },
@@ -286,7 +286,7 @@ var Usuario = {
             Usuario.colUsuarios = new Backbone.Collection(data);
             var bolFilter = Usuario.colUsuarios.length > 0 ? true : false;
             if (bolFilter) {
-                gridUsuarios = new bbGrid.View({
+                Usuario.gridUsuarios = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -312,13 +312,12 @@ var Usuario = {
                 $('#bbGrid-clear')[0].innerHTML = "";
             }           
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los usuario");
         });
     }
 };
 
-
 $(function () {
     Usuario.Inicial();
-})
+});

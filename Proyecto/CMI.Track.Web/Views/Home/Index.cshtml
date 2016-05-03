@@ -7,3 +7,73 @@
         <h1 class="page-header">CMI Track by Sysba.com.mx</h1>
    </div>
 </div>
+
+<button onclick="CalculaTotal();" class="btn btn-default"> Total </button>
+<label id="lblTotal" class="control-label"></label>
+<div class="row">
+    <div class="col-lg-12">
+        <div id="bbGrid-clear" class="col-lg-12">
+            <div id="cargandoInfo">Cargando informacion...</div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+<script>
+
+    function CalculaTotal()
+    {
+        var total = 0;
+        $.each(colUsuarios.models, function (index, value) {
+            total = total + parseFloat(document.getElementById(value.id).value);
+            $('#lblTotal').text(total);
+        });
+    }
+
+    function  CargaGrid () {
+        var url = contextPath + "Usuario/CargaUsuarios"; // El url del controlador
+        $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
+            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+
+            $.each(data, function (index, value) {
+                value.Correo = " <input  id='" + value.id + "' type=\"text\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Correo + "' /> ";
+            });
+
+            colUsuarios = new Backbone.Collection(data);
+            var bolFilter = colUsuarios.length > 0 ? true : false;
+            if (bolFilter) {
+                gridUsuarios = new bbGrid.View({
+                    container: $('#bbGrid-clear'),
+                    enableSearch: true,
+                    actionenable: false,
+                    detalle: false,
+                    collection: colUsuarios,
+                    seguridad: true,
+                    colModel: [{ title: 'Id', name: 'id', width: '8%', },
+                               { title: 'Nombre Usuario', name: 'NombreUsuario' },
+                               { title: 'Nombre', name: 'NombreCompleto' },
+                               { title: 'Correo', name: 'Correo' },
+                               { title: 'Fecha', name: 'fechaCreacion' },
+                               { title: 'Estatus', name: 'nombreEstatus' }]
+                });
+                $('#cargandoInfo').hide();
+            }
+            else {
+                CMI.DespliegaInformacion("No se encontraron Usuarios registrados");
+                $('#bbGrid-clear')[0].innerHTML = "";
+            }           
+            //getJSON fail
+        }).fail(function (e) {
+            CMI.DespliegaError("No se pudo cargar la informacion de los usuario");
+        });
+    }
+
+
+    $(function () {
+        CargaGrid();
+    });
+
+   
+</script>
+
+}
