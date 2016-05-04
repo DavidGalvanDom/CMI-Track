@@ -35,7 +35,7 @@ var RequerimientoBuscar = {
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Folio Requerimiento', name: 'folioRequerimiento', filter: true, filterType: 'input' },
                                { title: 'Fecha Solicitud', name: 'fechaSolicitud', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         RequerimientoBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

@@ -29,6 +29,8 @@ var MovtoMaterial = {
         $(document).on("click", '.btn-ActualizarCategoria', that.onActualizar);
         $("#btnImprimir").click(that.onImprimir);
         $("#idDoc").change(that.onCambiaDocumento);
+       // $("#TipoMov").change(that.onCambiaTipo);
+        $(document).on("change", '#TipoMov', that.onCambiaTipo);
     
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
@@ -53,6 +55,20 @@ var MovtoMaterial = {
         else {
             $('#bbGrid-clear')[0].innerHTML = '';
             MovtoMaterial.CargaGrid($('#idDoc').val());
+        }
+    },
+    onCambiaTipo: function () {
+
+        if ($('#TipoMov').val() == '') {
+            //$('#CausaDiv').show();
+        }
+        else {
+            $('#TipoMovto').val($('#TipoMov').val());
+            document.getElementById("TipoMov").disabled = true;
+           // document.getElementById("myText").disabled = true;
+           
+          
+           // $('#TipoMov').disable = true;
         }
     },
     onImprimir: function () {
@@ -125,8 +141,40 @@ var MovtoMaterial = {
     onGuardar: function (e) {
        
         $('#nuevo-movimientomaterial').modal('hide');
-        $('#bbGrid-clear')[0].innerHTML = '';
-        MovtoMaterial.CargaGrid();
+      //  $('#bbGrid-clear')[0].innerHTML = '';
+        //   MovtoMaterial.CargaGrid();
+
+        $('#idDoc').empty();
+        var formRequisicion = MovtoMaterial.activeForm;
+        var ultimo = 0;
+        var url = contextPath + "MovimientoMaterial/CargaDocumentos/"; // El url del controlador
+        $.getJSON(url, function (data) {
+            MovtoMaterial.colDocumento = data;
+
+            var select = $('#idDoc').empty();
+
+
+            select.append('<option value="undefined">Selecciona documento</option>');
+
+            $.each(MovtoMaterial.colDocumento, function (i, item) {
+                select.append('<option value="'
+                                     + item.idDocumento
+                                     + '">'
+                                     + item.idDocumento
+                                     + '</option>');
+
+                ultimo = item.idDocumento;
+
+            });
+
+            $('#idDoc').val($('#idDoc').val());
+            // $('#idReq').val(ultimo);
+            //$("#idReq").change(ultimo);
+            $("#idDoc").val(ultimo).change();
+
+        }).fail(function (e) {
+            CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de documentos");
+        });
         
          
     },
@@ -143,11 +191,14 @@ var MovtoMaterial = {
                     if (data.Success == true) {
                         //$('#nuevo-movimientomaterial').modal('hide');
                         //CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
-                     
+         
+                        $('#idDocum').text(data.id);
                         $('#bbGrid-MovtoMateriales')[0].innerHTML = '';
-            
                         $('#idDocumento').val(data.id);
+                       
+
                         MovtoMaterial.CargaGridM(data.id);
+                      
                         
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
@@ -273,7 +324,7 @@ var MovtoMaterial = {
         }
     },
     CargaListaTipoMovto: function (form) {
-        var select = $(form + ' #TipoMovto').empty();
+        var select = $(form + ' #TipoMov').empty();
 
         select.append('<option> </option>');
 
@@ -285,7 +336,7 @@ var MovtoMaterial = {
                                  + '</option>');
         });
 
-        $(form + '#TipoMovto').val($(form + '#TipoMovto').val());
+        $(form + '#TipoMov').val($(form + '#TipoMov').val());
     },
     CargarColeccionAlmacen: function () {
         var form = MovtoMaterial.activeForm;

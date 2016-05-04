@@ -221,6 +221,20 @@ var ReqMCompra = {
             $('#fechaFin').show();
         };
 
+        $('#nombreEtapa').text('Nombre Etapa');
+        $('#FechaInicioEtapa').text('Fecha Inicio');
+        $('#FechaFinEtapa').text('Fecha Fin');
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+        $('#idRequisicion').text('Requisicion');
+        $('#OrigenReq').text('Origen');
+        $('#Estatus').text('Estatus');
+        $('#Causa').text('');
+
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+
         $('#etapaRow').show();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -240,6 +254,18 @@ var ReqMCompra = {
             $('#FechaInicioEt').show();
             $('#FechaFinEt').show();
         };
+
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+        $('#idRequisicion').text('Requisicion');
+        $('#OrigenReq').text('Origen');
+        $('#Estatus').text('Estatus');
+        $('#Causa').text('');
+
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+
         $('#requerimientoRow').show();
 
     },
@@ -251,7 +277,7 @@ var ReqMCompra = {
         $('#buscar-General').modal('hide');
 
         //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
+        //$('#bbGrid-ReqManualCompras')[0].innerHTML = "";
     
  
         ///Muestra el boton de nueva ReqMatGral
@@ -261,18 +287,25 @@ var ReqMCompra = {
             $('#FechaSolicitud').show();
         };
 
+        $('#idRequisicion').text('Requisicion');
+        $('#OrigenReq').text('Origen');
+        $('#Estatus').text('Estatus');
+        $('#Causa').text('');
+
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
         $('#requisicionRow').show();
     },
     AsignaRequisicion: function (id, NombreOrigen, Causa, Estatus) {
 
         $('#idRequisicion').text(id);
+        $('#idRequisicionSelect').val(id);
         $('#OrigenReq').text(NombreOrigen);
         $('#Causa').text(Causa);
         $('#Estatus').text(Estatus);
         $('#buscar-General').modal('hide');
 
         //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
         ReqMCompra.CargaGrid();
         ReqMCompra.CargarColeccionOrigenReq();
 
@@ -428,7 +461,7 @@ var ReqMCompra = {
         });
     },
     CargaGrid: function () {
-        var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+        var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + '&idRequisicion=' + $('#idRequisicionSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }

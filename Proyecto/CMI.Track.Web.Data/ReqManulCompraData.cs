@@ -69,14 +69,16 @@ namespace CMI.Track.Web.Data
         /// <param name="idRequerimiento"></param>
         /// <param name="idEstatus"></param>
         /// <returns>Lista de Marcas</returns>
-        public static Models.ReqManualCompra CargaMaterialesDetalles(int Item, int idRequerimiento)
+        public static Models.ReqManualCompra CargaMaterialesDetalles(int Item, int idRequerimiento, string idRequisicion)
         {
-            object[] paramArray = new object[3];
+            object[] paramArray = new object[4];
             try
             {
                 paramArray[0] = Item;
                 paramArray[1] = idRequerimiento;
                 paramArray[2] = null;
+                paramArray[3] = idRequisicion == "" ? null : idRequisicion;
+
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -117,15 +119,16 @@ namespace CMI.Track.Web.Data
         /// <param name="idRequerimiento"></param>
         /// <param name="idEstatus"></param>
         /// <returns>Lista de Marcas</returns>
-        public static List<Models.ListaReqManualCompra> CargaDetalleManual(int idRequerimiento, int? idEstatus)
+        public static List<Models.ListaReqManualCompra> CargaDetalleManual(int idRequerimiento, string idRequisicion, int? idEstatus)
         {
             var lstReqManualCompra = new List<Models.ListaReqManualCompra>();
-            object[] paramArray = new object[3];
+            object[] paramArray = new object[4];
             try
             {
                 paramArray[0] = null;
                 paramArray[1] = idRequerimiento;
                 paramArray[2] = 1;
+                paramArray[3] = idRequisicion == "" ? null : idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -207,7 +210,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.ReqManualCompra pobjModelo)
         {
-            object[] paramArray = new object[9];
+            object[] paramArray = new object[10];
             try
             {             
                 paramArray[0] = pobjModelo.idRequerimiento;
@@ -219,6 +222,7 @@ namespace CMI.Track.Web.Data
                 paramArray[6] = pobjModelo.Cantidad;
                 paramArray[7] = pobjModelo.Causa;
                 paramArray[8] = pobjModelo.Unidad;
+                paramArray[9] = pobjModelo.idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarRequisicion", paramArray);
@@ -257,6 +261,7 @@ namespace CMI.Track.Web.Data
             }
         }
 
+
         /// <summary>
         /// Se actuliza la informacion de la categoria
         /// </summary>
@@ -264,14 +269,15 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Actualiza(Models.ReqManualCompra pobjModelo)
         {
-            object[] paramArray = new object[5];
+            object[] paramArray = new object[6];
             try
             {
                 paramArray[0] = pobjModelo.idRequerimiento;
                 paramArray[1] = pobjModelo.idMaterialSelect;
                 paramArray[2] = pobjModelo.Cantidad;
                 paramArray[3] = pobjModelo.Unidad;
-                paramArray[5] = pobjModelo.id;   
+                paramArray[4] = pobjModelo.id;
+                paramArray[5] = pobjModelo.idRequisicion;   
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteNonQuery("usp_ActualizarRequiMateriales", paramArray);
@@ -286,19 +292,20 @@ namespace CMI.Track.Web.Data
 
 
         /// <summary>
-        /// Remueve de base de datos la categoria
+        /// Remueve de base de datos la el material de la requisicion
         /// </summary>
-        /// <param name="idCategoria"></param>
+        /// <param name="idMatReq"></param>
         /// <returns></returns>
-        public static string Borrar(string idCategoria)
+        public static string Borrar(string idMatReq, int idRequisicion)
         {
-            object[] paramArray = new object[1];
+            object[] paramArray = new object[2];
             try
             {
-                paramArray[0] = idCategoria;
+                paramArray[0] = idMatReq;
+                paramArray[1] = idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_RemueveCategoria", paramArray);
+                var result = db.ExecuteNonQuery("usp_RemueveMaterialRequisicion", paramArray);
 
                 return (result.ToString());
             }

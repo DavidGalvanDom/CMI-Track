@@ -70,14 +70,13 @@
                         @Html.TextBoxFor(model => model.Peso, new { @class = "form-control", maxlength = 100 })
                     </div>
 
-                    <input type="hidden" id="idRequerimiento" name="idRequerimiento" />
                     <input type="hidden" id="idMaterialSelect" name="idMaterialSelect" />
-                    <input type="hidden" id="Causa" name="Causa" />
-                    <input type="hidden" id="Origen" name="Origen" />
                 </div>
 
                 @Html.HiddenFor(model => model.id)
                 @Html.HiddenFor(model => model.usuarioCreacion)
+                @Html.HiddenFor(model => model.idRequerimiento)
+                @Html.HiddenFor(model => model.idRequisicion)
                 <input type="hidden" id="unid" name="unid" value="@Model.Unidad" />
                 <input type="hidden" id="alm" name="alm" value="@Model.Almacen" />
             }

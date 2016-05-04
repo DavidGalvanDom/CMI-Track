@@ -24,7 +24,7 @@ var RecepecionCompra = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarReq").click(that.onBuscarRequerimiento);
         $("#btnBuscarRequisicion").click(that.onBuscarRequisicion);
-        $(document).on("click", '.btn-ActualizarCantidadRecibida', that.onActualizar);
+        $(".btn-GuardaNew").click(that.onConfirmar);
         $('#etapaRow').hide();
         $('#btnCollapse').hide();
     },
@@ -107,43 +107,46 @@ var RecepecionCompra = {
             CMI.DespliegaErrorDialogo("No se pudo cargar el modulo de Buscar Requisiciones");
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
-    onActualizar: function (e) {
-        var btn = this;
-        CMI.botonMensaje(true, btn, 'Actualizar');
-        if ($("form").valid()) {
-            $('#usuarioCreacion').val(localStorage.idUser);
-            $('#Serie').val($('#SerieFac').val());
-            $('#Factura').val($('#FacturaReq').val());
-            $('#Proveedor').val($('#ProveedorFac').val());
-            $('#FechaFac').val($('#FechaFactura').val());
-    
-            if ($('#cantidadSol').val() == $('#cantidadRecibida').val() ) {
-                //Se hace el post para guardar la informacion
-                $.post(contextPath + "RecepcionRequisicion/Actualiza",
-                    $("#ActualizarRecepcionRequisicionForm *").serialize(),
-                    function (data) {
-                        if (data.Success == true) {
-                            $('#asigna-recibido').modal('hide');
-                            CMI.DespliegaInformacion('El cantidad recibidad fue Actualizada. Item:' + data.id);
-                            $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = '';
-                            RecepecionCompra.CargaGrid();
-                        } else {
-                            CMI.DespliegaErrorDialogo(data.Message);
-                        }
-                    }).fail(function () {
-                        CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
-                    }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
-            } else {
-                CMI.DespliegaErrorDialogo("La cantidad recibida debe ser igual a la cantidad solicitada");
-                CMI.botonMensaje(false, btn, 'Actualizar');
-            }
-    
-           
+    onConfirmar: function () {
+        var btn = this,
+                dataPost = '';
+        var mat = [];
+
+        CMI.botonMensaje(true, btn, 'Guardar');
+        dataPost = $("Index *").serialize();
+
+        if ($('#SerieFac').val() !== '' && $('#FacturaReq').val() !== '' && $('#ProveedorFac').val() !== '' && $('#FechaFactura').val() !== '') {
+
+            $.each(RecepecionCompra.colRecepecionCompra.models, function (index, value) {
+                mat = RecepecionCompra.colRecepecionCompra.where({ id: value.id });
+
+                if (mat[0].attributes.Existencia != 0 ) {
+
+                dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
+                }
+            });
+
+            //Se hace el post para guardar la informacion
+            $.post(contextPath + "RecepcionRequisicion/Actualiza",
+                dataPost,
+                function (data) {
+                    if (data.Success === true) {
+                        CMI.DespliegaInformacion(data.Message);
+                        $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = '';
+                        RecepecionCompra.CargaGrid();
+                    } else {
+                        CMI.DespliegaError(data.Message);
+                    }
+                }).fail(function () {
+                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
 
         } else {
-
+            CMI.DespliegaError("La información de la factura esta incompleta");
             CMI.botonMensaje(false, btn, 'Guardar');
         }
+
+
 
     },
     AsignaProyecto: function (idProyecto, Revision,
@@ -164,6 +167,25 @@ var RecepecionCompra = {
         //  $('#nombreEtapa').text('');
         //  $('#FechaInicioEtapa').text('');
         //  $('#FechaFinEtapa').text('');
+        $('#nombreEtapa').text('Nombre Etapa');
+        $('#FechaInicioEtapa').text('Fecha Inicio');
+        $('#FechaFinEtapa').text('Fecha Fin');
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+        $('#idRequisicion').text('Requisicion');
+
+        $('#SerieFac').val('');
+        $('#FacturaReq').val('');
+        $('#ProveedorFac').val('');
+        $('#FechaFactura').val('');
+        $('#SerieFac').text('Serie');
+        $('#FacturaReq').text('Factura');
+        $('#ProveedorFac').text('Proveedor');
+        $('#FechaFactura').text('Fecha Factura');
+
+        $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
 
         $('#etapaRow').show();
     },
@@ -179,6 +201,23 @@ var RecepecionCompra = {
         //Se carga el grid de PlanosMontaje asignadas a la etapa
         // $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         //  RecepecionCompra.CargaGrid();
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+        $('#idRequisicion').text('Requisicion');
+
+        $('#SerieFac').val('');
+        $('#FacturaReq').val('');
+        $('#ProveedorFac').val('');
+        $('#FechaFactura').val('');
+        $('#SerieFac').text('Serie');
+        $('#FacturaReq').text('Factura');
+        $('#ProveedorFac').text('Proveedor');
+        $('#FechaFactura').text('Fecha Factura');
+
+        $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
+
         $('#requerimientoRow').show();
 
     },
@@ -196,6 +235,18 @@ var RecepecionCompra = {
         ///Muestra el boton de nueva ReqMatGral
         if (RecepecionCompra.accEscritura === true)
 
+            $('#idRequisicion').text('Requisicion');
+        $('#SerieFac').val('');
+        $('#FacturaReq').val('');
+        $('#ProveedorFac').val('');
+        $('#FechaFactura').val('');
+        $('#SerieFac').text('Serie');
+        $('#FacturaReq').text('Factura');
+        $('#ProveedorFac').text('Proveedor');
+        $('#FechaFactura').text('Fecha Factura');
+
+        $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
+
         $('#requisicionRow').show();
     },
     AsignaRequisicion: function (id, NombreOrigen, Causa, Estatus, Serie, Factura, Proveedor, FechaFac) {
@@ -212,7 +263,9 @@ var RecepecionCompra = {
         $('#buscar-General').modal('hide');
       
         //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
+        $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
+
+
         RecepecionCompra.CargaGrid();
         RecepecionCompra.IniciaDateControls();
         ///Muestra el boton de nueva ReqMatGral
@@ -236,54 +289,6 @@ var RecepecionCompra = {
         var form = RecepecionCompra.activeForm;
         $(form + ' #dtpFechaFactura').datetimepicker({ format: 'MM/DD/YYYY' });
     },
-    onSeleccionar: function (idRow) {
-        var rowSelected = RecepecionCompra.colRecepecionCompra.get(idRow);
-        var canSolicitada = rowSelected.attributes.cantidadSol;
-        var canRec = rowSelected.attributes.cantidadRecibida;
-        var idMaterial = rowSelected.attributes.idMaterial;
-        var Material = rowSelected.attributes.nombreMaterial;
-        var Ancho = rowSelected.attributes.Ancho;
-        var Largo = rowSelected.attributes.Largo;
-        var Peso = rowSelected.attributes.Peso;
-        var Calidad = rowSelected.attributes.Calidad;
-        var Existencia = rowSelected.attributes.Existencia;
-        var idRequerimiento = $('#idRequerimientoSelect').val();
-        var idRequisicion = $('#idRequisicionSelect').val();
-        if (canRec == 0) {
-        if ($('#SerieFac').val() !== '' && $('#FacturaReq').val() !== '' && $('#ProveedorFac').val() !== '' && $('#FechaFactura').val() !== '') {
-            // $('#asigna-recibido').show();
-            var url = contextPath + "RecepcionRequisicion/Actualiza"; // El url del controlador      
-            $.get(url, function (data) {
-                $('#asigna-recibido').html(data);
-                $('#asigna-recibido').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-
-             
-                $('#idMaterialR').val(idMaterial);
-                $('#idItem').val(rowSelected.attributes.id);
-                $('#idRequerimiento').val(idRequerimiento);
-                $('#idRequisicionF').val(idRequisicion);
-                $('#nombreMat').val(Material);
-                $('#Ancho').val(Ancho);
-                $('#Largo').val(Largo);
-                $('#Peso').val(Peso);
-                $('#Calidad').val(Calidad);
-                $('#Existencia').val(Existencia);
-                $('#cantidadSol').val(canSolicitada);
-                $('#cantidadRec').val(canRec);
-                CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            });
-
-        } else {
-            CMI.DespliegaError("La información de la factura esta incompleta");
-        }
-        } else {
-            CMI.DespliegaError("La cantidad ya fue recibida, favor de verificarlo");
-        }
- 
-    },
     CargaGrid: function () {
         var url = contextPath + "RecepcionRequisicion/CargaDetalleRequisicion?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idRequisicion=' + $('#idRequisicionSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
@@ -291,13 +296,17 @@ var RecepecionCompra = {
             $('#DatosFactura').show();
    
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+
+            $.each(data, function (index, value) {
+                value.cantidadRecibida = " <input  id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
+            });
+
             RecepecionCompra.colRecepecionCompra = new Backbone.Collection(data);
             var bolFilter = RecepecionCompra.colRecepecionCompra.length > 0 ? true : false;
             if (bolFilter) {
                 gridRecepcionCompra = new bbGrid.View({
                     container: $('#bbGrid-DetalleRequisicionCompras'),
-                    rows: 5,
-                    rowList: [5, 15, 25, 50, 100],
+                    enableTotal: true,
                     enableSearch: false,
                     actionenable: false,
                     detalle: false,
@@ -313,15 +322,13 @@ var RecepecionCompra = {
                                { title: 'Calidad', name: 'Calidad', filter: true, filterType: 'input' },
                                { title: 'Ancho', name: 'Ancho', filter: true, filterType: 'input' },
                                { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
-                               { title: 'Cantidad Solicitada', name: 'cantidadSol', filter: true, filterType: 'input' },
-                               { title: 'Existencia', name: 'Existencia', filter: true, filterType: 'input' },
-                               { title: 'Recibido', name: 'cantidadRecibida', filter: true, filterType: 'input' },
-                               { title: ' Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input' },
-                               { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input' },
-                               { title: 'Total', name: 'Total', filter: true }],
-                    onRowDblClick: function () {
-                        RecepecionCompra.onSeleccionar(this.selectedRows[0]);
-                    }
+                               { title: 'Cantidad Solicitada', name: 'cantidadSol', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Saldo', name: 'Existencia', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Recibido', name: 'cantidadRecibida', filter: true, filterType: 'input', total: 0 },
+                               { title: ' Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input', total: 0 },
+                               { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Total', name: 'Total', filter: true, total: 0 }],
+   
                 });
                 $('#cargandoInfo').hide();
             }

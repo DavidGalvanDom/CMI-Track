@@ -1024,11 +1024,7 @@
     <Content Include="Views\Avance\_darRegistroCalidad.cshtml" />
     <Content Include="Views\ReportesProduccion\Index.cshtml" />
     <Content Include="Views\AsignaProyecto\Index.cshtml" />
-    <Content Include="Views\AsignaProyecto\_Actualiza.cshtml" />
-    <Content Include="Views\AsignaProyecto\_NuevoM.cshtml" />
     <Content Include="Views\AsignaProyecto\_NuevoMM.cshtml" />
-    <Content Include="Views\AsignaProyecto\_NuevoR.cshtml" />
-    <Content Include="Views\AsignaProyecto\_Opcion.cshtml" />
     <Content Include="Views\Kardex\Index.cshtml" />
     <Content Include="Views\MovimientoMaterial\Index.cshtml" />
     <Content Include="Views\MovimientoMaterial\_Actualiza.cshtml" />

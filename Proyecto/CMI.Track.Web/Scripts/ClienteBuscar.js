@@ -38,7 +38,7 @@ var ClienteBuscar = {
                                { title: 'CP', name: 'CpCliente', filter: true, filterType: 'input' },
                                { title: 'Contacto', name: 'ContactoCliente', filter: true, filterType: 'input' },
                     ],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         ClienteBuscar.onSeleccionar(this.selectedRows[0]);                       
                     }
                 });

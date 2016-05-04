@@ -38,7 +38,7 @@ var RemisionBuscar = {
                                { title: 'Transporte', name: 'Transporte', filter: true, filterType: 'input' },
                                { title: 'Fecha Envio', name: 'fechaEnvio', filter: true, filterType: 'input' },
                                { title: 'Fecha Remision', name: 'fechaRemision', filter: true, filterType: 'input'}],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         RemisionBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

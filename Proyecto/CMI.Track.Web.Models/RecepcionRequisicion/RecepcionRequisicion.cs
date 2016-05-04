@@ -30,56 +30,56 @@ namespace CMI.Track.Web.Models
         [Display(Name = "nombreMaterial")]
         public string nombreMat { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "CantidadRecibida")]
         public int cantidadRecibida { get; set; }
 
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "CantidadRec")]
         public int cantidadRec { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Ancho")]
         public int Ancho { get; set; }
 
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Largo")]
         public int Largo { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Peso")]
         public double Peso { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Existencia")]
         public int Existencia { get; set; }
 
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "cantidadSol")]
         public int cantidadSol { get; set; }
 
-        [Required(ErrorMessage = "*")]
+  
         [Display(Name = "Calidad")]
         public string Calidad { get; set; }
 
-        [Required(ErrorMessage = "*")]
         [Display(Name = "Serie")]
         public string Serie { get; set; }
 
-        [Required(ErrorMessage = "*")]
+  
         [Display(Name = "Factura")]
         public string Factura { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Proveedor")]
         public string Proveedor { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Fecha Factura")]
         public string FechaFac { get; set; }
+
+        [Required(ErrorMessage = "*")]
+        [Display(Name = "Lista de  ")]
+        public List<string> lstMS { get; set; }
         public int usuarioCreacion { get; set; }
        
     }

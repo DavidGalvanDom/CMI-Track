@@ -48,6 +48,10 @@ namespace CMI.Track.Web.Models
         [Display(Name = "idOrigen")]
         public int idOrigen { get; set; }
 
+        [Display(Name = "Lista de  ")]
+        public List<string> lstMS { get; set; }
+
+
         public int usuarioCreacion { get; set; }
         
     }

@@ -41,7 +41,7 @@ var MaterialBuscar = {
                                { title: 'Longitud', name: 'LargoMaterial', filter: true, filterType: 'input' },
                                { title: 'Calidad', name: 'CalidadMaterial', filter: true, filterType: 'input' },
                                { title: 'Peso', name: 'PesoMaterial', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         MaterialBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

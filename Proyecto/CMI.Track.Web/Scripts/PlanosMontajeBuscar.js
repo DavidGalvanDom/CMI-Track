@@ -36,7 +36,7 @@ var PlanosMontajeBuscar = {
                                { title: 'Nombre PlanosMontaje', name: 'nombrePlanoMontaje', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         PlanosMontajeBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

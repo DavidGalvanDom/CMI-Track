@@ -48,7 +48,7 @@ namespace CMI.Track.Web.Data
                             Ancho = Convert.ToInt32(dataReader["anchoMaterial"]),
                             Largo = Convert.ToInt32(dataReader["largoMaterial"]),
                             cantidadSol = Convert.ToInt32(dataReader["cantidadSolicitada"]),
-                            Existencia = Convert.ToInt32(dataReader["cantidadInventario"]),
+                            Existencia = Convert.ToInt32(dataReader["Saldo"]),
                             cantidadRecibida = Convert.ToInt32(dataReader["cantidadRecibida"]),
                             LongArea = Convert.ToDouble(dataReader["LongArea"]),
                             Peso = Convert.ToDouble(dataReader["pesoMaterial"]),
@@ -73,28 +73,39 @@ namespace CMI.Track.Web.Data
         public static string Actualiza(Models.RecepcionRequisicion pobjModelo)
         {
             object[] paramArray = new object[10];
+            var result = 0;
             try
             {
-                paramArray[0] = pobjModelo.idMaterialR;
-                paramArray[1] = pobjModelo.cantidadRecibida;
-                paramArray[2] = pobjModelo.Serie.ToUpper();
-                paramArray[3] = pobjModelo.Factura.ToUpper();
-                paramArray[4] = pobjModelo.Proveedor.ToUpper();
-                paramArray[5] = pobjModelo.FechaFac.ToUpper();
-                paramArray[6] = pobjModelo.idRequerimiento;
-                paramArray[7] = pobjModelo.idRequisicionF;
-                paramArray[8] = pobjModelo.idItem;
-                paramArray[9] = pobjModelo.usuarioCreacion;  
+                
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_ActualizarCantidadRecibida", paramArray);
+        
 
-                return (result.ToString());
+                foreach (var valor in pobjModelo.lstMS)
+                {
+          
+                    paramArray[0] = valor.Split(',')[0]; //Material
+                    paramArray[1] = valor.Split(',')[1]; //Cantidad Recibida
+                    paramArray[2] = valor.Split(',')[2]; //Serie
+                    paramArray[3] = valor.Split(',')[3]; //Factura
+                    paramArray[4] = valor.Split(',')[4]; //Proveedro
+                    paramArray[5] = valor.Split(',')[5]; //FechaFac
+                    paramArray[6] = valor.Split(',')[6]; //idRequerimiento
+                    paramArray[7] = valor.Split(',')[7]; //idRequisicion
+                    paramArray[8] = valor.Split(',')[8]; //Item
+                    paramArray[9] = valor.Split(',')[9]; //usuarioCreacion
+
+                    result = db.ExecuteNonQuery("usp_ActualizarCantidadRecibida", paramArray);
+                }
+
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message, exp);
             }
+            return (Convert.ToString(result));
+
+
         }      
     }
 }

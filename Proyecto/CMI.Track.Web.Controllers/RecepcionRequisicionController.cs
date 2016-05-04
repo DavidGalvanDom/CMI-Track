@@ -49,16 +49,6 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Despliega ventana emergente para asiganr cantidad Recibida
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult Actualiza()
-        {
-            return PartialView("_Actualiza");
-        }
-
-        /// <summary>
         /// Actualiza la cantidad recibida
         /// </summary>
         /// <returns>ActionResult</returns>
@@ -70,7 +60,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {                   
                     RecepcionRequisicionData.Actualiza(pobjModelo);
-                    return Json(new { Success = true, id = pobjModelo.idItem, Message = "Se actualizo correctamente la cantidad recibida " });
+                    return Json(new { Success = true, id = pobjModelo.idItem, Message = "Recepción realizada con exito" });
                 }
                 catch (Exception exp)
                 {
@@ -78,7 +68,7 @@ namespace CMI.Track.Web.Controllers
                 }
             }
 
-            return Json(new { Success = false, Message = "Información incompleta" });
+            return Json(new { Success = false, Message = "La requisición esta recibida en su totalidad" });
         }
     }
 }

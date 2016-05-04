@@ -36,7 +36,7 @@ var MarcasBuscar = {
                                { title: 'Nombre', name: 'nombreMarca', filter: true, filterType: 'input' },
                                { title: 'Codigo', name: 'codigoMarca', filter: true, filterType: 'input' },
                                { title: 'Piezas', name: 'Piezas', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         MarcasBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

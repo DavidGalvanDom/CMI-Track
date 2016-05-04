@@ -4,19 +4,49 @@
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">@ViewBag.Titulo  Material</h4>
+            <h4 class="modal-title">@ViewBag.Titulo  Requisición</h4>
         </div>
         <div class="modal-body">
             <div class="clientAlertDlg"></div>
             @using (Html.BeginForm("Nuevo", "ReqManualCompra", FormMethod.Post, new { id = "NuevoReqManualCompraForm", name = "NuevoReqManualCompraForm", @class = "form-horizontal" }))
             {
                 <div class="form-group">
-                    
-                    <div class="col-sm-5">
-                        <span>Almacen</span>
-                        <select id="Almacen" name="Almacen" class="form-control" required="required"></select>
+                    <div class="col-lg-5" id="OrigenDiv">
+                        <div class="col-sm-1"><span>Origen</span></div>
+                        <div class="col-sm-11">
+                            <select id="Origen" name="Origen" class="form-control" required="required"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br />
+                        </div>
+                    </div>
+                    <div class="col-lg-7" id="CausaDiv" style="display:none;">
+                        <span>Causa</span>
+                        <div class="col-sm-12">
+                            @Html.TextAreaFor(model => model.Causa, new
+                                {
+                                    @class = "form-control",
+                                    maxlength = 250,
+                                    onkeypress = "return ( this.value.length < 250 );",
+                                    rows = "4"
+                                })
+                        </div>
                     </div>
                 </div>
+                <div class="form-group">
+                        <div class="col-sm-2">
+                            <span>Requisición</span>
+                            <span id="idRequi" placeholder="Requisición" class="form-control" title="idRequi">Requisición</span>
+                            @Html.HiddenFor(model => model.idRequisicion)
+
+                        </div>
+                        <div class="col-sm-5">
+                            <span>Almacen</span>
+                            <select id="Almacen" name="Almacen" class="form-control" required="required"></select>
+                        </div>
+                    </div>
                 
              
 
@@ -46,6 +76,7 @@
                     <div class="col-sm-3">
                         <span>Cantidad solicitada</span>
                         @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
+
                     </div>
                 </div>
 
@@ -76,14 +107,28 @@
                     <input type="hidden" id="Causa" name="Causa" />
                     <input type="hidden" id="Origen" name="Origen" />
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary btn-AgregarMaterial">Agregar</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <br />
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div id="bbGrid-MatRequi" class="col-lg-12">
+                            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+                        </div>
+                    </div>
+                </div>
 
                 @Html.HiddenFor(model => model.id)
                 @Html.HiddenFor(model => model.usuarioCreacion)
             }
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary btn-GuardaNuevo">Guardar</button>
+            <button type="button" class="btn btn-primary btn-GuardaNuevo">Cerrar</button>
         </div>
     </div><!-- /.modal-content -->
 </div>

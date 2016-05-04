@@ -37,7 +37,7 @@ var EtapaBuscar = {
                                { title: 'Nombre Etapa', name: 'nombreEtapa', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'fechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'fechaFin', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         EtapaBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

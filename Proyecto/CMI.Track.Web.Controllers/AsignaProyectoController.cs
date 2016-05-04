@@ -70,7 +70,7 @@ namespace CMI.Track.Web.Controllers
 
 
         /// <summary>
-        /// Define un nuevo categoria
+        /// Define un nuevo 
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
@@ -78,33 +78,12 @@ namespace CMI.Track.Web.Controllers
         {
             var objAsignaProyecto = new Models.AsignaProyecto();
             ViewBag.Titulo = "Nuevo";
-            return PartialView("_NuevoR", objAsignaProyecto);
+            return PartialView("_NuevoMM", objAsignaProyecto);
         }
 
+ 
         /// <summary>
-        /// Define un nuevo categoria
-        /// </summary>
-        /// <returns>ActionResult</returns>
-        [HttpPost]
-        public JsonResult Nuevo(Models.AsignaProyecto pobjModelo)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                   AsignaProyectoData.Guardar(pobjModelo);
-                    return Json(new { Success = true, Message = "Se guardo correctamente los materiales " });
-                }
-                catch (Exception exp)
-                {
-                    return Json(new { Success = false, Message = exp.Message });
-                }
-            }
-
-            return Json(new { Success = false, Message = "Informacion incompleta" });                     
-        }
-        /// <summary>
-        /// Define un nuevo categoria
+        /// Define un nuevo
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
@@ -115,7 +94,7 @@ namespace CMI.Track.Web.Controllers
             return PartialView("_NuevoM", objAsignaProyecto);
         }
         /// <summary>
-        /// Define un nuevo categoria
+        /// Define un nuevo 
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
@@ -147,7 +126,7 @@ namespace CMI.Track.Web.Controllers
         }
 
         /// <summary>
-        /// Define un nuevo categoria
+        /// Define un nuevo 
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
@@ -158,7 +137,7 @@ namespace CMI.Track.Web.Controllers
                 try
                 {                   
                     AsignaProyectoData.Actualiza(pobjModelo);
-                    return Json(new { Success = true, id = pobjModelo.id, Message = "Se actualizo correctamente la categoria " });
+                    return Json(new { Success = true, id = pobjModelo.id, Message = "Asignación de materiales correcta" });
                 }
                 catch (Exception exp)
                 {
@@ -169,33 +148,12 @@ namespace CMI.Track.Web.Controllers
             return Json(new { Success = false, Message = "Información para asignar materiales incompleta" });
         }
 
-        /// <summary>
-        /// Define un nuevo material proyecto
-        /// </summary>
-        /// <returns>ActionResult</returns>
-        [HttpGet]
-        public ActionResult Opcion()
-        {
-            return PartialView("_Opcion");
-        }
 
-        /// <summary>
-        /// Define un nuevo categoria
-        /// </summary>
-        /// <returns>ActionResult</returns>
-        [HttpGet]
-        public ActionResult Clonar(string id)
-        {
-            var objCategoria = CategoriaData.CargaCategoria(id);
-            objCategoria.id = 0;
-            ViewBag.Titulo = "Clonar";
 
-            return PartialView("_Nuevo", objCategoria);
-        }
 
 
         /// <summary>
-        /// Borra la categoria
+        /// Borra el material
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpPost]
@@ -203,8 +161,8 @@ namespace CMI.Track.Web.Controllers
         {
             try
             {
-                CategoriaData.Borrar(id);
-                return Json(new { Success = true, Message = "Se borro correctamente la categoria " });
+                AsignaProyectoData.Borrar(id);
+                return Json(new { Success = true, Message = "Se borro correctamente el material " });
             }
             catch (Exception exp)
             {

@@ -18,8 +18,7 @@ namespace CMI.Track.Web.Models
         [Display(Name = "id")]
         public int id { get; set; }
 
-        [Required(ErrorMessage = "*")]
-        [StringLength(10)]
+
         [Display(Name = "IdRequerimiento")]
         public string idRequerimiento { get; set; }
 
@@ -27,29 +26,29 @@ namespace CMI.Track.Web.Models
         [Display(Name = "IdRequisicion")]
         public int idRequisicion { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Origen")]
         public int Origen { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Alamcen")]
         public int Almacen { get; set; }
 
         [Display(Name = "Causa")]
         public string Causa { get; set; }
 
-        [Required(ErrorMessage = "*")]
+     
         [Display(Name = "IdMaterial")]
         public int idMaterialSelect { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Unidad")]
         public int Unidad { get; set; }
 
         [Display(Name = "idUnidad")]
         public int idUnidad { get; set; }
 
-        [Required(ErrorMessage = "*")]
+
         [Display(Name = "Cantidad")]
         public int Cantidad { get; set; }
 

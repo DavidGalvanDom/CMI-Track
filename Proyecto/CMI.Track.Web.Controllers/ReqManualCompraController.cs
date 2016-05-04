@@ -44,11 +44,11 @@ namespace CMI.Track.Web.Controllers
         /// <param name="idRequerimiento"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaDetalleManual(int idRequerimiento)
+        public JsonResult CargaDetalleManual(int idRequerimiento, string idRequisicion)
         {
             try
             {
-                var lstMarcas = ReqManulCompraData.CargaDetalleManual(idRequerimiento, null);
+                var lstMarcas = ReqManulCompraData.CargaDetalleManual(idRequerimiento, idRequisicion,  null);
 
                 return (Json(lstMarcas, JsonRequestBehavior.AllowGet));
             }
@@ -118,9 +118,9 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns>ActionResult</returns>
         [HttpGet]
-        public ActionResult Actualiza(int id, int idRequerimiento)
+        public ActionResult Actualiza(int id, int idRequerimiento, string idRequisicion)
         {
-            var objReqMaterial = ReqManulCompraData.CargaMaterialesDetalles(id, idRequerimiento);
+            var objReqMaterial = ReqManulCompraData.CargaMaterialesDetalles(id, idRequerimiento, idRequisicion);
             return PartialView("_Actualiza", objReqMaterial);
         }
 
@@ -165,6 +165,23 @@ namespace CMI.Track.Web.Controllers
             }
 
           
+        }
+        /// <summary>
+        /// Borra el material
+        /// </summary>
+        /// <returns>ActionResult</returns>
+        [HttpPost]
+        public JsonResult Borrar(string id, int idRequisicion)
+        {
+            try
+            {
+                ReqManulCompraData.Borrar(id, idRequisicion);
+                return Json(new { Success = true, Message = "Se borro correctamente el material " });
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
         }
   
         /// <summary>

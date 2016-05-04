@@ -36,7 +36,7 @@ var PlanosDespieceBuscar = {
                                { title: 'Nombre Planos Despiece', name: 'nombrePlanoDespiece', filter: true, filterType: 'input' },
                                { title: 'Codigo', name: 'codigoPlanoDespiece', filter: true, filterType: 'input' },
                                { title: 'Tipo Construccion', name: 'nombreTipoContruccion', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         PlanosDespieceBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

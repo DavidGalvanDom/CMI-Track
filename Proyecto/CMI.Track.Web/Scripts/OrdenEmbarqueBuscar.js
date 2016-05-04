@@ -43,7 +43,7 @@ var OrdenEmbarqueBuscar = {
                                { title: 'Orden Produccion', name: 'idOrdenProduccion', width: '15%', filter: true, filterType: 'input' },
                                { title: 'Observacion', name: 'observacionOrdenEmbarque', width: '55%', filter: true, filterType: 'input' },
                                { title: 'Fecha', name: 'fechaCreacion', width: '15%', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         OrdenEmbarqueBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

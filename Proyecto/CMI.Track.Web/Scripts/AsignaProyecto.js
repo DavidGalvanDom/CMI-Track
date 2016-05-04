@@ -26,15 +26,19 @@ var MaterialesProyecto = {
         $("#btnBuscarRequisicion").click(that.onBuscarRequisicion);
         $("#btnImprimir").click(that.onImprimir);
         $('.btnNuevo').click(that.Nuevo);
+        $(".btn-GuardaNew").click(that.onConfirmar);
         $(document).on("click", '.btn-pRequisicion', that.PorRequisicion);
         $(document).on("click", '.btn-pMaterial', that.PorMaterial);
-        $(document).on("click", '.btn-GuardaNuevoR', that.onGuardarR);
-        $(document).on("click", '.btn-GuardaNuevoM', that.onGuardarM);
-        $(document).on("click", '.btn-ActualizarCantidadEntrega', that.onActualizar);
+        $(document).on("click", '.btn-Cerrar', that.onCerrar);
+        $(document).on("click", '.btn-AgregarMaterial', that.onGuardarM);
         $('#etapaRow').hide();
         $('#rowAlmacen').hide();
         $('#btnCollapse').hide();
         $('#Imprimir').hide();
+
+        $(document).on('click', '.accrowBorrar', function () {
+            that.Borrar($(this).parent().parent().attr("data-modelId"));
+        });
     },
     onBuscarProyecto: function () {
         var btn = this;
@@ -195,7 +199,8 @@ var MaterialesProyecto = {
                 rptTemplate = rptTemplate.replace('vrDepto', Depto);
                 rptTemplate = rptTemplate.replace('vrSolicita', Solicita);
                 rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
-                tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
+                rptTemplate = rptTemplate.replace('vrDetalle', tcompleta);
+                tablatmp = rptTemplate;
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
                 tabla_html = tablatmp.replace(/ /g, '%20');
@@ -214,53 +219,30 @@ var MaterialesProyecto = {
 
 
     },
-    onActualizar: function (e) {
-        var btn = this;
-        CMI.botonMensaje(true, btn, 'Actualizar');
-        if ($("form").valid()) {
-            $('#usuarioCreacion').val(localStorage.idUser);
+    onConfirmar: function () 
+    {
+        var btn = this,
+                dataPost = '';
+        var mat = [];
 
-           // if ($('#cantidadSol').val() == $('#cantidadRecibida').val() ) {
-                //Se hace el post para guardar la informacion
-                $.post(contextPath + "AsignaProyecto/Actualiza",
-                    $("#ActualizarMaterialProyectoForm *").serialize(),
-                    function (data) {
-                        if (data.Success == true) {
-                            $('#actualiza-MaterialProyecto').modal('hide');
-                            CMI.DespliegaInformacion('El cantidad entregada fue Actualizada. Id:' + data.id);
-                            $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-                            MaterialesProyecto.CargaGrid();
-                        } else {
-                            CMI.DespliegaErrorDialogo(data.Message);
-                        }
-                    }).fail(function () {
-                        CMI.DespliegaErrorDialogo("Error al actualizar la informacion");
-                    }).always(function () { CMI.botonMensaje(false, btn, 'Actualizar'); });
-           // } else {
-           //     CMI.DespliegaErrorDialogo("La cantidad recibida debe ser igual a la cantidad solicitada");
-          //      CMI.botonMensaje(false, btn, 'Actualizar');
-          //  }
-           
+        CMI.botonMensaje(true, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
+            dataPost = $("Index *").serialize();
 
-        } else {
+            if ($('#Almacen').val() !== '') {
 
-            CMI.botonMensaje(false, btn, 'Guardar');
-        }
+            $.each(MaterialesProyecto.colMaterialesProyecto.models, function (index, value) {
+                mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
+                if (mat[0].attributes.Total == 0) {
+                    dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
+                }
+            });
 
-    },
-    onGuardarR: function (e) {
-        var btn = this;
-
-        CMI.botonMensaje(true, btn, 'Guardar');
-        if ($("form").valid()) {
-            $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
-            $.post(contextPath + "AsignaProyecto/Nuevo",
-                $("#NuevoAsignaMaterialesForm *").serialize(),
+            $.post(contextPath + "AsignaProyecto/Actualiza",
+                dataPost,
                 function (data) {
-                    if (data.Success == true) {
-                        $('#nuevo-AsignaProyecto').modal('hide');
-                        CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
+                    if (data.Success === true) {
+                        CMI.DespliegaInformacion(data.Message);
                         $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
                         MaterialesProyecto.CargaGrid();
                     } else {
@@ -268,38 +250,48 @@ var MaterialesProyecto = {
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                }).always(function () { CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar"); });
+            } else {
+                CMI.DespliegaError("Favor de seleccionar el almacen");
+                CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
+            }
 
-                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-
-        } else {
-            CMI.botonMensaje(false, btn, 'Guardar');
-        }
+    },
+    onCerrar: function (e) {
+        $('#nuevo-AsignaProyecto').modal('hide');
+        CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
+        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+        MaterialesProyecto.CargaGrid();
     },
     onGuardarM: function (e) {
         var btn = this;
 
-        CMI.botonMensaje(true, btn, 'Guardar');
+        CMI.botonMensaje(true, btn, 'Agregar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
             //Se hace el post para guardar la informacion
             $.post(contextPath + "AsignaProyecto/NuevoM",
-                $("#NuevoAsignaMaterialesMForm *").serialize(),
+                $("#NuevoAsignaMaterialesForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        $('#nuevo-AsignaProyecto').modal('hide');
+                     //   $('#nuevo-AsignaProyecto').modal('hide');
                         CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
-                        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-                        MaterialesProyecto.CargaGrid();
+                        $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = '';
+                        MaterialesProyecto.CargaGridAsignadosM();
+                        $('#idRequisicionSelect').val('');
+                        $('#idRequisicion').text('');
+                        $('#idReq').val(0);
+                        $('#OrigenReq').text('');
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
 
-                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+                }).always(function () { CMI.botonMensaje(false, btn, 'Agregar'); });
 
         } else {
-            CMI.botonMensaje(false, btn, 'Guardar');
+            CMI.botonMensaje(false, btn, 'Agregar');
         }
     },
     AsignaProyecto: function (idProyecto, Revision,
@@ -321,6 +313,16 @@ var MaterialesProyecto = {
         //  $('#FechaInicioEtapa').text('');
         //  $('#FechaFinEtapa').text('');
 
+        $('#nombreEtapa').text('Nombre Etapa');
+        $('#FechaInicioEtapa').text('Fecha Inicio');
+        $('#FechaFinEtapa').text('Fecha Fin');
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+
+        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
+        $('#Imprimir').hide();
         $('#etapaRow').show();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -333,6 +335,13 @@ var MaterialesProyecto = {
         $('#OrdenProduccion').text(idEtapa);
         $('#buscar-General').modal('hide');
     
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+
+        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
+        $('#Imprimir').hide();
         $('#requerimientoRow').show();
     },
     AsignaRequerimiento: function (idRequerimiento, folioRequerimiento, fechaSolicitud) {
@@ -343,7 +352,8 @@ var MaterialesProyecto = {
         $('#buscar-General').modal('hide');
 
         //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
+        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
+
         if (MaterialesProyecto.accEscritura === true)
             $('.btnNuevo').show();
         MaterialesProyecto.CargarColeccionAlmacen();
@@ -370,17 +380,6 @@ var MaterialesProyecto = {
         $('#ProveedorFac').val(Proveedor);
         $('#FechaFactura').val(FechaFac);
         $('#buscar-General').modal('hide');
-        MaterialesProyecto.CargaGridAsignados();
-      
-        //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
-  
-        ///Muestra el boton de nueva ReqMatGral
-
-      
-        
-
-
     },
     AsignaMaterial: function (id, NombreMaterial,
                    AnchoMaterial, LargoMaterial, PesoMaterial, CalidadMaterial) {
@@ -388,40 +387,8 @@ var MaterialesProyecto = {
         $('#idMaterialSelect').val(id);
         $('#NombreMat').val(NombreMaterial);
         $('#buscar-Material').modal('hide');
-
-        //Se carga el grid de PlanosMontaje asignadas a la etapa
-        //  $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
-        //  ReqMCompra.CargaGrid();
-
-
     },
     Nuevo: function () {
-        CMI.CierraMensajes();
-        var url = contextPath + "AsignaProyecto/Opcion"; // El url del controlador    
-        if ($('#Almacen').val() != '')
-        {
-        $.get(url, function (data) {
-            $('#tipo-asignamaterial').html(data);
-            $('#tipo-asignamaterial').modal({
-                backdrop: 'static',
-                keyboard: true
-            }, 'show');
-            CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-            MaterialesProyecto.activeForm = '#OpcionAsignaForm';
-            $(MaterialesProyecto.activeForm + ' #btnBuscarMat').click(MaterialesProyecto.onBuscarMaterial);
-            $('#idAlmacen').val($('#Almacen').val());
-            $('#idEtapa').val($('#idEtapaSelect').val());
-            $('#idProyecto').val($('#idProyectoSelect').val());
-            $('#Revision').val($('#RevisionPro').text());
-            $('#usuarioCreacion').val(localStorage.idUser);
-            $(MaterialesProyecto.activeForm + ' #btnBuscarRequisicion').click(MaterialesProyecto.onBuscarRequisicion);
-         
-        });
-        } else {
-            CMI.DespliegaError("Por favor seleccione un almacen");
-        }
-    },
-    PorRequisicion: function () {
         CMI.CierraMensajes();
         var url = contextPath + "AsignaProyecto/NuevoR"; // El url del controlador    
         if ($('#Almacen').val() != '') {
@@ -439,35 +406,26 @@ var MaterialesProyecto = {
                 $('#Revision').val($('#RevisionPro').text());
                 $('#usuarioCreacion').val(localStorage.idUser);
                 $(MaterialesProyecto.activeForm + ' #btnBuscarRequisicion').click(MaterialesProyecto.onBuscarRequisicion);
+                $(MaterialesProyecto.activeForm + ' #btnBuscarMat').click(MaterialesProyecto.onBuscarMaterial);
+                MaterialesProyecto.CargarColeccionUnidadMedida();
+                MaterialesProyecto.CargarColeccionOrigenReq();
             });
         } else {
             CMI.DespliegaError("Por favor seleccione un almacen");
         }
     },
-    PorMaterial: function () {
+    Borrar: function (id) {
         CMI.CierraMensajes();
-        var url = contextPath + "AsignaProyecto/NuevoM"; // El url del controlador    
-        if ($('#Almacen').val() != '') {
-            $.get(url, function (data) {
-                $('#nuevo-AsignaProyecto').html(data);
-                $('#nuevo-AsignaProyecto').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-                CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-                MaterialesProyecto.activeForm = '#NuevoAsignaMaterialesMForm';
-                $(MaterialesProyecto.activeForm + ' #btnBuscarMat').click(MaterialesProyecto.onBuscarMaterial);
-                MaterialesProyecto.CargarColeccionUnidadMedida();
-                MaterialesProyecto.CargarColeccionOrigenReq();
-                $('#idAlmacen').val($('#Almacen').val());
-                $('#idEtapa').val($('#idEtapaSelect').val());
-                $('#idProyecto').val($('#idProyectoSelect').val());
-                $('#Revision').val($('#RevisionPro').text());
-                $('#usuarioCreacion').val(localStorage.idUser);
-            });
-        } else {
-            CMI.DespliegaError("Por favor seleccione un almacen");
-        }
+        if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
+        var url = contextPath + "AsignaProyecto/Borrar"; // El url del controlador
+        $.post(url, { id: id }, function (data) {
+            if (data.Success == true) {
+                MaterialesProyecto.colMaterialesProyecto.remove(id);
+                CMI.DespliegaInformacion(data.Message + "  id:" + id);
+            } else {
+                CMI.DespliegaError(data.Message);
+            }
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar el material asignado"); });
     },
     CargarColeccionAlmacen: function () {
         var form = MaterialesProyecto.activeForm;
@@ -560,7 +518,7 @@ var MaterialesProyecto = {
         var permisos = localStorage.modPermisos,
             modulo = MaterialesProyecto;
 
-        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+       modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
     },
@@ -568,76 +526,43 @@ var MaterialesProyecto = {
         var form = MaterialesProyecto.activeForm;
         $(form + ' #dtpFechaFactura').datetimepicker({ format: 'MM/DD/YYYY' });
     },
-    onSeleccionar: function (idRow) {
-        var rowSelected = MaterialesProyecto.colMaterialesProyecto.get(idRow);
-
-        var Material = rowSelected.attributes.idMaterial;
-        var idRequerimiento = $('#idRequerimientoSelect').val();
-        var idEtapa = $('#idEtapaSelect').val();
-        var idProyecto = $('#idProyectoSelect').val();
-        var idAlmacen = $('#Almacen').val();
-        var cantEntrega = rowSelected.attributes.Cantidad;
-        // $('#asigna-recibido').show();
-
-        if (cantEntrega == '') {
-            var url = contextPath + "AsignaProyecto/Actualiza"; // El url del controlador      
-            $.get(url, function (data) {
-                $('#actualiza-MaterialProyecto').html(data);
-                $('#actualiza-MaterialProyecto').modal({
-                    backdrop: 'static',
-                    keyboard: true
-                }, 'show');
-
-                $('#idMaterialSelect').val(Material);
-                $('#idAlmacen').val(idAlmacen);
-                $('#idEtapa').val(idEtapa);
-                $('#idProyecto').val(idProyecto);
-                $('#idReq').val(idRequerimiento);
-                $('#id').val(idRow);
-                CMI.RedefinirValidaciones(); //para los formularios dinamicos
-            });
-
-        } else {
-            CMI.DespliegaError("La cantidad del material " + Material + ' con Id. ' + idRow + ' ya fue entregada');
-        }
- 
-    },
     CargaGrid: function () {
         var url = contextPath + "AsignaProyecto/CargaMaterialesProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
    
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+            $.each(data, function (index, value) {
+                //value.id = value.id + "," + value.idMaterial;
+                value.Cantidad = " <input  id='" + value.id + "' type=\"text\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
+            });
+
             MaterialesProyecto.colMaterialesProyecto = new Backbone.Collection(data);
             var bolFilter = MaterialesProyecto.colMaterialesProyecto.length > 0 ? true : false;
             if (bolFilter) {
                 gridMaterialesProyecto = new bbGrid.View({
                     container: $('#bbGrid-AsignaMaterialesProyecto'),
-                    rows: 5,
-                    rowList: [5, 15, 25, 50, 100],
+                    enableTotal: true,
                     enableSearch: false,
-                    actionenable: false,
+                    actionenable: true,
                     detalle: false,
                     clone: MaterialesProyecto.accClonar,
                     editar: MaterialesProyecto.accEscritura,
                     borrar: MaterialesProyecto.accBorrar,
                     collection: MaterialesProyecto.colMaterialesProyecto,
                     seguridad: MaterialesProyecto.accSeguridad,
-                    colModel: [{ title: 'id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Id Material', name: 'idMaterial', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'nombreMat', filter: true, filterType: 'input' },
-                               { title: 'Unidad', name: 'UM', filter: true, filterType: 'input' },
-                               { title: 'Existencia', name: 'Existencia', filter: true, filterType: 'input' },
-                               { title: 'Entrega', name: 'Cantidad', filter: true, filterType: 'input' },
-                               { title: 'Calidad', name: 'Calidad', filter: true, filterType: 'input' },
-                               { title: 'Ancho', name: 'Ancho', filter: true, filterType: 'input' },
-                               { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
-                               { title: 'Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input' },
-                               { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input' },                   
-                               { title: 'Total', name: 'Total', filter: true }],
-                    onRowDblClick: function () {
-                        MaterialesProyecto.onSeleccionar(this.selectedRows[0]);
-                    }
+                    colModel: [{ title: 'id', name: 'id', width: '8%' },
+                               { title: 'Id Material', name: 'idMaterial' },
+                               { title: 'Nombre', name: 'nombreMat' },
+                               { title: 'Unidad', name: 'UM' },
+                               { title: 'Existencia', name: 'Existencia' },
+                               { title: 'Entrega', name: 'Cantidad', total: 0 },
+                               { title: 'Calidad', name: 'Calidad' },
+                               { title: 'Ancho', name: 'Ancho' },
+                               { title: 'Longitud', name: 'Largo' },
+                               { title: 'Long(m)-Area(m2)', name: 'LongArea' },
+                               { title: 'kg/m-kg/m2', name: 'Peso', total: 0 },
+                               { title: 'Total', name: 'Total', total: 0 }],
                 });
                 $('#cargandoInfo').hide();
             }
@@ -650,7 +575,7 @@ var MaterialesProyecto = {
             CMI.DespliegaError("No se pudo cargar la informacion de materiales asigandos al proyecto");
         });
     },
-    CargaGridAsignados: function () {
+    CargaGridAsignadosM: function () {
         var url = contextPath + "AsignaProyecto/CargaMaterialesAsignados?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idAlmacen=' + $('#Almacen').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
@@ -660,11 +585,11 @@ var MaterialesProyecto = {
             var bolFilter = MaterialesProyecto.colMaterialesProyecto.length > 0 ? true : false;
             if (bolFilter) {
                 gridMaterialesProyecto = new bbGrid.View({
-                    container: $('#bbGrid-MaterialesAsignados'),
+                    container: $('#bbGrid-MaterialesAsignadosM'),
                     rows: 5,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
-                    actionenable: false,
+                    actionenable: true,
                     detalle: false,
                     clone: MaterialesProyecto.accClonar,
                     editar: MaterialesProyecto.accEscritura,
@@ -683,15 +608,12 @@ var MaterialesProyecto = {
                                { title: 'Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input' },
                                { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input' },
                                { title: 'Total', name: 'Total', filter: true }],
-                    onRowDblClick: function () {
-                        MaterialesProyecto.onSeleccionar(this.selectedRows[0]);
-                    }
                 });
                 $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Materiales asigandos a este proyecto.");
-                $('#bbGrid-MaterialesAsignados')[0].innerHTML = "";
+                $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {

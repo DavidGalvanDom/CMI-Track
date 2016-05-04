@@ -13,6 +13,7 @@ var ReqMCompra = {
     colOrigenReq: [],
     colUnidadMedida: [],
     colAlmacen: [],
+    colRequisiciones: [],
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -25,15 +26,15 @@ var ReqMCompra = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarReq").click(that.onBuscarRequerimiento);
         $("#btnImprimir").click(that.onImprimir);
+        $(document).on("click", '.btn-AgregarMaterial', that.onAgregar);
         $('.btnNuevo').click(that.Nuevo);
         $(document).on("click", '.btn-GuardaNuevo', that.onGuardar);
         $(document).on("click", '.btn-ActualizarMaterialRequi', that.onActualizar);
-        $("#Origen").change(that.onCambiaOrigen);
-        
+        $(document).on("change", '#Origen', that.onCambiaOrigen);
+        $("#idReq").change(that.onCambiaRequisicion);
         $('#etapaRow').hide();
         $('#btnCollapse').hide();
         $('#Imprimir').hide();
-        $('#OrigenDiv').hide();
         $('#CausaDiv').hide();
 
         //Eventos de los botones de Acciones del grid
@@ -45,17 +46,26 @@ var ReqMCompra = {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
         });
 
-        $(document).on('click', '.accrowClonar', function () {
-            that.Clonar($(this).parent().parent().attr("data-modelId"));
-        });
+
     },
     onCambiaOrigen: function () {
 
-        if ($('#Origen').val() === 2) {
+        if ($('#Origen').val() == 2) {
             $('#CausaDiv').show();
         }
         else {
             $('#CausaDiv').hide();
+        }
+    },
+    onCambiaRequisicion: function () {
+
+        if ($('#idReq').val() == '') {
+            //$('#CausaDiv').show();
+        }
+        else {
+            $('#bbGrid-ReqManualCompras')[0].innerHTML = '';
+            ReqMCompra.CargaGrid($('#idReq').val());
+            $('#Imprimir').show();
         }
     },
     onImprimir: function () {
@@ -81,8 +91,8 @@ var ReqMCompra = {
                 rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
                 rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
             }
-
-            var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+       
+            var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idRequisicion=" + $('#idReq').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 tableData = data;
                 for (i = 0; i < tableData.length; i++) {
@@ -99,9 +109,9 @@ var ReqMCompra = {
                     tcompleta += "<td>" + tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso'] + "</td>";
                     tcompleta += "</tr>";
                     total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
-
+                  
                 }
-
+                
                 rptTemplate = rptTemplate.replace('vrTotal', total);
                 rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
                 rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
@@ -124,8 +134,44 @@ var ReqMCompra = {
 
     },
     onGuardar: function () {
+        $('#nuevo-ReqManualCompra').modal('hide');
+        $('#idReq').empty();
+            var formRequisicion = ReqMCompra.activeForm;
+            var ultimo = 0;
+                var url = contextPath + "ReqManualCompra/CargaRequisiciones?idEtapa=" + $('#idEtapaSelect').val() + '&idProyecto=' + $('#idProyectoSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val(); // El url del controlador
+                $.getJSON(url, function (data) {
+                    ReqMCompra.colRequisiciones = data;
+
+                    var select = $('#idReq').empty();
+
+                    select.append('<option> </option>');
+
+                    $.each(ReqMCompra.colRequisiciones, function (i, item) {
+                        select.append('<option value="'
+                                             + item.id
+                                             + '">'
+                                             + item.id + ' - ' + item.NombreOrigen
+                                             + '</option>');
+
+                        ultimo = item.id;
+                    });
+
+                    $('#idReq').val($('#idReq').val());
+                   // $('#idReq').val(ultimo);
+                    //$("#idReq").change(ultimo);
+                    $("#idReq").val(ultimo).change();
+
+                }).fail(function (e) {
+                    CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de Requisiciones");
+                });
+              
+  
+
+    },
+    onAgregar: function (e) {
         var form = ReqMCompra.activeForm,
-            btn = this;
+         btn = this;
+      
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -137,27 +183,37 @@ var ReqMCompra = {
             $.post(contextPath + "ReqManualCompra/Nuevo",
                 $("#NuevoReqManualCompraForm *").serialize(),
                 function (data) {
-                    if (data.Success === true) {
-                        ReqMCompra.colReqMCompra.add(ReqMCompra.serializaManualCompra(data.id));
-                        CMI.DespliegaInformacion('El Item fue guardado con el Id: ' + data.id);
-                        $('#nuevo-ReqManualCompra').modal('hide');
-                        if (ReqMCompra.colReqMCompra.length === 1) {
-                            ReqMCompra.CargaGrid();
+                    if (data.Success == true) {
+                        //$('#nuevo-movimientomaterial').modal('hide');
+                        //CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
+                        if (data.id === "0") {
+                            CMI.DespliegaErrorDialogo("Ya existe una requisicion de tipo Inicial, favor de validarlo");
+                            
                         }
+                        else {
+                            $('#bbGrid-MatRequi')[0].innerHTML = '';
+                            $('#idRequisicion').val(data.id);
+                            $('#idRequi').text(data.id);
+                            ReqMCompra.CargaGridReq(data.id);
+                        }
+
+                       
+
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
-                        CMI.botonMensaje(false, btn, 'Guardar');
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-                }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
+
+                }).always(function () { CMI.botonMensaje(false, btn, 'Agregar'); });
+
         } else {
-            CMI.botonMensaje(false, btn, 'Guardar');
+            CMI.botonMensaje(false, btn, 'Agregar');
         }
     },
     onActualizar: function (e) {
         var btn = this;
-
+      
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             //Se hace el post para guardar la informacion
@@ -166,7 +222,8 @@ var ReqMCompra = {
                 function (data) {
                     if (data.Success == true) {
                         $('#actualiza-ReqManualCompra').modal('hide');
-                        Categoria.colCategorias.add(Categoria.serializaCategoria(data.id, '#ActualizarReqManualCompraForm'), { merge: true });
+                        $('#bbGrid-ReqManualCompras')[0].innerHTML = '';
+                        ReqMCompra.CargaGrid($('#idReq').val());
                         CMI.DespliegaInformacion('El material fue Actualizado. Id:' + data.id);
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
@@ -280,7 +337,16 @@ var ReqMCompra = {
             $('#fechaInicio').show();
             $('#fechaFin').show();
         };
+        $('#nombreEtapa').text('Nombre Etapa');
+        $('#FechaInicioEtapa').text('Fecha Inicio');
+        $('#FechaFinEtapa').text('Fecha Fin');
 
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+        $('#Imprimir').hide();
         $('#etapaRow').show();       
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -301,6 +367,13 @@ var ReqMCompra = {
             $('#FechaInicioEt').show();
             $('#FechaFinEt').show();
         };
+
+        $('#folioRequerimiento').text('Folio Requermiento');
+        $('#fechaSolicitud').text('Fecha Solicitud');
+
+
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+        $('#Imprimir').hide();
         $('#requerimientoRow').show();
   
     },
@@ -310,13 +383,13 @@ var ReqMCompra = {
         $('#folioRequerimiento').text(folioRequerimiento);
         $('#fechaSolicitud').text(fechaSolicitud);
         $('#buscar-General').modal('hide');
-     
+        $('#rowRequisicion').show();
         //Se carga el grid de ReqMatGral asignadas a la etapa
-       // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
-        ReqMCompra.CargaGrid();
-        ReqMCompra.CargarColeccionOrigenReq();
-        $('#Imprimir').show();
-        $('#OrigenDiv').show();
+        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
+        $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+        ReqMCompra.CargarColeccionRequisiciones();
+    
+
         //$('#CausaDiv').show();
        // $('#Imprimir').show();
         ///Muestra el boton de nueva ReqMatGral
@@ -435,13 +508,39 @@ var ReqMCompra = {
 
         $(form + '#Almacen').val($(form + '#alm').val());
     },
+    CargarColeccionRequisiciones: function () {
+        var formRequisicion = ReqMCompra.activeForm;
+        if (ReqMCompra.colRequisiciones.length < 1) {
+            var url = contextPath + "ReqManualCompra/CargaRequisiciones?idEtapa=" + $('#idEtapaSelect').val() + '&idProyecto=' + $('#idProyectoSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val(); // El url del controlador
+            $.getJSON(url, function (data) {
+                ReqMCompra.colRequisiciones = data;
+                ReqMCompra.CargaListaRequisiciones(formRequisicion);
+            }).fail(function (e) {
+                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de Requisiciones");
+            });
+        } else {
+            ReqMCompra.CargaListaRequisiciones(formRequisicion);
+        }
+    },
+    CargaListaRequisiciones: function (formRequisicion) {
+        var select = $(formRequisicion + ' #idReq').empty();
+
+        select.append('<option> </option>');
+
+        $.each(ReqMCompra.colRequisiciones, function (i, item) {
+            select.append('<option value="'
+                                 + item.id
+                                 + '">'
+                                 + item.id + ' - ' + item.NombreOrigen
+                                 + '</option>');
+        });
+
+        $(formRequisicion + '#idReq').val($(formRequisicion + '#idReq').val());
+    },
     Nuevo: function () {
         CMI.CierraMensajes();
         var url = contextPath + "ReqManualCompra/Nuevo"; // El url del controlador   
-        if ($('#Origen').val() != '')
-        {
-            if ($('#Origen').val() == 2) {
-                if ($('#Causa').val() != '') {
+  
                     $.get(url, function (data) {
                         $('#nuevo-ReqManualCompra').html(data);
                         $('#nuevo-ReqManualCompra').modal({
@@ -452,40 +551,23 @@ var ReqMCompra = {
                         ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
                         $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
                         ReqMCompra.CargarColeccionUnidadMedida();
+                        ReqMCompra.CargarColeccionOrigenReq();
                         ReqMCompra.CargarColeccionAlmacen();
                     });
-                } else {
-                    CMI.DespliegaError("Por favor agregar una causa");
-                }                
-            }
-            else {
-                $.get(url, function (data) {
-                    $('#nuevo-ReqManualCompra').html(data);
-                    $('#nuevo-ReqManualCompra').modal({
-                        backdrop: 'static',
-                        keyboard: true
-                    }, 'show');
-                    CMI.RedefinirValidaciones(); //para los formularios dinamicos          
-                    ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
-                    $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
-                    ReqMCompra.CargarColeccionUnidadMedida();
-                    ReqMCompra.CargarColeccionAlmacen();
-                });
-            }
-        } else {
-            CMI.DespliegaError("Por favor seleccione un Origen");
-        }
+   
+     
     },
     Editar: function (idRow) {
-        var id, idRequerimiento, row;
+        var id, idRequerimiento, row, idRequisicion;
     CMI.CierraMensajes();
         //Se toma de la colleccion el renglon seleccionado
     row = ReqMCompra.colReqMCompra.get(idRow);
         //Se toman los valores de la coleccion
     id = row.attributes.id;
     idRequerimiento = $('#idRequerimientoSelect').val();
+    idRequisicion = $('#idReq').val();
     var url = contextPath + "ReqManualCompra/Actualiza"; // El url del controlador
-    $.get(url, { id: id, idRequerimiento: idRequerimiento }, function (data) {
+    $.get(url, { id: id, idRequerimiento: idRequerimiento, idRequisicion: idRequisicion }, function (data) {
         $('#actualiza-ReqManualCompra').html(data);
         $('#actualiza-ReqManualCompra').modal({
             backdrop: 'static',
@@ -497,6 +579,19 @@ var ReqMCompra = {
 
         //para los formularios dinamicos
     });
+    },
+    Borrar: function (id) {
+        CMI.CierraMensajes();
+        if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
+        var url = contextPath + "ReqManualCompra/Borrar"; // El url del controlador
+        $.post(url, { id: id, idRequisicion: $('#idReq').val() }, function (data) {
+            if (data.Success == true) {
+                ReqMCompra.colReqMCompra.remove(id);
+                CMI.DespliegaInformacion(data.Message + "  id:" + id);
+            } else {
+                CMI.DespliegaError(data.Message);
+            }
+        }).fail(function () { CMI.DespliegaError("No se pudo borrar el material asignado"); });
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
@@ -510,18 +605,18 @@ var ReqMCompra = {
         var form = ReqMCompra.activeForm;
         return ({
             'idMaterialSelect': $(form + ' #idMaterialSelect').val(),
-            'nombreMaterial': $(form + ' #NombreMat').val(),
+            'nombreMaterial': $(form + ' #NombreMat').text(),
             'Unidad': $('#Unidad option:selected').text().toUpperCase(),
-            'Calidad': $(form + ' #CalidadAcero').val(),
-            'Ancho': $(form + ' #AnchoMat').val(),
-            'Largo': $(form + ' #LongitudMat').val(),
+            'Calidad': $(form + ' #CalidadAcero').text(),
+            'Ancho': $(form + ' #AnchoMat').text(),
+            'Largo': $(form + ' #LongitudMat').text(),
             'Cantidad': $(form + ' #Cantidad').val(),
-            'Peso': $(form + ' #PesoMat').val(),
+            'Peso': $(form + ' #PesoMat').text(),
             'id': id
         });
         },
-    CargaGrid: function () {
-        var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+    CargaGrid: function (id) {
+        var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idRequisicion=" + id; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
@@ -530,12 +625,10 @@ var ReqMCompra = {
             if (bolFilter) {
                 gridReqCompra = new bbGrid.View({
                     container: $('#bbGrid-ReqManualCompras'),
-                    rows: 5,
-                    rowList: [5, 15, 25, 50, 100],
+                    enableTotal: true,
                     enableSearch: false,
                     actionenable: true,
                     detalle: false,
-                    clone: ReqMCompra.accClonar,
                     editar: ReqMCompra.accEscritura,
                     borrar: ReqMCompra.accBorrar,
                     collection: ReqMCompra.colReqMCompra,
@@ -547,14 +640,55 @@ var ReqMCompra = {
                                { title: 'Calidad', name: 'Calidad', filter: true, filterType: 'input' },
                                { title: 'Ancho', name: 'Ancho', filter: true, filterType: 'input' },
                                { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
-                               { title: 'Cantidad', name: 'Cantidad', filter: true, filterType: 'input' },
-                               { title: 'Peso', name: 'Peso', filter: true }]
+                               { title: 'Cantidad', name: 'Cantidad', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Peso', name: 'Peso', filter: true, total: 0 }]
                 });
                 $('#cargandoInfo').hide();
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Materiales registradas para el requerimeinto seleccionado.");
                 $('#bbGrid-ReqManualCompras')[0].innerHTML = "";
+            }
+            //getJSON fail
+        }).fail(function (e) {
+            CMI.DespliegaError("No se pudo cargar la informacion de las ReqManualCompras");
+        });
+    },
+    CargaGridReq: function (id) {
+        var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idRequisicion="+ id; // El url del controlador
+        $.getJSON(url, function (data) {
+            $('#cargandoInfo').show();
+            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+            ReqMCompra.colReqMCompra = new Backbone.Collection(data);
+            var bolFilter = ReqMCompra.colReqMCompra.length > 0 ? true : false;
+            if (bolFilter) {
+                gridReqCompra = new bbGrid.View({
+                    container: $('#bbGrid-MatRequi'),
+                    rows: 5,
+                    rowList: [5, 15, 25, 50, 100],
+                    enableTotal: true,
+                    enableSearch: false,
+                    actionenable: false,
+                    detalle: false,
+                    editar: ReqMCompra.accEscritura,
+                    borrar: ReqMCompra.accBorrar,
+                    collection: ReqMCompra.colReqMCompra,
+                    seguridad: ReqMCompra.accSeguridad,
+                    colModel: [{ title: 'Item', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Id Material', name: 'idMaterialSelect', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
+                               { title: 'Nombre', name: 'nombreMaterial', filter: true, filterType: 'input' },
+                               { title: 'Unidad', name: 'Unidad', filter: true, filterType: 'input' },
+                               { title: 'Calidad', name: 'Calidad', filter: true, filterType: 'input' },
+                               { title: 'Ancho', name: 'Ancho', filter: true, filterType: 'input' },
+                               { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
+                               { title: 'Cantidad', name: 'Cantidad', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Peso', name: 'Peso', filter: true, total: 0 }]
+                });
+                $('#cargandoInfo').hide();
+            }
+            else {
+                CMI.DespliegaInformacion("No se encontraron Materiales registradas para el requerimeinto seleccionado.");
+                $('#bbGrid-MatRequi')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function (e) {

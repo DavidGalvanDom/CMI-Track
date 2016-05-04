@@ -15,12 +15,14 @@
         
                     <div class="col-sm-3"> <label class="control-label">Documento</label></div>
                     <div class="col-sm-3">
-                        @Html.TextBoxFor(model => model.idDocumento, new { @class = "form-control", maxlength = 100, disabled = "disabled" })
+                        <span id="idDocum" placeholder="Documento" class="form-control" title="idDocum">Documento</span>
+                        @Html.HiddenFor(model => model.idDocumento)
                     </div>
    
                     <div class="col-sm-2"> <label class="control-label">Tipo Movto</label></div>
                     <div class="col-sm-4">
-                        <select id="TipoMovto" name="TipoMovto" class="form-control" required="required"></select>
+                        <select id="TipoMov" name="TipoMov" class="form-control" required="required"></select>
+                        @Html.HiddenFor(model => model.TipoMovto)
                     </div>
 
                 </div>
@@ -47,11 +49,14 @@
                 <div class="form-group">
                     <div class="col-sm-3"> <label class="control-label">Cantidad</label></div>
                     <div class="col-sm-3">
-                       @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
+                      
+                            @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", maxlength = 100 })
+         
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-sm-6">
                         <button type="button" class="btn btn-primary btn-AgregarMaterial">Agregar</button>
                     </div>
+                   
                     <div class="row">
                         <div class="col-sm-12">
                             <br />

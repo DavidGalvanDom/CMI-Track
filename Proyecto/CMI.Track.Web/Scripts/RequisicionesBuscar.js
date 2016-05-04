@@ -42,7 +42,7 @@ var RequisicionesBuscar = {
                                { title: 'Origen', name: 'NombreOrigen', filter: true, filterType: 'input' },
                                { title: 'Causa', name: 'Causa', filter: true, filterType: 'input'},
                                { title: 'Estatus', name: 'Estatus', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         RequisicionesBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });

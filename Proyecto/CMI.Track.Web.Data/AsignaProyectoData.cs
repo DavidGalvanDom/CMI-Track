@@ -86,9 +86,7 @@ namespace CMI.Track.Web.Data
                     {
                         var objMaterialPro = new Models.AsignaProyecto()
                         {
-                           // id = Convert.ToInt32(dataReader["idCategoria"]),
-                          //  NombreCategoria = Convert.ToString(dataReader["nombreCategoria"]),
-                           // Estatus = Convert.ToString(dataReader["nombreEstatus"]),
+
                         };
 
                         return objMaterialPro;
@@ -127,7 +125,7 @@ namespace CMI.Track.Web.Data
                     {
                         listaMaterialesP.Add(new Models.ListaAsignaProyecto()
                         {
-                            id = Convert.ToInt32(dataReader["idDetalleRequisicion"]),
+                            id = Convert.ToInt32(dataReader["idMaterialProyecto"]),
                             idMaterial = Convert.ToInt32(dataReader["idMaterial"]),
                             nombreMat = Convert.ToString(dataReader["nombreMaterial"]),
                             UM = Convert.ToString(dataReader["nombreCortoUnidadMedida"]),
@@ -152,36 +150,7 @@ namespace CMI.Track.Web.Data
             return listaMaterialesP;
         }
 
-        /// <summary>
-        /// Se guarda la informacion de una nueva categora
-        /// </summary>
-        /// <param name="pobjModelo">Datos nueva Categoria</param>
-        /// <returns>value</returns>
-        public static string Guardar(Models.AsignaProyecto pobjModelo)
-        {
-            object[] paramArray = new object[6];
-            try
-            {
-                paramArray[0] = pobjModelo.idProyecto;
-                paramArray[1] = pobjModelo.idEtapa;
-                paramArray[2] = pobjModelo.idReq;
-                paramArray[3] = pobjModelo.idAlmacen;
-                paramArray[4] = pobjModelo.Revision;
-                paramArray[5] = pobjModelo.usuarioCreacion;
-
-
-                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteScalar("usp_InsertarMaterialesProyecto", paramArray);
-
-                return (result.ToString());
-            }
-            catch (Exception exp)
-            {
-                throw new ApplicationException(exp.Message, exp);
-            }
-        }
-
-        /// <summary>
+         /// <summary>
         /// Se guarda la informacion de una nueva categora
         /// </summary>
         /// <param name="pobjModelo">Datos nueva Categoria</param>
@@ -195,10 +164,10 @@ namespace CMI.Track.Web.Data
                 paramArray[1] = pobjModelo.idEtapa;
                 paramArray[2] = pobjModelo.idAlmacen;
                 paramArray[3] = pobjModelo.idMaterialSelect;
-                paramArray[4] = pobjModelo.idOrigen;
-                paramArray[5] = pobjModelo.Unidad;
-                paramArray[6] = pobjModelo.Revision;
-                paramArray[7] = pobjModelo.usuarioCreacion;
+                paramArray[4] = pobjModelo.Unidad;
+                paramArray[5] = pobjModelo.Revision;
+                paramArray[6] = pobjModelo.usuarioCreacion;
+                paramArray[7] = pobjModelo.idReq;
 
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
@@ -220,23 +189,35 @@ namespace CMI.Track.Web.Data
         public static string Actualiza(Models.AsignaProyecto pobjModelo)
         {
             object[] paramArray = new object[5];
+            var result = 0;
             try
             {
-                paramArray[0] = pobjModelo.id;
-                paramArray[1] = pobjModelo.idMaterialSelect;
-                paramArray[2] = pobjModelo.idAlmacen;
-                paramArray[3] = pobjModelo.cantEntrega;
-                paramArray[4] = pobjModelo.usuarioCreacion;
+              
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_ActualizarMaterialesProyecto", paramArray);
+   
+             
+                foreach (var valor in pobjModelo.lstMS)
+                {
+                   
 
-                return (result.ToString());
+                    paramArray[0] = valor.Split(',')[1]; //Id
+                    paramArray[1] = valor.Split(',')[2]; //Id MAterial
+                    paramArray[2] = valor.Split(',')[3]; //Id Almacen
+                    paramArray[3] = valor.Split(',')[0]; //Cantidad
+                    paramArray[4] = valor.Split(',')[4]; //Usuario
+
+         
+
+                    result = db.ExecuteNonQuery("usp_ActualizarMaterialesProyecto", paramArray);
+                }
+
             }
             catch (Exception exp)
             {
                 throw new ApplicationException(exp.Message, exp);
             }
+            return (Convert.ToString(result));
         }
 
 
@@ -245,15 +226,15 @@ namespace CMI.Track.Web.Data
         /// </summary>
         /// <param name="idCategoria"></param>
         /// <returns></returns>
-        public static string Borrar(string idCategoria)
+        public static string Borrar(string idMaterial)
         {
             object[] paramArray = new object[1];
             try
             {
-                paramArray[0] = idCategoria;
+                paramArray[0] = idMaterial;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_RemueveCategoria", paramArray);
+                var result = db.ExecuteNonQuery("usp_RemueveMaterialProyecto", paramArray);
 
                 return (result.ToString());
             }

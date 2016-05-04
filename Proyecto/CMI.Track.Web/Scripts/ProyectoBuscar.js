@@ -43,7 +43,7 @@ var ProyectoBuscar = {
                                { title: 'Codigo', name: 'CodigoProyecto', filter: true, filterType: 'input' },
                                { title: 'Fecha Inicio', name: 'FechaInicio', filter: true, filterType: 'input' },
                                { title: 'Fecha Fin', name: 'FechaFin', filter: true, filterType: 'input' }],
-                    onRowDblClick: function () {
+                    onRowClick: function () {
                         ProyectoBuscar.onSeleccionar(this.selectedRows[0]);
                     }
                 });
