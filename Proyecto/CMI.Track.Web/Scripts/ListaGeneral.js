@@ -1,8 +1,9 @@
-﻿//js Modulo de Carga de lista general de partes.
+﻿/*global $, CMI,  contextPath, ProyectoBuscar, EtapaBuscar,escape*/
+//js Modulo de Carga de lista general de partes.
 //David Galvan
 //11/Marzo/2016
-var ListaGeneral = {    
-    accEscritura: false,    
+var ListaGeneral = {
+    accEscritura: false,
     accSeguridad: false,
     activeForm: '#frmListaPartes',
     Inicial: function () {
@@ -62,7 +63,6 @@ var ListaGeneral = {
     onSubirArchivo: function () {
         var filesName = 'flistaPartes',
             btn = this,
-            form = ListaGeneral.activeForm,
             files;
 
         if ($("form").valid()) {
@@ -87,7 +87,7 @@ var ListaGeneral = {
                                 $('#lblValidarArchivo').text('--').removeClass('label-success').addClass('label-info');
                                 $('#lblGuardaInfo').text('--').removeClass('label-success').addClass('label-info');
 
-                                ListaGeneral.onValidarArchivo(btn);                                
+                                ListaGeneral.onValidarArchivo(btn);
                             } else {
                                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                                 CMI.DespliegaError(result.Message);
@@ -96,7 +96,7 @@ var ListaGeneral = {
                         },
                         error: function (xhr, status, p3, p4) {
                             var err = "Error " + " " + status + " " + p3 + " " + p4;
-                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                            if (xhr.responseText && xhr.responseText[0] === "{") {
                                 err = JSON.parse(xhr.responseText).Message;
                             }
                             CMI.DespliegaError(err);
@@ -110,7 +110,7 @@ var ListaGeneral = {
             }
         }
     },
-    onValidarArchivo: function (btn) {        
+    onValidarArchivo: function (btn) {
         CMI.CierraMensajes();
         var url = contextPath + "ListaGeneral/ValidarInformacion", // El url del controlador
             data = 'idProyecto=' + $('#idProyectoSelect').val() +
@@ -120,7 +120,7 @@ var ListaGeneral = {
             if (result.Success === true) {
                 $('#lblValidarArchivo').text('Ok (' + result.numRegistros + ')').removeClass('label-info').addClass('label-success');
                 ListaGeneral.onSubirInformacion(btn);
-            } else {                
+            } else {
                 $(ListaGeneral.activeForm + ' #archivoListaGen').val('');
                 CMI.DespliegaError(result.Message);
                 ListaGeneral.ExportarExcel(result.excel);
@@ -184,7 +184,6 @@ var ListaGeneral = {
             $('#FechaInicioEtapa').text('Fecha Inicio');
             $('#FechaFinEtapa').text('Fecha Fin');
             $('#frmListaPartes').hide();
-
             $('#etapaRow').show();
         }
     },
@@ -196,7 +195,7 @@ var ListaGeneral = {
         $('#FechaInicioEtapa').text(FechaInicio);
         $('#FechaFinEtapa').text(FechaFin);
         $('#buscar-General').modal('hide');
-        
+
         ///Mestra la seleccion de Archivos
         $('#frmListaPartes').show();
     },
@@ -207,15 +206,12 @@ var ListaGeneral = {
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
-    },    
+    },
     EventoNombreArchivo: function () {
-        var form = ListaGeneral.activeForm;
         //Se inicializan los eventos para el formulario
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
-                numFiles = input.get(0).files ? input.get(0).files.length : 1,
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, ''),
-                file = input.get(0).files[0];
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
             var arrFileName = label.split('.');
             if (arrFileName.length > 0) {
                 if (arrFileName[arrFileName.length - 1] !== 'xlsx') {
@@ -245,7 +241,6 @@ var ListaGeneral = {
 
         //Generate a file name
         var fileName = "Lista_Partes_Err";
-       
         //inicializa el formato del archivo csv or xls
         var uri = 'data:text/csv;charset=utf-8,' + escape(csvInfo);
 
@@ -266,5 +261,4 @@ var ListaGeneral = {
 
 $(function () {
     ListaGeneral.Inicial();
-})
-
+});

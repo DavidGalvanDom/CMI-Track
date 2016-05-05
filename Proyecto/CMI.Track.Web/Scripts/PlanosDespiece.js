@@ -1,4 +1,5 @@
-﻿//js de catalogo de Planos de Montaje.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath,ProyectoBuscar, EtapaBuscar, PlanosMontajeBuscar*/
+//js de catalogo de Planos de Montaje.
 //David Galvan
 //17/Febrero/2016
 var PlanosDespiece = {
@@ -43,8 +44,9 @@ var PlanosDespiece = {
     onGuardar: function (btn) {
         var form = PlanosDespiece.activeForm;
 
-        if ($(form + ' #idTipoConstruccion').val() === '') {
+        if (!$(form + ' #idTipoConstruccion').val()) {
             $(form + ' .select2-container').addClass('has-error');
+            CMI.botonMensaje(false, btn, 'Guardar');
             $("form").valid();
             return;
         } else {
@@ -59,7 +61,7 @@ var PlanosDespiece = {
             $.post(contextPath + "PlanosDespiece/Nuevo",
                 $("#NuevoPlanosDespieceForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         PlanosDespiece.colPlanosDespiece.add(PlanosDespiece.serializaPlanosDespiece(data.id));
                         CMI.DespliegaInformacion('El PlanosDespiece fue guardado con el Id: ' + data.id);
                         $('#nuevo-PlanosDespiece').modal('hide');
@@ -94,7 +96,7 @@ var PlanosDespiece = {
             $.post(contextPath + "PlanosDespiece/Actualiza",
                 $("#ActualizaPlanosDespieceForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-PlanosDespiece').modal('hide');
                         PlanosDespiece.colPlanosDespiece.add(PlanosDespiece.serializaPlanosDespiece(data.id), { merge: true });
                         CMI.DespliegaInformacion('El PlanosDespiece fue Actualizado. Id:' + data.id);
@@ -214,7 +216,7 @@ var PlanosDespiece = {
                         },
                         error: function (xhr, status, p3, p4) {
                             var err = "Error " + " " + status + " " + p3 + " " + p4;
-                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                            if (xhr.responseText && xhr.responseText[0] === "{") {
                                 err = JSON.parse(xhr.responseText).Message;
                             }
                             CMI.DespliegaErrorDialogo(err);
@@ -357,7 +359,7 @@ var PlanosDespiece = {
         $.post(url, {
             id: id
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 PlanosDespiece.colPlanosDespiece.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + id);
             }
@@ -409,7 +411,7 @@ var PlanosDespiece = {
             PlanosDespiece.colPlanosDespiece = new Backbone.Collection(data);
             var bolFilter = PlanosDespiece.colPlanosDespiece.length > 0 ? true : false;
             if (bolFilter) {
-                gridPlanosDespiece = new bbGrid.View({
+               PlanosDespiece.gridPlanosDespiece = new bbGrid.View({
                     container: $('#bbGrid-PlanosDespiece'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -434,7 +436,7 @@ var PlanosDespiece = {
                 $('#bbGrid-PlanosDespiece')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las PlanosDespiece");
         });
     },
@@ -465,7 +467,7 @@ var PlanosDespiece = {
             $.getJSON(url, function (data) {
                 PlanosDespiece.colTipoConstruccion = data;
                 PlanosDespiece.CargaListaTiposConstruccion();
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Tipos de Construccion");
             });
         } else {
@@ -494,4 +496,4 @@ var PlanosDespiece = {
 
 $(function () {
     PlanosDespiece.Inicial();
-})
+});

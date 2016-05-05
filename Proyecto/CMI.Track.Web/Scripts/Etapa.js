@@ -1,8 +1,7 @@
-﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
+﻿/*global $, CMI, Backbone, bbGrid, contextPath, ProyectoBuscar*/
 //js de catalogo de Etapas.
 //David Galvan
 //17/Febrero/2016
-
 var Etapa = {
     accClonar: false,
     accEscritura: false,
@@ -37,7 +36,7 @@ var Etapa = {
             that.Clonar($(this).parent().parent().attr("data-modelId"));
         });
     },
-    onGuardar: function (btn) {
+    onGuardar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
@@ -49,7 +48,7 @@ var Etapa = {
             $.post(contextPath + "Etapa/Nuevo",
                 $("#NuevaEtapaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Etapa.colEtapas.add(Etapa.serializaEtapa(data.id));
                         CMI.DespliegaInformacion('El Etapa fue guardado con el Id: ' + data.id);
                         $('#nuevo-Etapa').modal('hide');
@@ -66,7 +65,7 @@ var Etapa = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
     },
-    onActualizar: function (btn) {
+    onActualizar: function () {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
@@ -74,7 +73,7 @@ var Etapa = {
             $.post(contextPath + "Etapa/Actualiza",
                 $("#ActualizaEtapaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Etapa').modal('hide');
                         Etapa.colEtapas.add(Etapa.serializaEtapa(data.id), { merge: true });
                         CMI.DespliegaInformacion('El Etapa fue Actualizado. Id:' + data.id);
@@ -179,7 +178,7 @@ var Etapa = {
         $.post(url, {
             id: id
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Etapa.colEtapas.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + id);
             }
@@ -244,7 +243,7 @@ var Etapa = {
             Etapa.colEtapas = new Backbone.Collection(data);
             var bolFilter = Etapa.colEtapas.length > 0 ? true : false;
             if (bolFilter) {
-                gridEtapas = new bbGrid.View({
+                Etapa.gridEtapas = new bbGrid.View({
                     container: $('#bbGrid-Etapas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -269,7 +268,7 @@ var Etapa = {
                 $('#bbGrid-Etapas')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Etapas");
         });
     }
@@ -277,4 +276,4 @@ var Etapa = {
 
 $(function () {
     Etapa.Inicial();
-})
+});

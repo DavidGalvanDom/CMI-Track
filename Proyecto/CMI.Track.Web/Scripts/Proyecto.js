@@ -1,4 +1,5 @@
-﻿//js de catalogo de Proyectos.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath,ClienteBuscar*/
+//js de catalogo de Proyectos.
 //David Galvan
 //29/Enero/2016
 
@@ -43,7 +44,7 @@ var Proyecto = {
             $.post(contextPath + "Proyecto/Nuevo",
                 $("#NuevoProyectoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         Proyecto.colProyectos.add(Proyecto.serializaProyecto(data.id));
                         CMI.DespliegaInformacion('El Proyecto fue guardado con el Id: ' + data.id);
                         $('#nuevo-Proyecto').modal('hide');
@@ -67,7 +68,7 @@ var Proyecto = {
             $.post(contextPath + "Proyecto/Actualiza",
                 $("#ActualizaProyectoForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Proyecto').modal('hide');
                         Proyecto.colProyectos.add(Proyecto.serializaProyecto(data.id), { merge: true });
                         CMI.DespliegaInformacion('El Proyecto fue Actualizado. Id:' + data.id);
@@ -127,7 +128,7 @@ var Proyecto = {
                         },
                         error: function (xhr, status, p3, p4) {
                             var err = "Error " + " " + status + " " + p3 + " " + p4;
-                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                            if (xhr.responseText && xhr.responseText[0] === "{") {
                                 err = JSON.parse(xhr.responseText).Message;
                             }
                             CMI.DespliegaErrorDialogo(err);
@@ -245,7 +246,7 @@ var Proyecto = {
             idProyecto: proyecto.attributes.idProyecto,
             revision: proyecto.attributes.Revision
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Proyecto.colProyectos.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + proyecto.attributes.NombreProyecto);
             }
@@ -280,7 +281,7 @@ var Proyecto = {
             $.getJSON(url, function (data) {
                 Proyecto.colCategorias = data;
                 Proyecto.CargaListaCategorias(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las Categorias");
             });
         } else {
@@ -349,7 +350,7 @@ var Proyecto = {
             Proyecto.colProyectos = new Backbone.Collection(data);
             var bolFilter = Proyecto.colProyectos.length > 0 ? true : false;
             if (bolFilter) {
-                gridProyectos = new bbGrid.View({
+                Proyecto.gridProyectos = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -376,7 +377,7 @@ var Proyecto = {
                 $('#bbGrid-clear')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de los Proyecto");
         });
     },
@@ -405,4 +406,4 @@ var Proyecto = {
 
 $(function () {
     Proyecto.Inicial();
-})
+});

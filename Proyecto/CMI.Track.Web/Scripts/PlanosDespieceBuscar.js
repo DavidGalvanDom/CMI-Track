@@ -1,8 +1,10 @@
-﻿//js de lista de Planos Despiece.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
+//js de lista de Planos Despiece.
 //David Galvan
 //24/Febrero/2016
 var PlanosDespieceBuscar = {
     colPlanosDespiece: {},
+    gridPlanoDesBuscar: {},
     idPlanoMontaje: 0,
     parent: {},
     Inicial: function () {
@@ -24,7 +26,7 @@ var PlanosDespieceBuscar = {
             PlanosDespieceBuscar.colPlanosDespiece = new Backbone.Collection(data);
             var bolFilter = PlanosDespieceBuscar.colPlanosDespiece.length > 0 ? true : false;
             if (bolFilter) {
-                gridProyecto = new bbGrid.View({
+                PlanosDespieceBuscar.gridPlanoDesBuscar = new bbGrid.View({
                     container: $('#bbGrid-buscaPlanosDespiece'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -46,7 +48,7 @@ var PlanosDespieceBuscar = {
                 $('#bbGrid-buscaPlanosDespiece')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Planos Despiece");
         });
     }

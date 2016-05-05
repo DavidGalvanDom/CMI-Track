@@ -1,4 +1,5 @@
-﻿//js de catalogo de Marcas.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath,ProyectoBuscar, EtapaBuscar, PlanosMontajeBuscar,PlanosDespieceBuscar*/
+//js de catalogo de Marcas.
 //David Galvan
 //24/Febrero/2016
 var Marcas = {
@@ -7,6 +8,7 @@ var Marcas = {
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
+    gridMarcas: {},
     estatusRevision : 0,
     gridMarca: {},
     colMarcas: {},
@@ -97,7 +99,7 @@ var Marcas = {
             $.post(contextPath + "Marcas/Actualiza",
                 $("#ActualizaMarcaForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-Marcas').modal('hide');
                         Marcas.colMarcas.add(Marcas.serializaMarcas(data.id), { merge: true });
                         CMI.DespliegaInformacion('La Marcas fue Actualizada. Id:' + data.id);
@@ -336,7 +338,7 @@ var Marcas = {
         $.post(url, {
             id: id
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 Marcas.colMarcas.remove(id);
                 CMI.DespliegaInformacion(data.Message);
             }
@@ -385,7 +387,7 @@ var Marcas = {
             Marcas.colMarcas = new Backbone.Collection(data);
             var bolFilter = Marcas.colMarcas.length > 0 ? true : false;
             if (bolFilter) {
-                gridMarcas = new bbGrid.View({
+                Marcas.gridMarcas = new bbGrid.View({
                     container: $('#bbGrid-Marcas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -410,7 +412,7 @@ var Marcas = {
                 $('#bbGrid-Marcas')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las Marcas");
         });
     }
@@ -418,4 +420,4 @@ var Marcas = {
 
 $(function () {
     Marcas.Inicial();
-})
+});

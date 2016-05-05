@@ -1,8 +1,10 @@
-﻿//js de lista de Marcas.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
+//js de lista de Marcas.
 //David Galvan
 //01/Marzo/2016
 var MarcasBuscar = {
     colMarcas: {},
+    gridBuscarMarcas: {},
     idPlanoDespiece: 0,
     parent: {},
     Inicial: function () {
@@ -24,7 +26,7 @@ var MarcasBuscar = {
             MarcasBuscar.colMarcas = new Backbone.Collection(data);
             var bolFilter = MarcasBuscar.colMarcas.length > 0 ? true : false;
             if (bolFilter) {
-                gridMarcas = new bbGrid.View({
+                MarcasBuscar.gridBuscarMarcas = new bbGrid.View({
                     container: $('#bbGrid-buscaMarcas'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -46,7 +48,7 @@ var MarcasBuscar = {
                 $('#bbGrid-buscaMarcas')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las Marcas");
         });
     }

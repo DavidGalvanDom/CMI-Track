@@ -5,7 +5,7 @@
 
 var Usuario = {
     accClonar: false,
-    accEscritura: false,   
+    accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
     colUsuarios: {},
@@ -27,7 +27,7 @@ var Usuario = {
         //Eventos de los botones de Acciones del grid
         $(document).on('click', '.accrowEdit', function () {
             that.Editar($(this).parent().parent().attr("data-modelId"));
-        });       
+        });
 
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
@@ -42,10 +42,10 @@ var Usuario = {
         });
 
         $(document).on('change', '#NombreUsuario', that.ValidaNomUsuario);
-    },    
+    },
     onGuardar: function () {
         var btn = this;
-               
+
         if($('#NuevoUsuarioForm #idDepartamento').val() === ''){
             $('#NuevoUsuarioForm .select2-container').addClass('has-error');
             $("form").valid();
@@ -53,7 +53,7 @@ var Usuario = {
         } else {
             $('#NuevoUsuarioForm .select2-container').removeClass('has-error');
         }
-       
+
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -109,7 +109,7 @@ var Usuario = {
     },
     Seguridad: function (idUsuairo){
         CMI.CierraMensajes();
-        var url = contextPath + "Seguridad/Modulos/" + idUsuairo, // El url del controlador      
+        var url = contextPath + "Seguridad/Modulos/" + idUsuairo, // El url del controlador
             _usuario;
         $.get(url, function (data) {
             $('#seguridadUsuario').html(data);
@@ -124,7 +124,7 @@ var Usuario = {
     },
     Nuevo: function () {
         CMI.CierraMensajes();
-        var url = contextPath + "Usuario/Nuevo"; // El url del controlador      
+        var url = contextPath + "Usuario/Nuevo"; // El url del controlador
         $.get(url, function (data) {
             $('#nuevo-usuario').html(data);
             $('#nuevo-usuario').modal({
@@ -209,7 +209,7 @@ var Usuario = {
     },
     CargaListaDepartamentos: function (form) {
         var select = $(form + ' #idDepartamento').empty();
-        // constructs the suggestion engine               
+        // constructs the suggestion engine 
         select.append('<option> </option>');
 
         $.each(Usuario.colDepartamentos, function (i, item) {
@@ -235,13 +235,13 @@ var Usuario = {
             });
         } else {
             Usuario.CargaListaProcesos(form);
-        }        
+        }
     },
     CargaListaProcesos: function (form) {
         var optionItem = '',
             selectDestino = $(form + ' #idProcesoDestino').empty(),
             selectOrigen = $(form + ' #idProcesoOrigen').empty();       
-        
+
         $.each(Usuario.colProcesos, function (i, item) {
             optionItem = '<option value="' + item.id + '">'
                                      + item.nombreProceso + '</option>';
@@ -300,7 +300,7 @@ var Usuario = {
                     seguridad: Usuario.accSeguridad,
                     colModel: [{ title: 'Id', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre Usuario', name: 'NombreUsuario', filter: true, filterType: 'input' },
-                               { title: 'Nombre', name: 'NombreCompleto', filter: true, filterType: 'input' },                              
+                               { title: 'Nombre', name: 'NombreCompleto', filter: true, filterType: 'input' },
                                { title: 'Correo', name: 'Correo', filter: true, filterType: 'input' },
                                { title: 'Fecha', name: 'fechaCreacion', filter: true, filterType: 'input' },
                                { title: 'Estatus', name: 'nombreEstatus', filter: true }]

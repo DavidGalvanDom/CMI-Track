@@ -1,4 +1,5 @@
-﻿//js de catalogo de Planos de Montaje.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath,ProyectoBuscar, EtapaBuscar*/
+//js de catalogo de Planos de Montaje.
 //David Galvan
 //17/Febrero/2016
 var PlanosMontaje = {
@@ -47,7 +48,7 @@ var PlanosMontaje = {
             $.post(contextPath + "PlanosMontaje/Nuevo",
                 $("#NuevoPlanosMontajeForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         PlanosMontaje.colPlanosMontaje.add(PlanosMontaje.serializaPlanosMontaje(data.id));
                         CMI.DespliegaInformacion('El PlanosMontaje fue guardado con el Id: ' + data.id);
                         $('#nuevo-PlanosMontaje').modal('hide');
@@ -72,7 +73,7 @@ var PlanosMontaje = {
             $.post(contextPath + "PlanosMontaje/Actualiza",
                 $("#ActualizaPlanosMontajeForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
+                    if (data.Success === true) {
                         $('#actualiza-PlanosMontaje').modal('hide');
                         PlanosMontaje.colPlanosMontaje.add(PlanosMontaje.serializaPlanosMontaje(data.id), { merge: true });
                         CMI.DespliegaInformacion('El PlanosMontaje fue Actualizado. Id:' + data.id);
@@ -128,7 +129,6 @@ var PlanosMontaje = {
     onSubirArchivo: function () {
         var filesName = PlanosMontaje.activeForm === '#NuevoPlanosMontajeForm' ? 'fPlano' : 'fPlanoAct',
             btn = this,
-            form = PlanosMontaje.activeForm,
             files;
 
         if ($("form").valid()) {
@@ -165,7 +165,7 @@ var PlanosMontaje = {
                         },
                         error: function (xhr, status, p3, p4) {
                             var err = "Error " + " " + status + " " + p3 + " " + p4;
-                            if (xhr.responseText && xhr.responseText[0] == "{") {
+                            if (xhr.responseText && xhr.responseText[0] === "{") {
                                 err = JSON.parse(xhr.responseText).Message;
                             }
                             CMI.DespliegaErrorDialogo(err);
@@ -286,7 +286,7 @@ var PlanosMontaje = {
         $.post(url, {
             id: id
         }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 PlanosMontaje.colPlanosMontaje.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  " + id);
             }
@@ -351,7 +351,7 @@ var PlanosMontaje = {
             PlanosMontaje.colPlanosMontaje = new Backbone.Collection(data);
             var bolFilter = PlanosMontaje.colPlanosMontaje.length > 0 ? true : false;
             if (bolFilter) {
-                gridPlanosMontaje = new bbGrid.View({
+               PlanosMontaje.gridPlanosMontaje = new bbGrid.View({
                     container: $('#bbGrid-PlanosMontaje'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -376,7 +376,7 @@ var PlanosMontaje = {
                 $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las PlanosMontaje");
         });
     },
@@ -405,4 +405,4 @@ var PlanosMontaje = {
 
 $(function () {
     PlanosMontaje.Inicial();
-})
+});

@@ -1,8 +1,10 @@
-﻿//js de lista de Planos Montaje.
+﻿/*global $, CMI, Backbone, bbGrid, contextPath*/
+//js de lista de Planos Montaje.
 //David Galvan
 //17/Febrero/2016
 var PlanosMontajeBuscar = {
     colPlanosMontaje: {},
+    gridPlanoMontBuscar: {},
     idEtapa: 0,
     parent: {},
     Inicial: function () {
@@ -24,7 +26,7 @@ var PlanosMontajeBuscar = {
             PlanosMontajeBuscar.colPlanosMontaje = new Backbone.Collection(data);
             var bolFilter = PlanosMontajeBuscar.colPlanosMontaje.length > 0 ? true : false;
             if (bolFilter) {
-                gridProyecto = new bbGrid.View({
+                PlanosMontajeBuscar.gridPlanoMontBuscar = new bbGrid.View({
                     container: $('#bbGrid-buscaPlanosMontaje'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
@@ -46,7 +48,7 @@ var PlanosMontajeBuscar = {
                 $('#bbGrid-buscaPlanosMontaje')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los Planos de Montaje");
         });
     }

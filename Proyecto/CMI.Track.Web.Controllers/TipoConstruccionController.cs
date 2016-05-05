@@ -159,14 +159,20 @@ namespace CMI.Track.Web.Controllers
         [HttpPost]
         public JsonResult Borrar(string id)
         {
+            string mensaje = "Se borro correctamente el tipo de construccion ";
             try
             {
                 TipoConstruccionData.Borrar(id);
-                return Json(new { Success = true, Message = "Se borro correctamente el tipo de construccion " });
+                return Json(new { Success = true, Message = mensaje });
             }
             catch (Exception exp)
             {
-                return Json(new { Success = false, Message = exp.Message });
+                mensaje = exp.Message;
+                if (exp.HResult ==  -2146232832)
+                {
+                    mensaje = string.Format("El Tipo de Construccion ( {0} ) no puede ser borrado porque esta ciendo utilizado.", id) ;
+                }
+                return Json(new { Success = false, Message = mensaje });
             }
         }
     }
