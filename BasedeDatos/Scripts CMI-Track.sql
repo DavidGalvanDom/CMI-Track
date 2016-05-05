@@ -1,7 +1,13 @@
 USE CMITrackVer1
-/*
-	Configuracion inicial
+/*	Configuracion inicial
 	---------------------
+	
+	0. Ejecutar 
+	-->	Todos.Tablas.sql
+	--> Todos.Funciones.sql
+	--> Todos.StoredProcedures.sql
+	--> Bloques de este archivo
+	
 	1.  Estatus.
 	2.  Departamentos.
 	3.  Usuarios.
