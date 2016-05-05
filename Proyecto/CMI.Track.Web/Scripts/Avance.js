@@ -98,6 +98,8 @@ var Avance = {
                         $('#msgConfirmacion').text(mensaje);
 
                         if (darClick) {
+                            btn = document.getElementById('btnDarAvance');
+                            CMI.botonMensaje(true, btn, 'Dar Avance');
                             Avance.onDarAvance();
                         }
 
