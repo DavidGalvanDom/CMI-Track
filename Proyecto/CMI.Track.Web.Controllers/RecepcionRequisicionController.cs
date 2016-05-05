@@ -68,7 +68,7 @@ namespace CMI.Track.Web.Controllers
                 }
             }
 
-            return Json(new { Success = false, Message = "La requisición esta recibida en su totalidad" });
+            return Json(new { Success = false, Message = "La cantidad recibida es mayor a la cantidad solicitada o se encuentra recibida en su totalidad" });
         }
     }
 }

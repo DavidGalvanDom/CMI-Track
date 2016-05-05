@@ -121,8 +121,9 @@ var RecepecionCompra = {
                 mat = RecepecionCompra.colRecepecionCompra.where({ id: value.id });
 
                 if (mat[0].attributes.Existencia != 0 ) {
-
-                dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
+                    if (parseFloat(document.getElementById(value.id).value) <= mat[0].attributes.Existencia) {
+                        dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
+                    }
                 }
             });
 
@@ -134,6 +135,7 @@ var RecepecionCompra = {
                         CMI.DespliegaInformacion(data.Message);
                         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = '';
                         RecepecionCompra.CargaGrid();
+                        dataPost = '';
                     } else {
                         CMI.DespliegaError(data.Message);
                     }
@@ -145,8 +147,8 @@ var RecepecionCompra = {
             CMI.DespliegaError("La información de la factura esta incompleta");
             CMI.botonMensaje(false, btn, 'Guardar');
         }
-
-
+        dataPost = '';
+       
 
     },
     AsignaProyecto: function (idProyecto, Revision,
@@ -324,7 +326,7 @@ var RecepecionCompra = {
                                { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
                                { title: 'Cantidad Solicitada', name: 'cantidadSol', filter: true, filterType: 'input', total: 0 },
                                { title: 'Saldo', name: 'Existencia', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Recibido', name: 'cantidadRecibida', filter: true, filterType: 'input', total: 0 },
+                               { title: 'Recibido', name: 'cantidadRecibida', filter: true, filterType: 'input'},
                                { title: ' Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input', total: 0 },
                                { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input', total: 0 },
                                { title: 'Total', name: 'Total', filter: true, total: 0 }],

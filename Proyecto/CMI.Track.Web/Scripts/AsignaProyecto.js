@@ -27,8 +27,6 @@ var MaterialesProyecto = {
         $("#btnImprimir").click(that.onImprimir);
         $('.btnNuevo').click(that.Nuevo);
         $(".btn-GuardaNew").click(that.onConfirmar);
-        $(document).on("click", '.btn-pRequisicion', that.PorRequisicion);
-        $(document).on("click", '.btn-pMaterial', that.PorMaterial);
         $(document).on("click", '.btn-Cerrar', that.onCerrar);
         $(document).on("click", '.btn-AgregarMaterial', that.onGuardarM);
         $('#etapaRow').hide();
@@ -224,34 +222,60 @@ var MaterialesProyecto = {
         var btn = this,
                 dataPost = '';
         var mat = [];
+        var valida;
+        var valida2;
 
         CMI.botonMensaje(true, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
             dataPost = $("Index *").serialize();
 
             if ($('#Almacen').val() !== '') {
 
-            $.each(MaterialesProyecto.colMaterialesProyecto.models, function (index, value) {
-                mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
-                if (mat[0].attributes.Total == 0) {
-                    dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
-                }
-            });
-
-            //Se hace el post para guardar la informacion
-            $.post(contextPath + "AsignaProyecto/Actualiza",
-                dataPost,
-                function (data) {
-                    if (data.Success === true) {
-                        CMI.DespliegaInformacion(data.Message);
-                        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-                        MaterialesProyecto.CargaGrid();
-                    } else {
-                        CMI.DespliegaErrorDialogo(data.Message);
+                $.each(MaterialesProyecto.colMaterialesProyecto.models, function (index, value) {
+                    mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
+                    if (mat[0].attributes.Total == 0) {
+                        if (mat[0].attributes.Existencia >= parseFloat(document.getElementById(value.id).value)) {
+                            if (parseFloat(document.getElementById(value.id).value) != 0) {
+                                dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
+                            }
+                            valida = 0;
+                            //valida2 = 0;
+                        }
+                        else {
+                            valida = 1;
+                        }
                     }
-                }).fail(function () {
-                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-                }).always(function () { CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar"); });
-            } else {
+       
+                });
+
+        
+
+
+                if (valida = 0) {
+         
+                    //Se hace el post para guardar la informacion
+                    $.post(contextPath + "AsignaProyecto/Actualiza",
+                        dataPost,
+                        function (data) {
+                            if (data.Success === true) {
+                                CMI.DespliegaInformacion(data.Message);
+                                $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+                                MaterialesProyecto.CargaGrid();
+                            } else {
+                                CMI.DespliegaErrorDialogo(data.Message);
+                                $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+                                MaterialesProyecto.CargaGrid();
+                            }
+                        }).fail(function () {
+                            CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                        }).always(function () { CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar"); });
+                } else {
+                    CMI.DespliegaError("Existencia no disponible");
+                    CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
+                   
+                }
+             
+            }
+            else {
                 CMI.DespliegaError("Favor de seleccionar el almacen");
                 CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
             }
@@ -518,9 +542,9 @@ var MaterialesProyecto = {
         var permisos = localStorage.modPermisos,
             modulo = MaterialesProyecto;
 
-       modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
+        modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
-        modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
+        modulo.accClonar = false;
     },
     IniciaDateControls: function () {
         var form = MaterialesProyecto.activeForm;
@@ -547,7 +571,7 @@ var MaterialesProyecto = {
                     actionenable: true,
                     detalle: false,
                     clone: MaterialesProyecto.accClonar,
-                    editar: MaterialesProyecto.accEscritura,
+                    editar: false,
                     borrar: MaterialesProyecto.accBorrar,
                     collection: MaterialesProyecto.colMaterialesProyecto,
                     seguridad: MaterialesProyecto.accSeguridad,
@@ -556,7 +580,7 @@ var MaterialesProyecto = {
                                { title: 'Nombre', name: 'nombreMat' },
                                { title: 'Unidad', name: 'UM' },
                                { title: 'Existencia', name: 'Existencia' },
-                               { title: 'Entrega', name: 'Cantidad', total: 0 },
+                               { title: 'Entrega', name: 'Cantidad' },
                                { title: 'Calidad', name: 'Calidad' },
                                { title: 'Ancho', name: 'Ancho' },
                                { title: 'Longitud', name: 'Largo' },
@@ -589,7 +613,7 @@ var MaterialesProyecto = {
                     rows: 5,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: false,
-                    actionenable: true,
+                    actionenable: false,
                     detalle: false,
                     clone: MaterialesProyecto.accClonar,
                     editar: MaterialesProyecto.accEscritura,

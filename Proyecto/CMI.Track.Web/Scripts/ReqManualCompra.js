@@ -45,8 +45,6 @@ var ReqMCompra = {
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
         });
-
-
     },
     onCambiaOrigen: function () {
 
