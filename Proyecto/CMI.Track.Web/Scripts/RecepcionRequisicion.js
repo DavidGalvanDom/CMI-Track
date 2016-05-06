@@ -1,13 +1,15 @@
-﻿//js de Recepcion Requisicion de compra
+﻿/*global $, CMI, Backbone, bbGrid, contextPath,ProyectoBuscar, EtapaBuscar,RequisicionesBuscar, RequerimientoBuscar*/
+//js de Recepcion Requisicion de compra
 //David Jasso
 //28/Marzo/2016
-var json;
+
 var RecepecionCompra = {
     accClonar: false,
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
+    valInicial: 0,
     gridRecepcionCompra: {},
     colRecepecionCompra: {},
     colOrigenReq: [],
@@ -24,7 +26,7 @@ var RecepecionCompra = {
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarReq").click(that.onBuscarRequerimiento);
         $("#btnBuscarRequisicion").click(that.onBuscarRequisicion);
-        $(".btn-GuardaNew").click(that.onConfirmar);
+        $("#btn-GuardaNew").click(that.onConfirmar);
         $('#etapaRow').hide();
         $('#btnCollapse').hide();
     },
@@ -109,8 +111,8 @@ var RecepecionCompra = {
     },
     onConfirmar: function () {
         var btn = this,
-                dataPost = '';
-        var mat = [];
+            dataPost = '',
+            mat = [];
 
         CMI.botonMensaje(true, btn, 'Guardar');
         dataPost = $("Index *").serialize();
@@ -120,7 +122,7 @@ var RecepecionCompra = {
             $.each(RecepecionCompra.colRecepecionCompra.models, function (index, value) {
                 mat = RecepecionCompra.colRecepecionCompra.where({ id: value.id });
 
-                if (mat[0].attributes.Existencia != 0 ) {
+                if (mat[0].attributes.Existencia !== 0 ) {
                     if (parseFloat(document.getElementById(value.id).value) <= mat[0].attributes.Existencia) {
                         dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
                     }
@@ -148,8 +150,6 @@ var RecepecionCompra = {
             CMI.botonMensaje(false, btn, 'Guardar');
         }
         dataPost = '';
-       
-
     },
     AsignaProyecto: function (idProyecto, Revision,
                              NombreProyecto, CodigoProyecto,
@@ -164,31 +164,23 @@ var RecepecionCompra = {
         $('#buscar-General').modal('hide');
 
         //Se inicializa la informacion seleccionada a vacio
-        //$('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
-        //  $('#nombreEtapa').text('');
-        //  $('#FechaInicioEtapa').text('');
-        //  $('#FechaFinEtapa').text('');
         $('#nombreEtapa').text('Nombre Etapa');
         $('#FechaInicioEtapa').text('Fecha Inicio');
         $('#FechaFinEtapa').text('Fecha Fin');
-
         $('#folioRequerimiento').text('Folio Requermiento');
         $('#fechaSolicitud').text('Fecha Solicitud');
-
         $('#idRequisicion').text('Requisicion');
-
-        $('#SerieFac').val('');
-        $('#FacturaReq').val('');
-        $('#ProveedorFac').val('');
-        $('#FechaFactura').val('');
         $('#SerieFac').text('Serie');
         $('#FacturaReq').text('Factura');
         $('#ProveedorFac').text('Proveedor');
         $('#FechaFactura').text('Fecha Factura');
-
+        $('#btn-GuardaNew').hide();
+        $('#btnCollapse').hide();
+        $('#requerimientoRow').hide();
+        $('#requisicionRow').hide();
+        $('#DatosFactura').hide();
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
-
         $('#etapaRow').show();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -199,27 +191,19 @@ var RecepecionCompra = {
         $('#FechaInicioEtapa').text(FechaInicio);
         $('#FechaFinEtapa').text(FechaFin);
         $('#buscar-General').modal('hide');
-
-        //Se carga el grid de PlanosMontaje asignadas a la etapa
-        // $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
-        //  RecepecionCompra.CargaGrid();
-
         $('#folioRequerimiento').text('Folio Requermiento');
         $('#fechaSolicitud').text('Fecha Solicitud');
-
         $('#idRequisicion').text('Requisicion');
-
-        $('#SerieFac').val('');
-        $('#FacturaReq').val('');
-        $('#ProveedorFac').val('');
-        $('#FechaFactura').val('');
         $('#SerieFac').text('Serie');
         $('#FacturaReq').text('Factura');
         $('#ProveedorFac').text('Proveedor');
         $('#FechaFactura').text('Fecha Factura');
 
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
-
+        $('#btn-GuardaNew').hide();
+        $('#btnCollapse').hide();
+        $('#DatosFactura').hide();
+        $('#requisicionRow').hide();
         $('#requerimientoRow').show();
 
     },
@@ -229,29 +213,22 @@ var RecepecionCompra = {
         $('#folioRequerimiento').text(folioRequerimiento);
         $('#fechaSolicitud').text(fechaSolicitud);
         $('#buscar-General').modal('hide');
-
-        //Se carga el grid de ReqMatGral asignadas a la etapa
-        // $('#bbGrid-ReqMatGral')[0].innerHTML = "";
-    
- 
-        ///Muestra el boton de nueva ReqMatGral
-        if (RecepecionCompra.accEscritura === true)
-
-            $('#idRequisicion').text('Requisicion');
-        $('#SerieFac').val('');
-        $('#FacturaReq').val('');
-        $('#ProveedorFac').val('');
-        $('#FechaFactura').val('');
+        $('#idRequisicion').text('Requisicion');
         $('#SerieFac').text('Serie');
         $('#FacturaReq').text('Factura');
         $('#ProveedorFac').text('Proveedor');
         $('#FechaFactura').text('Fecha Factura');
 
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
-
+        $('#btn-GuardaNew').hide();
+        $('#btnCollapse').hide();
+        $('#DatosFactura').hide();
         $('#requisicionRow').show();
     },
-    AsignaRequisicion: function (id, NombreOrigen, Causa, Estatus, Serie, Factura, Proveedor, FechaFac) {
+    AsignaRequisicion: function (id, NombreOrigen,
+                                Causa, Estatus,
+                                Serie, Factura,
+                                Proveedor, FechaFac) {
 
         $('#idRequisicion').text(id);
         $('#idRequisicionSelect').val(id);
@@ -263,18 +240,15 @@ var RecepecionCompra = {
         $('#ProveedorFac').val(Proveedor);
         $('#FechaFactura').val(FechaFac);
         $('#buscar-General').modal('hide');
-      
+
         //Se carga el grid de ReqMatGral asignadas a la etapa
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
 
-
         RecepecionCompra.CargaGrid();
         RecepecionCompra.IniciaDateControls();
-        ///Muestra el boton de nueva ReqMatGral
 
-      
-        
         $('#myCollapsible').collapse('hide');
+        $('#btn-GuardaNew').hide();
         $('#btnCollapse').show();
         $('#requisicionRow').show();
 
@@ -291,22 +265,40 @@ var RecepecionCompra = {
         var form = RecepecionCompra.activeForm;
         $(form + ' #dtpFechaFactura').datetimepicker({ format: 'MM/DD/YYYY' });
     },
+    focusOut: function (input){
+        var total = 0;
+        //Actuliza el total 
+        if (RecepecionCompra.valInicial !== input.value) {
+            total = parseFloat($('#lblTotalReci').text());
+            total = total + (input.value - RecepecionCompra.valInicial);
+            $('#lblTotalReci').text(total);
+        }
+    },
+    focusIn: function (input) {
+        RecepecionCompra.valInicial = input.value;
+    },
     CargaGrid: function () {
-        var url = contextPath + "RecepcionRequisicion/CargaDetalleRequisicion?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idRequisicion=' + $('#idRequisicionSelect').val(); // El url del controlador
+        var url = contextPath + "RecepcionRequisicion/CargaDetalleRequisicion?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idRequisicion=' + $('#idRequisicionSelect').val(),
+            total = 0;// El url del controlador
+        $('#cargandoInfo').show();
         $.getJSON(url, function (data) {
-            $('#cargandoInfo').show();
             $('#DatosFactura').show();
-   
-            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); $('#cargandoInfo').hide(); return; }
 
             $.each(data, function (index, value) {
-                value.cantidadRecibida = " <input  id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
+                total = total + parseFloat(value.cantidadRecibida);
+                value.cantidadRecibida = " <input onblur='RecepecionCompra.focusOut(this);' onFocus='RecepecionCompra.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
             });
-
+            $('#lblTotalReci').text(total);
+            $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
             RecepecionCompra.colRecepecionCompra = new Backbone.Collection(data);
             var bolFilter = RecepecionCompra.colRecepecionCompra.length > 0 ? true : false;
             if (bolFilter) {
-                gridRecepcionCompra = new bbGrid.View({
+
+                if (RecepecionCompra.accEscritura === true)
+                    $('#btn-GuardaNew').show();
+
+                RecepecionCompra.gridRecepcionCompra = new bbGrid.View({
                     container: $('#bbGrid-DetalleRequisicionCompras'),
                     enableTotal: true,
                     enableSearch: false,
@@ -326,11 +318,10 @@ var RecepecionCompra = {
                                { title: 'Longitud', name: 'Largo', filter: true, filterType: 'input' },
                                { title: 'Cantidad Solicitada', name: 'cantidadSol', filter: true, filterType: 'input', total: 0 },
                                { title: 'Saldo', name: 'Existencia', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Recibido', name: 'cantidadRecibida', filter: true, filterType: 'input'},
+                               { title: 'Recibido', name: 'cantidadRecibida'},
                                { title: ' Long(m)-Area(m2)', name: 'LongArea', filter: true, filterType: 'input', total: 0 },
                                { title: 'kg/m-kg/m2', name: 'Peso', filter: true, filterType: 'input', total: 0 },
-                               { title: 'Total', name: 'Total', filter: true, total: 0 }],
-   
+                               { title: 'Total', name: 'Total', total: 0 }]
                 });
                 $('#cargandoInfo').hide();
             }
@@ -339,7 +330,7 @@ var RecepecionCompra = {
                 $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de las ReqManualCompras");
         });
     }
@@ -347,4 +338,4 @@ var RecepecionCompra = {
 
 $(function () {
     RecepecionCompra.Inicial();
-})
+});

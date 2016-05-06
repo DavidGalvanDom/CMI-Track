@@ -88,28 +88,31 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <br />
-        </div>
-    </div>
-    <div class="row" id="requisicionRow" style="display:none;">
-        <div class="form-group">
-            <div class="col-sm-1"> <label class="control-label">Requisición</label></div>
-            <div class="col-sm-4">
-                <div class="input-group">
-                    <p id="idRequisicion" name="idRequisicion" class="form-control" placeholder="Requisicion" title="Requisicion"> Requisicion </p>
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="button" id="btnBuscarRequisicion" name="btnBuscarRequisicion"><span class="fa fa-search"></span></button>
-                    </span>
-                </div>
-                <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
-            </div>
-        </div>
-    </div>
 </div>
 <div>
-    <button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
+<button type="button" id="btnCollapse" class="btn btn-primary btn-circle btn-sm" data-toggle="collapse" data-target="#myCollapsible" style="display:none;"><span id="btn" class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" title="Mostrar Filtros"></span></button>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <br />
+    </div>
+</div>
+<div class="row" id="requisicionRow" style="display:none;">
+    <div class="form-group">
+        <div class="col-sm-1"> <label class="control-label">Requisición</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <p id="idRequisicion" name="idRequisicion" class="form-control" placeholder="Requisicion" title="Requisicion"> Requisicion </p>
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarRequisicion" name="btnBuscarRequisicion"><span class="fa fa-search"></span></button>
+                </span>
+            </div>
+            <input type="hidden" id="idRequisicionSelect" name="idRequisicionSelect" />
+        </div>
+        <div class="col-sm-4">
+            <span class="form-control" id="OrigenReq"></span>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
@@ -152,15 +155,24 @@
             <br />
         </div>
     </div>
-    <div class="col-lg-12">
-        <div class="col-lg-12 text-right">
-            <button type="button" class="btn btn-primary btn-GuardaNew">
-            <i class="fa fa-floppy-o" aria-hidden="true"></i>
-            Guardar
-            </button>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-8 text-right">
+                <label class="control-label">Total Recibidos:</label>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-control" id="lblTotalReci">0</div>
+            </div>
+            <div class="col-sm-3 text-right">
+                <button type="button" class="btn btn-primary" id="btn-GuardaNew" style="display:none;">
+                    <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                    Guardar
+                </button>
+            </div>
         </div>
+
     </div>
-    </div>
+</div>
 
 <div class="modal fade bs-example-modal-lg" id="buscar-General"
         tabindex="-1" role="dialog"
