@@ -21,6 +21,9 @@ namespace CMI.Track.Web.Models
         [Display(Name = "idProyecto")]
         public int idProyecto { get; set; }
 
+        [Display(Name = "idAsignaProyecto")]
+        public int idAsignaProyecto { get; set; }
+
         [Display(Name = "idEtapa")]
         public int idEtapa { get; set; }
 
@@ -39,8 +42,8 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Revision")]
         public string Revision { get; set; }
 
-        [Display(Name = "NombreMat")]
-        public string NombreMat { get; set; }
+        //[Display(Name = "NombreMat")]
+        //public string NombreMat { get; set; }
 
         [Display(Name = "Unidad")]
         public int Unidad { get; set; }

@@ -175,7 +175,7 @@ var RecepecionCompra = {
         $('#FacturaReq').text('Factura');
         $('#ProveedorFac').text('Proveedor');
         $('#FechaFactura').text('Fecha Factura');
-        $('#btn-GuardaNew').hide();
+        $('#groupGuardar').hide();
         $('#btnCollapse').hide();
         $('#requerimientoRow').hide();
         $('#requisicionRow').hide();
@@ -200,7 +200,7 @@ var RecepecionCompra = {
         $('#FechaFactura').text('Fecha Factura');
 
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
-        $('#btn-GuardaNew').hide();
+        $('#groupGuardar').hide();
         $('#btnCollapse').hide();
         $('#DatosFactura').hide();
         $('#requisicionRow').hide();
@@ -220,7 +220,7 @@ var RecepecionCompra = {
         $('#FechaFactura').text('Fecha Factura');
 
         $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
-        $('#btn-GuardaNew').hide();
+        $('#groupGuardar').hide();
         $('#btnCollapse').hide();
         $('#DatosFactura').hide();
         $('#requisicionRow').show();
@@ -248,7 +248,7 @@ var RecepecionCompra = {
         RecepecionCompra.IniciaDateControls();
 
         $('#myCollapsible').collapse('hide');
-        $('#btn-GuardaNew').hide();
+        $('#groupGuardar').hide();
         $('#btnCollapse').show();
         $('#requisicionRow').show();
 
@@ -296,7 +296,7 @@ var RecepecionCompra = {
             if (bolFilter) {
 
                 if (RecepecionCompra.accEscritura === true)
-                    $('#btn-GuardaNew').show();
+                    $('#groupGuardar').show();
 
                 RecepecionCompra.gridRecepcionCompra = new bbGrid.View({
                     container: $('#bbGrid-DetalleRequisicionCompras'),

@@ -34,11 +34,30 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaMaterialesProyecto(int idProyecto, int idEtapa)
+        public JsonResult CargaMaterialesProyecto(int idProyecto, int idEtapa, int idDocumento)
         {
             try
             {
-                var lstMateralesProyecto = AsignaProyectoData.CargaMaterialesProyecto(idProyecto, idEtapa);
+                var lstMateralesProyecto = AsignaProyectoData.CargaMaterialesProyecto(idProyecto, idEtapa, idDocumento);
+
+                return (Json(lstMateralesProyecto, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Carga la coleccion de documentos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaDocumentoMaterialProyecto()
+        {
+            try
+            {
+                var lstMateralesProyecto = AsignaProyectoData.CargaDocumentoMaterialProyecto();
 
                 return (Json(lstMateralesProyecto, JsonRequestBehavior.AllowGet));
             }
@@ -53,11 +72,11 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaMaterialesAsignados(int idProyecto, int idEtapa, int idRequerimiento, int idAlmacen)
+        public JsonResult CargaMaterialesAsignados(int idProyecto, int idEtapa, int idRequerimiento, int idAlmacen, int idDocumento)
         {
             try
             {
-                var lstMateralesProyecto = AsignaProyectoData.CargaMaterialesAsignados(idProyecto, idEtapa, idRequerimiento, idAlmacen);
+                var lstMateralesProyecto = AsignaProyectoData.CargaMaterialesAsignados(idProyecto, idEtapa, idRequerimiento, idAlmacen, idDocumento);
 
                 return (Json(lstMateralesProyecto, JsonRequestBehavior.AllowGet));
             }
@@ -104,8 +123,8 @@ namespace CMI.Track.Web.Controllers
             {
                 try
                 {
-                    AsignaProyectoData.GuardarM(pobjModelo);
-                    return Json(new { Success = true, Message = "Se guardo correctamente los materiales " });
+                    var idDocumento = AsignaProyectoData.GuardarM(pobjModelo);
+                    return Json(new { Success = true, id = idDocumento, Message = "Se guardo correctamente los materiales " });
                 }
                 catch (Exception exp)
                 {
@@ -176,13 +195,32 @@ namespace CMI.Track.Web.Controllers
         /// <param name="idRequerimiento"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaDetalleMaterialesProyecto(int idRequerimiento, int idEtapa, int idProyecto)
+        public JsonResult CargaDetalleMaterialesProyecto(int idRequerimiento, int idEtapa, int idProyecto, int idDocumento)
         {
             try
             {
-                var lstDetalle = AsignaProyectoData.CargaDetalleMaterialesProyecto(idRequerimiento, idEtapa, idProyecto);
+                var lstDetalle = AsignaProyectoData.CargaDetalleMaterialesProyecto(idRequerimiento, idEtapa, idProyecto, idDocumento);
 
                 return (Json(lstDetalle, JsonRequestBehavior.AllowGet));
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Carga la coleccion de movimientos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult CargaHeaderMaterialesAsignados(int idProyecto, int idEtapa, int idDocumento)
+        {
+            try
+            {
+                var lstHeader = AsignaProyectoData.CargaHeaderMaterialesAsignados(idProyecto, idEtapa, idDocumento);
+
+                return (Json(lstHeader, JsonRequestBehavior.AllowGet));
             }
             catch (Exception exp)
             {

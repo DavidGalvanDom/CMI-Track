@@ -1,17 +1,19 @@
-﻿//js de Asignar Materiales por Proyecto
+﻿/*global $, CMI, Backbone,ProyectoBuscar,routeUrlImages, bbGrid, contextPath, EtapaBuscar, RequerimientoBuscar,RequisicionesBuscar, MaterialBuscar*/
+//js de Asignar Materiales por Proyecto
 //David Jasso
 //28/Marzo/2016
-var json;
 var MaterialesProyecto = {
     accClonar: false,
     accEscritura: false,
     accBorrar: false,
     accSeguridad: false,
     activeForm: '',
+    valInicial: 0,
     gridMaterialesProyecto: {},
     colMaterialesProyecto: {},
     colOrigenReq: [],
     colUnidadMedida: [],
+    colDocumentos: [],
     colAlmacen: [],
     Inicial: function () {
         $.ajaxSetup({ cache: false });
@@ -33,10 +35,15 @@ var MaterialesProyecto = {
         $('#rowAlmacen').hide();
         $('#btnCollapse').hide();
         $('#Imprimir').hide();
-
+        $(document).on("change", '#idDoc', that.onCambiaDoc);
         $(document).on('click', '.accrowBorrar', function () {
             that.Borrar($(this).parent().parent().attr("data-modelId"));
         });
+    },
+    onCambiaDoc: function () {
+        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+        $('#Imprimir').show();
+        MaterialesProyecto.CargaGrid($('#idDoc').val());
     },
     onBuscarProyecto: function () {
         var btn = this;
@@ -136,58 +143,53 @@ var MaterialesProyecto = {
         }).always(function () { $(btn).removeAttr("disabled"); });
     },
     onImprimir: function () {
-        var templateURL = contextPath + "Content/template/rpt_materiales_proyecto.html";
-        var rptTemplate = '';
-        var tabla_html;
-        var tablatmp = '';
-        var tableData;
-        var Etapa;
-        var DesEtapa;
-        var NoPro;
-        var NomPro;
-        var FolReq;
-        var Depto;
-        var Solicita;
-        var tablaheader;
-        var total = 0;
-        var tcompleta = ''
-        var f = new Date();
+        var templateURL = contextPath + "Content/template/rpt_materiales_proyecto.html",
+            rptTemplate = '',
+            tabla_html,
+            tablatmp = '',
+            tableData,
+            Etapa,
+            DesEtapa,
+            NoPro,
+            NomPro,
+            FolReq,
+            Depto,
+            Solicita,
+            tablaheader,
+            tcompleta = '',
+            f = new Date();
         $.get(templateURL, function (data) { rptTemplate = data; });
-        var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+        var urlHeader = contextPath + "AsignaProyecto/CargaHeaderMaterialesAsignados?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idDocumento=" + $('#idDoc').val(); // El url del controlador
         $.getJSON(urlHeader, function (data) {
             tablaheader = data;
-            for (j = 0; j < tablaheader.length; j++) {
-                Etapa = tablaheader[j]['idEtapa'];
-                DesEtapa = tablaheader[j]['NombreEtapa'];
-                NoPro = tablaheader[j]['id'];
-                NomPro = tablaheader[j]['NombreProyecto'];
-                FolReq = tablaheader[j]['FolioRequerimiento'];
-                Depto = tablaheader[j]['NombreDepto'];
-                Solicita = tablaheader[j]['NomnreUsuario'];
+            for (var j = 0; j < tablaheader.length; j++) {
+                Etapa = tablaheader[j].idEtapa;
+                DesEtapa = tablaheader[j].NombreEtapa;
+                NoPro = tablaheader[j].idProyecto;
+                NomPro = tablaheader[j].NombreProyecto;
+                FolReq = tablaheader[j].documentoMP;
+                Solicita = tablaheader[j].NombreUsuario;
             }
 
-            var url = contextPath + "AsignaProyecto/CargaDetalleMaterialesProyecto?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idProyecto=" + $('#idProyectoSelect').val(); // El url del controlador
+            var url = contextPath + "AsignaProyecto/CargaDetalleMaterialesProyecto?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idProyecto=" + $('#idProyectoSelect').val() + "&idDocumento=" + $('#idDoc').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 tableData = data;
-                for (i = 0; i < tableData.length; i++) {
+                for (var i = 0; i < tableData.length; i++) {
                     tcompleta += "<tr>";
-                    tcompleta += "<td>" + tableData[i]['nombreMaterial'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Peso'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Solpie'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Solkgs'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Reqpie'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Reqkgs'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Matpie'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Matkgs'] + "</td>";
+                    tcompleta += "<td>" + tableData[i].nombreMaterial + "</td>";
+                    tcompleta += "<td>" + tableData[i].Ancho + "</td>";
+                    tcompleta += "<td>" + tableData[i].Largo + "</td>";
+                    tcompleta += "<td>" + tableData[i].Cantidad + "</td>";
+                    tcompleta += "<td>" + tableData[i].Peso + "</td>";
+                    tcompleta += "<td>" + tableData[i].Solpie + "</td>";
+                    tcompleta += "<td>" + tableData[i].Solkgs + "</td>";
+                    tcompleta += "<td>" + tableData[i].Reqpie + "</td>";
+                    tcompleta += "<td>" + tableData[i].Reqkgs + "</td>";
+                    tcompleta += "<td>" + tableData[i].Matpie + "</td>";
+                    tcompleta += "<td>" + tableData[i].Matkgs + "</td>";
                     tcompleta += "</tr>";
-                  //  total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
-
                 }
 
-                // rptTemplate = rptTemplate.replace('vrTotal', total);
                 rptTemplate = rptTemplate.replace('vrEtapa', 'ETAPA #' + Etapa);
                 rptTemplate = rptTemplate.replace('vrDesEtapa', DesEtapa);
                 rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
@@ -202,118 +204,123 @@ var MaterialesProyecto = {
                 var tmpElemento = document.createElement('a');
                 var data_type = 'data:application/vnd.ms-excel';
                 tabla_html = tablatmp.replace(/ /g, '%20');
-              //  alert(tablatmp);
                 tmpElemento.href = data_type + ', ' + tabla_html;
-                //Asignamos el nombre a nuestro EXCEL
-                tmpElemento.download = 'Mteriales_Proyecto.xls';
-                // Simulamos el click al elemento creado para descargarlo
-                tmpElemento.click();
 
+                tmpElemento.download = 'Mteriales_Proyecto.xls';
+                tmpElemento.click();
                 //getJSON fail
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
             });
         });
-
-
     },
     onConfirmar: function () 
     {
         var btn = this,
-                dataPost = '';
-        var mat = [];
-        var valida;
-        var valida2;
+            dataPost = '',
+            mat = [],
+            valida;
 
         CMI.botonMensaje(true, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
-            dataPost = $("Index *").serialize();
+        dataPost = $("Index *").serialize();
 
-            if ($('#Almacen').val() !== '') {
-
-                $.each(MaterialesProyecto.colMaterialesProyecto.models, function (index, value) {
-                    mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
-                    if (mat[0].attributes.Total == 0) {
-                        if (mat[0].attributes.Existencia >= parseFloat(document.getElementById(value.id).value)) {
-                            if (parseFloat(document.getElementById(value.id).value) != 0) {
-                                dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
-                            }
-                            valida = 0;
-                            //valida2 = 0;
+        if ($('#Almacen').val() !== '') {
+            $.each(MaterialesProyecto.colMaterialesProyecto.models, function (index, value) {
+                mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
+                if (mat[0].attributes.Total === 0) {
+                    if (mat[0].attributes.Existencia >= parseFloat(document.getElementById(value.id).value)) {
+                        if (parseFloat(document.getElementById(value.id).value) !== 0) {
+                            dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
                         }
-                        else {
-                            valida = 1;
-                        }
+                        valida = 0;
+                    } else {
+                        valida = 1;
                     }
-       
-                });
-
-        
-
-
-                if (valida = 0) {
-         
-                    //Se hace el post para guardar la informacion
-                    $.post(contextPath + "AsignaProyecto/Actualiza",
-                        dataPost,
-                        function (data) {
-                            if (data.Success === true) {
-                                CMI.DespliegaInformacion(data.Message);
-                                $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-                                MaterialesProyecto.CargaGrid();
-                            } else {
-                                CMI.DespliegaErrorDialogo(data.Message);
-                                $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-                                MaterialesProyecto.CargaGrid();
-                            }
-                        }).fail(function () {
-                            CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-                        }).always(function () { CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar"); });
-                } else {
-                    CMI.DespliegaError("Existencia no disponible");
-                    CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
-                   
                 }
-             
-            }
-            else {
-                CMI.DespliegaError("Favor de seleccionar el almacen");
+            });
+
+            if (valida === 0) {
+                //Se hace el post para guardar la informacion
+                $.post(contextPath + "AsignaProyecto/Actualiza",
+                    dataPost,
+                    function (data) {
+                        if (data.Success === true) {
+                            CMI.DespliegaInformacion(data.Message);
+                            $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+                            MaterialesProyecto.CargaGrid($('#idDoc').val());
+                        } else {
+                            CMI.DespliegaErrorDialogo(data.Message);
+                            $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+                            MaterialesProyecto.CargaGrid($('#idDoc').val());
+                        }
+                    }).fail(function () {
+                        CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                    }).always(function () { CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar"); });
+            } else {
+                CMI.DespliegaError("Existencia no disponible");
                 CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
             }
+        }
+        else {
+            CMI.DespliegaError("Favor de seleccionar el almacen");
+            CMI.botonMensaje(false, btn, "<i class='fa floppy-o' aria-hidden='true'></i>Guardar");
+        }
+    },
+    onCerrar: function () {
+        $('#idDoc').empty();
+        var ultimo = 0,
+            url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto/"; // El url del controlador
+        $.getJSON(url, function (data) {
+            MaterialesProyecto.colDocumentos = data;
+            var select = $('#idDoc').empty();
+            select.append('<option value=0"undefined">Selecciona documento</option>');
+            $.each(MaterialesProyecto.colDocumentos, function (i, item) {
+                select.append('<option value="'
+                                     + item.documentoMP
+                                     + '">'
+                                     + item.documentoMP
+                                     + '</option>');
+                ultimo = item.documentoMP;
+            });
 
+            $('#idDoc').val($('#idDoc').val());
+            $("#idDoc").val(ultimo).change();
+            $(" .select2").select2({ allowClear: true, placeholder: 'Documento' });
+            $('#nuevo-AsignaProyecto').modal('hide');
+            CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
+            $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
+            MaterialesProyecto.CargaGrid($("#idDoc").val());
+        }).fail(function () {
+            CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de documentos");
+        });
     },
-    onCerrar: function (e) {
-        $('#nuevo-AsignaProyecto').modal('hide');
-        CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
-        $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = '';
-        MaterialesProyecto.CargaGrid();
-    },
-    onGuardarM: function (e) {
+    onGuardarM: function () {
         var btn = this;
-
+        CMI.CierraMensajes();
         CMI.botonMensaje(true, btn, 'Agregar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
+
             //Se hace el post para guardar la informacion
             $.post(contextPath + "AsignaProyecto/NuevoM",
                 $("#NuevoAsignaMaterialesForm *").serialize(),
                 function (data) {
-                    if (data.Success == true) {
-                     //   $('#nuevo-AsignaProyecto').modal('hide');
-                        CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
-                        $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = '';
-                        MaterialesProyecto.CargaGridAsignadosM();
+                    if (data.Success === true) {
+                        CMI.DespliegaInformacionDialogo('Los materiales fueron asigandos correctamente');
                         $('#idRequisicionSelect').val('');
                         $('#idRequisicion').text('');
                         $('#idReq').val(0);
                         $('#OrigenReq').text('');
+                        $('#idFolio').text(data.id);
+                        $('#idAsignaProyecto').val(data.id);
+                        $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = '';
+                        MaterialesProyecto.CargaGridAsignadosM(data.id);
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-
                 }).always(function () { CMI.botonMensaje(false, btn, 'Agregar'); });
-
         } else {
             CMI.botonMensaje(false, btn, 'Agregar');
         }
@@ -331,22 +338,16 @@ var MaterialesProyecto = {
         $('#buscar-General').modal('hide');
 
         //Se inicializa la informacion seleccionada a vacio
-        //$('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
-        //  $('#nombreEtapa').text('');
-        //  $('#FechaInicioEtapa').text('');
-        //  $('#FechaFinEtapa').text('');
-
         $('#nombreEtapa').text('Nombre Etapa');
         $('#FechaInicioEtapa').text('Fecha Inicio');
         $('#FechaFinEtapa').text('Fecha Fin');
 
         $('#folioRequerimiento').text('Folio Requermiento');
         $('#fechaSolicitud').text('Fecha Solicitud');
-
-
         $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
         $('#Imprimir').hide();
+        $('#requerimientoRow').hide();
         $('#etapaRow').show();
     },
     AsignaEtapa: function (idEtapa, NombreEtapa,
@@ -358,17 +359,14 @@ var MaterialesProyecto = {
         $('#FechaFinEtapa').text(FechaFin);
         $('#OrdenProduccion').text(idEtapa);
         $('#buscar-General').modal('hide');
-    
-
         $('#folioRequerimiento').text('Folio Requermiento');
         $('#fechaSolicitud').text('Fecha Solicitud');
-
-
         $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
         $('#Imprimir').hide();
         $('#requerimientoRow').show();
     },
-    AsignaRequerimiento: function (idRequerimiento, folioRequerimiento, fechaSolicitud) {
+    AsignaRequerimiento: function (idRequerimiento, folioRequerimiento,
+                                   fechaSolicitud) {
 
         $('#idRequerimientoSelect').val(idRequerimiento);
         $('#folioRequerimiento').text(folioRequerimiento);
@@ -381,17 +379,15 @@ var MaterialesProyecto = {
         if (MaterialesProyecto.accEscritura === true)
             $('.btnNuevo').show();
         MaterialesProyecto.CargarColeccionAlmacen();
-     
+        MaterialesProyecto.CargarColeccionDocumentos();
         $('#rowAlmacen').show();
         $('#myCollapsible').collapse('hide');
         $('#btnCollapse').show();
-        $('#Imprimir').show();
-        MaterialesProyecto.CargaGrid();
-       
-    
-
     },
-    AsignaRequisicion: function (id, NombreOrigen, Causa, Estatus, Serie, Factura, Proveedor, FechaFac) {
+    AsignaRequisicion: function (id, NombreOrigen,
+                                 Causa, Estatus,
+                                 Serie, Factura,
+                                 Proveedor, FechaFac) {
 
         $('#idRequisicion').text(id);
         $('#idReq').val(id);
@@ -405,24 +401,23 @@ var MaterialesProyecto = {
         $('#FechaFactura').val(FechaFac);
         $('#buscar-General').modal('hide');
     },
-    AsignaMaterial: function (id, NombreMaterial,
-                   AnchoMaterial, LargoMaterial, PesoMaterial, CalidadMaterial) {
-        $('#idMaterial').val(id);
+    AsignaMaterial: function (id, NombreMaterial) {
+        $('#idMaterial').text(id);
         $('#idMaterialSelect').val(id);
-        $('#NombreMat').val(NombreMaterial);
+        $('#NombreMat').text(NombreMaterial);
         $('#buscar-Material').modal('hide');
     },
     Nuevo: function () {
         CMI.CierraMensajes();
         var url = contextPath + "AsignaProyecto/NuevoR"; // El url del controlador    
-        if ($('#Almacen').val() != '') {
+        if ($('#Almacen').val() !== '') {
             $.get(url, function (data) {
                 $('#nuevo-AsignaProyecto').html(data);
                 $('#nuevo-AsignaProyecto').modal({
                     backdrop: 'static',
                     keyboard: true
                 }, 'show');
-                CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+                CMI.RedefinirValidaciones(); //para los formularios dinamicos
                 MaterialesProyecto.activeForm = '#NuevoAsignaMaterialesForm';
                 $('#idAlmacen').val($('#Almacen').val());
                 $('#idEtapa').val($('#idEtapaSelect').val());
@@ -433,6 +428,8 @@ var MaterialesProyecto = {
                 $(MaterialesProyecto.activeForm + ' #btnBuscarMat').click(MaterialesProyecto.onBuscarMaterial);
                 MaterialesProyecto.CargarColeccionUnidadMedida();
                 MaterialesProyecto.CargarColeccionOrigenReq();
+                $('#idRequisicionSelect').val(0);
+                $('#idMaterialSelect').val(0);
             });
         } else {
             CMI.DespliegaError("Por favor seleccione un almacen");
@@ -443,7 +440,7 @@ var MaterialesProyecto = {
         if (confirm('¿Esta seguro que desea borrar el registro ' + id) === false) return;
         var url = contextPath + "AsignaProyecto/Borrar"; // El url del controlador
         $.post(url, { id: id }, function (data) {
-            if (data.Success == true) {
+            if (data.Success === true) {
                 MaterialesProyecto.colMaterialesProyecto.remove(id);
                 CMI.DespliegaInformacion(data.Message + "  id:" + id);
             } else {
@@ -458,7 +455,7 @@ var MaterialesProyecto = {
             $.getJSON(url, function (data) {
                 MaterialesProyecto.colAlmacen = data;
                 MaterialesProyecto.CargaListaAlmacenes(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las unidades de medida");
             });
         } else {
@@ -487,7 +484,7 @@ var MaterialesProyecto = {
             $.getJSON(url, function (data) {
                 MaterialesProyecto.colUnidadMedida = data;
                 MaterialesProyecto.CargaListaUnidades(form);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las unidades de medida");
             });
         } else {
@@ -496,9 +493,7 @@ var MaterialesProyecto = {
     },
     CargaListaUnidades: function (form) {
         var select = $(form + ' #Unidad').empty();
-
-        select.append('<option>Selecciona Unidad</option>');
-
+        select.append('<option value=0>Selecciona Unidad</option>');
         $.each(MaterialesProyecto.colUnidadMedida, function (i, item) {
             select.append('<option value="'
                                  + item.id
@@ -516,7 +511,7 @@ var MaterialesProyecto = {
             $.getJSON(url, function (data) {
                 MaterialesProyecto.colOrigenReq = data;
                 MaterialesProyecto.CargaListaOrigenReq(formOrigen);
-            }).fail(function (e) {
+            }).fail(function () {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las unidades de medida");
             });
         } else {
@@ -538,6 +533,36 @@ var MaterialesProyecto = {
 
         $(formOrigen + '#idOrigen').val($(formOrigen + '#idOrigen').val());
     },
+    CargarColeccionDocumentos: function () {
+        var form = MaterialesProyecto.activeForm;
+        if (MaterialesProyecto.colDocumentos.length < 1) {
+            var url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto/"; // El url del controlador
+            $.getJSON(url, function (data) {
+                MaterialesProyecto.colDocumentos = data;
+                MaterialesProyecto.CargaListaDocumentos(form);
+            }).fail(function () {
+                CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de los documentos generados");
+            });
+        } else {
+            MaterialesProyecto.CargaListaDocumentos(form);
+        }
+    },
+    CargaListaDocumentos: function (form) {
+        var select = $(form + ' #idDoc').empty();
+
+        select.append('<option value=0>Selecciona Documento</option>');
+
+        $.each(MaterialesProyecto.colDocumentos, function (i, item) {
+            select.append('<option value="'
+                                 + item.documentoMP
+                                 + '">'
+                                 + item.documentoMP
+                                 + '</option>');
+        });
+
+        $(form + '#idDoc').val($(form + '#idDoc').val());
+        $(" .select2").select2({ allowClear: true, placeholder: 'Documento' });
+    },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
             modulo = MaterialesProyecto;
@@ -550,21 +575,38 @@ var MaterialesProyecto = {
         var form = MaterialesProyecto.activeForm;
         $(form + ' #dtpFechaFactura').datetimepicker({ format: 'MM/DD/YYYY' });
     },
-    CargaGrid: function () {
-        var url = contextPath + "AsignaProyecto/CargaMaterialesProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val(); // El url del controlador
+    focusOut: function (input) {
+        var total = 0;
+        //Actualiza el total 
+        if (MaterialesProyecto.valInicial !== input.value) {
+            total = parseFloat($('#lblTotalReci').text());
+            total = total + (input.value - MaterialesProyecto.valInicial);
+            $('#lblTotalReci').text(total);
+        }
+    },
+    focusIn: function (input) {
+        MaterialesProyecto.valInicial = input.value;
+    },
+    CargaGrid: function (id) {
+        var url = contextPath + "AsignaProyecto/CargaMaterialesProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idDocumento=' + id,
+            total = 0,
+            validar = 0 ; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
-   
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             $.each(data, function (index, value) {
-                //value.id = value.id + "," + value.idMaterial;
-                value.Cantidad = " <input  id='" + value.id + "' type=\"text\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
+                total = total + parseFloat(value.Cantidad);
+                if (value.Cantidad === 0) {
+                    validar = 1;
+                }
+                value.Cantidad = " <input onblur='MaterialesProyecto.focusOut(this);' onFocus='MaterialesProyecto.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
             });
-
+            $('#lblTotalReci').text(total);
+            $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
             MaterialesProyecto.colMaterialesProyecto = new Backbone.Collection(data);
             var bolFilter = MaterialesProyecto.colMaterialesProyecto.length > 0 ? true : false;
             if (bolFilter) {
-                gridMaterialesProyecto = new bbGrid.View({
+                MaterialesProyecto.gridMaterialesProyecto = new bbGrid.View({
                     container: $('#bbGrid-AsignaMaterialesProyecto'),
                     enableTotal: true,
                     enableSearch: false,
@@ -589,21 +631,26 @@ var MaterialesProyecto = {
                                { title: 'Total', name: 'Total', total: 0 }],
                 });
                 $('#cargandoInfo').hide();
+                if (validar === 1) {
+                    $('#guardar').show();
+                }
+                else {
+                    $('#guardar').hide();
+                }
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Materiales asigandos a este proyecto.");
                 $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de materiales asigandos al proyecto");
         });
     },
     CargaGridAsignadosM: function () {
-        var url = contextPath + "AsignaProyecto/CargaMaterialesAsignados?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idAlmacen=' + $('#Almacen').val(); // El url del controlador
+        var url = contextPath + "AsignaProyecto/CargaMaterialesAsignados?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idAlmacen=' + $('#Almacen').val() + '&idDocumento=' + $('#idAsignaProyecto').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
-
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             MaterialesProyecto.colMaterialesProyecto = new Backbone.Collection(data);
             var bolFilter = MaterialesProyecto.colMaterialesProyecto.length > 0 ? true : false;
@@ -640,7 +687,7 @@ var MaterialesProyecto = {
                 $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = "";
             }
             //getJSON fail
-        }).fail(function (e) {
+        }).fail(function () {
             CMI.DespliegaError("No se pudo cargar la informacion de materiales asigandos al proyecto");
         });
     }
@@ -648,4 +695,4 @@ var MaterialesProyecto = {
 
 $(function () {
     MaterialesProyecto.Inicial();
-})
+});

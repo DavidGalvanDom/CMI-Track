@@ -21,15 +21,16 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de materiales por proyecto
         /// </summary>
         /// <returns>Lista Materiales Proyecto</returns>
-        public static List<Models.ListaAsignaProyecto> CargaMaterialesProyecto(int idProyecto, int idEtapa)
+        public static List<Models.ListaAsignaProyecto> CargaMaterialesProyecto(int idProyecto, int idEtapa, int idDocumento)
         {
             var listaMaterialesP = new List<Models.ListaAsignaProyecto>();
-            object[] paramArray = new object[3];
+            object[] paramArray = new object[4];
             try
             {
                 paramArray[0] = idProyecto;
                 paramArray[1] = idEtapa;
                 paramArray[2] = null;
+                paramArray[3] = idDocumento;
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -69,27 +70,21 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de categorias
         /// </summary>
         /// <returns>Lista Categorias</returns>
-        public static Models.AsignaProyecto CargaMaterialProyecto(int idProyecto, int idEtapa, string id)
+       public static List<Models.ListaAsignaProyecto> CargaDocumentoMaterialProyecto()
         {
-            object[] paramArray = new object[3];
+            var listaMaterialesP = new List<Models.ListaAsignaProyecto>();
             try
             {
-                paramArray[0] = idProyecto;
-                paramArray[1] = idEtapa;
-                paramArray[2] = id == "" ? null : id;
-
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarMaterialesProyecto", paramArray))
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarDocumentosMaterialesProyecto"))
                 {
                     while (dataReader.Read())
                     {
-                        var objMaterialPro = new Models.AsignaProyecto()
+                        listaMaterialesP.Add(new Models.ListaAsignaProyecto()
                         {
-
-                        };
-
-                        return objMaterialPro;
+                            documentoMP = dataReader["documentoMaterialProyecto"] != DBNull.Value ? Convert.ToInt32(dataReader["documentoMaterialProyecto"]) : 0
+                        });
                     }
                 }
             }
@@ -98,7 +93,7 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
 
-            return null;
+            return listaMaterialesP;
 
         }
 
@@ -106,16 +101,17 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de materiales por proyecto
         /// </summary>
         /// <returns>Lista Materiales Proyecto</returns>
-        public static List<Models.ListaAsignaProyecto> CargaMaterialesAsignados(int idProyecto, int idEtapa, int idRequerimiento, int idAlmacen)
+        public static List<Models.ListaAsignaProyecto> CargaMaterialesAsignados(int idProyecto, int idEtapa, int idRequerimiento, int idAlmacen, int idDocumento)
         {
             var listaMaterialesP = new List<Models.ListaAsignaProyecto>();
-            object[] paramArray = new object[4];
+            object[] paramArray = new object[5];
             try
             {
                 paramArray[0] = idProyecto;
                 paramArray[1] = idEtapa;
                 paramArray[2] = idRequerimiento;
                 paramArray[3] = idAlmacen;
+                paramArray[4] = idDocumento;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -157,7 +153,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string GuardarM(Models.AsignaProyecto pobjModelo)
         {
-            object[] paramArray = new object[8];
+            object[] paramArray = new object[9];
             try
             {
                 paramArray[0] = pobjModelo.idProyecto;
@@ -168,6 +164,7 @@ namespace CMI.Track.Web.Data
                 paramArray[5] = pobjModelo.Revision;
                 paramArray[6] = pobjModelo.usuarioCreacion;
                 paramArray[7] = pobjModelo.idReq;
+                paramArray[8] = pobjModelo.idAsignaProyecto;
 
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
@@ -250,15 +247,16 @@ namespace CMI.Track.Web.Data
         /// <param name="idRequerimiento"></param>
         /// <param name="idEstatus"></param>
         /// <returns>Lista de Marcas</returns>
-        public static List<Models.ListaAsignaProyecto> CargaDetalleMaterialesProyecto(int idRequerimiento, int idEtapa, int idProyecto)
+        public static List<Models.ListaAsignaProyecto> CargaDetalleMaterialesProyecto(int idRequerimiento, int idEtapa, int idProyecto, int idDocumento)
         {
             var lstAsignaMat = new List<Models.ListaAsignaProyecto>();
-            object[] paramArray = new object[3];
+            object[] paramArray = new object[4];
             try
             {
                 paramArray[0] = idRequerimiento;
                 paramArray[1] = idEtapa;
                 paramArray[2] = idProyecto;
+                paramArray[3] = idDocumento;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -289,6 +287,50 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
             return lstAsignaMat;
+        }
+
+        /// <summary>
+        /// Se carga el listado header
+        /// </summary>
+        /// <returns>Lista </returns>
+        public static List<Models.ListaAsignaProyecto> CargaHeaderMaterialesAsignados(int idProyecto, int idEtapa, int idDocumento)
+        {
+            var listaHeader = new List<Models.ListaAsignaProyecto>();
+            object[] paramArray = new object[3];
+            try
+            {
+                paramArray[0] = idProyecto;
+                paramArray[1] = idEtapa;
+                paramArray[2] = idDocumento;
+
+                var db = DatabaseFactory.CreateDatabase("SQLStringConn");
+
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarHeaderMaterialesProyecto", paramArray))
+                {
+                    while (dataReader.Read())
+                    {
+                        listaHeader.Add(new Models.ListaAsignaProyecto()
+                        {
+
+
+                            documentoMP = Convert.ToInt32(dataReader["documentoMaterialProyecto"]),
+                            idProyecto = Convert.ToInt32(dataReader["idProyecto"]),
+                            NombreProyecto = Convert.ToString(dataReader["nombreProyecto"]),
+                            idEtapa = Convert.ToInt32(dataReader["idEtapa"]),
+                            NombreEtapa = Convert.ToString(dataReader["nombreEtapa"]),
+                            NombreUsuario = Convert.ToString(dataReader["nombreUsuario"]),
+                            
+
+                        });
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                throw new ApplicationException(exp.Message, exp);
+            }
+
+            return listaHeader;
         }
 
        

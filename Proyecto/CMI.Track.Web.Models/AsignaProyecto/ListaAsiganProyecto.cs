@@ -21,8 +21,17 @@ namespace CMI.Track.Web.Models
         [Display(Name = "idProyecto")]
         public int idProyecto { get; set; }
 
+        [Display(Name = "NombreProyecto")]
+        public string NombreProyecto { get; set; }
+
         [Display(Name = "idEtapa")]
         public int idEtapa { get; set; }
+
+        [Display(Name = "NombreEtapa")]
+        public string NombreEtapa { get; set; }
+
+        [Display(Name = "NombreUsuario")]
+        public string NombreUsuario { get; set; }
 
         [Display(Name = "idAlmacen")]
         public int idAlmacen { get; set; }
@@ -40,7 +49,7 @@ namespace CMI.Track.Web.Models
         public int idOrdenProduccion { get; set; }
 
         [Display(Name = "documentoMP")]
-        public string documentoMP { get; set; }
+        public int documentoMP { get; set; }
 
         [Display(Name = "Cantidad")]
         public double Cantidad { get; set; }

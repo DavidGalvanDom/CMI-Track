@@ -240,7 +240,7 @@ var Usuario = {
     CargaListaProcesos: function (form) {
         var optionItem = '',
             selectDestino = $(form + ' #idProcesoDestino').empty(),
-            selectOrigen = $(form + ' #idProcesoOrigen').empty();       
+            selectOrigen = $(form + ' #idProcesoOrigen').empty();
 
         $.each(Usuario.colProcesos, function (i, item) {
             optionItem = '<option value="' + item.id + '">'

@@ -35,7 +35,6 @@ var Almacen = {
     },
     onGuardar: function () {
         var btn = this;
-       
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
