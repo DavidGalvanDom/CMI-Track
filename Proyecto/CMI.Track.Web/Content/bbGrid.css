@@ -5,8 +5,8 @@
 *     For all details and documentation:
 *     http://direct-fuel-injection.github.com/bbGrid/
  */
-.bbGrid-grid { table-layout: fixed; font-size: 11px}
-.bbGrid-grid td{ cursor: default; overflow: hidden; white-space:nowrap; line-height: 1; vertical-align: middle}
+.bbGrid-grid { font-size: 11px}
+.bbGrid-grid td{ cursor: default; overflow: hidden; line-height: 1; vertical-align: middle}
 .bbGrid-grid tr{height:2.4em;}
 .bbGrid-grid .bbGrid-grid-head{font-size: 12px; cursor: pointer}
 .bbGrid-grid .bbGrid-grid-head th, .bbGrid-grid .bbGrid-grid-head td{box-sizing: content-box; overflow: hidden; white-space: normal; border-bottom: 0px; background-color: #f8f8f8}
