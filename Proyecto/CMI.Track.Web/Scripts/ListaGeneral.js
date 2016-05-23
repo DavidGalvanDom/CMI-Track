@@ -76,7 +76,7 @@ var ListaGeneral = {
                     }
                     $.ajax({
                         type: "POST",
-                        url: '/ListaGeneral/SubirArchivo',
+                        url: contextPath + '/ListaGeneral/SubirArchivo',
                         contentType: false,
                         processData: false,
                         data: data,
