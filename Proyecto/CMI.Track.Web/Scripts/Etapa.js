@@ -40,10 +40,17 @@ var Etapa = {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
+
+            //Validar fechas del proyecto con la etapa
+            if (!Etapa.ValidaFechas()) {
+                CMI.botonMensaje(false, btn, 'Guardar');
+                return;
+            }
+
             $('#usuarioCreacion').val(localStorage.idUser);
             $('#NuevaEtapaForm #idProyecto').val($('#idProyectoSelect').val());
             $('#NuevaEtapaForm #revisionProyecto').val($('#RevisionPro').text());
-                        
+
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Etapa/Nuevo",
                 $("#NuevaEtapaForm *").serialize(),
@@ -69,6 +76,13 @@ var Etapa = {
         var btn = this;
         CMI.botonMensaje(true, btn, 'Actualizar');
         if ($("form").valid()) {
+
+            //Validar fechas del proyecto con la etapa
+            if (!Etapa.ValidaFechas()) {
+                CMI.botonMensaje(false, btn, 'Actualizar');
+                return;
+            }
+
             //Se hace el post para guardar la informacion
             $.post(contextPath + "Etapa/Actualiza",
                 $("#ActualizaEtapaForm *").serialize(),
@@ -216,6 +230,31 @@ var Etapa = {
             $('#dtpFechaInicio').data("DateTimePicker").maxDate(e.date);
         });
     },
+    ValidaFechas : function() {
+        var form = Etapa.activeForm,
+            proyectoIni = $('#FechaInicio').text(),
+            proyectoFin = $('#FechaFin').text(),
+            etapaIni = $(form + ' #fechaInicio').val(),
+            etapaFin = $(form + ' #fechaFin').val();
+
+        proyectoIni = proyectoIni.substr(6, 4) + proyectoIni.substr(3, 2) + proyectoIni.substr(0, 2);
+        proyectoFin = proyectoFin.substr(6, 4) + proyectoFin.substr(3, 2) + proyectoFin.substr(0, 2);
+        etapaIni = etapaIni.substr(6, 4) + etapaIni.substr(3, 2) + etapaIni.substr(0, 2);
+        etapaFin = etapaFin.substr(6, 4) + etapaFin.substr(3, 2) + etapaFin.substr(0, 2);
+
+        if (parseInt(etapaIni,10) < parseInt(proyectoIni,10) ||
+            parseInt(etapaIni, 10) > parseInt(proyectoFin, 10)) {
+            CMI.DespliegaErrorDialogo("El rango de fechas de la Etapa debe estar dentro de las fechas del proyecto:  Inicio: " + $('#FechaInicio').text() + '  Fin: ' + $('#FechaFin').text());
+            return (false);
+        } else {
+            if (parseInt(etapaFin, 10) < parseInt(proyectoIni, 10) ||
+                parseInt(etapaFin, 10) > parseInt(proyectoFin, 10)) {
+                CMI.DespliegaErrorDialogo("El rango de fechas de la Etapa debe estar dentro de las fechas del proyecto:Inicio: " + $('#FechaInicio').text() + '  Fin: ' + $('#FechaFin').text());
+                return (false);
+            }
+        }
+        return (true);
+    },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
             modulo = Etapa;
@@ -243,6 +282,7 @@ var Etapa = {
             Etapa.colEtapas = new Backbone.Collection(data);
             var bolFilter = Etapa.colEtapas.length > 0 ? true : false;
             if (bolFilter) {
+                $('#bbGrid-Etapas')[0].innerHTML = "";
                 Etapa.gridEtapas = new bbGrid.View({
                     container: $('#bbGrid-Etapas'),
                     rows: 15,

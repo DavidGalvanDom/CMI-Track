@@ -350,6 +350,7 @@ var Proyecto = {
             Proyecto.colProyectos = new Backbone.Collection(data);
             var bolFilter = Proyecto.colProyectos.length > 0 ? true : false;
             if (bolFilter) {
+                $('#bbGrid-clear')[0].innerHTML = "";
                 Proyecto.gridProyectos = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
