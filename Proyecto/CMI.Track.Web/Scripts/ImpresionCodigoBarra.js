@@ -173,7 +173,7 @@ var ImpresionCodigoBarra = {
                     colModel: [//{ title: 'Id', name: 'id', width: '8%' },
                               { title: 'Tipo', name: 'tipo' },
                               { title: 'Id', name: 'idMS' },
-                              { title: 'Codigo', name: 'codigo' },
+                              { title: 'Sub/Marca', name: 'codigo' },
                               { title: 'Serie', name: 'serie' },
                               { title: 'Peso', name: 'peso' },
                               { title: 'Codigo de Barra', name: 'codigoBarra' }]

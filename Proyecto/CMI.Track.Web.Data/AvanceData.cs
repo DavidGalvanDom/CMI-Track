@@ -110,12 +110,15 @@ namespace CMI.Track.Web.Data
             object[] paramArray = new object[15];
             try
             {
+                pobjModelo.piezas = (pobjModelo.piezas == null ? 1 : pobjModelo.piezas);
+                pobjModelo.piezas = (pobjModelo.piezas == 0 ? 1 : pobjModelo.piezas);
+
                 paramArray[0] = pobjModelo.tipo.ToUpper();
                 paramArray[1] = pobjModelo.clase.ToUpper();
                 paramArray[2] = pobjModelo.idSubmarca;
                 paramArray[3] = pobjModelo.idMarca;
                 paramArray[4] = pobjModelo.idSerie;
-                paramArray[5] = (pobjModelo.piezas == null ? 1 : pobjModelo.piezas);
+                paramArray[5] = pobjModelo.piezas;
                 paramArray[6] = pobjModelo.idUsuarioFabrico;
                 paramArray[7] = pobjModelo.idEstatus_Calidad;
                 paramArray[8] = pobjModelo.observaciones;
