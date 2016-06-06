@@ -42,6 +42,9 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Proceso")]
         public string proceso { get; set; }
 
+        [Display(Name = "Piezas")]
+        public int piezas { get; set; }
+
         [Display(Name = "Peso")]
         public string peso { get; set; }
 

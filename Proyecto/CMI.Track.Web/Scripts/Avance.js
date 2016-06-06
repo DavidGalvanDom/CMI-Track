@@ -21,8 +21,8 @@ var Avance = {
         $("#btnBuscarProyecto").click(that.onBuscarProyecto);
         $("#btnBuscarEtapa").click(that.onBuscarEtapa);
         $("#btnBuscarCodigoBarra").click(that.onBuscarCodigoBarra);
-        $("#btnResumenOFF").click(that.onResumen);
-        $("#btnResumenON").click(that.onResumen);
+//        $("#btnResumenOFF").click(that.onResumen);
+//        $("#btnResumenON").click(that.onResumen);
         $(document).on('click', '#btnDarAvance', that.onDarAvance);
         $(document).on('click', '#btnDarRegistroCalidad', that.onDarRegistroCalidad);
         $(document).on('click', '.btnInfo-DarAvance', that.onClickDarAvance);
@@ -264,8 +264,8 @@ var Avance = {
         }
     },
     onResumen: function () {
-        $("#divProyecto").slideToggle("fast");
-        $("#divResumen").slideToggle("fast");
+        //$("#divProyecto").slideToggle("fast");
+        //$("#divResumen").slideToggle("fast");
     },
     onClickDarAvance: function () {
         if($('#selectUsuarioFabrico').val() === ''){
@@ -309,11 +309,11 @@ var Avance = {
             $('#idSerie').val((clase === 'M' ? idSerie : '00'));
             $('#idUsuarioFabrico').val($('#selectUsuarioFabrico').val());
             $('#observaciones').val('');
-            $('#longitud').val('0');
-            $('#barrenacion').val('0');
-            $('#placa').val('0');
-            $('#soldadura').val('0');
-            $('#pintura').val('0');
+            $('#longitud').val(false);
+            $('#barrenacion').val(false);
+            $('#placa').val(false);
+            $('#soldadura').val(false);
+            $('#pintura').val(false);
             $('#usuarioCreacion').val(localStorage.idUser);
 
             $('#msgConfirmacion').text(mensaje);
@@ -371,7 +371,7 @@ var Avance = {
 
         $('#procesoRow').show();
 
-        Avance.onResumen();
+        //Avance.onResumen();
 
         $('#bbGrid-Avance')[0].innerHTML = "";
 
@@ -494,6 +494,7 @@ var Avance = {
             Avance.colAvance = new Backbone.Collection(data);
             var bolFilter = Avance.colAvance.length > 0 ? true : false;
             if (bolFilter) {
+                $('#bbGrid-Avance')[0].innerHTML = "";
                 Avance.gridAvance = new bbGrid.View({
                     container: $('#bbGrid-Avance'),
                     rows: 10,
@@ -533,6 +534,7 @@ var Avance = {
             Avance.colAvance = new Backbone.Collection(data);
             var bolFilter = Avance.colAvance.length > 0 ? true : false;
             if (bolFilter) {
+                $('#bbGrid-Avance')[0].innerHTML = "";
                 Avance.gridAvance = new bbGrid.View({
                     container: $('#bbGrid-Avance'),
                     rows: 10,

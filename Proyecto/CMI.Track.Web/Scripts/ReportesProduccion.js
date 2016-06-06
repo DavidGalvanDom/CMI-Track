@@ -249,6 +249,7 @@ var ReportesProduccion = {
                     ReportesProduccion.colReportesProduccion = new Backbone.Collection(data);
                     var bolFilter = ReportesProduccion.colReportesProduccion.length > 0 ? true : false;
                     if (bolFilter) {
+                        $('#bbGrid-ReporteProduccion')[0].innerHTML = "";
                          ReportesProduccion.gridReportesProduccion = new bbGrid.View({
                             container: $('#bbGrid-ReporteProduccion'),
                             rows: 10,
@@ -324,6 +325,7 @@ var ReportesProduccion = {
                                       { title: 'Codigo', name: 'elemento', width: '8%' },
                                       { title: 'Serie', name: 'idSerie', width: '4%' },
                                       { title: 'Proceso', name: 'proceso', width: '4%' },
+                                      { title: 'Piezas', name: 'piezas', width: '4%'},
                                       { title: 'Peso', name: 'peso', width: '4%' }]
                         });
                         $('#cargandoInfo').hide();
@@ -372,6 +374,7 @@ var ReportesProduccion = {
                                       { title: 'Codigo', name: 'elemento', width: '8%' },
                                       { title: 'Serie', name: 'idSerie', width: '4%' },
                                       { title: 'Proceso', name: 'proceso', width: '4%' },
+                                      { title: 'Piezas', name: 'piezas', width: '4%' },
                                       { title: 'Peso', name: 'peso', width: '4%' }]
                         });
                         $('#cargandoInfo').hide();
@@ -658,8 +661,8 @@ var ReportesProduccion = {
         header += "<tr>";
         header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='5' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='5' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='6' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='6' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
@@ -729,8 +732,8 @@ var ReportesProduccion = {
         header += "<tr>";
         header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='4' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='4' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='5' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";

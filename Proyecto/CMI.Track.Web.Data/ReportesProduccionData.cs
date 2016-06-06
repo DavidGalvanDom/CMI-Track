@@ -106,6 +106,7 @@ namespace CMI.Track.Web.Data
                             elemento = Convert.ToString(dataReader["nombreElemento"]),
                             idSerie = Convert.ToString(dataReader["idSerie"]),
                             proceso = Convert.ToString(dataReader["nombreProceso"]),
+                            piezas = Convert.ToInt32(dataReader["piezas"]),
                             peso = Convert.ToString(dataReader["peso"])
                         });
                     }
@@ -152,6 +153,7 @@ namespace CMI.Track.Web.Data
                             elemento = Convert.ToString(dataReader["nombreElemento"]),
                             idSerie = Convert.ToString(dataReader["idSerie"]),
                             proceso = Convert.ToString(dataReader["nombreProceso"]),
+                            piezas = Convert.ToInt32(dataReader["piezas"]),
                             peso = Convert.ToString(dataReader["peso"])
                         });
                     }
