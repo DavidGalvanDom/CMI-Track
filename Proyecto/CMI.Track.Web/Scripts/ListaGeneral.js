@@ -174,7 +174,7 @@ var ListaGeneral = {
         ListaGeneral.estatusRevision = idEstatusRevision;
         if (idEstatusRevision !== 1) {
             $('#RevisionPro').addClass('revisionCerrada');
-            CMI.DespliegaError("El estatus de revicion esta cerrado. No se puede agregar informacion hasta que genere una nueva revision.");
+            CMI.DespliegaError("El estatus de revision esta cerrado. No se puede agregar informacion hasta que genere una nueva revision.");
             $('#etapaRow').hide();
         } else {
             $('#RevisionPro').removeClass('revisionCerrada');
