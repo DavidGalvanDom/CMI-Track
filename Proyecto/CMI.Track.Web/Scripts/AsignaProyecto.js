@@ -19,6 +19,7 @@ var MaterialesProyecto = {
         $.ajaxSetup({ cache: false });
         this.Eventos();
         this.ValidaPermisos();
+        $(window).resize(MaterialesProyecto.AjustaModal);
     },
     Eventos: function () {
         var that = this;
@@ -300,7 +301,6 @@ var MaterialesProyecto = {
         CMI.botonMensaje(true, btn, 'Agregar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
-
             //Se hace el post para guardar la informacion
             $.post(contextPath + "AsignaProyecto/NuevoM",
                 $("#NuevoAsignaMaterialesForm *").serialize(),
@@ -315,6 +315,7 @@ var MaterialesProyecto = {
                         $('#idAsignaProyecto').val(data.id);
                         $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = '';
                         MaterialesProyecto.CargaGridAsignadosM(data.id);
+                        MaterialesProyecto.AjustaModal();
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
@@ -583,6 +584,10 @@ var MaterialesProyecto = {
             total = total + (input.value - MaterialesProyecto.valInicial);
             $('#lblTotalReci').text(total);
         }
+    },
+    AjustaModal: function () {
+        var altura = $(window).height() - 155;
+        $(".ativa-scroll").css({ "height": altura, "overflow-y": "auto" });
     },
     focusIn: function (input) {
         MaterialesProyecto.valInicial = input.value;

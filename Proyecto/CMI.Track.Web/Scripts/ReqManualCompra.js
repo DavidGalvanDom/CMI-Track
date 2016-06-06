@@ -18,7 +18,7 @@ var ReqMCompra = {
         $.ajaxSetup({ cache: false });
         this.Eventos();
         this.ValidaPermisos();
-        
+        $(window).resize(ReqMCompra.AjustaModal);
     },
     Eventos: function () {
         var that = this;
@@ -128,8 +128,6 @@ var ReqMCompra = {
                 CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
             });
         });
-
-
     },
     onGuardar: function () {
         $('#nuevo-ReqManualCompra').modal('hide');
@@ -155,21 +153,16 @@ var ReqMCompra = {
                     });
 
                     $('#idReq').val($('#idReq').val());
-                   // $('#idReq').val(ultimo);
-                    //$("#idReq").change(ultimo);
                     $("#idReq").val(ultimo).change();
 
                 }).fail(function (e) {
                     CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de Requisiciones");
                 });
-              
-  
-
     },
     onAgregar: function (e) {
         var form = ReqMCompra.activeForm,
          btn = this;
-      
+
         CMI.botonMensaje(true, btn, 'Guardar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
@@ -182,27 +175,20 @@ var ReqMCompra = {
                 $("#NuevoReqManualCompraForm *").serialize(),
                 function (data) {
                     if (data.Success == true) {
-                        //$('#nuevo-movimientomaterial').modal('hide');
-                        //CMI.DespliegaInformacion('Los materiales fueron asigandos correctamente');
                         if (data.id === "0") {
                             CMI.DespliegaErrorDialogo("Ya existe una requisicion de tipo Inicial, favor de validarlo");
-                            
-                        }
-                        else {
+                        } else {
                             $('#bbGrid-MatRequi')[0].innerHTML = '';
                             $('#idRequisicion').val(data.id);
                             $('#idRequi').text(data.id);
                             ReqMCompra.CargaGridReq(data.id);
+                            ReqMCompra.AjustaModal();
                         }
-
-                       
-
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");
-
                 }).always(function () { CMI.botonMensaje(false, btn, 'Agregar'); });
 
         } else {
@@ -322,11 +308,7 @@ var ReqMCompra = {
         $('#buscar-General').modal('hide');
 
         //Se inicializa la informacion seleccionada a vacio
-        //$('#bbGrid-PlanosMontaje')[0].innerHTML = "";
         $('#idEtapaSelect').val(0);
-      //  $('#nombreEtapa').text('');
-      //  $('#FechaInicioEtapa').text('');
-      //  $('#FechaFinEtapa').text('');
         $('.btnNuevo').hide();
         if ($('#idProyectoSelect').val(idProyecto) !== null) {
             $('#NombreProyecto').show();
@@ -356,9 +338,6 @@ var ReqMCompra = {
         $('#FechaFinEtapa').text(FechaFin);
         $('#buscar-General').modal('hide');
 
-        //Se carga el grid de PlanosMontaje asignadas a la etapa
-       // $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
-        //  ReqMCompra.CargaGrid();
         $('.btnNuevo').hide();
         if ($('#idEtapaSelect').val(idEtapa) !== null) {
             $('#NombreEt').show();
@@ -545,15 +524,17 @@ var ReqMCompra = {
                             backdrop: 'static',
                             keyboard: true
                         }, 'show');
-                        CMI.RedefinirValidaciones(); //para los formularios dinamicos          
+                        CMI.RedefinirValidaciones(); //para los formularios dinamicos 
                         ReqMCompra.activeForm = '#NuevoReqManualCompraForm';
                         $(ReqMCompra.activeForm + ' #btnBuscarMat').click(ReqMCompra.onBuscarMaterial);
                         ReqMCompra.CargarColeccionUnidadMedida();
                         ReqMCompra.CargarColeccionOrigenReq();
                         ReqMCompra.CargarColeccionAlmacen();
                     });
-   
-     
+    },
+    AjustaModal: function() {
+        var altura = $(window).height() - 155; 
+        $(".ativa-scroll").css({"height":altura,"overflow-y":"auto"});
     },
     Editar: function (idRow) {
         var id, idRequerimiento, row, idRequisicion;

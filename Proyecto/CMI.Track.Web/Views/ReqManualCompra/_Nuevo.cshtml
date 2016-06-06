@@ -6,7 +6,7 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">@ViewBag.Titulo  Requisición</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body ativa-scroll">
             <div class="clientAlertDlg"></div>
             @using (Html.BeginForm("Nuevo", "ReqManualCompra", FormMethod.Post, new { id = "NuevoReqManualCompraForm", name = "NuevoReqManualCompraForm", @class = "form-horizontal" }))
             {
@@ -36,27 +36,27 @@
                     </div>
                 </div>
                 <div class="form-group">
-                        <div class="col-sm-2">
-                            <span>Requisición</span>
-                            <span id="idRequi" placeholder="Requisición" class="form-control" title="idRequi">Requisición</span>
-                            @Html.HiddenFor(model => model.idRequisicion)
+                    <div class="col-sm-2">
+                        <span>Requisición</span>
+                        <span id="idRequi" placeholder="Requisición" class="form-control" title="idRequi">Requisición</span>
+                        @Html.HiddenFor(model => model.idRequisicion)
 
-                        </div>
-                        <div class="col-sm-5">
-                            <span>Almacen</span>
-                            <select id="Almacen" name="Almacen" class="form-control" required="required"></select>
-                        </div>
                     </div>
-                
-             
+                    <div class="col-sm-5">
+                        <span>Almacen</span>
+                        <select id="Almacen" name="Almacen" class="form-control" required="required"></select>
+                    </div>
+                </div>
+
+
 
                 <div class="form-group">
-                    
+
                     <div class="col-sm-2">
                         <span>Material</span>
                         <span id="idMaterial" style="display:none;">Id</span>
                         <div class="input-group">
-                            <input type="text" id="idMaterialSelect" name="idMaterialSelect" class="form-control" placeholder="Id" title="Id" >
+                            <input type="text" id="idMaterialSelect" name="idMaterialSelect" class="form-control" placeholder="Id" title="Id">
                             <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat"><span class="fa fa-search"></span></button>
                             </span>
@@ -65,7 +65,7 @@
 
                     <div class="col-sm-4">
                         <span style="color:white;">nombre material</span>
-                        <input type="text" id="NombreMat" placeholder="Material" class="form-control" title="NombreMaterial" >
+                        <input type="text" id="NombreMat" placeholder="Material" class="form-control" title="NombreMaterial">
                     </div>
 
                     <div class="col-sm-3">

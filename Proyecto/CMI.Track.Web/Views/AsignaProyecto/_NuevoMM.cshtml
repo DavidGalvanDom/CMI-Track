@@ -6,7 +6,7 @@
             <button type="button" class="close btn-Cerrar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Asignar Materiales</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body ativa-scroll">
             <div class="clientAlertDlg"></div>
             @using (Html.BeginForm("Actualizar", "AsignarMateriales", FormMethod.Post, new { id = "NuevoAsignaMaterialesForm", name = "NuevoAsignaMaterialesForm", @class = "form-horizontal" }))
             {
@@ -39,7 +39,7 @@
                     <div class="col-sm-2"> <label class="control-label">Material</label></div>
                     <div class="col-sm-2">
                         <div class="input-group">
-                            <p  id="idMaterial" name="idMaterial" class="form-control" placeholder="Id" title="Id">IdMaterial</p>
+                            <p id="idMaterial" name="idMaterial" class="form-control" placeholder="Id" title="Id">IdMaterial</p>
                             <span class="input-group-btn">
                                 <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat">
                                     <span class="fa fa-search"></span>
