@@ -296,6 +296,18 @@ var Remision = {
         CMI.CierraMensajes();
         Remision.colOrdenEmbar.remove(id);
     },
+    CargaClienteProyecto: function (id){
+        CMI.CierraMensajes();
+        var url = contextPath + "Proyecto/ClienteProyecto"; // El url del controlador
+        $.post(url, { id: id }, function (data) {
+            if (data.Success === true) {
+                var cliente = data.Data;
+                Remision.AsignaCliente(cliente.id, cliente.NombreCliente, cliente.DireccionEntrega, cliente.ContactoCliente);
+            } else {
+                CMI.DespliegaErrorDialogo(data.Message);
+            }
+        }).fail(function () { CMI.DespliegaErrorDialogo("No se pudo borrar la Remision."); });
+    },
     AsignaCliente: function (idCliente, nombreClietne,
                             direccionEntrega, contactoCliente) {
         var that = Remision;
@@ -396,6 +408,7 @@ var Remision = {
             $(Remision.activeForm + ' #btnBuscarCliente').click(Remision.onBuscarCliente);
             Remision.IniciaDateControls();
             Remision.colOrdenEmbar = null;
+            Remision.CargaClienteProyecto($('#idProyectoSelect').val());
         });
     },
     IniciaDateControls: function () {

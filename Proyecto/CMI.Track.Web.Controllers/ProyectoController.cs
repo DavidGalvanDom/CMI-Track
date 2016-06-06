@@ -271,5 +271,31 @@ namespace CMI.Track.Web.Controllers
                 return Json(new { Success = false, Message = exp.Message });
             }
         }
+
+       /// <summary>
+       /// Se cargan los datos del cliene asignado al proyecto
+       /// </summary>
+       /// <param name="id">idProyecto</param>
+       /// <returns></returns>
+        public JsonResult ClienteProyecto(int id)
+        {
+            try
+            {
+                var objProyecto = ProyectoData.CargaProyecto(id, null);
+                Cliente objCliente = new Cliente()
+                {
+                    NombreCliente = objProyecto.nombreCliente,
+                    id = objProyecto.idCliente,
+                    ContactoCliente = objProyecto.contactoCliente,
+                    DireccionEntrega = objProyecto.direccionCliente
+                };
+
+                return Json(new { Success = true, Data = objCliente});
+            }
+            catch (Exception exp)
+            {
+                return Json(new { Success = false, Message = exp.Message });
+            }
+        }
     }
 }
