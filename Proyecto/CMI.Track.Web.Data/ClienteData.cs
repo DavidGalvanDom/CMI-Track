@@ -158,7 +158,7 @@ namespace CMI.Track.Web.Data
         /// <returns>value</returns>
         public static string Guardar(Models.Cliente pobjModelo)
         {
-            object[] paramArray = new object[9];
+            object[] paramArray = new object[10];
             try
             {             
                 paramArray[0] = pobjModelo.NombreCliente.ToUpper();
@@ -170,6 +170,7 @@ namespace CMI.Track.Web.Data
                 paramArray[6] = pobjModelo.PaisCliente.ToUpper();
                 paramArray[7] = pobjModelo.ContactoCliente.ToUpper();
                 paramArray[8] = pobjModelo.usuarioCreacion;
+                paramArray[9] = pobjModelo.Estatus;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
                 var result = db.ExecuteScalar("usp_InsertarCliente", paramArray);

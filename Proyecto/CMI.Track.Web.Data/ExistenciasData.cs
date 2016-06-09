@@ -15,15 +15,15 @@ using CMI.Track.Web.Models;
 
 namespace CMI.Track.Web.Data
 {
-    public class KardexData
+    public class ExistenciasData
     {
         /// <summary>
         /// Se carga el listado de kardex
         /// </summary>
         /// <returns>Lista categorias</returns>
-        public static List<Models.ListaKardex> CargaKardex(string idMaterial, string idAlmacen)
+        public static List<Models.ListaExistencias> CargaExistencias(string idMaterial, string idAlmacen)
         {
-            var listaKardex = new List<Models.ListaKardex>();
+            var listaExistencias = new List<Models.ListaExistencias>();
             object[] paramArray = new object[2];
             try
             {
@@ -32,24 +32,21 @@ namespace CMI.Track.Web.Data
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarKardex", paramArray))
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarExistencias", paramArray))
                 {
                     while (dataReader.Read())
                     {
-                        listaKardex.Add(new Models.ListaKardex()
+                        listaExistencias.Add(new Models.ListaExistencias()
                         {
                             id = Convert.ToInt32(dataReader["rank"]),
                             NombreGrupo = Convert.ToString(dataReader["nombreGrupo"]),
                             idMaterial = Convert.ToInt32(dataReader["idMaterial"]),
                             NombreMaterial = Convert.ToString(dataReader["nombreMaterial"]),
-                            NombreAlmacen = Convert.ToString(dataReader["nombreAlmacen"]),
-                            NomTipoMOvto = Convert.ToString(dataReader["nombreTipoMovtoMaterial"]),
-                            TipoMovto = Convert.ToString(dataReader["tipoMovtoMaterial"]),
-                            Cantidad = Convert.ToDouble(dataReader["cantidadKardex"]),
-                            Fecha = Convert.ToString(dataReader["fechaCreacion"]),
                             Ancho = Convert.ToDouble(dataReader["anchoMaterial"]),
+                            UMAncho = Convert.ToString(dataReader["nombreCortoUnidadMedidaAncho"]),
                             Largo = Convert.ToDouble(dataReader["largoMaterial"]),
-                            Documento = Convert.ToInt32(dataReader["documentoKardex"]),
+                            UMLargo = Convert.ToString(dataReader["nombreCortoUnidadMedidaLargo"]),
+                            Calidad = Convert.ToString(dataReader["calidadMaterial"]),
                             Inventario = Convert.ToInt32(dataReader["cantidadInventario"]),
                             
                         });
@@ -61,7 +58,7 @@ namespace CMI.Track.Web.Data
                 throw new ApplicationException(exp.Message, exp);
             }
 
-            return listaKardex;
+            return listaExistencias;
         }
 
        

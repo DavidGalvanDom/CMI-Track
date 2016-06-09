@@ -70,14 +70,17 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de categorias
         /// </summary>
         /// <returns>Lista Categorias</returns>
-       public static List<Models.ListaAsignaProyecto> CargaDocumentoMaterialProyecto()
+        public static List<Models.ListaAsignaProyecto> CargaDocumentoMaterialProyecto(int idProyecto, int idEtapa)
         {
             var listaMaterialesP = new List<Models.ListaAsignaProyecto>();
+            object[] paramArray = new object[2];
             try
             {
+                paramArray[0] = idProyecto;
+                paramArray[1] = idEtapa;
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
-                using (IDataReader dataReader = db.ExecuteReader("usp_CargarDocumentosMaterialesProyecto"))
+                using (IDataReader dataReader = db.ExecuteReader("usp_CargarDocumentosMaterialesProyecto", paramArray))
                 {
                     while (dataReader.Read())
                     {

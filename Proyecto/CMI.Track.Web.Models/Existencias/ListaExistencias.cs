@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CMI.Track.Web.Models
 {
-    public class ListaKardex
+    public class ListaExistencias
     {
         [Display(Name = "id", AutoGenerateField = false)]
         public int id { get; set; }
@@ -27,30 +27,20 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Nombre Material")]
         public string NombreMaterial { get; set; }
 
-        [Display(Name = "NombreAlmacen")]
-        public string NombreAlmacen { get; set; }
-
-        [Display(Name = "Nombre Tipo Movto")]
-        public string NomTipoMOvto { get; set; }
-
-        [Display(Name = "Tipo Movto")]
-        public string TipoMovto { get; set; }
-
-        [Display(Name = "Cantidad")]
-        public double Cantidad { get; set; }
-
-        [Display(Name = "Fecha")]
-        public string Fecha { get; set; }
-
-
         [Display(Name = "Ancho")]
         public double Ancho { get; set; }
+
+        [Display(Name = "UMAncho")]
+        public string UMAncho { get; set; }
 
         [Display(Name = "Largo")]
         public double Largo { get; set; }
 
-        [Display(Name = "Documento")]
-        public int Documento { get; set; }
+        [Display(Name = "UMLargo")]
+        public string UMLargo { get; set; }
+
+        [Display(Name = "Calidad")]
+        public string Calidad { get; set; }
 
         [Display(Name = "Inventario")]
         public double Inventario { get; set; }

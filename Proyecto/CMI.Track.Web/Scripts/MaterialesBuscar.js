@@ -17,7 +17,8 @@ var MaterialBuscar = {
                                             rowSelected.attributes.AnchoMaterial,
                                             rowSelected.attributes.LargoMaterial,
                                             rowSelected.attributes.PesoMaterial,
-                                            rowSelected.attributes.CalidadMaterial);
+                                            rowSelected.attributes.CalidadMaterial,
+                                            rowSelected.attributes.AnchoUM);
     },
     CargaGrid: function () {
         $('#cargandoInfoBM').show();

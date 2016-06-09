@@ -59,6 +59,7 @@
     <Compile Include="ClienteController.cs" />
     <Compile Include="DepartamentoController.cs" />
     <Compile Include="EtapaController.cs" />
+    <Compile Include="ExistenciasController.cs" />
     <Compile Include="Filtros\AutorizarLogin.cs" />
     <Compile Include="GenerarDocumeController.cs" />
     <Compile Include="GenerarEmbarqueController.cs" />

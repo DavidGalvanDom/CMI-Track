@@ -53,11 +53,11 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaDocumentoMaterialProyecto()
+        public JsonResult CargaDocumentoMaterialProyecto(int idProyecto, int idEtapa)
         {
             try
             {
-                var lstMateralesProyecto = AsignaProyectoData.CargaDocumentoMaterialProyecto();
+                var lstMateralesProyecto = AsignaProyectoData.CargaDocumentoMaterialProyecto(idProyecto,idEtapa);
 
                 return (Json(lstMateralesProyecto, JsonRequestBehavior.AllowGet));
             }

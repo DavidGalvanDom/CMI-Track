@@ -1,14 +1,14 @@
-﻿//js de catalogo de kardex.
+﻿//js de catalogo de existencias.
 //David Jasso
 //02/Febrero/2016
 
-var Kardex = {
+var Existencias = {
     accClonar: false,
     accEscritura: false,
     accBorrar: false,
     activeForm: '',
-    colKardex: {},
-    gridKardex: {},
+    colExistencias: {},
+    gridExistencias: {},
     colAlmacen: [],
     Inicial: function () {
         $.ajaxSetup({ cache: false });
@@ -30,58 +30,41 @@ var Kardex = {
         }
         else {
             $('#bbGrid-clear')[0].innerHTML = '';
-            Kardex.CargaGrid(idM, $('#idAlmacen').val());
+            Existencias.CargaGrid(idM, $('#idAlmacen').val());
             $('#Imprimir').show();
         }
     },
     onImprimir: function () {
-        var templateURL = contextPath + "Content/template/rpt_kardex.html";
+        var templateURL = contextPath + "Content/template/rpt_existencias.html";
         var rptTemplate = '';
         var tabla_html;
         var tablatmp = '';
         var tableData;
         var tablaheader;
-        var total = 0;
-        var Existe = 0;
+
         var tcompleta = ''
         var f = new Date();
         $.get(templateURL, function (data) { rptTemplate = data; });
-      //  var urlHeader = contextPath + "Kardex/CargaHeaderMovimientos?id=" + $('#idDoc').val(); // El url del controlador
-       // $.getJSON(urlHeader, function (data) {
-        //    tablaheader = data;
-         //   for (j = 0; j < tablaheader.length; j++) {
-            
-                // rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
-                // rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
-                // rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
-                // rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
-                // rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
-           // }
-
-            var url = contextPath + "Kardex/CargaKardex?idMaterial=" + $('#idMaterialM').val() + "&idAlmacen=" + $('#idAlmacen').val(); // El url del controlador
+   
+        var url = contextPath + "Existencias/CargaExistencias?idMaterial=" + $('#idMaterialM').val() + "&idAlmacen=" + $('#idAlmacen').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 tableData = data;
                 for (i = 0; i < tableData.length; i++) {
                     tcompleta += "<tr>";
-                    tcompleta += "<td>" + tableData[i]['NombreGrupo'] + "</td>";
+                    tcompleta += "<td colspan='2'>" + tableData[i]['NombreGrupo'] + "</td>";
                     tcompleta += "<td>" + tableData[i]['idMaterial'] + "</td>";
                     tcompleta += "<td>" + tableData[i]['NombreMaterial'] + "</td>";
-                    tcompleta += "<td>" + "</td>";
                     tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
+                    tcompleta += "<td>" + tableData[i]['UMAncho'] + "</td>";
                     tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Documento'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['NomTipoMOvto'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['TipoMovto'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Fecha'] + "</td>";
+                    tcompleta += "<td>" + tableData[i]['UMLargo'] + "</td>";
+                    tcompleta += "<td>" + tableData[i]['Calidad'] + "</td>";
+                    tcompleta += "<td>" + tableData[i]['Inventario'] + "</td>";
                     tcompleta += "</tr>";
-                    total += tableData[i]['Cantidad'];
-                    Existe = tableData[i]['Inventario'];
+      
                 }
                 rptTemplate = rptTemplate.replace('vrAlmacen', $('#idAlmacen').val());
                 rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
-                rptTemplate = rptTemplate.replace('vrSaldo', total);
-                rptTemplate = rptTemplate.replace('vrExistencias', Existe);
                 rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
                 tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
                 var tmpElemento = document.createElement('a');
@@ -89,7 +72,7 @@ var Kardex = {
                 tabla_html = tablatmp.replace(/ /g, '%20');
                 tmpElemento.href = data_type + ', ' + tabla_html;
                 //Asignamos el nombre a nuestro EXCEL
-                tmpElemento.download = 'Kardex.xls';
+                tmpElemento.download = 'Existencias.xls';
                 // Simulamos el click al elemento creado para descargarlo
                 tmpElemento.click();
 
@@ -112,7 +95,7 @@ var Kardex = {
                 backdrop: 'static',
                 keyboard: true
             }, 'show');
-            MaterialBuscar.parent = Kardex;
+            MaterialBuscar.parent = Existencias;
             MaterialBuscar.Inicial();
             $(btn).removeAttr("disabled");
         }).fail(function () {
@@ -125,22 +108,22 @@ var Kardex = {
         $('#idMaterialSelect').val(id);
         $('#buscar-Material').modal('hide');
         $('#bbGrid-clear')[0].innerHTML = '';
-        Kardex.CargarColeccionAlmacen();
+        Existencias.CargarColeccionAlmacen();
         idM = id;
  
     },
     CargarColeccionAlmacen: function () {
-        var form = Kardex.activeForm;
-        if (Kardex.colAlmacen.length < 1) {
+        var form = Existencias.activeForm;
+        if (Existencias.colAlmacen.length < 1) {
             var url = contextPath + "Almacen/CargaAlmacenesActivos/"; // El url del controlador
             $.getJSON(url, function (data) {
-                Kardex.colAlmacen = data;
-                Kardex.CargaListaAlmacenes(form);
+                Existencias.colAlmacen = data;
+                Existencias.CargaListaAlmacenes(form);
             }).fail(function (e) {
                 CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de las unidades de medida");
             });
         } else {
-            Kardex.CargaListaAlmacenes(form);
+            Existencias.CargaListaAlmacenes(form);
         }
     },
     CargaListaAlmacenes: function (form) {
@@ -148,7 +131,7 @@ var Kardex = {
 
         select.append('<option> </option>');
 
-        $.each(Kardex.colAlmacen, function (i, item) {
+        $.each(Existencias.colAlmacen, function (i, item) {
             select.append('<option value="'
                                  + item.id
                                  + '">'
@@ -160,7 +143,7 @@ var Kardex = {
     },
     ValidaPermisos: function () {
         var permisos = localStorage.modPermisos,
-            modulo = Kardex;
+            modulo = Existencias;
         modulo.accEscritura = permisos.substr(1, 1) === '1' ? true : false;
         modulo.accBorrar = permisos.substr(2, 1) === '1' ? true : false;
         modulo.accClonar = permisos.substr(3, 1) === '1' ? true : false;
@@ -172,33 +155,33 @@ var Kardex = {
 
     CargaGrid: function (id,idAlmacen) {
         $('#cargandoInfo').show();
-        var url = contextPath + "Kardex/CargaKardex?idMaterial=" + id + "&idAlmacen=" + idAlmacen; // El url del controlador
+        var url = contextPath + "Existencias/CargaExistencias?idMaterial=" + id + "&idAlmacen=" + idAlmacen; // El url del controlador
         $.getJSON(url, function (data) {
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            Kardex.colKardex = new Backbone.Collection(data);
-            var bolFilter = Kardex.colKardex.length > 0 ? true : false;
+            Existencias.colExistencias = new Backbone.Collection(data);
+            var bolFilter = Existencias.colExistencias.length > 0 ? true : false;
             if (bolFilter) {
-                gridKardex = new bbGrid.View({
+                gridExistencias = new bbGrid.View({
                     container: $('#bbGrid-clear'),
                     rows: 15,
                     rowList: [5, 15, 25, 50, 100],
                     enableSearch: true,
                     actionenable: false,
                     detalle: false,
-                    clone: Kardex.accClonar,
-                    editar: Kardex.accEscritura,
-                    borrar: Kardex.accBorrar,
-                    collection: Kardex.colKardex,
+                    clone: Existencias.accClonar,
+                    editar: Existencias.accEscritura,
+                    borrar: Existencias.accBorrar,
+                    collection: Existencias.colExistencias,
                     colModel: [{ title: '#', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Grupo', name: 'NombreGrupo', filter: true, filterType: 'input' },
                                { title: 'id Material', name: 'idMaterial', filter: true, filterType: 'input' },
                                { title: 'Material', name: 'NombreMaterial', filter: true, filterType: 'input' },
-                               { title: 'Almacen', name: 'NombreAlmacen', filter: true, filterType: 'input' },
-                               { title: 'Documento', name: 'Documento', filter: true, filterType: 'input' },
-                               { title: 'Movimiento', name: 'NomTipoMOvto', filter: true, filterType: 'input' },
-                               { title: 'Tipo Movimiento', name: 'TipoMovto', filter: true, filterType: 'input' },
-                               { title: 'Cantidad', name: 'Cantidad', filter: true, filterType: 'input' },
-                               { title: 'Fecha', name: 'Fecha', filter: true }]
+                               { title: 'Ancho', name: 'Ancho', filter: true, filterType: 'input' },
+                               { title: 'UM Ancho', name: 'UMAncho', filter: true, filterType: 'input' },
+                               { title: 'Largo', name: 'Largo', filter: true, filterType: 'input' },
+                               { title: 'UM Largo', name: 'UMLargo', filter: true, filterType: 'input' },
+                               { title: 'Calidad', name: 'Calidad', filter: true, filterType: 'input' },
+                               { title: 'Existencia', name: 'Inventario', filter: true }]
                 });
                 $('#cargandoInfo').hide();
             } else {
@@ -214,5 +197,5 @@ var Kardex = {
 };
 
 $(function () {
-    Kardex.Inicial();
+    Existencias.Inicial();
 });

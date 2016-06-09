@@ -27,6 +27,7 @@ var RecepecionCompra = {
         $("#btnBuscarReq").click(that.onBuscarRequerimiento);
         $("#btnBuscarRequisicion").click(that.onBuscarRequisicion);
         $("#btn-GuardaNew").click(that.onConfirmar);
+        $('#groupGuardar').hide();
         $('#etapaRow').hide();
         $('#btnCollapse').hide();
     },
@@ -127,6 +128,7 @@ var RecepecionCompra = {
                         dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
                     }
                 }
+           
             });
 
             //Se hace el post para guardar la informacion
@@ -248,7 +250,7 @@ var RecepecionCompra = {
         RecepecionCompra.IniciaDateControls();
 
         $('#myCollapsible').collapse('hide');
-        $('#groupGuardar').hide();
+        $('#groupGuardar').show();
         $('#btnCollapse').show();
         $('#requisicionRow').show();
 
@@ -279,7 +281,8 @@ var RecepecionCompra = {
     },
     CargaGrid: function () {
         var url = contextPath + "RecepcionRequisicion/CargaDetalleRequisicion?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idRequisicion=' + $('#idRequisicionSelect').val(),
-            total = 0;// El url del controlador
+            total = 0,
+            validar = 0; // El url del controlador
         $('#cargandoInfo').show();
         $.getJSON(url, function (data) {
             $('#DatosFactura').show();
@@ -287,7 +290,14 @@ var RecepecionCompra = {
 
             $.each(data, function (index, value) {
                 total = total + parseFloat(value.cantidadRecibida);
-                value.cantidadRecibida = " <input onblur='RecepecionCompra.focusOut(this);' onFocus='RecepecionCompra.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
+                if (value.Existencia != 0) {
+                    validar = 1;
+                }
+                if (value.Existencia === 0) {
+                    value.cantidadRecibida = " <input disabled onblur='RecepecionCompra.focusOut(this);' onFocus='RecepecionCompra.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
+                } else {
+                    value.cantidadRecibida = " <input onblur='RecepecionCompra.focusOut(this);' onFocus='RecepecionCompra.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.cantidadRecibida + "' /> ";
+                }
             });
             $('#lblTotalReci').text(total);
             $('#bbGrid-DetalleRequisicionCompras')[0].innerHTML = "";
@@ -324,6 +334,11 @@ var RecepecionCompra = {
                                { title: 'Total', name: 'Total', total: 0 }]
                 });
                 $('#cargandoInfo').hide();
+                if (validar === 1) {
+                    $('#btn-GuardaNew').show();
+                } else {
+                    $('#btn-GuardaNew').hide();
+                }
             }
             else {
                 CMI.DespliegaInformacion("No se encontraron Materiales registradas para la requisición seleccionada.");

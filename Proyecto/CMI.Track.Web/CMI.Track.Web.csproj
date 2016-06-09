@@ -157,6 +157,7 @@
     <Content Include="Scripts\EmbarqueTablet.js" />
     <Content Include="Scripts\Etapa.js" />
     <Content Include="Scripts\EtapasBuscar.js" />
+    <Content Include="Scripts\Existencias.js" />
     <Content Include="Scripts\GenerarDocumentos.js" />
     <Content Include="Scripts\GenerarDocumentos.min.js">
       <DependentUpon>GenerarDocumentos.js</DependentUpon>
@@ -1041,6 +1042,7 @@
     <Content Include="Views\RecepcionRemision\Index.cshtml" />
     <Content Include="Views\Remision\_buscarRemision.cshtml" />
     <Content Include="Views\OrdenEmbarque\_Actualiza.cshtml" />
+    <Content Include="Views\Existencias\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

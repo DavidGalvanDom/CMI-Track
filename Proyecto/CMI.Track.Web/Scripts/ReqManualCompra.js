@@ -383,20 +383,17 @@ var ReqMCompra = {
        
     },
     AsignaMaterial: function (id, NombreMaterial,
-                       AnchoMaterial, LargoMaterial,PesoMaterial,CalidadMaterial) {
+                       AnchoMaterial, LargoMaterial, 
+		       PesoMaterial, CalidadMaterial, 
+		       AnchoUM) {
         $('#idMaterialSelect').val(id);
         $('#NombreMat').val(NombreMaterial);
         $('#AnchoMat').val(AnchoMaterial);
         $('#LongitudMat').val(LargoMaterial);
         $('#CalidadAcero').val(CalidadMaterial);
         $('#PesoMat').val(PesoMaterial);
-        $('#buscar-Material').modal('hide');
-       
-        //Se carga el grid de PlanosMontaje asignadas a la etapa
-      //  $('#bbGrid-PlanosMontaje')[0].innerHTML = "";
-        //  ReqMCompra.CargaGrid();
-      
-    
+        $('#Unidad').val(AnchoUM);
+        $('#buscar-Material').modal('hide');    
     },
     CargarColeccionOrigenReq: function () {
         var formOrigen = ReqMCompra.activeForm;

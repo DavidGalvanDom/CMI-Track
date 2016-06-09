@@ -18,6 +18,7 @@ USE CMITrackVer1
 	8.  Procesos.
 	9.  Calidad Proceso.
 	10. Unidades de Medida.
+	11. OrigenesRequisicion.
 */
 
 BEGIN -- 1. Estatus
@@ -105,6 +106,7 @@ BEGIN -- 5. Menus
 	INSERT INTO cmiModulos VALUES (31,GETDATE(),GETDATE(),1,'Asigna Materiales Proyecto',	'AsignaProyecto/Index',			5)
 	INSERT INTO cmiModulos VALUES (32,GETDATE(),GETDATE(),1,'Movimientos Materiales',		'MovimientoMaterial/Index',		6)
 	INSERT INTO cmiModulos VALUES (33,GETDATE(),GETDATE(),1,'Kardex',						'Kardex/Index',					7)
+	INSERT INTO cmiModulos VALUES (55,GETDATE(),GETDATE(),1,'Existencias',					'Existencias/Index',			8)
 	--Produccion
 	INSERT INTO cmiModulos VALUES (34,GETDATE(),GETDATE(),1,'Orden de Produccion',			'OrdenProduccion/Index',		1)
 	INSERT INTO cmiModulos VALUES (35,GETDATE(),GETDATE(),1,'Impresion Codigos Barra',		'ImpresionCodigoBarra/Index',	2)
@@ -158,6 +160,7 @@ BEGIN -- 5. Menus
 	INSERT INTO cmiModuloMenuGrupo VALUES (4,31)
 	INSERT INTO cmiModuloMenuGrupo VALUES (4,32)
 	INSERT INTO cmiModuloMenuGrupo VALUES (4,33)
+	INSERT INTO cmiModuloMenuGrupo VALUES (4,55)
 	--Produccion
 	INSERT INTO cmiModuloMenuGrupo VALUES (5,34)
 	INSERT INTO cmiModuloMenuGrupo VALUES (5,35)
@@ -214,4 +217,12 @@ BEGIN -- 10. Unidades de Medida
 							VALUES	(GETDATE(),		GETDATE(),				1,			'M',						'METRO/S',			1),
 									(GETDATE(),		GETDATE(),				1,			'KG',						'KILOGRAMO/S',		1),
 									(GETDATE(),		GETDATE(),				1,			'PT',						'PIEZA/S',			1)
+END
+
+BEGIN  -- 11 OrigenesRequisicion
+
+INSERT INTO [cmiOrigenesRequisicion] ([fechaCreacion],[fechaUltModificacion],[idEstatus],[nombreOrigenRequisicion],[usuarioCreacion])
+     VALUES (GETDATE(),		 GETDATE(),		1,		'INICIAL',			1 ),
+			(GETDATE(),		 GETDATE(),		1,		'COMPLEMENTO',		1 )
+
 END

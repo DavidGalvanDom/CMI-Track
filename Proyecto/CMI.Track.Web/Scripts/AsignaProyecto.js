@@ -270,7 +270,7 @@ var MaterialesProyecto = {
     onCerrar: function () {
         $('#idDoc').empty();
         var ultimo = 0,
-            url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto/"; // El url del controlador
+            url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val(); // El url del controlador
         $.getJSON(url, function (data) {
             MaterialesProyecto.colDocumentos = data;
             var select = $('#idDoc').empty();
@@ -537,7 +537,7 @@ var MaterialesProyecto = {
     CargarColeccionDocumentos: function () {
         var form = MaterialesProyecto.activeForm;
         if (MaterialesProyecto.colDocumentos.length < 1) {
-            var url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto/"; // El url del controlador
+            var url = contextPath + "AsignaProyecto/CargaDocumentoMaterialProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val(); // El url del controlador
             $.getJSON(url, function (data) {
                 MaterialesProyecto.colDocumentos = data;
                 MaterialesProyecto.CargaListaDocumentos(form);
@@ -604,7 +604,12 @@ var MaterialesProyecto = {
                 if (value.Cantidad === 0) {
                     validar = 1;
                 }
-                value.Cantidad = " <input onblur='MaterialesProyecto.focusOut(this);' onFocus='MaterialesProyecto.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
+                if (value.Cantidad === 0) {                    
+                    value.Cantidad = " <input onblur='MaterialesProyecto.focusOut(this);' onFocus='MaterialesProyecto.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
+                } else {
+                    value.Cantidad = " <input disabled onblur='MaterialesProyecto.focusOut(this);' onFocus='MaterialesProyecto.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
+                }
+                
             });
             $('#lblTotalReci').text(total);
             $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
