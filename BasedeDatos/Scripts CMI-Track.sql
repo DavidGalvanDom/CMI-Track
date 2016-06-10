@@ -1,4 +1,4 @@
-USE CMITrackVer1
+USE CMITrack
 /*	Configuracion inicial
 	---------------------
 	
@@ -19,6 +19,7 @@ USE CMITrackVer1
 	9.  Calidad Proceso.
 	10. Unidades de Medida.
 	11. OrigenesRequisicion.
+	12. Permisos.
 */
 
 BEGIN -- 1. Estatus
@@ -44,10 +45,6 @@ BEGIN -- 3. Usuarios
 					VALUES	(GETDATE(), 		GETDATE(), 				1, 				'ADMIN', 			'ADMIN' ,				'ADMIN'
 							,1,					'ADMIN@CMI.TRACK.COM'	,'ADMIN',		'1',				1,						'CMI'
 							,'TRACK',			NULL,					NULL)
-	
-	INSERT INTO cmiPermisos VALUES (1,1,GETDATE(),GETDATE(),1,1,1,1,1,1)
-	INSERT INTO cmiPermisos VALUES (1,2,GETDATE(),GETDATE(),1,1,1,1,1,1)
-	INSERT INTO cmiPermisos VALUES (1,3,GETDATE(),GETDATE(),1,1,1,1,1,1)
 END
 
 BEGIN -- 4. VarControl
@@ -219,10 +216,16 @@ BEGIN -- 10. Unidades de Medida
 									(GETDATE(),		GETDATE(),				1,			'PT',						'PIEZA/S',			1)
 END
 
-BEGIN  -- 11 OrigenesRequisicion
+BEGIN -- 11. OrigenesRequisicion
 
 INSERT INTO [cmiOrigenesRequisicion] ([fechaCreacion],[fechaUltModificacion],[idEstatus],[nombreOrigenRequisicion],[usuarioCreacion])
      VALUES (GETDATE(),		 GETDATE(),		1,		'INICIAL',			1 ),
 			(GETDATE(),		 GETDATE(),		1,		'COMPLEMENTO',		1 )
 
+END
+
+BEGIN -- 12. Permisos
+	INSERT INTO cmiPermisos VALUES (1,1,GETDATE(),GETDATE(),1,1,1,1,1,1)
+	INSERT INTO cmiPermisos VALUES (1,2,GETDATE(),GETDATE(),1,1,1,1,1,1)
+	INSERT INTO cmiPermisos VALUES (1,3,GETDATE(),GETDATE(),1,1,1,1,1,1)
 END
