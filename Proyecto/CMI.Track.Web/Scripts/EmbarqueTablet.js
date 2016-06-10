@@ -262,6 +262,8 @@ var EmbarqueTablet = {
                                 if (EmbarqueTablet.gridEmbarque.colModel[6].total === 0) { //Encabezado de Saldo en total
                                     CMI.DespliegaInformacion("La Orden de Embarque ya fue registrada en su totalidad.");
                                     $('#codBarras').hide();
+                                } else {
+                                    CMI.DespliegaInformacion("Se registro el codigo ( " + codigo + ")");
                                 }
                             } else {
                                 CMI.DespliegaError(result.Message);
