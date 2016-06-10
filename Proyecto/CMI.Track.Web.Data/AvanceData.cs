@@ -42,6 +42,7 @@ namespace CMI.Track.Web.Data
                         {
                             id              = Convert.ToString(dataReader["id"]),
                             codigoBarra     = Convert.ToString(dataReader["codigoBarras"]),
+                            codigo          = Convert.ToString(dataReader["codigo"]),
                             tipo            = Convert.ToString(dataReader["tipo"]),
                             perfil          = Convert.ToString(dataReader["perfil"]),
                             clase           = Convert.ToString(dataReader["clase"]),
@@ -83,6 +84,7 @@ namespace CMI.Track.Web.Data
                         {
                             id = Convert.ToString(dataReader["id"]),
                             codigoBarra = Convert.ToString(dataReader["codigoBarras"]),
+                            codigo = Convert.ToString(dataReader["codigo"]),
                             tipo = Convert.ToString(dataReader["tipo"]),
                             perfil = Convert.ToString(dataReader["perfil"]),
                             clase = Convert.ToString(dataReader["clase"]),

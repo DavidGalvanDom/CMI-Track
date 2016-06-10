@@ -1,3 +1,11 @@
-Nombre de la base de datos
+CREATE LOGIN CMITrackUser WITH PASSWORD = 'Us3RCmi7rAck';
+GO
+CREATE DATABASE CMITrack;
+GO
+USE CMITrack
+GO
+CREATE USER CMITrackUser FROM LOGIN CMITrackUser;
+GO
+EXEC sp_addrolemember 'db_owner', 'CMITrackUser';
+GO
 
-CMITrack
