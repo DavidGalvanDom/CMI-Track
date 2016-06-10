@@ -21,6 +21,8 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Codigo de Barra")]
         public string codigoBarra { get; set; }
 
+        public string codigo { get; set; }
+
         [Display(Name = "Tipo")]
         public string tipo { get; set; }
 
