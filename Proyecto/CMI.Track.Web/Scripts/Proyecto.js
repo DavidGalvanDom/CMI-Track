@@ -105,7 +105,7 @@ var Proyecto = {
                     }
                     $.ajax({
                         type: "POST",
-                        url: '/Proyecto/SubirArchivo',
+                        url: contextPath + '/Proyecto/SubirArchivo',
                         contentType: false,
                         processData: false,
                         data: data,

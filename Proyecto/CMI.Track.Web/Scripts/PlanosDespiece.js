@@ -193,7 +193,7 @@ var PlanosDespiece = {
                     }
                     $.ajax({
                         type: "POST",
-                        url: '/PlanosDespiece/SubirArchivo',
+                        url: contextPath + '/PlanosDespiece/SubirArchivo',
                         contentType: false,
                         processData: false,
                         data: data,

@@ -142,7 +142,7 @@ var PlanosMontaje = {
                     }
                     $.ajax({
                         type: "POST",
-                        url: '/PlanosMontaje/SubirArchivo',
+                        url: contextPath + '/PlanosMontaje/SubirArchivo',
                         contentType: false,
                         processData: false,
                         data: data,
