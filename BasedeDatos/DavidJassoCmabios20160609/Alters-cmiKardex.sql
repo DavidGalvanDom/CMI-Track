@@ -1,1 +1,0 @@
-alter table cmiKardex add documentoKardex int default 0
