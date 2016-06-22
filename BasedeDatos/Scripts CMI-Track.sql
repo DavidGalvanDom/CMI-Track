@@ -94,7 +94,7 @@ BEGIN -- 5. Menus
 	INSERT INTO cmiModulos VALUES (23,GETDATE(),GETDATE(),1,'Marcas',						'Marcas/Index',					5)
 	INSERT INTO cmiModulos VALUES (24,GETDATE(),GETDATE(),1,'SubMarcas',					'SubMarcas/Index',				6)
 	INSERT INTO cmiModulos VALUES (25,GETDATE(),GETDATE(),1,'Lista General',				'ListaGeneral/Index',			7)
-	INSERT INTO cmiModulos VALUES (26,GETDATE(),GETDATE(),1,'General Documentos',			'GenerarDocume/Index',			8)
+	INSERT INTO cmiModulos VALUES (26,GETDATE(),GETDATE(),1,'Generacion de Documentos',			'GenerarDocume/Index',			8)
 	--Requisiciones
 	INSERT INTO cmiModulos VALUES (27,GETDATE(),GETDATE(),1,'Requerimiento',				'ReqGralMaterial/Index',		1)
 	INSERT INTO cmiModulos VALUES (28,GETDATE(),GETDATE(),1,'Requisicion Manual',			'ReqManualCompra/Index',		2)
