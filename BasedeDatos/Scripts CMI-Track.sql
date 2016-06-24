@@ -19,7 +19,8 @@ USE CMITrack
 	9.  Calidad Proceso.
 	10. Unidades de Medida.
 	11. OrigenesRequisicion.
-	12. Permisos.
+	12. Tipos de Moviemientos para Materiales
+	13. Permisos.
 */
 
 BEGIN -- 1. Estatus
@@ -224,7 +225,13 @@ INSERT INTO [cmiOrigenesRequisicion] ([fechaCreacion],[fechaUltModificacion],[id
 
 END
 
-BEGIN -- 12. Permisos
+BEGIN -- 12. Tipos de Movimientos para Materiales
+
+INSERT INTO cmiTiposMovtoMaterial VALUES (getdate(),getdate(),1,'ENTRADA POR ALMACEN','E',1),
+                                         (getdate(),getdate(),1,'SALIDA POR ALMACEN','S',1);
+END
+
+BEGIN -- 13. Permisos
 	INSERT INTO cmiPermisos VALUES (1,1,GETDATE(),GETDATE(),1,1,1,1,1,1)
 	INSERT INTO cmiPermisos VALUES (1,2,GETDATE(),GETDATE(),1,1,1,1,1,1)
 	INSERT INTO cmiPermisos VALUES (1,3,GETDATE(),GETDATE(),1,1,1,1,1,1)
