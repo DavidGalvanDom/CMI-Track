@@ -296,7 +296,8 @@ var MaterialesProyecto = {
         });
     },
     onGuardarM: function () {
-        var btn = this;
+        var btn = this,
+            form = MaterialesProyecto.activeForm;
         CMI.CierraMensajes();
         CMI.botonMensaje(true, btn, 'Agregar');
         if ($("form").valid()) {
@@ -318,6 +319,9 @@ var MaterialesProyecto = {
                         MaterialesProyecto.AjustaModal();
                     } else {
                         CMI.DespliegaErrorDialogo(data.Message);
+                        if (data.UM === true) {
+                            $(form + ' #Unidad').addClass('input-validation-error');
+                        }
                     }
                 }).fail(function () {
                     CMI.DespliegaErrorDialogo("Error al guardar la informacion");

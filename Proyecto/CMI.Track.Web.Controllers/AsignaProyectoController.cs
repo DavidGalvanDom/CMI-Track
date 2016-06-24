@@ -128,7 +128,15 @@ namespace CMI.Track.Web.Controllers
                 }
                 catch (Exception exp)
                 {
-                    return Json(new { Success = false, Message = exp.Message });
+                    if (exp.Message.IndexOf("idUnidadMedida") > 0)
+                    {
+                        return Json(new { Success = false, UM = true, Message = "Debe seleccionar la unidad de Medida ( UM )" });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Message = exp.Message });
+                    }
+                    
                 }
             }
 
