@@ -286,10 +286,10 @@ var GenDocumentos = {
         tabla += "<table><tr><td colspan='6' style='border-bottom:1pt solid black;'></td><td style='border-left:1pt solid black;border-bottom:1pt solid black;'>  Otros</td><td style='border-right:1pt solid black;border-bottom:1pt solid black;'>   </td></tr></table>";
 
         tabla += "<table><tr><td colspan='4'>Informacion trasmital:</td></tr></table>";
-        tabla += "<table  border='2' ><tr align='center'><td ><strong>Etapa</strong></td><td>" +
+        /*tabla += "<table  border='2' ><tr align='center'><td ><strong>Etapa</strong></td><td>" +
                 "<strong>Montaje</strong></td><td ><strong>Clave</strong></td><td colspan='1'>" +
                 "<strong>Despiece</strong></td><td colspan='1'><strong>Clave</strong></td>" +
-                "</tr></table>";
+                "</tr></table>";*/
 
         tcompleta = "<table border='2'><tr><td><table border='1'>";
         tcompleta += tblDataRow;
