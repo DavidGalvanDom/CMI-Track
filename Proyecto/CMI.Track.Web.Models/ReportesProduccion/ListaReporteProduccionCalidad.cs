@@ -33,6 +33,8 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Serie")]
         public string serie { get; set; }
 
+        public string piezas { get; set; }
+
         [Display(Name = "Peso")]
         public string peso { get; set; }
 

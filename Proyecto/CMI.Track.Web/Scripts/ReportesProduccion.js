@@ -183,6 +183,11 @@ var ReportesProduccion = {
                 $("#dtpFechaFin").hide();
                 break;
         }
+        var nombreReporte = $('#tipoReporte option:selected').text();
+        var tipoReporte = $('#tipoReporte').val();
+        $('#nombreTipoReporte').html(tipoReporte !== "" ? " - " + nombreReporte : "");
+        $('#bbGrid-ReporteProduccion')[0].innerHTML = "";
+        $('#Imprimir').hide();
     },
     AsignaProyecto: function (idProyecto, Revision, NombreProyecto, CodigoProyecto, FechaInicio, FechaFin) {
         $('#idProyectoSelect').val(idProyecto);
@@ -266,16 +271,17 @@ var ReportesProduccion = {
                                       { title: 'Fecha', name: 'fecha' },
                                       { title: 'Proyecto', name: 'proyecto' },
                                       { title: 'Etapa', name: 'etapa' },
-                                      { title: 'Marca', name: 'marca', width: '8%' },
-                                      { title: 'Serie', name: 'serie', width: '4%' },
-                                      { title: 'Peso', name: 'peso', width: '4%' },
+                                      { title: 'Marca', name: 'marca' },
+                                      { title: 'Serie', name: 'serie' },
+                                      { title: 'Piezas', name: 'piezas' },
+                                      { title: 'Peso', name: 'peso' },
                                       { title: 'Usuario', name: 'usuario' },
-                                      { title: 'L', name: 'longitud', width: '3%' },
-                                      { title: 'B', name: 'barrenacion', width: '3%' },
-                                      { title: 'P', name: 'placa', width: '3%' },
-                                      { title: 'S', name: 'soldadura', width: '3%' },
-                                      { title: 'PI', name: 'pintura', width: '3%' },
-                                      { title: 'Estatus', name: 'estatus', width: '8%' },
+                                      { title: 'L', name: 'longitud' },
+                                      { title: 'B', name: 'barrenacion' },
+                                      { title: 'P', name: 'placa' },
+                                      { title: 'S', name: 'soldadura' },
+                                      { title: 'PI', name: 'pintura' },
+                                      { title: 'Estatus', name: 'estatus' },
                                       { title: 'Observaciones', name: 'observaciones' }]
                         });
                         $('#cargandoInfo').hide();
@@ -421,6 +427,7 @@ var ReportesProduccion = {
                                       { title: 'Clase', name: 'clase' },
                                       { title: 'Codigo', name: 'elemento' },
                                       { title: 'Serie', name: 'idSerie' },
+                                      { title: 'Piezas', name: 'piezas' },
                                       { title: 'Dias', name: 'diasProceso' },
                                       { title: 'Fecha Ini', name: 'fechaInicio' },
                                       { title: 'Corte', name: 'corte' },
@@ -590,8 +597,8 @@ var ReportesProduccion = {
         header += "<tr>";
         header += "<td colspan='3'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='10' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='10' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='11' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='11' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
@@ -803,8 +810,8 @@ var ReportesProduccion = {
         header += "<tr>";
         header += "<td colspan='2'><img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' /></td>";
         header += "<td > <table> ";
-        header += "        <tr> <td colspan='13' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
-        header += "        <tr> <td colspan='13' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
+        header += "        <tr> <td colspan='14' align='center'><strong> " + title + " </strong></td> </tr><tr > <td colspan='2'> </td> </tr> ";
+        header += "        <tr> <td colspan='14' align='center'><strong> " + proyecto + " </strong></td> </tr><tr> <td colspan='2'> </td></tr> ";
         header += "      </table>";
         header += " </td> ";
         header += "<td> ";
