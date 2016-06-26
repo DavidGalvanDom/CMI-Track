@@ -76,56 +76,61 @@ var ReqMCompra = {
         var total = 0;
         var tcompleta = ''
         var f = new Date();
-        $.get(templateURL, function (data) { rptTemplate = data; });
-        var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
-        $.getJSON(urlHeader, function (data) {
-            tablaheader = data;
-            for (j = 0; j < tablaheader.length; j++) {
-                rptTemplate = rptTemplate.replace('vrEtapa', 'ETAPA #'+ tablaheader[j]['idEtapa']);
-                rptTemplate = rptTemplate.replace('vrDesEtapa', tablaheader[j]['NombreEtapa']);
-                rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
-                rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
-                rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
-                rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
-                rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
-            }
-       
-            var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idRequisicion=" + $('#idReq').val(); // El url del controlador
-            $.getJSON(url, function (data) {
-                tableData = data;
-                for (i = 0; i < tableData.length; i++) {
-                    tcompleta += "<tr>";
-                    tcompleta += "<td></td>";
-                    tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Unidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['nombreMaterial'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Calidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Largo'] *0.3048 + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Peso'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso'] + "</td>";
-                    tcompleta += "</tr>";
-                    total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
-                  
-                }
-                
-                rptTemplate = rptTemplate.replace('vrTotal', total);
-                rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
-                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
-                tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
-                var tmpElemento = document.createElement('a');
-                var data_type = 'data:application/vnd.ms-excel';
-               tabla_html = tablatmp.replace(/ /g, '%20');
-                tmpElemento.href = data_type + ', ' + tabla_html;
-                //Asignamos el nombre a nuestro EXCEL
-                tmpElemento.download = 'Requisicion.xls';
-                // Simulamos el click al elemento creado para descargarlo
-                tmpElemento.click();
 
-                //getJSON fail
-            }).fail(function (e) {
-                CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
+        $.get(templateURL, function (data) {
+
+            rptTemplate = data;
+            var urlHeader = contextPath + "ReqManualCompra/CargaInfoRequisicion?idProyecto=" + $('#idProyectoSelect').val() + "&idEtapa=" + $('#idEtapaSelect').val() + "&idRequerimiento=" + $('#idRequerimientoSelect').val(); // El url del controlador
+
+            $.getJSON(urlHeader, function (data) {
+                tablaheader = data;
+                for (j = 0; j < tablaheader.length; j++) {
+                    rptTemplate = rptTemplate.replace('vrEtapa', 'ETAPA #' + tablaheader[j]['idEtapa']);
+                    rptTemplate = rptTemplate.replace('vrDesEtapa', tablaheader[j]['NombreEtapa']);
+                    rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
+                    rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
+                    rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
+                    rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
+                    rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
+                }
+
+                var url = contextPath + "ReqManualCompra/CargaDetalleManual?idRequerimiento=" + $('#idRequerimientoSelect').val() + "&idRequisicion=" + $('#idReq').val(); // El url del controlador
+                $.getJSON(url, function (data) {
+                    tableData = data;
+                    for (i = 0; i < tableData.length; i++) {
+                        tcompleta += "<tr>";
+                        tcompleta += "<td></td>";
+                        tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Unidad'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['nombreMaterial'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Calidad'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Largo'] * 0.3048 + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Peso'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso'] + "</td>";
+                        tcompleta += "</tr>";
+                        total += (tableData[i]['Cantidad'] * (tableData[i]['Largo'] * 0.3048) * tableData[i]['Peso']);
+
+                    }
+
+                    rptTemplate = rptTemplate.replace('vrTotal', total);
+                    rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+                    rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
+                    tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
+                    var tmpElemento = document.createElement('a');
+                    var data_type = 'data:application/vnd.ms-excel';
+                    tabla_html = tablatmp.replace(/ /g, '%20');
+                    tmpElemento.href = data_type + ', ' + tabla_html;
+                    //Asignamos el nombre a nuestro EXCEL
+                    tmpElemento.download = 'Requisicion.xls';
+                    // Simulamos el click al elemento creado para descargarlo
+                    tmpElemento.click();
+
+                    //getJSON fail
+                }).fail(function (e) {
+                    CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
+                });
             });
         });
     },
@@ -675,4 +680,4 @@ var ReqMCompra = {
 
 $(function () {
     ReqMCompra.Inicial();
-})
+});
