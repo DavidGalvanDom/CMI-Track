@@ -387,6 +387,7 @@ var Marcas = {
             Marcas.colMarcas = new Backbone.Collection(data);
             var bolFilter = Marcas.colMarcas.length > 0 ? true : false;
             if (bolFilter) {
+                $('#bbGrid-Marcas')[0].innerHTML = "";
                 Marcas.gridMarcas = new bbGrid.View({
                     container: $('#bbGrid-Marcas'),
                     rows: 15,

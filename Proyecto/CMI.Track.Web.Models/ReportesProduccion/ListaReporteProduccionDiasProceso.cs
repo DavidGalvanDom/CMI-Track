@@ -42,6 +42,8 @@ namespace CMI.Track.Web.Models
         [Display(Name = "Id Serie")]
         public string idSerie { get; set; }
 
+        public int piezas { get; set; }
+
         [Display(Name = "Dias Proceso")]
         public int diasProceso { get; set; }
 
