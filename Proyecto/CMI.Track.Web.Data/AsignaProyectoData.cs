@@ -128,7 +128,7 @@ namespace CMI.Track.Web.Data
                             idMaterial = Convert.ToInt32(dataReader["idMaterial"]),
                             nombreMat = Convert.ToString(dataReader["nombreMaterial"]),
                             UM = Convert.ToString(dataReader["nombreCortoUnidadMedida"]),
-                            Existencia = Convert.ToDouble(dataReader["cantidadInventario"]),
+                            Existencia = dataReader["cantidadInventario"] == DBNull.Value ? 0 : Convert.ToDouble(dataReader["cantidadInventario"]),
                             Cantidad = Convert.ToDouble(dataReader["cantidadEntrega"]),
                             Calidad = Convert.ToString(dataReader["calidadMaterial"]),
                             Ancho = Convert.ToDouble(dataReader["anchoMaterial"]),

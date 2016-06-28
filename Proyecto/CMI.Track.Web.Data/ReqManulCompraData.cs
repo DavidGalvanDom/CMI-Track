@@ -211,6 +211,7 @@ namespace CMI.Track.Web.Data
         public static string Guardar(Models.ReqManualCompra pobjModelo)
         {
             object[] paramArray = new object[10];
+            string result = "";
             try
             {             
                 paramArray[0] = pobjModelo.idRequerimiento;
@@ -225,9 +226,14 @@ namespace CMI.Track.Web.Data
                 paramArray[9] = pobjModelo.idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteScalar("usp_InsertarRequisicion", paramArray);
+                var dbResult = db.ExecuteScalar("usp_InsertarRequisicion", paramArray);
 
-                return (result.ToString());
+                result = dbResult.ToString();
+
+                if (result == "-3")
+                    throw new ApplicationException("La requisicion inicial ya fue autorizada y no puede ser modificada.");
+
+                return (result);
             }
             catch (Exception exp)
             {
@@ -270,6 +276,7 @@ namespace CMI.Track.Web.Data
         public static string Actualiza(Models.ReqManualCompra pobjModelo)
         {
             object[] paramArray = new object[6];
+            string result = "";
             try
             {
                 paramArray[0] = pobjModelo.idRequerimiento;
@@ -277,12 +284,17 @@ namespace CMI.Track.Web.Data
                 paramArray[2] = pobjModelo.Cantidad;
                 paramArray[3] = pobjModelo.Unidad;
                 paramArray[4] = pobjModelo.id;
-                paramArray[5] = pobjModelo.idRequisicion;   
+                paramArray[5] = pobjModelo.idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_ActualizarRequiMateriales", paramArray);
+                var DbResult = db.ExecuteScalar("usp_ActualizarRequiMateriales", paramArray);
 
-                return (result.ToString());
+                result = DbResult.ToString();
+
+                if (result == "-3")
+                    throw new ApplicationException("La requisicion ya fue autorizada y no puede ser modificada.");
+                
+                return (result);
             }
             catch (Exception exp)
             {
@@ -299,15 +311,22 @@ namespace CMI.Track.Web.Data
         public static string Borrar(string idMatReq, int idRequisicion)
         {
             object[] paramArray = new object[2];
+            string result = "";
             try
             {
                 paramArray[0] = idMatReq;
                 paramArray[1] = idRequisicion;
 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
-                var result = db.ExecuteNonQuery("usp_RemueveMaterialRequisicion", paramArray);
+                var dbResult = db.ExecuteScalar("usp_RemueveMaterialRequisicion", paramArray);
 
-                return (result.ToString());
+                result = dbResult.ToString();
+
+                if (result == "-3")
+                    throw new ApplicationException("La requisicion ya fue autorizada y no puede ser modificada.");
+
+                return (result);
+
             }
             catch (Exception exp)
             {

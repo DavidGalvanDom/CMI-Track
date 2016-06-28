@@ -302,6 +302,14 @@ var MaterialesProyecto = {
         CMI.botonMensaje(true, btn, 'Agregar');
         if ($("form").valid()) {
             $('#usuarioCreacion').val(localStorage.idUser);
+            //Se valida que capture por lo menos una requisicion o Material 
+            if($('#idRequisicionSelect').val() === '0' && 
+                $('#idMaterialSelect').val() === '0') {
+                CMI.DespliegaErrorDialogo("Debe seleccionar una Requisicion o Material");
+                CMI.botonMensaje(false, btn, 'Agregar');
+                return;
+            }
+
             //Se hace el post para guardar la informacion
             $.post(contextPath + "AsignaProyecto/NuevoM",
                 $("#NuevoAsignaMaterialesForm *").serialize(),
@@ -665,7 +673,7 @@ var MaterialesProyecto = {
         var url = contextPath + "AsignaProyecto/CargaMaterialesAsignados?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idRequerimiento=' + $('#idRequerimientoSelect').val() + '&idAlmacen=' + $('#Almacen').val() + '&idDocumento=' + $('#idAsignaProyecto').val(); // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
-            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
+            if (data.Success !== undefined) { CMI.DespliegaErrorDialogo(data.Message); return; }
             MaterialesProyecto.colMaterialesProyecto = new Backbone.Collection(data);
             var bolFilter = MaterialesProyecto.colMaterialesProyecto.length > 0 ? true : false;
             if (bolFilter) {
@@ -697,12 +705,12 @@ var MaterialesProyecto = {
                 $('#cargandoInfo').hide();
             }
             else {
-                CMI.DespliegaInformacion("No se encontraron Materiales asigandos a este proyecto.");
+                CMI.DespliegaInformacionDialogo("No se encontraron Materiales asigandos a este proyecto.");
                 $('#bbGrid-MaterialesAsignadosM')[0].innerHTML = "";
             }
             //getJSON fail
         }).fail(function () {
-            CMI.DespliegaError("No se pudo cargar la informacion de materiales asigandos al proyecto");
+            CMI.DespliegaErrorDialogo("No se pudo cargar la informacion de materiales asigandos al proyecto");
         });
     }
 };

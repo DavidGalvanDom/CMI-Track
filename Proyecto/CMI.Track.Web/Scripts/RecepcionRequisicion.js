@@ -53,7 +53,7 @@ var RecepecionCompra = {
         var btn = this;
         $(btn).attr("disabled", "disabled");
         CMI.CierraMensajes();
-        var url = contextPath + "Etapa/BuscarEtapa"; // El url del controlador      
+        var url = contextPath + "Etapa/BuscarEtapa"; // El url del controlador
         $.get(url, function (data) {
             $('#buscar-General').html(data);
             $('#buscar-General').modal({
@@ -93,7 +93,7 @@ var RecepecionCompra = {
         var btn = this;
         $(btn).attr("disabled", "disabled");
         CMI.CierraMensajes();
-        var url = contextPath + "ReqManualCompra/BuscarRequisiciones"; // El url del controlador      
+        var url = contextPath + "ReqManualCompra/BuscarRequisiciones"; // El url del controlador
         $.get(url, function (data) {
             $('#buscar-General').html(data);
             $('#buscar-General').modal({
@@ -118,19 +118,29 @@ var RecepecionCompra = {
         CMI.botonMensaje(true, btn, 'Guardar');
         dataPost = $("Index *").serialize();
 
-        if ($('#SerieFac').val() !== '' && $('#FacturaReq').val() !== '' && $('#ProveedorFac').val() !== '' && $('#FechaFactura').val() !== '') {
+        if ($('#SerieFac').val() !== '' && $('#FacturaReq').val() !== '' &&
+            $('#ProveedorFac').val() !== '' && $('#FechaFactura').val() !== '') {
 
             $.each(RecepecionCompra.colRecepecionCompra.models, function (index, value) {
                 mat = RecepecionCompra.colRecepecionCompra.where({ id: value.id });
-
                 if (mat[0].attributes.Existencia !== 0 ) {
-                    if (parseFloat(document.getElementById(value.id).value) <= mat[0].attributes.Existencia) {
-                        dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' + parseFloat(document.getElementById(value.id).value) + ',' + $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' + $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' + $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' + value.id + ',' + localStorage.idUser;
+                    if (parseFloat(document.getElementById(value.id).value) <= mat[0].attributes.Existencia &&
+                        parseFloat(document.getElementById(value.id).value) >= 0) {
+                        dataPost = dataPost + '&lstMS=' + mat[0].attributes.idMaterial + ',' +
+                                    parseFloat(document.getElementById(value.id).value) + ',' +
+                                    $('#SerieFac').val() + ',' + $('#FacturaReq').val() + ',' +
+                                    $('#ProveedorFac').val() + ',' + $('#FechaFactura').val() + ',' +
+                                    $('#idRequerimientoSelect').val() + ',' + $('#idRequisicionSelect').val() + ',' +
+                                    value.id + ',' + localStorage.idUser;
+                    } else {
+                       $('#' + value.id).addClass('input-validation-error');
+                        dataPost = '';
+                        return false;
                     }
                 }
-           
             });
-
+            
+            if (dataPost === '') { CMI.botonMensaje(false, btn, 'Guardar'); CMI.DespliegaError("Favor de validar la información."); return; }
             //Se hace el post para guardar la informacion
             $.post(contextPath + "RecepcionRequisicion/Actualiza",
                 dataPost,
@@ -144,9 +154,8 @@ var RecepecionCompra = {
                         CMI.DespliegaError(data.Message);
                     }
                 }).fail(function () {
-                    CMI.DespliegaErrorDialogo("Error al guardar la informacion");
+                    CMI.DespliegaError("Error al guardar la informacion");
                 }).always(function () { CMI.botonMensaje(false, btn, 'Guardar'); });
-
         } else {
             CMI.DespliegaError("La información de la factura esta incompleta");
             CMI.botonMensaje(false, btn, 'Guardar');

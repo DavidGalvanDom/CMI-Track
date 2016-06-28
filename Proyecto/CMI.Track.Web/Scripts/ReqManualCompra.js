@@ -89,7 +89,7 @@ var ReqMCompra = {
                     rptTemplate = rptTemplate.replace('vrDesEtapa', tablaheader[j]['NombreEtapa']);
                     rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
                     rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
-                    rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
+                    rptTemplate = rptTemplate.replace('vrFolioReq', $('#idReq').val());
                     rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
                     rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
                 }
@@ -456,7 +456,7 @@ var ReqMCompra = {
                                  + '</option>');
         });
 
-        $(form + '#Unidad').val($(form + '#unid').val());
+        $(form + ' #Unidad').val($(form + ' #unid').val());
     },
     CargarColeccionAlmacen: function () {
         var form = ReqMCompra.activeForm;
@@ -485,7 +485,7 @@ var ReqMCompra = {
                                  + '</option>');
         });
 
-        $(form + '#Almacen').val($(form + '#alm').val());
+        $(form + ' #Almacen').val($(form + ' #alm').val());
     },
     CargarColeccionRequisiciones: function () {
         var formRequisicion = ReqMCompra.activeForm;
@@ -554,11 +554,10 @@ var ReqMCompra = {
             backdrop: 'static',
             keyboard: true
         }, 'show');
+        ReqMCompra.activeForm = '#ActualizarReqManualCompraForm';
         ReqMCompra.CargarColeccionUnidadMedida();
         ReqMCompra.CargarColeccionAlmacen();
         CMI.RedefinirValidaciones();
-
-        //para los formularios dinamicos
     });
     },
     Borrar: function (id) {
@@ -613,7 +612,6 @@ var ReqMCompra = {
                     editar: ReqMCompra.accEscritura,
                     borrar: ReqMCompra.accBorrar,
                     collection: ReqMCompra.colReqMCompra,
-                    seguridad: ReqMCompra.accSeguridad,
                     colModel: [{ title: 'Item', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Id Material', name: 'idMaterialSelect', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre', name: 'nombreMaterial', filter: true, filterType: 'input' },
@@ -650,11 +648,8 @@ var ReqMCompra = {
                     enableTotal: true,
                     enableSearch: false,
                     actionenable: false,
-                    detalle: false,
-                    editar: ReqMCompra.accEscritura,
                     borrar: ReqMCompra.accBorrar,
                     collection: ReqMCompra.colReqMCompra,
-                    seguridad: ReqMCompra.accSeguridad,
                     colModel: [{ title: 'Item', name: 'id', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Id Material', name: 'idMaterialSelect', width: '8%', sorttype: 'number', filter: true, filterType: 'input' },
                                { title: 'Nombre', name: 'nombreMaterial', filter: true, filterType: 'input' },
