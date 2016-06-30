@@ -52,7 +52,7 @@ namespace CMI.Track.Web.Data
                             LongArea = Convert.ToDouble(dataReader["LongArea"]),
                             Peso = Convert.ToDouble(dataReader["pesoMaterial"]),
                             Total = Convert.ToDouble(dataReader["Total"]),
-                            
+                            idAlmacen = Convert.ToInt32(dataReader["idAlmacen"])
                         });
                     }
                 }

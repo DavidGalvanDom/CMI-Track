@@ -135,6 +135,7 @@
     <Content Include="Content\images\CMI.TRACK.reportes.png" />
     <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\SiteLogon.css" />
+    <Content Include="Content\template\rpt_existencias.html" />
     <Content Include="Content\template\rpt_kardex.html" />
     <Content Include="Content\template\rpt_materiales_proyecto.html" />
     <Content Include="Content\template\rpt_movtos_materiales.html" />

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Reporte Existencias";
 }
 
@@ -7,33 +6,70 @@
     <div class="col-lg-12">
         <h1 class="page-header">
             <small>Reporte</small> Existencias
-            <!--<button class="btn btn-outline btn-primary pull-right btnNuevo" style="display: none;">Nuevo</button>-->
-        </h1>        
+            <div class="pull-right">
+                <button class="btn btn-primary" name="btnBuscar" id="btnBuscar"><span class="fa fa-search"></span> Buscar</button>
+            </div>
+        </h1>
+        
     </div>
     <!-- /.col-lg-12 -->
 </div>
+
+
+<div class="row">
+    <div class="form-group" id="rowAlmacen">
+        <div class="col-sm-1"> <label class="control-label">Almacen</label></div>
+        <div class="col-sm-1"> <label class="control-label">Inicial</label></div>
+        <div class="col-sm-4">
+            <select id="idAlmacenDe" name="idAlmacenDe" class="form-control" required="required"></select>
+        </div>
+        <div class="col-sm-1"> <label class="control-label">Final</label></div>
+        <div class="col-sm-4">
+            <select id="idAlmacenA" name="idAlmacenA" class="form-control" required="required"></select>
+        </div>
+    </div>
+</div>
+<div class="row"><br /></div>
+<div class="row">
+    <div class="form-group" id="rowGroup">
+        <div class="col-sm-1"> <label class="control-label">Grupo</label></div>
+        <div class="col-sm-1"> <label class="control-label">Inicial</label></div>
+        <div class="col-sm-4">
+            <select id="idGrupoDe" name="idGrupoDe" class="form-control" required="required"></select>
+        </div>
+        <div class="col-sm-1"> <label class="control-label">Final</label></div>
+        <div class="col-sm-4">
+            <select id="idGrupoA" name="idGrupoA" class="form-control" required="required"></select>
+        </div>
+    </div>
+</div>
+<div class="row"><br /></div>
 <div class="row" id="materialRow">
     <div class="form-group">
         <div class="col-sm-1"> <label class="control-label">Material</label></div>
+        <div class="col-sm-1"> <label class="control-label">Inicial</label></div>
         <span id="idMaterial" style="display:none;">Id</span>
         <div class="col-sm-4">
             <div class="input-group">
+                <input type="hidden" id="selectedidMaterialM" name="selectedidMaterialM">
                 <input type="text" id="idMaterialM" name="idMaterialM" class="form-control" placeholder="Id" title="Id">
                 <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat"><span class="fa fa-search"></span></button>
+                    <button class="btn btn-secondary" type="button" id="btnBuscarMat" name="btnBuscarMat" data-texto="idMaterialM"><span class="fa fa-search"></span></button>
                 </span>
             </div>
         </div>
-
-        <div id="rowAlmacen">
-            <div class="col-sm-1"> <label class="control-label">Almacen</label></div>
-            <div class="col-sm-4">
-                <select id="idAlmacen" name="idAlmacen" class="form-control" required="required"></select>
+        <div class="col-sm-1"> <label class="control-label">Final</label></div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <input type="hidden" id="selectedidMaterialA" name="selectedidMaterialA">
+                <input type="text" id="idMaterialA" name="idMaterialA" class="form-control" placeholder="Id" title="Id">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" id="btnBuscarMatA" name="btnBuscarMatA" data-texto="idMaterialA"><span class="fa fa-search"></span></button>
+                </span>
             </div>
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-sm-12">
         <br />
@@ -41,9 +77,9 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-         <div id="bbGrid-clear" class="col-lg-12">
-             <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>  
-         </div>                   
+        <div id="bbGrid-clear" class="col-lg-12">
+            <div id="cargandoInfo" style="display:none;">Cargando informacion...</div>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-12">

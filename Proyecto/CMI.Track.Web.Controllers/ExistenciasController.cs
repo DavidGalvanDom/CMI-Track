@@ -34,11 +34,15 @@ namespace CMI.Track.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult CargaExistencias(string idMaterial, string idAlmacen)
+        public JsonResult CargaExistencias(string matrialDe, string materialA,
+                                         string almacenDe, string almacenA,
+                                         string grupoDe, string grupoA)
         {
             try
             {
-                var lstExistencias = ExistenciasData.CargaExistencias(idMaterial, idAlmacen);
+                var lstExistencias = ExistenciasData.CargaExistencias(matrialDe, materialA,
+                                                                     almacenDe, almacenA,
+                                                                     grupoDe, grupoA);
 
                 return (Json(lstExistencias, JsonRequestBehavior.AllowGet));
             }

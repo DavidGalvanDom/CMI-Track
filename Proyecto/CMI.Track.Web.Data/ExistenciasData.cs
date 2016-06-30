@@ -21,14 +21,20 @@ namespace CMI.Track.Web.Data
         /// Se carga el listado de kardex
         /// </summary>
         /// <returns>Lista categorias</returns>
-        public static List<Models.ListaExistencias> CargaExistencias(string idMaterial, string idAlmacen)
+        public static List<Models.ListaExistencias> CargaExistencias(string matrialDe, string materialA,
+                                                                     string almacenDe, string almacenA,
+                                                                     string grupoDe, string grupoA)
         {
             var listaExistencias = new List<Models.ListaExistencias>();
-            object[] paramArray = new object[2];
+            object[] paramArray = new object[6];
             try
             {
-                paramArray[0] = idMaterial == "" ? null : idMaterial;
-                paramArray[1] = idAlmacen == "" ? null : idAlmacen;
+                paramArray[0] = matrialDe == "" ? null : matrialDe;
+                paramArray[1] = materialA == "" ? null : materialA;
+                paramArray[2] = almacenDe == "" ? null : almacenDe;
+                paramArray[3] = almacenA == "" ? null : almacenA;
+                paramArray[4] = grupoDe == "" ? null : grupoDe;
+                paramArray[5] = grupoA == "" ? null : grupoA;
                 
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");
 
@@ -47,8 +53,7 @@ namespace CMI.Track.Web.Data
                             Largo = Convert.ToDouble(dataReader["largoMaterial"]),
                             UMLargo = Convert.ToString(dataReader["nombreCortoUnidadMedidaLargo"]),
                             Calidad = Convert.ToString(dataReader["calidadMaterial"]),
-                            Inventario = Convert.ToInt32(dataReader["cantidadInventario"]),
-                            
+                            Inventario = Convert.ToInt32(dataReader["cantidadInventario"])
                         });
                     }
                 }

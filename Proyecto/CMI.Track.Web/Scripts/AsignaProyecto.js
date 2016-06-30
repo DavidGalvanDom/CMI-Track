@@ -219,6 +219,7 @@ var MaterialesProyecto = {
     {
         var btn = this,
             dataPost = '',
+            form = MaterialesProyecto.activeForm,
             mat = [],
             valida;
 
@@ -230,11 +231,16 @@ var MaterialesProyecto = {
                 mat = MaterialesProyecto.colMaterialesProyecto.where({ id: value.id});
                 if (mat[0].attributes.Total === 0) {
                     if (mat[0].attributes.Existencia >= parseFloat(document.getElementById(value.id).value)) {
-                        if (parseFloat(document.getElementById(value.id).value) !== 0) {
+                        if (parseFloat(document.getElementById(value.id).value) > 0) {
                             dataPost = dataPost + '&lstMS=' + parseFloat(document.getElementById(value.id).value) + ',' + value.id + ',' + mat[0].attributes.idMaterial + ',' + $('#Almacen').val() + ',' + localStorage.idUser;
+                            valida = 0;
+                        } else {
+                            $(form + ' #' + value.id).addClass('input-validation-error');
+                            valida = 1;
                         }
-                        valida = 0;
+                        
                     } else {
+                        $(form + ' #' + value.id).addClass('input-validation-error');
                         valida = 1;
                     }
                 }
@@ -488,7 +494,7 @@ var MaterialesProyecto = {
                                  + '</option>');
         });
 
-        $(form + '#Almacen').val($(form + '#Almacen').val());
+        $(form + ' #Almacen').val($(form + ' #Almacen').val());
     },
     CargarColeccionUnidadMedida: function () {
         var form = MaterialesProyecto.activeForm;
@@ -515,7 +521,7 @@ var MaterialesProyecto = {
                                  + '</option>');
         });
 
-        $(form + '#Unidad').val($(form + '#Unidad').val());
+        $(form + ' #Unidad').val($(form + ' #Unidad').val());
     },
     CargarColeccionOrigenReq: function () {
         var formOrigen = MaterialesProyecto.activeForm;
@@ -544,7 +550,7 @@ var MaterialesProyecto = {
                                  + '</option>');
         });
 
-        $(formOrigen + '#idOrigen').val($(formOrigen + '#idOrigen').val());
+        $(formOrigen + ' #idOrigen').val($(formOrigen + ' #idOrigen').val());
     },
     CargarColeccionDocumentos: function () {
         var form = MaterialesProyecto.activeForm;
@@ -573,7 +579,7 @@ var MaterialesProyecto = {
                                  + '</option>');
         });
 
-        $(form + '#idDoc').val($(form + '#idDoc').val());
+        $(form + ' #idDoc').val($(form + ' #idDoc').val());
         $(" .select2").select2({ allowClear: true, placeholder: 'Documento' });
     },
     ValidaPermisos: function () {
@@ -607,12 +613,14 @@ var MaterialesProyecto = {
     CargaGrid: function (id) {
         var url = contextPath + "AsignaProyecto/CargaMaterialesProyecto?idProyecto=" + $('#idProyectoSelect').val() + '&idEtapa=' + $('#idEtapaSelect').val() + '&idDocumento=' + id,
             total = 0,
+            idAlmacen = 0,
             validar = 0 ; // El url del controlador
         $.getJSON(url, function (data) {
             $('#cargandoInfo').show();
             if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
             $.each(data, function (index, value) {
                 total = total + parseFloat(value.Cantidad);
+                idAlmacen = value.idAlmacen;
                 if (value.Cantidad === 0) {
                     validar = 1;
                 }
@@ -621,8 +629,8 @@ var MaterialesProyecto = {
                 } else {
                     value.Cantidad = " <input disabled onblur='MaterialesProyecto.focusOut(this);' onFocus='MaterialesProyecto.focusIn(this);' id='" + value.id + "' type=\"number\" class=\"form-control\" tabindex='" + index + "'  value='" + value.Cantidad + "' /> ";
                 }
-                
             });
+            $('#Almacen').val(idAlmacen);
             $('#lblTotalReci').text(total);
             $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
             MaterialesProyecto.colMaterialesProyecto = new Backbone.Collection(data);
@@ -655,12 +663,10 @@ var MaterialesProyecto = {
                 $('#cargandoInfo').hide();
                 if (validar === 1) {
                     $('#guardar').show();
-                }
-                else {
+                } else {
                     $('#guardar').hide();
                 }
-            }
-            else {
+            } else {
                 CMI.DespliegaInformacion("No se encontraron Materiales asigandos a este proyecto.");
                 $('#bbGrid-AsignaMaterialesProyecto')[0].innerHTML = "";
             }
