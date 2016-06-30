@@ -40,7 +40,7 @@ namespace CMI.Track.Web.Controllers
             {
                 var lstKardex = KardexData.CargaKardex(idMaterial, idAlmacen);
 
-                return (Json(lstKardex, JsonRequestBehavior.AllowGet));
+                return (Json(new { Success = true, data = lstKardex }, JsonRequestBehavior.AllowGet));
             }
             catch (Exception exp)
             {

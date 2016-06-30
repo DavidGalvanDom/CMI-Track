@@ -10,6 +10,7 @@ var Kardex = {
     colKardex: {},
     gridKardex: {},
     colAlmacen: [],
+    idMaterialSel : 0,
     Inicial: function () {
         $.ajaxSetup({ cache: false });
         this.Eventos();
@@ -17,89 +18,85 @@ var Kardex = {
     },
     Eventos: function () {
         var that = this;
-        var idM = '';
         $("#btnBuscarMat").click(that.onBuscarMaterial);
         $("#idAlmacen").change(that.onCambiaAlmacen);
         $("#btnImprimir").click(that.onImprimir);
-       // $('#rowAlmacen').hide();
     },
     onCambiaAlmacen: function () {
-
-        if ($('#idAlmacen').val() == '') {
+        if ($('#idAlmacen').val() === '') {
             $('#CausaDiv').show();
-        }
-        else {
+            $('#Imprimir').hide();
+            $('#bbGrid-clear')[0].innerHTML = "";
+        } else {
             $('#bbGrid-clear')[0].innerHTML = '';
-            Kardex.CargaGrid(idM, $('#idAlmacen').val());
-            $('#Imprimir').show();
+            $('#Imprimir').hide();
+            Kardex.CargaGrid(Kardex.idMaterialSel, $('#idAlmacen').val());
         }
     },
     onImprimir: function () {
-        var templateURL = contextPath + "Content/template/rpt_kardex.html";
-        var rptTemplate = '';
-        var tabla_html;
-        var tablatmp = '';
-        var tableData;
-        var tablaheader;
-        var total = 0;
-        var Existe = 0;
-        var tcompleta = ''
-        var f = new Date();
-        $.get(templateURL, function (data) { rptTemplate = data; });
-      //  var urlHeader = contextPath + "Kardex/CargaHeaderMovimientos?id=" + $('#idDoc').val(); // El url del controlador
-       // $.getJSON(urlHeader, function (data) {
-        //    tablaheader = data;
-         //   for (j = 0; j < tablaheader.length; j++) {
-            
-                // rptTemplate = rptTemplate.replace('vrNoPro', tablaheader[j]['id']);
-                // rptTemplate = rptTemplate.replace('vrNombrePro', tablaheader[j]['NombreProyecto']);
-                // rptTemplate = rptTemplate.replace('vrFolioReq', tablaheader[j]['FolioRequerimiento']);
-                // rptTemplate = rptTemplate.replace('vrDepto', tablaheader[j]['NombreDepto']);
-                // rptTemplate = rptTemplate.replace('vrSolicita', tablaheader[j]['NomnreUsuario']);
-           // }
+        var templateURL = contextPath + "Content/template/rpt_kardex.html",
+             rptTemplate = '',
+             tabla_html,
+             tablatmp = '',
+             tableData,
+             tablaheader,
+             total = 0,
+             Existe = 0,
+             tcompleta = '',
+             f = new Date();
+        $.get(templateURL, function (dataTemplate) {
 
-            var url = contextPath + "Kardex/CargaKardex?idMaterial=" + $('#idMaterialM').val() + "&idAlmacen=" + $('#idAlmacen').val(); // El url del controlador
+            rptTemplate = dataTemplate;
+
+            var url = contextPath + "Kardex/CargaKardex?idMaterial=" + Kardex.idMaterialSel + "&idAlmacen=" + $('#idAlmacen').val(); // El url del controlador
             $.getJSON(url, function (data) {
-                tableData = data;
-                for (i = 0; i < tableData.length; i++) {
-                    tcompleta += "<tr>";
-                    tcompleta += "<td>" + tableData[i]['NombreGrupo'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['idMaterial'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['NombreMaterial'] + "</td>";
-                    tcompleta += "<td>" + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Documento'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['NomTipoMOvto'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['TipoMovto'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
-                    tcompleta += "<td>" + tableData[i]['Fecha'] + "</td>";
-                    tcompleta += "</tr>";
-                    total += tableData[i]['Cantidad'];
-                    Existe = tableData[i]['Inventario'];
+
+                if (data.Success === true) {
+                    tableData = data.data;
+                    for (i = 0; i < tableData.length; i++) {
+                        tcompleta += "<tr>";
+                        tcompleta += "<td>" + tableData[i]['NombreGrupo'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['idMaterial'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['NombreMaterial'] + "</td>";
+                        tcompleta += "<td>" + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Ancho'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Largo'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Documento'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['NomTipoMOvto'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['TipoMovto'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Cantidad'] + "</td>";
+                        tcompleta += "<td>" + tableData[i]['Fecha'] + "</td>";
+                        tcompleta += "</tr>";
+                        total += tableData[i]['Cantidad'];
+                        Existe = tableData[i]['Inventario'];
+                    }
+                    rptTemplate = rptTemplate.replace('vrAlmacen', $('#idAlmacen  option:selected').text().toUpperCase());
+                    rptTemplate = rptTemplate.replace('vrMaterial', $('#idMaterialM').val());
+
+                    rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
+                    rptTemplate = rptTemplate.replace('vrSaldo', total);
+                    rptTemplate = rptTemplate.replace('vrExistencias', Existe);
+                    rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
+                    tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
+                    var tmpElemento = document.createElement('a');
+                    var data_type = 'data:application/vnd.ms-excel';
+                    tabla_html = tablatmp.replace(/ /g, '%20');
+                    tmpElemento.href = data_type + ', ' + tabla_html;
+                    //Asignamos el nombre a nuestro EXCEL
+                    tmpElemento.download = 'Kardex.xls';
+                    // Simulamos el click al elemento creado para descargarlo
+                    tmpElemento.click();
+                } else {
+                    CMI.DespliegaError(data.Message);
                 }
-                rptTemplate = rptTemplate.replace('vrAlmacen', $('#idAlmacen').val());
-                rptTemplate = rptTemplate.replace('vrFecha', f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
-                rptTemplate = rptTemplate.replace('vrSaldo', total);
-                rptTemplate = rptTemplate.replace('vrExistencias', Existe);
-                rptTemplate = rptTemplate.replace('vrImagen', "<img src='" + routeUrlImages + "/CMI.TRACK.reportes.png' />");
-                tablatmp = rptTemplate.replace('vrDetalle', tcompleta);
-                var tmpElemento = document.createElement('a');
-                var data_type = 'data:application/vnd.ms-excel';
-                tabla_html = tablatmp.replace(/ /g, '%20');
-                tmpElemento.href = data_type + ', ' + tabla_html;
-                //Asignamos el nombre a nuestro EXCEL
-                tmpElemento.download = 'Kardex.xls';
-                // Simulamos el click al elemento creado para descargarlo
-                tmpElemento.click();
 
                 //getJSON fail
             }).fail(function (e) {
-                CMI.DespliegaError("No se pudo cargar la informacion de los requerimientos de material");
+                CMI.DespliegaError("No se pudo cargar la informacion del Kardex");
             });
-      //  });
-
-
+        }).fail(function (e) {
+            CMI.DespliegaError("No se pudo cargar la plantilla rpt_kardex");
+        });
     },
     onBuscarMaterial: function () {
         var btn = this;
@@ -121,13 +118,12 @@ var Kardex = {
     },
     AsignaMaterial: function (id, NombreMaterial,
                    AnchoMaterial, LargoMaterial, PesoMaterial, CalidadMaterial) {
-        $('#idMaterialM').val(id);
-        $('#idMaterialSelect').val(id);
+        $('#idMaterialM').val(NombreMaterial);
+        Kardex.idMaterialSel = id;
         $('#buscar-Material').modal('hide');
         $('#bbGrid-clear')[0].innerHTML = '';
+        $('#Imprimir').hide();
         Kardex.CargarColeccionAlmacen();
-        idM = id;
- 
     },
     CargarColeccionAlmacen: function () {
         var form = Kardex.activeForm;
@@ -167,15 +163,13 @@ var Kardex = {
 
         if (modulo.accEscritura === true)
             $('.btnNuevo').show();
-
     },
-
     CargaGrid: function (id,idAlmacen) {
         $('#cargandoInfo').show();
         var url = contextPath + "Kardex/CargaKardex?idMaterial=" + id + "&idAlmacen=" + idAlmacen; // El url del controlador
         $.getJSON(url, function (data) {
-            if (data.Success !== undefined) { CMI.DespliegaError(data.Message); return; }
-            Kardex.colKardex = new Backbone.Collection(data);
+            if (data.Success !== true) { CMI.DespliegaError(data.Message); return; }
+            Kardex.colKardex = new Backbone.Collection(data.data);
             var bolFilter = Kardex.colKardex.length > 0 ? true : false;
             if (bolFilter) {
                 gridKardex = new bbGrid.View({
@@ -201,11 +195,12 @@ var Kardex = {
                                { title: 'Fecha', name: 'Fecha', filter: true }]
                 });
                 $('#cargandoInfo').hide();
+                $('#Imprimir').show();
             } else {
                 CMI.DespliegaInformacion("No se encontraron registros");
                 $('#bbGrid-clear')[0].innerHTML = "";
+                $('#Imprimir').hide();
             }
-
             //getJSON fail
         }).fail(function (e) {
             CMI.DespliegaError("No se pudo cargar la informacion");
