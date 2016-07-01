@@ -112,7 +112,6 @@ namespace CMI.Track.Web.Data
             object[] paramArray = new object[15];
             try
             {
-                pobjModelo.piezas = (pobjModelo.piezas == null ? 1 : pobjModelo.piezas);
                 pobjModelo.piezas = (pobjModelo.piezas == 0 ? 1 : pobjModelo.piezas);
 
                 paramArray[0] = pobjModelo.tipo.ToUpper();
