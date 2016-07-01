@@ -76,7 +76,7 @@ namespace CMI.Track.Web.Models
         public int kgmSubMarca { get; set; }
 
         [Display(Name = "totalLASubMarca")]
-        public int totalLASubMarca { get; set; }
+        public double totalLASubMarca { get; set; }
 
         [Display(Name = "pesoSubMarca")]
         public int pesoSubMarca { get; set; }

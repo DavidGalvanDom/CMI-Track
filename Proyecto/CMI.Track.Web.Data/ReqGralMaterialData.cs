@@ -94,7 +94,7 @@ namespace CMI.Track.Web.Data
                             anchoSubMarca = Convert.ToInt32(dataReader["anchoDetalleReq"]),
                             gradoSubMarca = Convert.ToString(dataReader["gradoDetalleReq"]),
                             kgmSubMarca = Convert.ToInt32(dataReader["kgmDetalleReq"]),
-                            totalLASubMarca = Convert.ToInt32(dataReader["totalLADetalleReq"]),
+                            totalLASubMarca = Convert.ToDouble(dataReader["totalLADetalleReq"]),
                             pesoSubMarca = Convert.ToInt32(dataReader["pesoDetalleReq"]),
                         });
                     }

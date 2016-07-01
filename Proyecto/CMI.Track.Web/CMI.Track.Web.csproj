@@ -134,6 +134,9 @@
     <Content Include="Content\images\CMI.TRACK.png" />
     <Content Include="Content\images\CMI.TRACK.reportes.png" />
     <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\select2-spinner.gif" />
+    <Content Include="Content\images\select2.png" />
+    <Content Include="Content\images\select2x2.png" />
     <Content Include="Content\SiteLogon.css" />
     <Content Include="Content\template\rpt_existencias.html" />
     <Content Include="Content\template\rpt_kardex.html" />
@@ -862,12 +865,12 @@
     <Content Include="Scripts\lib\respond.min.js" />
     <Content Include="Scripts\lib\sb-admin.js" />
     <Content Include="Scripts\lib\select2-3.5.4\select2-bootstrap.css" />
-    <Content Include="Scripts\lib\select2-3.5.4\select2-spinner.gif" />
+    <Content Include="Scripts\lib\select2-3.5.4\images\select2-spinner.gif" />
     <Content Include="Scripts\lib\select2-3.5.4\select2.css" />
     <Content Include="Scripts\lib\select2-3.5.4\select2.js" />
     <Content Include="Scripts\lib\select2-3.5.4\select2.min.js" />
-    <Content Include="Scripts\lib\select2-3.5.4\select2.png" />
-    <Content Include="Scripts\lib\select2-3.5.4\select2x2.png" />
+    <Content Include="Scripts\lib\select2-3.5.4\images\select2.png" />
+    <Content Include="Scripts\lib\select2-3.5.4\images\select2x2.png" />
     <Content Include="Scripts\lib\underscore\underscore-min.js" />
     <Content Include="Scripts\lib\underscore\underscore.js" />
     <Content Include="Scripts\ListaGeneral.js" />

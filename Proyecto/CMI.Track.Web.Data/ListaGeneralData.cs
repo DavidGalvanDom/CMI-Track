@@ -26,7 +26,7 @@ namespace CMI.Track.Web.Data
         /// <returns>Lista de Etapas</returns>
         public static void GuardarInformacion(int idProyecto, int idEtapa, 
                                                 List<LGMMarcas> lstLGMMarcas, int idUsuario)
-        {   
+        {
             try
             {
                 var db = DatabaseFactory.CreateDatabase("SQLStringConn");

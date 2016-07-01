@@ -322,7 +322,7 @@ namespace CMI.Track.Web.Controllers
                            switch(count)
                            {
                                case 3: //Piezas Marca
-                                   if (!valor.IsNumeric())               
+                                   if (!valor.IsNumeric())
                                        desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
                                    else
                                    {
@@ -333,17 +333,17 @@ namespace CMI.Track.Web.Controllers
                                case 8:
                                case 9:
                                case 10:
-                               case 11:                               
+                               case 11:
                                case 13:
                                case 14:
                                case 15:
                                case 16:
                                case 17:
-                                   if (!valor.IsNumeric())               
+                                   if (!valor.IsNumeric())
                                        desError += string.Format("{0} : El valor debe ser numerico.", dataTable.Columns[count].ColumnName);
                                    break;
                                case 6:
-                                   if (!(valor == "C" || valor == "P"))               //Clase
+                                   if (!(valor == "C" || valor == "P"))//Clase
                                        desError += string.Format("{0} : El valor debe ser C o P.", dataTable.Columns[count].ColumnName);
                                    break;
                            }
