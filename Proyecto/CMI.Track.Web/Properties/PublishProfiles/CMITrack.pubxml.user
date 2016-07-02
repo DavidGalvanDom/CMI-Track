@@ -29,22 +29,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/04/2016 08:30:56</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>06/30/2016 20:56:46</publishTime>
+      <publishTime>07/02/2016 09:00:12</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>06/30/2016 20:56:46</publishTime>
+      <publishTime>07/02/2016 09:00:12</publishTime>
     </File>
     <File Include="bin/CMI.Track.Web.Controllers.dll">
-      <publishTime>06/30/2016 20:56:35</publishTime>
+      <publishTime>07/02/2016 08:59:55</publishTime>
     </File>
     <File Include="bin/CMI.Track.Web.Data.dll">
-      <publishTime>06/30/2016 20:56:34</publishTime>
+      <publishTime>07/02/2016 08:59:53</publishTime>
     </File>
     <File Include="bin/CMI.Track.Web.dll">
-      <publishTime>06/30/2016 20:56:36</publishTime>
+      <publishTime>07/02/2016 08:59:56</publishTime>
     </File>
     <File Include="bin/CMI.Track.Web.Models.dll">
-      <publishTime>06/30/2016 20:52:14</publishTime>
+      <publishTime>07/02/2016 08:59:52</publishTime>
     </File>
     <File Include="bin/DocumentFormat.OpenXml.dll">
       <publishTime>04/04/2016 08:30:56</publishTime>
@@ -118,6 +118,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/images/favicon.ico">
       <publishTime>05/24/2016 20:03:26</publishTime>
     </File>
+    <File Include="Content/images/select2-spinner.gif">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
+    <File Include="Content/images/select2.png">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
+    <File Include="Content/images/select2x2.png">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
     <File Include="Content/Site.css">
       <publishTime>06/11/2016 08:58:31</publishTime>
     </File>
@@ -182,7 +191,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2016 20:03:28</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>06/30/2016 20:56:40</publishTime>
+      <publishTime>07/02/2016 09:00:06</publishTime>
     </File>
     <File Include="Scripts/Almacen.js">
       <publishTime>05/24/2016 20:03:29</publishTime>
@@ -2281,6 +2290,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/lib/sb-admin.js">
       <publishTime>05/24/2016 20:05:12</publishTime>
     </File>
+    <File Include="Scripts/lib/select2-3.5.4/images/select2-spinner.gif">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
+    <File Include="Scripts/lib/select2-3.5.4/images/select2.png">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
+    <File Include="Scripts/lib/select2-3.5.4/images/select2x2.png">
+      <publishTime>07/02/2016 08:51:07</publishTime>
+    </File>
     <File Include="Scripts/lib/select2-3.5.4/select2-bootstrap.css">
       <publishTime>05/24/2016 20:05:12</publishTime>
     </File>
@@ -2288,7 +2306,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2016 20:05:12</publishTime>
     </File>
     <File Include="Scripts/lib/select2-3.5.4/select2.css">
-      <publishTime>05/24/2016 20:05:13</publishTime>
+      <publishTime>07/02/2016 08:51:07</publishTime>
     </File>
     <File Include="Scripts/lib/select2-3.5.4/select2.js">
       <publishTime>05/24/2016 20:05:13</publishTime>
@@ -2795,7 +2813,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/24/2016 20:05:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/30/2016 20:52:30</publishTime>
+      <publishTime>07/02/2016 08:59:58</publishTime>
     </File>
   </ItemGroup>
 </Project>
